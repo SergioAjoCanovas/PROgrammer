@@ -1,0 +1,67 @@
+.seccion-proyectos {
+    flex: 2;
+    min-width: 300px;
+}
+
+.tarjeta-proyectos-contenedor {
+    background-color: #333;
+    border: 3px solid #FFCC00;
+    border-radius: 35px;
+    padding: 25px;
+}
+
+.cabecera-proyectos h2 {
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rejilla-proyectos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.tarjeta-mini-proyecto {
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+}
+
+.tarjeta-mini-proyecto h3 {
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.tarjeta-mini-proyecto p {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.boton-ver {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 2px solid #000;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+    text-transform: uppercase;
+}
+
+.boton-ver:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}

@@ -34,7 +34,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 180px;
+    min-height: 212px;
 }
 
 .tarjeta-mini-proyecto h3 {

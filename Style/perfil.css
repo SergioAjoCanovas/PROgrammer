@@ -1,0 +1,117 @@
+.contenedor-principal {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    flex-wrap: wrap; 
+}
+
+.columna-perfil {
+    flex: 1;
+    min-width: 250px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tarjeta-perfil {
+    background-color: #333;
+    border: 3px solid #FFCC00;
+    border-radius: 35px;
+    padding: 0;
+    overflow: visible;
+}
+
+.perfil-superior {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 3px solid #FFCC00;
+    gap: 15px;
+}
+
+.foto-perfil-contenedor {
+    position: relative;
+    width: 80px; /* Tamaño equilibrado para el círculo */
+    height: 80px;
+}
+
+.circulo-foto {
+    width: 100%;
+    height: 100%;
+    background-color: #ADD8E6; 
+    border-radius: 50%;
+    border: 3px solid #FFCC00;
+}
+
+.icono-corazon {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background-color: #ff4d6d;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.nombre-usuario {
+    font-size: 1.1rem;
+    text-align: left;
+    margin: 0;
+    line-height: 1.2;
+    color: white;
+}
+
+.perfil-inferior {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.redes-sociales {
+    list-style: none;
+    margin-bottom: 25px;
+    margin-left: 10px;
+    color: white;
+}
+
+.redes-sociales li {
+    margin-bottom: 8px;
+}
+
+.boton-curriculum {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 2px solid #000;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: center;
+}
+
+.tarjeta-resenas-izq {
+    background-color: #333;
+    border: 3px solid #FFCC00;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.boton-anadir {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 1px solid #000;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    align-self: center; 
+}

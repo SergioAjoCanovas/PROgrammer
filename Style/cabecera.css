@@ -1,0 +1,168 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #000; 
+    color: white;
+}
+
+
+.contenedor-logotipo {
+    display: flex;
+    align-items: center;
+}
+
+.imagen-logotipo {
+    max-height: 85px; 
+    width: auto; 
+    display: block;
+}
+
+.encabezado-principal {
+    background-color: #4f4f4f; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px;
+    border-bottom: 3px solid #FFCC00; 
+}
+
+.seccion-izquierda {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logotipo {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #FFCC00;
+}
+
+.contenedor-buscador {
+    background-color: white;
+    border-radius: 4px;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+}
+
+.contenedor-buscador input {
+    border: none;
+    outline: none;
+    padding: 5px;
+    width: 180px;
+    color: #4f4f4f;
+}
+
+.contenedor-buscador i {
+    color: #999;
+}
+
+.navegacion-central {
+    display: flex;
+    gap: 30px;
+}
+
+.navegacion-central a {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.navegacion-central a:hover {
+    color: #FFCC00;
+}
+
+.seccion-derecha {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar-usuario {
+    width: 38px;
+    height: 38px;
+    background-color: #DDD;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4f4f4f;
+    cursor: pointer;
+}
+
+.boton-ajustes {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.boton-ajustes:hover {
+    color: #FFCC00;
+}
+
+
+
+/* --- RESPONSIVE / ADAPTACIÓN A PANTALLAS --- */
+
+/* TABLETS (Pantallas menores a 900px) */
+@media (max-width: 900px) {
+    .contenedor-buscador input {
+        width: 120px; /* Acortamos el buscador */
+    }
+    
+    .navegacion-central {
+        gap: 15px; /* Menos espacio entre iconos */
+    }
+}
+
+/* MÓVILES (Pantallas menores a 600px) */
+@media (max-width: 600px) {
+    .encabezado-principal {
+        padding: 10px 10px;
+        flex-wrap: wrap; /* Permite que los elementos bajen de línea si no caben */
+    }
+
+    /* Ocultamos el buscador en móviles para ganar espacio o lo hacemos mini */
+    .contenedor-buscador input {
+        display: none; 
+    }
+    
+    .contenedor-buscador {
+        padding: 8px;
+    }
+
+    /* Hacemos los iconos de navegación un poco más pequeños */
+    .navegacion-central {
+        gap: 12px;
+    }
+
+    .navegacion-central a {
+        font-size: 1.2rem;
+    }
+
+    .imagen-logotipo {
+        max-height: 20px; /* Aún más pequeño en móvil */
+    }
+}
+
+/* PANTALLAS MUY PEQUEÑAS (Menos de 400px) */
+@media (max-width: 400px) {
+    .navegacion-central {
+        order: 3; /* Mandamos los iconos abajo */
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+        border-top: 1px solid #444;
+        padding-top: 10px;
+    }
+}

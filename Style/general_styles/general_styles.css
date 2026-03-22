@@ -1,0 +1,9 @@
+.boton-curriculum, .boton-anadir, .boton-ver {
+    border: 3px solid #FFCC00;
+    box-shadow: 0 0 5px #FFCC00;
+}
+
+/* Al pasar el ratón, el neón brilla más fuerte */
+.boton-curriculum:hover, .boton-anadir:hover, .boton-ver:hover {
+    box-shadow: 0 0 15px #FFCC00, 0 0 25px #FFCC00;
+}

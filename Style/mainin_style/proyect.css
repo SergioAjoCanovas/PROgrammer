@@ -8,6 +8,7 @@
     border: 3px solid #FFCC00;
     border-radius: 35px;
     padding: 25px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
 }
 
 .cabecera-proyectos h2 {
@@ -35,6 +36,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 212px;
+    box-shadow: 0 0 8px #FFCC00;
 }
 
 .tarjeta-mini-proyecto h3 {
@@ -64,4 +66,30 @@
 .boton-ver:hover {
     filter: brightness(1.1);
     transform: scale(1.05);
+}
+
+.cabecera-proyectos h2 {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    color: white;
+}
+
+.enlace-grid-proyectos {
+    color: white;
+    text-decoration: none;
+    font-size: 1.4rem; 
+    margin-left: auto; 
+    transition: transform 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.enlace-grid-proyectos:hover {
+    color: #FFCC00; 
+    transform: scale(1.1); 
+}
+
+.enlace-grid-proyectos i {
+    cursor: pointer;
 }

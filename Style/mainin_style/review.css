@@ -14,6 +14,7 @@
     display: flex;
     flex-direction: column;
     min-height: 250px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 1.5);
 }
 
 .cabecera-inferior {
@@ -53,12 +54,26 @@
     width: 100%;
 }
 
-.tarjeta-inferior {
-    flex: 1; 
-    background-color: #333;
-    border: 3px solid #FFCC00;
-    border-radius: 35px;
-    display: flex;
-    flex-direction: column;
-    min-height: 250px;
+.boton-anadir {
+    background-color: #FFCC00;
+    color: #1a1a1a;
+    border: 2px solid #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.boton-anadir:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+.boton-anadir:active {
+    transform: scale(1.02);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }

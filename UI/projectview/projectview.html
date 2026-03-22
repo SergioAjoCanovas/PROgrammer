@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="../../Style/general_styles/header.css">
     <link rel="stylesheet" href="../../Style/general_styles/footer.css">
     <link rel="stylesheet" href="../../Style/mainin_style/profile.css">
-    <link rel="stylesheet" href="../../Style/projectlist_styles/proyectlist.css">
+    <link rel="stylesheet" href="../../Style/projectview_styles/projectview.css">
+    <link rel="stylesheet" href="../../Style/projectview_styles/images.css">
+    <link rel="stylesheet" href="../../Style/projectview_styles/images-modals.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -81,57 +83,65 @@
 
 
 
-    <!-- Proyectos -->
+    <!-- Vista de proyecto -->
 
     <section class="seccion-derecha-dinamica">
 
-        <div class="tarjeta-acordeon">
-            <h2>PROYECTOS</h2>
-
-            <div id="acordeon-proyectos">
-
-                <h3>Proyecto 1</h3>
-                <div>
-                    <p>Descripción del proyecto 1</p><br>
-                    <button class="boton-ver">Ver proyecto</button>
-                </div>
-
-                <h3>Proyecto 2</h3>
-                <div>
-                    <p>Descripción del proyecto 2</p><br>
-                    <button class="boton-ver">Ver proyecto</button>
-                </div>
-
-                <h3>Proyecto 3</h3>
-                <div>
-                    <p>Descripción del proyecto 3</p><br>
-                    <button class="boton-ver">Ver proyecto</button>
-                </div>
-
-                <h3>Proyecto 4</h3>
-                <div>
-                    <p>Descripción del proyecto 3</p><br>
-                    <button class="boton-ver">Ver proyecto</button>
-                </div>
-
-                <h3>Proyecto 5</h3>
-                <div>
-                    <p>Descripción del proyecto 3</p><br>
-                    <button class="boton-ver">Ver proyecto</button>
-                </div>
-
-                <h3>Proyecto 6</h3>
-                <div>
-                    <p>Descripción del proyecto 3</p><br>
-                    <button class="boton-ver">Ver proyecto</button>
-                </div>
-                
+        <div class="tarjeta-proyecto-detalle">
+    
+            <!-- TÍTULO -->
+            <div class="cabecera-proyecto">
+                <h2>Nombre del Proyecto</h2>
             </div>
+    
+            <!-- AUTOR + VALIDACIÓN + DESCARGA -->
+            <div class="info-superior">
+                <p><strong>Autor:</strong> David Alcázar</p>
+    
+                <div class="estado-proyecto">
+                    <span class="badge validado">
+                        <i class="fas fa-check-circle"></i> Validado
+                    </span>
+                
+                    <button class="boton-descargar">
+                        <i class="fas fa-download"></i> Descargar
+                    </button>
+                </div>
+            </div>
+    
+            <!-- CAROUSEL -->
+            <div class="galeria-proyecto">
 
+                <img src="../../Img/stock/ejemplo1.jpg" class="img-proyecto">
+                <img src="../../Img/stock/ejemplo2.jpg" class="img-proyecto">
+                <img src="../../Img/stock/ejemplo3.jpg" class="img-proyecto">
+                <img src="../../Img/stock/ejemplo4.jpg" class="img-proyecto">
+            
+            </div>
+            
+            <!-- MODAL -->
+            <div class="modal-img" id="modal">
+                <span class="cerrar">&times;</span>
+                <img class="modal-contenido" id="img-grande">
+            </div>
+    
+            <!-- DESCRIPCIÓN -->
+            <div class="descripcion-proyecto">
+                <h3>Descripción</h3>
+                <p>
+                    Este proyecto consiste en una plataforma para conectar desarrolladores...
+                </p>
+            </div>
+    
+            <!-- REPO -->
+            <div class="repo">
+                <h3>Repositorio</h3>
+                <a href="#" target="_blank">https://github.com/proyecto</a>
+            </div>
+    
         </div>
-
+    
     </section>
-
     </main>
 
     <!-- Footer -->
@@ -175,12 +185,25 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
     <script>
-        $( function() {
-            $("#acordeon-proyectos").accordion({
-                collapsible: true,
-                heightStyle: "content"
-            });
+        const modal = document.getElementById("modal");
+        const modalImg = document.getElementById("img-grande");
+    
+        document.querySelectorAll(".img-proyecto").forEach(img => {
+            img.onclick = function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
         });
+    
+        document.querySelector(".cerrar").onclick = function() {
+            modal.style.display = "none";
+        }
+    
+        modal.onclick = function(e) {
+            if(e.target === modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>

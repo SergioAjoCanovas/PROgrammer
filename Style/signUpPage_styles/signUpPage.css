@@ -1,0 +1,98 @@
+/* =========================================================
+   ESTILOS ESPECÍFICOS PARA LA PÁGINA DE REGISTRO
+   ========================================================= */
+
+/* --- 0. Ajuste del tamaño del Logotipo (NUEVO) --- */
+/* Sobreescribimos el tamaño base de 130px solo para esta página */
+.login-card .login-logo {
+    width: 200px; /* ¡Ahora es mucho más grande! */
+    margin-bottom: 20px; /* Un poco más de espacio abajo */
+    height: auto; /* Mantiene la proporción */
+}
+
+/* --- 1. Estilos para el desplegable (Select) de Rol --- */
+.input-group select {
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 15px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    cursor: pointer;
+    /* Evita el estilo por defecto feo del navegador */
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Brillo amarillo neón al hacer clic en el selector */
+.input-group select:focus {
+    border-color: #FFCC00;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+/* Color gris para cuando dice "Selecciona tu perfil..." */
+.input-group select:invalid {
+    color: #888;
+}
+
+/* Color de las opciones cuando se despliega la lista */
+.input-group select option {
+    background-color: #222;
+    color: white;
+    padding: 10px;
+}
+
+/* Posicionar la flechita personalizada dentro del selector */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: '\f0d7'; /* Código FontAwesome para la flecha hacia abajo */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+}
+
+
+/* --- 2. Estilos para los Ojos de las Contraseñas --- */
+
+/* Wrapper para que el texto de la contraseña no pise el ojo */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 45px !important; /* Hueco para el icono */
+}
+
+/* El ojo en sí: BLANCO por defecto para que se vea */
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #f0f0f0; /* ¡SOLUCIÓN! Blanco/gris claro en lugar de negro */
+    font-size: 1.1rem;
+    z-index: 10;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Efecto neón al pasar el ratón por el ojo */
+.toggle-password:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}

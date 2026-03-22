@@ -1,0 +1,267 @@
+/* =========================================================
+   ESTILOS GENERALES Y LAYOUT
+   ========================================================= */
+body {
+    background-color: #101010; /* Un tono más oscuro para que resalte más el neón */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Para que el footer se quede siempre abajo */
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Evita scrolls raros por los neones */
+}
+
+/* Contenedor que centra la tarjeta y contiene los neones */
+.contenedor-login {
+    flex: 1; /* Ocupa todo el espacio entre el inicio y el footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative; /* NECESARIO para posicionar los neones detrás */
+    z-index: 1; /* Base para el contenido */
+}
+
+/* =========================================================
+   EFECTO DE NEONES AMARILLOS DE FONDO
+   ========================================================= */
+
+/* Bloque de neón 1 (Arriba a la izquierda) */
+.contenedor-login::before {
+    content: '';
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(255,204,0,0.25) 0%, rgba(255,204,0,0) 70%);
+    border-radius: 50%;
+    filter: blur(60px); /* Crea el efecto de brillo difuminado */
+    top: 10%;
+    left: 15%;
+    z-index: -1; /* Lo pone detrás de la tarjeta */
+    animation: flotarNeon 8s ease-in-out infinite; /* Animación sutil */
+}
+
+/* Bloque de neón 2 (Abajo a la derecha) */
+.contenedor-login::after {
+    content: '';
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(249,212,35,0.2) 0%, rgba(249,212,35,0) 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    bottom: 10%;
+    right: 10%;
+    z-index: -1;
+    animation: flotarNeon 12s ease-in-out infinite reverse; /* Animación diferente */
+}
+
+/* Animación para que los neones parezcan flotar */
+@keyframes flotarNeon {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+    50% { transform: translate(30px, -20px) scale(1.05); opacity: 1; }
+}
+
+/* =========================================================
+   TARJETA DE LOGIN
+   ========================================================= */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Hemos añadido un tinte amarillo suave a la sombra para integrarla */
+    box-shadow: 0 10px 40px rgba(255, 204, 0, 0.15); 
+    position: relative; /* Asegura que la tarjeta esté sobre los neones */
+    z-index: 2; /* Mayor que el z-index de los neones */
+}
+
+/* Reciclamos tu clase tarjeta-acordeon */
+.tarjeta-acordeon {
+    background-color: #1a1a1a; /* Un tono más oscuro para que resalte contra el neón de fondo */
+    border: 3px solid #FFCC00;
+    border-radius: 35px;
+    padding: 40px 30px;
+    /* Añadimos un sutil resplandor exterior a la tarjeta */
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+/* --- TAMAÑO DEL LOGO ACTUALIZADO AQUÍ --- */
+.login-logo {
+    width: 200px; /* ¡Cambiado de 130px a 200px para que se vea mucho más grande! */
+    margin-bottom: 20px; /* Un poco más de margen para que respire */
+    height: auto;
+}
+
+.login-card h2 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-align: center;
+    /* Un toque de brillo neón al texto del título */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+/* =========================================================
+   FORMULARIO Y CAJAS DE TEXTO
+   ========================================================= */
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Separación automática entre los elementos del form */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Separación entre el label y el input */
+}
+
+.input-group label {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/* Estilo de los inputs (Usuario y Contraseña) */
+.input-group input {
+    background-color: #222; /* Mismo fondo que el interior de tus proyectos */
+    border: 2px solid #555;
+    border-radius: 15px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease; /* Transición para todo (borde y sombra) */
+}
+
+/* Efecto cuando haces clic para escribir */
+.input-group input:focus {
+    border-color: #FFCC00;
+    /* Añadimos un pequeño resplandor neón al input enfocado */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+/* =========================================================
+   OPCIONES EXTRA (Recordarme y Olvido de contraseña)
+   ========================================================= */
+.opciones-extra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-top: -5px; /* Lo sube un poquito para que quede más compacto */
+}
+
+/* Checkbox personalizado básico */
+.opciones-extra label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.opciones-extra input[type="checkbox"] {
+    accent-color: #FFCC00; /* Pone el tick en amarillo en navegadores modernos */
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.link-olvido {
+    color: #FFCC00;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.link-olvido:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* =========================================================
+   BOTÓN Y REGISTRO
+   ========================================================= */
+/* Estilo de tu botón reciclado y ajustado al form */
+.boton-ver {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 2px solid #000;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+    margin-top: 10px;
+    /* Sombra para que el botón también tenga "peso" */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.boton-ver:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+    /* Resplandor amarillo al pasar el ratón por el botón */
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+}
+
+.registro-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.registro-link p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.registro-link a {
+    color: #FFCC00;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.registro-link a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* =========================================================
+   ESTILOS PARA EL OJO DE LA CONTRASEÑA
+   ========================================================= */
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 45px; /* Importante: deja hueco para que el texto no pise el ojo */
+}
+
+/* --- COLOR BLANCO DEL OJO AÑADIDO AQUÍ --- */
+#togglePassword,
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #f0f0f0; /* Color gris claro/blanco para que se vea sobre fondo negro */
+    font-size: 1.1rem;
+    z-index: 10;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+#togglePassword:hover,
+.toggle-password:hover {
+    color: #FFCC00; /* Efecto neón al pasar el ratón */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}

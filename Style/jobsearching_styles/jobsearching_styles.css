@@ -1,0 +1,84 @@
+.contenedor-principal-ofertas {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px;
+}
+
+.tarjeta-oferta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #333;
+    border: 3px solid #FFCC00;
+    border-radius: 25px;
+    padding: 20px;
+    flex-wrap: wrap; /* útil para pantallas pequeñas */
+}
+
+.logo-empresa img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.info-oferta {
+    flex: 1;
+}
+
+.nombre-empresa {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.titulo-puesto {
+    color: #FFD700;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.descripcion-puesto {
+    color: #ccc;
+    font-size: 0.95rem;
+}
+
+.acciones-oferta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.estado-oferta {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.estado-oferta.activo {
+    color: #4CAF50;
+}
+
+.estado-oferta.inactivo {
+    color: #f44336;
+}
+
+.boton-postular {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 2px solid #000;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.boton-postular:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

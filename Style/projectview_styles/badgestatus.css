@@ -1,0 +1,21 @@
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.badge.validado {
+    background-color: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+    border: 1px solid #00ff88;
+}
+
+.badge.no-validado {
+    background-color: rgba(255, 0, 0, 0.15);
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+}

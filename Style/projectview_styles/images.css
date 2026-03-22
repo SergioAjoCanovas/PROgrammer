@@ -1,0 +1,19 @@
+.galeria-proyecto {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.img-proyecto {
+    width: 100%;
+    height: 150px;
+    object-fit: cover; /* 🔥 clave */
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.img-proyecto:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}

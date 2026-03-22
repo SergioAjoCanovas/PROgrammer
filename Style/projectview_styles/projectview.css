@@ -1,0 +1,93 @@
+.tarjeta-proyecto-detalle {
+    background-color: #333;
+    border: 3px solid #FFCC00;
+    border-radius: 35px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cabecera */
+.cabecera-proyecto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categoria {
+    background-color: #FFCC00;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Info superior */
+.info-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.estado-proyecto {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.validado {
+    color: #00ff88;
+    font-size: 1.5rem;
+}
+
+.no-validado {
+    color: red;
+    font-size: 1.5rem;
+}
+
+/* Botón descargar */
+.boton-descargar {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 2px solid #000;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Descripción */
+.descripcion-proyecto p {
+    color: #ccc;
+}
+
+/* Repo */
+.repo a {
+    color: #FFCC00;
+    text-decoration: none;
+}
+
+.boton-descargar {
+    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
+    border: 2px solid #000;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+    text-transform: uppercase;
+}
+
+.contenedor-principal {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    flex-wrap: nowrap; /* 🔥 IMPORTANTE */
+}
+
+.seccion-derecha-dinamica {
+    flex: 1;
+    min-width: 0; /* 🔥 MUY IMPORTANTE en flex */
+}

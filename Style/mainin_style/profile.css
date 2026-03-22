@@ -21,6 +21,7 @@
     padding: 0;
     overflow: visible;
     margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
 }
 
 .perfil-superior {
@@ -43,6 +44,7 @@
     background-color: #ADD8E6; 
     border-radius: 50%;
     border: 3px solid #FFCC00;
+    box-shadow: 0 0 10px #FFCC00, 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
 .icono-corazon {
@@ -104,6 +106,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
 }
 
 .boton-anadir {
@@ -115,4 +118,28 @@
     cursor: pointer;
     margin-top: 15px;
     align-self: center; 
+}
+
+.boton-curriculum {
+    background-color: #FFCC00; 
+    color: #1a1a1a;
+    border: 2px solid #1a1a1a; 
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.boton-curriculum:hover {
+    filter: brightness(1.1); 
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
+}
+
+.boton-curriculum:active {
+    transform: scale(1.02); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }

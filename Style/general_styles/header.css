@@ -29,7 +29,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 25px;
-    border-bottom: 3px solid #FFCC00; 
+    border-bottom: 3px solid #FFCC00;
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.5);
 }
 
 .seccion-izquierda {
@@ -109,6 +110,8 @@ body {
 .boton-ajustes:hover {
     color: #FFCC00;
 }
+
+
 
 
 

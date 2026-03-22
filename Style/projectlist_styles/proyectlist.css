@@ -8,6 +8,7 @@
     border: 3px solid #FFCC00;
     border-radius: 35px;
     padding: 25px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
 }
 
 .tarjeta-acordeon h2 {
@@ -36,17 +37,83 @@
 }
 
 .boton-ver {
-    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
-    border: 2px solid #000;
-    padding: 8px 15px;
-    border-radius: 10px;
+    background-color: #FFCC00;
+    color: #1a1a1a;
+    border: 2px solid #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 12px;
     font-weight: bold;
-    font-size: 0.8rem;
     cursor: pointer;
-    transition: 0.2s;
     text-transform: uppercase;
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 div p{
     color: grey;
+}
+
+.cabecera-acordeon h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    width: 100%;
+    color: white;
+    padding-right: 15px; 
+}
+
+.boton-volver-curvo {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem; 
+    transition: color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.boton-volver-curvo:hover {
+    color: #FFCC00;
+    transform: rotate(-15deg); 
+}
+
+#acordeon-proyectos .ui-accordion-header .ui-icon {
+    display: none !important; 
+}
+
+.boton-ver:hover {
+    transform: scale(1.05); 
+    filter: brightness(1.1); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.boton-ver:active {
+    transform: scale(1.02);
+}
+
+#acordeon-proyectos .ui-accordion-header {
+    background-color: #4f4f4f;
+    border: 1px solid #FFCC00;
+    color: white;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-shadow: inset 0 0 5px rgba(255, 204, 0, 0.3), 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+#acordeon-proyectos .ui-accordion-header:hover {
+    box-shadow: 0 0 15px #FFCC00, 0 0 10px #FFCC00;
+    cursor: pointer;
+}
+
+#acordeon-proyectos .ui-accordion-content {
+    background-color: #222;
+    color: #fff;
+    border: 2px solid #FFCC00;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.5);
+}
+
+#acordeon-proyectos .ui-accordion-header-active {
+    background-color: #444;
+    box-shadow: 0 0 15px #FFCC00, inset 0 0 8px rgba(255, 204, 0, 0.5);
 }

@@ -3,6 +3,8 @@
     border-top: 3px solid #FFCC00;
     padding: 20px 25px;
     margin-top: 40px;
+    border-top: 3px solid #FFCC00;
+    box-shadow: 0 -4px 12px rgba(255, 204, 0, 0.7);
 }
 
 .footer-contenido {
@@ -42,6 +44,7 @@
 
 .footer-redes a:hover {
     color: #FFCC00;
+    text-shadow: 0 0 8px #FFCC00;
 }
 
 

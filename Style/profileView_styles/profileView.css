@@ -1,0 +1,238 @@
+body.fondo-oscuro-neon {
+    background-color: #000000 !important;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.contenedor-principal {
+    display: flex;
+    max-width: 1800px; /* ¡Expansión al máximo! */
+    width: 98%; /* Ocupará casi toda la pantalla a lo ancho */
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 40px; 
+    align-items: flex-start;
+}
+
+.columna-perfil {
+    flex: 0 0 380px; /* Ancho fijo y amplio para la izquierda */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.columna-derecha {
+    flex: 1; /* Toma todo el ancho sobrante (que ahora es muchísimo) */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%; /* Se asegura de estirarse del todo */
+}
+
+.tarjeta-perfil, 
+.tarjeta-resenas-izq, 
+.tarjeta-proyectos-contenedor, 
+.tarjeta-inferior {
+    background-color: #333333 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
+    overflow: hidden;
+    color: white;
+}
+
+.tarjeta-resenas-izq,
+.tarjeta-proyectos-contenedor,
+.tarjeta-inferior {
+    padding: 30px; /* Padding cómodo pero sin forzar altura extra */
+}
+
+.perfil-superior, 
+.cabecera-proyectos, 
+.cabecera-inferior,
+.tarjeta-resenas-izq h3 {
+    border-bottom: 2px solid #aaaaaa !important;
+    padding-bottom: 15px;
+    margin-bottom: 20px; 
+}
+
+.perfil-superior {
+    padding: 30px 20px 20px 20px;
+    text-align: center;
+}
+
+.cabecera-proyectos h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecera-inferior h3,
+.tarjeta-resenas-izq h3 {
+    margin: 0;
+    font-size: 1.5rem; 
+}
+
+.foto-perfil-contenedor {
+    position: relative;
+    width: 140px; 
+    height: 140px;
+    margin: 0 auto 20px auto;
+}
+
+.circulo-foto {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #222;
+    border: 3px solid #FFCC00;
+}
+
+.icono-corazon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #333;
+    color: #FFCC00;
+    width: 38px; 
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFCC00;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icono-corazon:hover {
+    transform: scale(1.1);
+}
+
+.nombre-usuario {
+    font-size: 1.6rem;
+    margin: 0;
+    color: #FFFFFF;
+}
+
+.perfil-inferior {
+    padding: 30px; 
+}
+
+.redes-sociales {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.redes-sociales li {
+    padding: 10px 0;
+    color: #ccc;
+    font-size: 1.05rem;
+}
+
+.tarjeta-resenas-izq p {
+    color: #888;
+    background-color: #222;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #555;
+    margin: 0 0 20px 0;
+    font-style: italic;
+}
+
+.boton-curriculum,
+.boton-anadir,
+.boton-ver {
+    width: 100%;
+    padding: 14px; 
+    background-color: #FFCC00 !important;
+    color: #111 !important;
+    border: none !important;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.boton-curriculum:hover,
+.boton-anadir:hover,
+.boton-ver:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5) !important;
+}
+
+.enlace-grid-proyectos {
+    color: #FFCC00;
+    text-decoration: none;
+    font-size: 1.6rem;
+}
+
+.rejilla-proyectos {
+    display: flex;
+    gap: 25px; 
+    flex-wrap: wrap;
+}
+
+.tarjeta-mini-proyecto {
+    background-color: #333333 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 15px;
+    padding: 25px; 
+    /* Al hacer la página más ancha, las tarjetas también lo serán */
+    width: calc(33.333% - 25px);
+    min-width: 260px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+}
+
+.tarjeta-mini-proyecto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+}
+
+.tarjeta-mini-proyecto h3 {
+    margin: 0 0 15px 0;
+    color: #FFFFFF;
+    font-size: 1.35rem;
+}
+
+.tarjeta-mini-proyecto p {
+    margin: 0 0 25px 0;
+    color: #ccc;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+/* =========================================================
+   RESEÑAS Y SOBRE MÍ (Misma línea, máximo ancho)
+   ========================================================= */
+.contenedor-inferior-derecha {
+    display: flex;
+    flex-direction: row; /* Fuerza a que estén en la misma línea */
+    gap: 40px; 
+    margin-top: 10px;
+    width: 100%; /* Ocupa todo el ancho de la columna derecha */
+}
+
+.tarjeta-inferior {
+    flex: 1; /* Se reparten el espacio disponible exactamente al 50% */
+}
+
+.contenido-inferior p {
+    margin: 0;
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}

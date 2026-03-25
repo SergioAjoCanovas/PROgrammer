@@ -1,0 +1,79 @@
+/* Contenedor principal centrado */
+.contenedor-selector {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+    padding: 20px;
+}
+
+.contenido-central {
+    text-align: center;
+}
+
+/* Título estilo neón */
+.titulo-selector {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 50px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+/* Contenedor de botones en fila */
+.contenedor-botones-gigantes {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Estilo de los botones (basado en el efecto que te gustó) */
+.btn-seleccion-neon {
+    text-decoration: none;
+    background: transparent;
+    border: 3px solid #FFCC00;
+    color: #FFCC00;
+    padding: 30px 60px;
+    border-radius: 50px; /* Redondeado total estilo píldora */
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    min-width: 280px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+}
+
+.btn-seleccion-neon i {
+    font-size: 2.5rem;
+}
+
+/* Efecto HOVER igual al original */
+.btn-seleccion-neon:hover {
+    background: #FFCC00;
+    color: #000;
+    box-shadow: 0 0 30px #FFCC00;
+    transform: scale(1.1); /* Se hace un poco más grande */
+}
+
+/* Efecto al pulsar */
+.btn-seleccion-neon:active {
+    transform: scale(0.95);
+}
+
+/* Responsive para móviles */
+@media (max-width: 600px) {
+    .titulo-selector {
+        font-size: 2rem;
+    }
+    .btn-seleccion-neon {
+        min-width: 200px;
+        padding: 20px 40px;
+    }
+}

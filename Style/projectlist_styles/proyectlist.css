@@ -59,21 +59,31 @@ div p{
     justify-content: space-between; 
     width: 100%;
     color: white;
-    padding-right: 15px; 
+    margin-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .boton-volver-curvo {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem; 
-    transition: color 0.2s, transform 0.2s;
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background-color: #333;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+    border-radius: 50%; 
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.6), inset 0 0 5px rgba(255, 204, 0, 0.4);
 }
 
 .boton-volver-curvo:hover {
-    color: #FFCC00;
-    transform: rotate(-15deg); 
+    background-color: #FFCC00;
+    color: #1a1a1a;
+    box-shadow: 0 0 20px #FFCC00;
+    transform: scale(1.1) rotate(-15deg); 
 }
 
 #acordeon-proyectos .ui-accordion-header .ui-icon {

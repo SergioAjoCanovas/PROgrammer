@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Postular</title>
+
+    <link rel="stylesheet" href="../../Style/general_styles/header.css">
+    <link rel="stylesheet" href="../../Style/general_styles/footer.css">
+    <link rel="stylesheet" href="../../Style/jobview_styles/jobview.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="encabezado-principal">
+    <div class="seccion-izquierda">
+        <div class="contenedor-logotipo">
+            <img src="../../Img/fondogris2.png" class="imagen-logotipo">
+        </div>
+        <div class="contenedor-buscador">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar...">
+        </div>
+    </div>
+
+    <nav class="navegacion-central">
+        <a href="#"><i class="fas fa-home"></i></a>
+        <a href="#"><i class="fas fa-users"></i></a>
+        <a href="#"><i class="fas fa-briefcase"></i></a>
+        <a href="#"><i class="fas fa-comment"></i></a>
+        <a href="#"><i class="fas fa-bell"></i></a>
+        <a href="#"><i class="fas fa-th"></i></a>
+    </nav>
+
+    <div class="seccion-derecha">
+        <div class="avatar-usuario">
+            <i class="fas fa-user"></i>
+        </div>
+        <button class="boton-ajustes">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="contenedor-principal">
+
+    <section class="seccion-derecha-dinamica">
+
+        <div class="contenedor-postulacion">
+
+            <!-- TARJETA IZQUIERDA -->
+            <div class="tarjeta-proyecto-detalle tarjeta-oferta">
+
+                <div class="cabecera-proyecto">
+                    <h2>Frontend Developer</h2>
+                    <span class="categoria">Frontend</span>
+                </div>
+
+                <div class="info-superior">
+                    <img src="../../Img/stock/empresa1.png" class="logo-empresa" alt="Logo Empresa Alpha">
+                    <p><strong>Empresa:</strong> Empresa Alpha</p>
+                </div>
+
+                <div class="descripcion-proyecto">
+                    <h3><i class="fas fa-info-circle"></i> Descripción del puesto</h3>
+                    <p>
+                        Buscamos desarrollador frontend con experiencia en React, diseño UI y buenas prácticas...
+                    </p>
+                </div>
+
+                <div class="descripcion-proyecto">
+                    <h3><i class="fas fa-list-check"></i> Requisitos</h3>
+                    <ul>
+                        <li>Experiencia mínima 2 años en React</li>
+                        <li>Conocimiento de HTML, CSS y buenas prácticas UI/UX</li>
+                        <li>Trabajo en equipo y comunicación efectiva</li>
+                    </ul>
+                </div>
+
+                <div class="descripcion-proyecto">
+                    <h3><i class="fas fa-gift"></i> Ofrecemos</h3>
+                    <ul>
+                        <li>Jornada completa y flexibilidad horaria</li>
+                        <li>Seguro médico privado</li>
+                        <li>Formación continua y oportunidades de crecimiento</li>
+                    </ul>
+                </div>
+
+                <div class="descripcion-proyecto">
+                    <h3><i class="fas fa-euro-sign"></i> Rango salarial</h3>
+                    <p>25.000€ – 35.000€ anuales</p>
+                </div>
+
+            </div>
+
+            <!-- TARJETA DERECHA -->
+            <div class="tarjeta-proyecto-detalle tarjeta-formulario">
+
+                <div class="cabecera-proyecto">
+                    <h2>Tu candidatura</h2>
+                </div>
+
+                <div class="bloque-postulacion">
+
+                    <div class="campo">
+                        <label>Subir CV</label>
+                        <input type="file">
+                    </div>
+
+                    <div class="campo">
+                        <label>Selecciona un proyecto</label>
+
+                        <div class="lista-proyectos">
+                            <div class="tarjeta-mini-proyecto seleccionable">
+                                <h4>Proyecto 1</h4>
+                            </div>
+                            <div class="tarjeta-mini-proyecto seleccionable">
+                                <h4>Proyecto 2</h4>
+                            </div>
+                            <div class="tarjeta-mini-proyecto seleccionable">
+                                <h4>Proyecto 3</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label>Mensaje</label>
+                        <textarea placeholder="Cuéntales por qué eres buen candidato..."></textarea>
+                    </div>
+
+                    <div class="contenedor-boton-final">
+                        <button class="boton-postular-final">
+                            <i class="fas fa-paper-plane"></i> Postular
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer-principal">
+    <div class="footer-contenido">
+        <div class="footer-seccion">
+            <img src="../../Img/logo_sin_silla_de_ruedas-removebg-preview.png" class="footer-logo">
+            <div class="footer-texto">
+                <p>2026 ProGrammer</p>
+                <p>Sergio Ajo, Cristian Escobar, David Alcázar</p>
+            </div>
+        </div>
+
+        <div class="footer-seccion footer-links">
+            <a href="#">Sobre nosotros</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+            <a href="#">Contacto</a>
+        </div>
+
+        <div class="footer-seccion footer-redes">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const proyectos = document.querySelectorAll(".seleccionable");
+
+    proyectos.forEach(p => {
+        p.addEventListener("click", () => {
+            proyectos.forEach(x => x.classList.remove("seleccionado"));
+            p.classList.add("seleccionado");
+        });
+    });
+</script>
+
+</body>
+</html>

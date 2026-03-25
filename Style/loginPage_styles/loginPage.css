@@ -265,3 +265,80 @@ body {
     color: #FFCC00; /* Efecto neón al pasar el ratón */
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
 }
+
+
+/* =========================================================
+   FOOTER UNIFICADO (IDÉNTICO AL RESTO DEL SITIO)
+   ========================================================= */
+.footer-principal {
+    background-color: #4f4f4f;
+    border-top: 3px solid #FFCC00; /* La línea de neón */
+    padding: 20px 25px;
+    margin-top: 40px;
+    /* Resplandor neón hacia arriba */
+    box-shadow: 0 -4px 12px rgba(255, 204, 0, 0.7); 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1200px; /* Opcional: para que no se estire infinito en pantallas gigantes */
+    margin: 0 auto;
+}
+
+.footer-seccion {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-logo {
+    max-height: 40px;
+}
+
+.footer-texto {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.footer-texto p:first-of-type {
+    font-weight: bold;
+    color: #FFCC00;
+    margin: 0;
+}
+
+.footer-texto p:last-of-type {
+    font-size: 0.85rem;
+    color: #ccc;
+    margin: 0;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-right: 15px;
+    transition: 0.2s;
+}
+
+.footer-links a:hover {
+    color: #FFCC00;
+}
+
+.footer-redes a {
+    color: white;
+    font-size: 1.4rem;
+    transition: 0.2s;
+    margin-left: 10px;
+}
+
+.footer-redes a:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 8px #FFCC00;
+}

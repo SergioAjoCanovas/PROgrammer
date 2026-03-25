@@ -1,0 +1,150 @@
+/* Configuración base del contenedor */
+.contenedor-busqueda {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+    min-height: calc(100vh - 160px);
+}
+
+/* TÍTULOS NEÓN */
+.titulo-neon {
+    color: white;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.titulo-neon .resaltado {
+    color: #FFCC00;
+    text-shadow: 0 0 15px #FFCC00;
+}
+
+/* BUSCADOR CENTRAL */
+.caja-busqueda-neon {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    background: #222;
+    border: 2px solid #FFCC00;
+    border-radius: 50px;
+    padding: 5px 10px;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 80px;
+}
+
+.caja-busqueda-neon input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 15px 25px;
+    color: white;
+    font-size: 1.1rem;
+    outline: none;
+}
+
+.btn-buscar-neon {
+    background: #FFCC00;
+    border: none;
+    padding: 0 30px;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 5px;
+}
+
+.btn-buscar-neon:hover {
+    box-shadow: 0 0 20px #FFCC00;
+    transform: scale(1.05);
+}
+
+/* CARRUSEL DE PERFILES */
+.seccion-carrusel {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.subtitulo-neon {
+    color: white;
+    border-left: 5px solid #FFCC00;
+    padding-left: 15px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 5px #FFCC00;
+}
+
+.carrusel-contenedor {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    overflow-x: auto;
+    padding: 20px 0;
+}
+
+.tarjeta-perfil-neon {
+    background: #1a1a1a;
+    border: 2px solid #444;
+    border-radius: 20px;
+    padding: 30px;
+    width: 250px;
+    text-align: center;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+
+/* La tarjeta "enfocada" o activa */
+.tarjeta-perfil-neon:hover, .tarjeta-perfil-neon.activo {
+    border-color: #FFCC00;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
+    transform: translateY(-10px);
+}
+
+.foto-perfil-dummy {
+    width: 80px;
+    height: 80px;
+    background: #333;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    border: 2px solid #FFCC00;
+}
+
+.tarjeta-perfil-neon h3 {
+    color: white;
+    margin-bottom: 5px;
+}
+
+.tarjeta-perfil-neon p {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.tags span {
+    display: inline-block;
+    background: rgba(255, 204, 0, 0.1);
+    color: #FFCC00;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    margin: 2px;
+    border: 1px solid #FFCC00;
+}
+
+.btn-perfil {
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid #FFCC00;
+    color: #FFCC00;
+    padding: 8px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-perfil:hover {
+    background: #FFCC00;
+    color: black;
+}

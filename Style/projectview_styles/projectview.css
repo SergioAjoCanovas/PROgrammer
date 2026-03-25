@@ -11,8 +11,12 @@
 /* Cabecera */
 .cabecera-proyecto {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Empuja el H2 a la izquierda y la flecha a la derecha */
+    align-items: center; /* Los centra verticalmente entre sí */
+    width: 100%;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: white;
 }
 
 .categoria {
@@ -90,4 +94,29 @@
 .seccion-derecha-dinamica {
     flex: 1;
     min-width: 0; /* 🔥 MUY IMPORTANTE en flex */
+}
+
+/* Estilo del botón (mantenemos el círculo neón) */
+.boton-volver-curvo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    /* Efecto Neón */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.6), 
+                inset 0 0 5px rgba(255, 204, 0, 0.4);
+}
+
+.boton-volver-curvo:hover {
+    background-color: #FFCC00;
+    color: #1a1a1a;
+    box-shadow: 0 0 20px #FFCC00;
+    transform: scale(1.1) rotate(-15deg);
 }

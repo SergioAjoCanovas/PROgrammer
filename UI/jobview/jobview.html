@@ -14,14 +14,12 @@
 
     <div id="header-placeholder"></div>
 
-<!-- MAIN -->
 <main class="contenedor-principal">
 
     <section class="seccion-derecha-dinamica">
 
         <div class="contenedor-postulacion">
 
-            <!-- TARJETA IZQUIERDA -->
             <div class="tarjeta-proyecto-detalle tarjeta-oferta">
 
                 <div class="cabecera-proyecto">
@@ -66,18 +64,20 @@
 
             </div>
 
-            <!-- TARJETA DERECHA -->
             <div class="tarjeta-proyecto-detalle tarjeta-formulario">
 
                 <div class="cabecera-proyecto">
                     <h2>Tu candidatura</h2>
+                    <a href="../jobsearching/jobsearching.html" class="boton-volver-curvo" title="Volver">
+                        <i class="fas fa-undo"></i>
+                    </a>
                 </div>
 
                 <div class="bloque-postulacion">
 
                     <div class="campo">
                         <label>Subir CV</label>
-                        <input type="file">
+                        <input type="file" class="input-file-custom">
                     </div>
 
                     <div class="campo">
@@ -130,9 +130,7 @@
     });
 </script>
 
-<!-- JS para cargar header y footer -->
 <script>
-    // Ajusta las rutas según la ubicación del HTML
     const headerPath = "../../includes/header.html";
     const footerPath = "../../includes/footer.html";
 

@@ -236,3 +236,37 @@ body.fondo-oscuro-neon {
     line-height: 1.6;
     font-size: 1.1rem;
 }
+
+/* =========================================================
+   FIX: BLINDAJE PARA LA TARJETA DE RESEÑAS
+   (Esto arregla el fallo del margen sin romper el resto de tus estilos)
+   ========================================================= */
+.tarjeta-resenas-izq {
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+}
+
+.tarjeta-resenas-izq h3 {
+    margin: 0 0 20px 0 !important;
+    font-size: 1.5rem !important;
+    border-bottom: 2px solid #aaaaaa !important; 
+    padding-bottom: 15px !important;
+    color: #FFFFFF !important;
+}
+
+.tarjeta-resenas-izq p {
+    color: #888 !important;
+    background-color: #222 !important;
+    padding: 15px !important;
+    border-radius: 10px !important;
+    border: 1px solid #555 !important;
+    margin: 0 0 20px 0 !important;
+    font-style: italic !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.tarjeta-resenas-izq .boton-anadir {
+    margin-top: auto !important;
+}

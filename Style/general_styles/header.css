@@ -1,4 +1,4 @@
-
+/* --- ESTILOS GENERALES --- */
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@ body {
     color: white;
 }
 
-
+/* --- LOGOTIPO --- */
 .contenedor-logotipo {
     display: flex;
     align-items: center;
@@ -23,73 +23,61 @@ body {
     display: block;
 }
 
+/* --- ENCABEZADO PRINCIPAL --- */
 .encabezado-principal {
     background-color: #4f4f4f; 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 25px;
+    padding: 10px 40px; 
     border-bottom: 3px solid #FFCC00;
-    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
 }
 
 .seccion-izquierda {
     display: flex;
     align-items: center;
     gap: 20px;
+    flex: 1; 
 }
 
-.logotipo {
-    font-weight: bold;
-    font-size: 1.4rem;
-    color: #FFCC00;
-}
-
-.contenedor-buscador {
-    background-color: white;
-    border-radius: 4px;
-    padding: 4px 12px;
-    display: flex;
-    align-items: center;
-}
-
-.contenedor-buscador input {
-    border: none;
-    outline: none;
-    padding: 5px;
-    width: 180px;
-    color: #4f4f4f;
-}
-
-.contenedor-buscador i {
-    color: #999;
-}
-
+/* --- NAVEGACIÓN CENTRAL (SÚPER ESPACIADA) --- */
 .navegacion-central {
     display: flex;
-    gap: 30px;
+    gap: 70px; 
+    justify-content: center;
+    flex: 2; 
 }
 
 .navegacion-central a {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.8rem; 
     text-decoration: none;
-    transition: 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    display: inline-block;
 }
 
+/* ANIMACIÓN DE ILUMINACIÓN NEÓN AL HOVER */
 .navegacion-central a:hover {
     color: #FFCC00;
+    transform: scale(1.3); 
+    text-shadow: 0 0 10px #FFCC00, 
+                 0 0 20px #FFCC00, 
+                 0 0 40px rgba(255, 204, 0, 0.6);
 }
 
+/* --- SECCIÓN DERECHA --- */
 .seccion-derecha {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px; 
+    justify-content: flex-end;
+    flex: 1;
 }
 
 .avatar-usuario {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     background-color: #DDD;
     border-radius: 50%;
     display: flex;
@@ -97,75 +85,76 @@ body {
     align-items: center;
     color: #4f4f4f;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.avatar-usuario:hover {
+    box-shadow: 0 0 20px #FFCC00;
+    transform: scale(1.1);
 }
 
 .boton-ajustes {
     background: none;
     border: none;
     color: white;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .boton-ajustes:hover {
     color: #FFCC00;
+    transform: rotate(90deg) scale(1.1);
+    text-shadow: 0 0 15px #FFCC00;
 }
-
-
-
-
 
 /* --- RESPONSIVE / ADAPTACIÓN A PANTALLAS --- */
 
-/* TABLETS (Pantallas menores a 900px) */
-@media (max-width: 900px) {
-    .contenedor-buscador input {
-        width: 120px; /* Acortamos el buscador */
-    }
-    
+/* TABLETS (Pantallas menores a 1100px para este espaciado) */
+@media (max-width: 1100px) {
     .navegacion-central {
-        gap: 15px; /* Menos espacio entre iconos */
+        gap: 40px; 
+    }
+}
+
+@media (max-width: 900px) {
+    .navegacion-central {
+        gap: 25px;
+    }
+    .seccion-izquierda, .seccion-derecha {
+        gap: 15px;
     }
 }
 
 /* MÓVILES (Pantallas menores a 600px) */
 @media (max-width: 600px) {
     .encabezado-principal {
-        padding: 10px 10px;
-        flex-wrap: wrap; /* Permite que los elementos bajen de línea si no caben */
+        padding: 10px 15px;
     }
 
-    /* Ocultamos el buscador en móviles para ganar espacio o lo hacemos mini */
-    .contenedor-buscador input {
-        display: none; 
-    }
-    
-    .contenedor-buscador {
-        padding: 8px;
-    }
-
-    /* Hacemos los iconos de navegación un poco más pequeños */
     .navegacion-central {
-        gap: 12px;
+        gap: 15px;
     }
 
     .navegacion-central a {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
     .imagen-logotipo {
-        max-height: 20px; /* Aún más pequeño en móvil */
+        max-height: 40px;
     }
 }
 
 /* PANTALLAS MUY PEQUEÑAS (Menos de 400px) */
 @media (max-width: 400px) {
     .navegacion-central {
-        order: 3; /* Mandamos los iconos abajo */
+        order: 3;
         width: 100%;
-        justify-content: center;
-        margin-top: 10px;
-        border-top: 1px solid #444;
-        padding-top: 10px;
+        justify-content: space-around; 
+        margin-top: 15px;
+        border-top: 1px solid #666;
+        padding-top: 15px;
+        gap: 10px;
     }
 }

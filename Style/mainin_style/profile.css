@@ -1,145 +1,122 @@
+/* =========================================================
+   profile.css (Estilo unificado y amplio)
+   ========================================================= */
+
+body.fondo-oscuro-neon {
+    background-color: #000000 !important;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
 .contenedor-principal {
     display: flex;
-    padding: 20px;
-    gap: 20px;
-    flex-wrap: wrap; 
+    max-width: 1800px;
+    width: 98%;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 60px; /* Amplitud entre izquierda y derecha */
+    align-items: flex-start;
 }
 
 .columna-perfil {
-    flex: 1;
-    min-width: 250px;
-    max-width: 320px;
+    flex: 0 0 380px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px; /* Tarjetas más juntas */
 }
 
 .tarjeta-perfil {
-    background-color: #333;
-    border: 3px solid #FFCC00;
-    border-radius: 35px;
+    background-color: #333333 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
+    color: white;
     padding: 0;
-    overflow: visible;
-    margin-bottom: 20px;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+    display: flex;
+    flex-direction: column;
 }
 
 .perfil-superior {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 3px solid #FFCC00;
-    gap: 15px;
+    padding: 30px 20px 20px 20px !important;
+    text-align: center;
+    border-bottom: 2px solid #aaaaaa !important; /* Línea separadora gris */
+    margin-bottom: 20px !important;
 }
 
+/* Foto de 90px que no se deforma */
 .foto-perfil-contenedor {
     position: relative;
-    width: 120px;
-    height: 80px;
+    width: 90px !important; 
+    height: 90px !important; 
+    min-width: 90px !important; 
+    min-height: 90px !important; 
+    flex-shrink: 0 !important; 
+    margin: 0 auto 15px auto;
 }
 
 .circulo-foto {
     width: 100%;
     height: 100%;
-    background-color: #ADD8E6; 
-    border-radius: 50%;
-    border: 3px solid #FFCC00;
-    box-shadow: 0 0 10px #FFCC00, 0 0 20px rgba(255, 204, 0, 0.6);
+    border-radius: 50% !important; 
+    background-color: #222;
+    border: 3px solid #FFCC00 !important;
 }
 
 .icono-corazon {
     position: absolute;
-    bottom: -5px;
-    right: -5px;
-    background-color: #ff4d6d;
-    color: white;
-    width: 30px;
-    height: 30px;
+    bottom: -2px; 
+    right: -2px;  
+    background-color: #333;
+    color: #FFCC00;
+    width: 28px; 
+    height: 28px;
     border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    justify-content: center;
+    border: 2px solid #FFCC00;
+    cursor: pointer;
+    font-size: 0.8rem;
 }
 
 .nombre-usuario {
-    font-size: 1.1rem;
-    text-align: left;
-    margin: 0;
-    line-height: 1.2;
-    color: white;
+    font-size: 1.5rem; 
+    margin: 5px 0 0 0; 
+    color: #FFFFFF;
 }
 
 .perfil-inferior {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 0 30px 30px 30px !important;
 }
 
 .redes-sociales {
     list-style: none;
-    margin-bottom: 25px;
-    margin-left: 10px;
-    color: white;
+    padding: 0;
+    margin: 0 0 25px 0;
 }
 
 .redes-sociales li {
-    margin-bottom: 8px;
+    padding: 10px 0;
+    color: #ccc;
+    font-size: 1.05rem;
 }
 
 .boton-curriculum {
-    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
-    border: 2px solid #000;
-    padding: 10px 20px;
-    border-radius: 12px;
+    width: 100%;
+    padding: 14px !important;
+    background: #FFCC00 !important;
+    color: #111 !important;
+    border: none !important;
+    border-radius: 10px !important;
     font-weight: bold;
-    cursor: pointer;
-    align-self: center;
-}
-
-.tarjeta-resenas-izq {
-    background-color: #333;
-    border: 3px solid #FFCC00;
-    border-radius: 25px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
-}
-
-.boton-anadir {
-    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
-    border: 1px solid #000;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
-    align-self: center; 
-}
-
-.boton-curriculum {
-    background-color: #FFCC00; 
-    color: #1a1a1a;
-    border: 2px solid #1a1a1a; 
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: bold;
+    font-size: 1rem;
     cursor: pointer;
     text-transform: uppercase;
-    transition: all 0.2s ease; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .boton-curriculum:hover {
-    filter: brightness(1.1); 
-    transform: scale(1.05); 
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); 
-}
-
-.boton-curriculum:active {
-    transform: scale(1.02); 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5) !important;
 }

@@ -1,0 +1,176 @@
+/* CONTENEDOR GENERAL */
+.contenedor-principal {
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+}
+
+/* ZONA DERECHA (CENTRO + LISTA) */
+.zona-reseñas {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+}
+
+/* TARJETAS */
+.tarjeta-acordeon {
+    background-color: #333;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+    color: white;
+}
+
+/* CREAR RESEÑA */
+.tarjeta-crear-reseña {
+    flex: 1;
+    max-width: 400px;
+}
+
+/* LISTA */
+.tarjeta-lista-reseñas {
+    flex: 1;
+}
+
+/* CAMPOS */
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    gap: 5px;
+}
+
+/* TEXTAREA */
+textarea {
+    background-color: #222;
+    border: 2px solid #FFCC00;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    height: 120px;
+    resize: none;
+}
+
+/* ESTRELLAS */
+.estrellas i {
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.estrellas i.activa {
+    color: #FFCC00;
+}
+
+.estrellas i:hover {
+    transform: scale(1.2);
+}
+
+/* LISTA RESEÑAS */
+.contenedor-reseñas {
+    max-height: 350px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}
+
+/* SCROLL BONITO */
+.contenedor-reseñas::-webkit-scrollbar {
+    width: 6px;
+}
+
+.contenedor-reseñas::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+}
+
+.contenedor-reseñas::-webkit-scrollbar-track {
+    background: #222;
+}
+
+/* RESEÑA */
+.reseña {
+    background-color: #222;
+    border: 1px solid #FFCC00;
+    border-radius: 15px;
+    padding: 15px;
+    transition: 0.2s;
+}
+
+.reseña:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+/* HEADER RESEÑA */
+.reseña-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* PERFIL IZQUIERDA */
+.columna-perfil {
+    width: 250px;
+}
+
+.circulo-foto {
+    width: 80px;
+    height: 80px;
+    background-color: #555;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .contenedor-principal {
+        flex-direction: column;
+    }
+
+    .zona-reseñas {
+        flex-direction: column;
+    }
+
+    .tarjeta-crear-reseña {
+        max-width: 100%;
+    }
+}
+
+/* POSICIONAMIENTO Y RETOQUES EXTRA */
+.contenedor-principal .boton-ver {
+    margin-top: 15px;
+}
+
+.contenedor-boton-final {
+    margin-top: 20px;
+}
+
+.contenedor-reseñas {
+    margin-top: 15px;
+    flex: 1;
+}
+
+.tarjeta-lista-reseñas h2 {
+    margin-bottom: 10px;
+}
+
+.tarjeta-lista-reseñas {
+    display: flex;
+    flex-direction: column;
+}
+
+/*LISTA DE RESEÑAS INFINITA*/
+.contenedor-reseñas {
+    max-height: 400px;  /* 👈 clave */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}

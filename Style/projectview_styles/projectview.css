@@ -87,6 +87,36 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Otros botones*/
+.boton-nuevareview,
+.boton-verreviews {
+    background-color: #FFCC00 !important;
+    color: #111 !important;
+    border: none !important;
+    padding: 12px 25px;
+    border-radius: 10px !important;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.boton-nuevareview i,
+.boton-verreviews i {
+    font-size: 1rem;
+}
+
+/* Hover efecto */
+.boton-nuevareview:hover,
+.boton-verreviews:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
 .boton-descargar:hover {
     transform: scale(1.02);
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.5) !important;

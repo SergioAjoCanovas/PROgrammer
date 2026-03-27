@@ -1,206 +1,193 @@
 /* =========================================================
-   ESTILOS ESPECÍFICOS PARA EL PANEL PERSONAL (DASHBOARD)
-   Cajas grises, bordes neón y separadores claros
+   ownProfile.css - DASHBOARD FINAL (BOTONES ESTILO "CREAR AHORA")
    ========================================================= */
 
-/* 1. Fondo general de la página (Oscuro puro) */
+/* 1. Layout Base y Footer al fondo */
 body.fondo-oscuro-neon {
-    background-color: #000000 !important; /* Sobrescribe el fondo del login */
-    background-image: none !important; /* Por si tenías el GIF puesto */
+    background-color: #000000 !important;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* =========================================================
-   2. CONTENEDORES PRINCIPALES (El gris de tu foto + Borde amarillo)
-   ========================================================= */
-.contenedor-principal .tarjeta-acordeon {
-    background-color: #333333 !important; /* Fondo gris de la imagen */
-    border: 2px solid #FFCC00 !important; /* Borde amarillo */
-    border-radius: 20px !important; 
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important; /* Resplandor amarillo */
-    padding: 25px;
-    margin-bottom: 20px;
+.contenedor-principal {
+    display: flex;
+    max-width: 1550px;
+    width: 95%;
+    margin: 30px auto;
+    gap: 30px; 
+    align-items: flex-start;
+    flex: 1; /* Empuja el footer hacia abajo */
+}
+
+.columna-perfil { flex: 0 0 320px; display: flex; flex-direction: column; gap: 20px; }
+.columna-derecha { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+/* 2. Tarjetas Estilo General */
+.tarjeta-acordeon {
+    background-color: #333333 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    padding: 25px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6) !important;
     color: white;
 }
 
-/* =========================================================
-   3. SEPARADORES (Línea gris/blanca bajo los títulos)
-   ========================================================= */
-.perfil-superior, 
-.cabecera-proyectos, 
-.cabecera-inferior,
-.tarjeta-resenas-izq h3 {
-    border-bottom: 2px solid #aaaaaa !important; /* Línea separadora clara */
+/* 3. Cabeceras */
+.cabecera-tarjeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #555 !important;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
 
-/* =========================================================
-   4. BOTONES PRINCIPALES (Sólidos amarillos, letras negras)
-   ========================================================= */
-.contenedor-principal .boton-ver {
-    background: #FFCC00 !important; /* Amarillo sólido, sin el degradado del login */
-    color: #111 !important;
-    border: none !important;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 0.95rem;
+.cabecera-tarjeta h2, .cabecera-tarjeta h3 {
+    font-size: 1.3rem !important;
     text-transform: uppercase;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+    font-weight: 800;
+    margin: 0;
 }
 
-.contenedor-principal .boton-ver:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8) !important;
-}
-
-/* =========================================================
-   5. TARJETAS DE PROYECTOS INTERIORES
-   ========================================================= */
-.rejilla-proyectos {
+/* 4. PERFIL IZQUIERDO (Nombre debajo de la foto) */
+.perfil-superior {
     display: flex;
+    flex-direction: column;
+    align-items: center; 
     gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 15px;
+    border-bottom: 2px solid #555 !important;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.circulo-foto {
+    width: 90px;
+    height: 90px;
+    border: 3px solid #FFCC00;
+    border-radius: 50% !important;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    background: #222;
+    transition: transform 0.3s ease;
+}
+
+.circulo-foto:hover { transform: scale(1.05); }
+
+.nombre-usuario {
+    font-size: 1.2rem !important;
+    text-transform: uppercase;
+    font-weight: 800;
+    text-align: center;
+    color: #FFCC00;
+}
+
+.redes-sociales { list-style: none; padding: 0; margin-bottom: 20px; }
+.redes-sociales li {
+    padding: 10px 0;
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* 5. SECCIÓN DE PROYECTOS (Levitación) */
+.rejilla-proyectos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 .tarjeta-mini-proyecto {
-    background-color: #333333; /* Mismo gris que el contenedor padre */
-    border: 2px solid #FFCC00; /* Borde amarillo */
+    background-color: #2a2a2a !important;
+    border: 2px solid #444;
     border-radius: 15px;
     padding: 20px;
-    width: calc(33.333% - 15px);
-    min-width: 200px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2); 
+    justify-content: space-between;
+    min-height: 210px;
 }
 
 .tarjeta-mini-proyecto:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+    border-color: #FFCC00;
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(255, 204, 0, 0.2) !important;
 }
 
-.tarjeta-mini-proyecto h3 {
-    color: white;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-}
-
-.tarjeta-mini-proyecto p {
-    color: #ccc;
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
-
-/* --- TARJETA AÑADIR PROYECTO (Con borde punteado) --- */
-.tarjeta-anadir-proyecto {
+.tarjeta-anadir { 
     border: 2px dashed #FFCC00 !important; 
-    background-color: transparent !important;
-    box-shadow: none !important;
+    background: transparent !important; 
+}
+.tarjeta-anadir i { font-size: 2.5rem; color: #FFCC00; margin-bottom: 10px; }
+
+/* 6. BOTONES (ESTILO "CREAR AHORA" - ANCHOS CON MARGEN) */
+.boton-amarillo-solido {
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    border: none !important;
+    padding: 14px !important; /* Más alto para que sea como el de la foto */
+    border-radius: 15px !important; /* Más redondeado estilo "píldora" */
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    
+    /* 🔥 Ocupa el ancho disponible respetando el padding de la tarjeta */
+    width: 100% !important; 
+    margin-top: 10px !important;
+
+    transition: 0.3s ease;
 }
 
-.tarjeta-anadir-proyecto:hover {
-    background-color: rgba(255, 204, 0, 0.05) !important;
+.boton-amarillo-solido:hover {
+    box-shadow: 0 0 25px #FFCC00 !important;
+    filter: brightness(1.1);
+    transform: scale(1.02);
 }
 
-.icono-gigante-anadir {
-    font-size: 3rem;
-    color: #FFCC00;
-    margin-bottom: 15px;
-}
-
-/* Botones secundarios ("Editar" / "Ver") */
-.acciones-proyecto {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-}
-
-.boton-secundario {
+/* Botones pequeños de proyectos (Editar/Ver) */
+.btn-mini {
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    border: none !important;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
     flex: 1;
-    background-color: transparent;
-    border: 1px solid #FFCC00;
-    color: #FFCC00;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.85rem;
 }
 
-.boton-secundario:hover {
-    background-color: #FFCC00;
-    color: black;
+.btn-mini:hover {
+    box-shadow: 0 0 15px #FFCC00 !important;
+    filter: brightness(1.1);
 }
 
-/* =========================================================
-   6. ICONOS, ETIQUETAS Y LISTAS
-   ========================================================= */
-.icono-editar-texto {
-    color: #888;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-left: 10px;
-    transition: color 0.3s;
-}
+.acciones-proyecto { display: flex; gap: 10px; margin-top: 15px; }
 
-.icono-editar-texto:hover {
-    color: #FFCC00;
-}
-
-.foto-perfil-contenedor {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.icono-editar-foto {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background-color: #FFCC00;
-    color: black;
-    padding: 8px;
-    border-radius: 50%;
-    font-size: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
-}
-
+/* 7. TECNOLOGÍAS (CUADRADITOS NEÓN) */
 .tags-tecnologias {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 15px;
-}
-
-.tag-tech {
-    background-color: #222;
-    border: 1px solid #FFCC00;
-    color: #FFF;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-}
-
-.perfil-inferior .redes-sociales {
-    list-style: none;
-    padding: 0;
     margin-bottom: 20px;
 }
 
-.perfil-inferior .redes-sociales li {
-    margin-bottom: 10px;
-    color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
+.tag-tech {
+    background-color: #2a2a2a !important;
+    border: 2px solid #FFCC00 !important;
+    color: #FFCC00 !important;
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+/* 8. SECCIÓN INFERIOR */
+.fila-inferior {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }

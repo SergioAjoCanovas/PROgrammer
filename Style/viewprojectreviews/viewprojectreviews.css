@@ -1,0 +1,138 @@
+/* General contenedor */
+.contenedor-principal {
+    display: flex;
+    gap: 20px;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+}
+
+/* IZQUIERDA */
+.columna-perfil {
+    flex: 0 0 250px;
+}
+
+/* CENTRO */
+.seccion-derecha-dinamica {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.tarjeta-proyecto-detalle {
+    background-color: #333;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+}
+
+/* DERECHA */
+.zona-derecha {
+    flex: 0 0 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.tarjeta-reseñas-ver {
+    background-color: #333;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.tarjeta-reseñas-ver h2 {
+    margin-bottom: 10px;
+}
+
+/* Medias en tarjeta derecha */
+.medias-reseñas-ver {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.media-stat, .media-total {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.estrellas-media i {
+    color: #FFCC00;
+    font-size: 1.2rem;
+}
+
+/* Contenedor de reseñas */
+.contenedor-reseñas {
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}
+
+/* Cada reseña */
+.reseña {
+    background-color: #222;
+    border: 1px solid #FFCC00;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.reseña-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.stats-reseña {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.reseña p {
+    margin: 0;
+    color: #fff;
+}
+
+/* Scroll estilizado */
+.contenedor-reseñas::-webkit-scrollbar {
+    width: 8px;
+}
+.contenedor-reseñas::-webkit-scrollbar-thumb {
+    background-color: #FFCC00;
+    border-radius: 10px;
+}
+.contenedor-reseñas::-webkit-scrollbar-track {
+    background-color: #333;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .contenedor-principal {
+        flex-direction: column;
+        padding: 20px 10px;
+    }
+
+    .columna-perfil,
+    .zona-derecha,
+    .seccion-derecha-dinamica {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .tarjeta-proyecto-detalle,
+    .tarjeta-reseñas-ver {
+        max-width: 100%;
+    }
+}

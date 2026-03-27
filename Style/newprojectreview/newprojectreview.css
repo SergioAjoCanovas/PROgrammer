@@ -1,0 +1,111 @@
+/* CONTENEDOR PRINCIPAL */
+.contenedor-principal {
+    display: flex;
+    gap: 20px;
+    padding: 40px 20px;
+    flex-wrap: wrap; /* permite que los elementos bajen en pantallas pequeñas */
+}
+
+/* IZQUIERDA */
+.columna-perfil {
+    flex: 0 0 250px; /* ancho fijo del perfil */
+}
+
+/* CENTRO */
+.seccion-derecha-dinamica {
+    flex: 1; /* ocupa todo el espacio disponible entre izquierda y derecha */
+    display: flex;
+    justify-content: center;
+}
+
+/* TARJETA DEL PROYECTO */
+.tarjeta-proyecto-detalle {
+    background-color: #333;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;       /* ocupa todo el ancho de su contenedor */
+    max-width: 900px;  /* límite superior para no estirarse demasiado */
+    box-sizing: border-box;
+}
+
+/* DERECHA */
+.zona-derecha {
+    flex: 0 0 400px; /* ancho fijo del formulario */
+    display: flex;
+    justify-content: center;
+}
+
+/* TARJETA DEL FORMULARIO */
+.tarjeta-formulario {
+    background-color: #333;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+/* CAMPOS */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/* TEXTAREA */
+textarea {
+    background-color: #222;
+    border: 2px solid #FFCC00;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    resize: none;
+    height: 120px;
+}
+
+/* ESTRELLAS */
+.estrellas {
+    display: flex;
+    gap: 5px;
+}
+
+.estrellas i {
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+}
+
+.estrellas i.activa {
+    color: #FFCC00;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .contenedor-principal {
+        flex-direction: column;
+        padding: 20px 10px;
+    }
+
+    .columna-perfil,
+    .zona-derecha {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .seccion-derecha-dinamica {
+        flex: 1 1 100%;
+        margin-bottom: 20px;
+    }
+
+    .tarjeta-proyecto-detalle {
+        max-width: 100%;
+    }
+
+    .tarjeta-formulario {
+        max-width: 100%;
+    }
+}

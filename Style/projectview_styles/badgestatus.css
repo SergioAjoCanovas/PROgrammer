@@ -9,13 +9,13 @@
 }
 
 .badge.validado {
-    background-color: rgba(0, 255, 136, 0.15);
-    color: #00ff88;
-    border: 1px solid #00ff88;
+    background-color: rgba(0, 255, 136, 0.15) !important;
+    color: #00ff88 !important;
+    border: 1px solid #00ff88 !important;
 }
 
 .badge.no-validado {
-    background-color: rgba(255, 0, 0, 0.15);
-    color: #ff4d4d;
-    border: 1px solid #ff4d4d;
+    background-color: rgba(255, 0, 0, 0.15) !important;
+    color: #ff4d4d !important;
+    border: 1px solid #ff4d4d !important;
 }

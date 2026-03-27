@@ -12,35 +12,7 @@
 <body>
 
     <!-- Cabecera -->
-    <header class="encabezado-principal">
-        <div class="seccion-izquierda">
-            <div class="contenedor-logotipo">
-                <img src="../../Img/fondogris2.png" alt="Logotipo ProGrammer" class="imagen-logotipo">            
-            </div>
-            <div class="contenedor-buscador">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar...">
-            </div>
-        </div>
-
-        <nav class="navegacion-central">
-            <a href="#"><i class="fas fa-home"></i></a>
-            <a href="#"><i class="fas fa-users"></i></a>
-            <a href="#"><i class="fas fa-briefcase"></i></a>
-            <a href="#"><i class="fas fa-comment"></i></a>
-            <a href="#"><i class="fas fa-bell"></i></a>
-            <a href="#"><i class="fas fa-th"></i></a>
-        </nav>
-
-        <div class="seccion-derecha">
-            <div class="avatar-usuario">
-                <i class="fas fa-user"></i>
-            </div>
-            <button class="boton-ajustes">
-                <i class="fas fa-cog"></i>
-            </button>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
     <!-- Contenedor principal -->
     <main class="contenedor-principal-ofertas">
@@ -59,10 +31,10 @@
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
-                <button class="boton-postular">Postular</button>
+                <button class="boton-postular" onclick="window.location.href='/UI/jobview/jobview.html'">Postular</button>
             </div>
         </div>
-
+    
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
                 <img src="../../Img/stock/empresa2.png" alt="Logo Empresa 2">
@@ -79,7 +51,7 @@
                 <button class="boton-postular" disabled>Postular</button>
             </div>
         </div>
-
+    
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
                 <img src="../../Img/stock/empresa3.png" alt="Logo Empresa 3">
@@ -96,7 +68,7 @@
                 <button class="boton-postular" disabled>Postular</button>
             </div>
         </div>
-
+    
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
                 <img src="../../Img/stock/empresa4.png" alt="Logo Empresa 4">
@@ -110,35 +82,28 @@
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
-                <button class="boton-postular">Postular</button>
+                <button class="boton-postular" onclick="window.location.href='/UI/jobview/jobview.html'">Postular</button>
             </div>
         </div>
-
+    
     </main>
-
     <!-- Footer -->
-    <footer class="footer-principal">
-        <div class="footer-contenido">
-            <div class="footer-seccion">
-                <img src="../../Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotipo" class="footer-logo">
-                <div class="footer-texto">
-                    <p>2026 ProGrammer</p>
-                    <p>Sergio Ajo, Cristian Escobar, David Alcázar</p>
-                </div>
-            </div>
-            <div class="footer-seccion footer-links">
-                <a href="#">Sobre nosotros</a>
-                <a href="#">Privacidad</a>
-                <a href="#">Términos</a>
-                <a href="#">Contacto</a>
-            </div>
-            <div class="footer-seccion footer-redes">
-                <a href="#"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
+
+    <!-- JS para cargar header y footer -->
+<script>
+    // Ajusta las rutas según la ubicación del HTML
+    const headerPath = "../../includes/header.html";
+    const footerPath = "../../includes/footer.html";
+
+    fetch(headerPath)
+        .then(res => res.text())
+        .then(html => document.getElementById("header-placeholder").innerHTML = html);
+
+    fetch(footerPath)
+        .then(res => res.text())
+        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+</script>
 
 </body>
 </html>

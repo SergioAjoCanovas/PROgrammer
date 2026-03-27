@@ -68,32 +68,7 @@
         </div>
     </main>
 
-    <footer class="footer-principal">
-        <div class="footer-contenido">
-            
-            <div class="footer-seccion">
-                <img src="../../Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotipo" class="footer-logo">
-                <div class="footer-texto">
-                <p>2026 ProGrammer</p>
-                <p>Sergio Ajo, Cristian Escobar, David Alcázar</p>
-                </div>
-            </div>
-    
-            <div class="footer-seccion footer-links">
-                <a href="#">Sobre nosotros</a>
-                <a href="#">Privacidad</a>
-                <a href="#">Términos</a>
-                <a href="#">Contacto</a>
-            </div>
-    
-            <div class="footer-seccion footer-redes">
-                <a href="#"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-    
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script>
         const togglePasswords = document.querySelectorAll('.toggle-password');
@@ -111,5 +86,21 @@
             });
         });
     </script>
+
+    <!-- JS para cargar header y footer -->
+<script>
+    // Ajusta las rutas según la ubicación del HTML
+    const headerPath = "../../includes/header.html";
+    const footerPath = "../../includes/footer.html";
+
+    fetch(headerPath)
+        .then(res => res.text())
+        .then(html => document.getElementById("header-placeholder").innerHTML = html);
+
+    fetch(footerPath)
+        .then(res => res.text())
+        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+</script>
+
 </body>
 </html>

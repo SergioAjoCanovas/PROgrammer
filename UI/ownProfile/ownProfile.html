@@ -6,133 +6,107 @@
     <title>Mi Panel - PROgrammer</title>
     <link rel="stylesheet" href="../../Style/general_styles/header.css">
     <link rel="stylesheet" href="../../Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../Style/ownProfile_styles/ownProfile.css">
-    <link rel="stylesheet" href="../../Style/mainin_style/proyect.css">
-    <link rel="stylesheet" href="../../Style/mainin_style/review.css">
     <link rel="stylesheet" href="../../Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../Style/loginPage_styles/loginPage.css">
+    <link rel="stylesheet" href="../../Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon"> 
     <div id="header-placeholder"></div>
 
-
     <main class="contenedor-principal">
         
         <aside class="columna-perfil">
-            
-            <div class="tarjeta-perfil tarjeta-acordeon">
+            <div class="tarjeta-acordeon profile-main-card">
                 <div class="perfil-superior">
-                    <div class="foto-perfil-contenedor">
-                        <div class="circulo-foto">
-                            <i class="fas fa-camera icono-editar-foto"></i>
-                        </div>
+                    <div class="circulo-foto">
+                        <i class="fas fa-camera icono-camera"></i>
                     </div>
-                    <h2 class="nombre-usuario">Mi Usuario <i class="fas fa-edit icono-editar-texto"></i></h2>
+                    <h2 class="nombre-usuario">MI USUARIO <i class="fas fa-edit icono-editar-texto"></i></h2>
                 </div>
-
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
-                        <li>- Insta <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
-                        <li>- GitHub <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
-                        <li>- LinkedIn <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
+                        <li><span>Instagram</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
+                        <li><span>GitHub</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
+                        <li><span>LinkedIn</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
                     </ul>
-                    <button class="boton-ver">ACTUALIZAR CURRÍCULUM</button>
+                    <button class="boton-amarillo-solido">ACTUALIZAR CURRÍCULUM</button>
                 </div>
             </div>
 
-            <div class="tarjeta-resenas-izq tarjeta-acordeon" style="margin-top: 20px;">
-                <h3>MIS TECNOLOGÍAS <i class="fas fa-laptop-code"></i></h3>
+            <div class="tarjeta-acordeon">
+                <div class="cabecera-tarjeta">
+                    <h3>MIS TECNOLOGÍAS</h3>
+                    <i class="fas fa-laptop-code"></i>
+                </div>
                 <div class="tags-tecnologias">
                     <span class="tag-tech">Java</span>
                     <span class="tag-tech">Spring Boot</span>
                     <span class="tag-tech">MySQL</span>
                 </div>
-                <button class="boton-ver" style="margin-top: 15px; width: 100%;">Añadir Tecnología</button>
+                <button class="boton-amarillo-solido">AÑADIR TECNOLOGÍA</button>
             </div>
         </aside>
 
         <div class="columna-derecha">
             
-            <section class="seccion-proyectos">
-                <div class="tarjeta-proyectos-contenedor tarjeta-acordeon">
-                    <div class="cabecera-proyectos" style="display: flex; justify-content: space-between; align-items: center;">
-                        <h2 style="color: white;">MIS PROYECTOS</h2>
-                        <a href="../UI/projectlist/projectlist.html" class="enlace-grid-proyectos" title="Ver todos mis proyectos">
-                            <i class="fas fa-th" style="color: #FFCC00; font-size: 1.5rem;"></i>
-                        </a>
+            <section class="tarjeta-acordeon card-proyectos-principal">
+                <div class="cabecera-tarjeta">
+                    <h2>MIS PROYECTOS</h2>
+                    <i class="fas fa-th icono-grid-top"></i>
+                </div>
+                
+                <div class="rejilla-proyectos">
+                    <div class="tarjeta-mini-proyecto tarjeta-anadir">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Nuevo Proyecto</h3>
+                        <p>Sube tu código y muéstralo al mundo.</p>
+                        <button class="boton-amarillo-solido">CREAR AHORA</button>
                     </div>
-                    
-                    <div class="rejilla-proyectos" style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
-                        
-                        <div class="tarjeta-mini-proyecto tarjeta-anadir-proyecto">
-                            <i class="fas fa-plus-circle icono-gigante-anadir"></i>
-                            <h3>Nuevo Proyecto</h3>
-                            <p>Sube tu código y muéstralo al mundo.</p>
-                            <button class="boton-ver">CREAR AHORA</button>
-                        </div>
 
-                        <div class="tarjeta-mini-proyecto proyecto-existente">
-                            <h3>Gestor de Tareas</h3>
-                            <p>App con React y Node.js</p>
-                            <div class="acciones-proyecto">
-                                <button class="boton-secundario"><i class="fas fa-edit"></i> Editar</button>
-                                <button class="boton-secundario"><i class="fas fa-eye"></i> Ver</button>
-                            </div>
+                    <div class="tarjeta-mini-proyecto">
+                        <h3>Gestor de Tareas</h3>
+                        <p>App con React y Node.js</p>
+                        <div class="acciones-proyecto">
+                            <button class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
                         </div>
+                    </div>
 
-                        <div class="tarjeta-mini-proyecto proyecto-existente">
-                            <h3>API REST Ventas</h3>
-                            <p>Backend en Spring Boot</p>
-                            <div class="acciones-proyecto">
-                                <button class="boton-secundario"><i class="fas fa-edit"></i> Editar</button>
-                                <button class="boton-secundario"><i class="fas fa-eye"></i> Ver</button>
-                            </div>
+                    <div class="tarjeta-mini-proyecto">
+                        <h3>API REST Ventas</h3>
+                        <p>Backend en Spring Boot</p>
+                        <div class="acciones-proyecto">
+                            <button class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <div class="contenedor-inferior-derecha" style="display: flex; gap: 20px; margin-top: 20px;">
-                
-                <div class="tarjeta-inferior tarjeta-acordeon" style="flex: 1;">
-                    <div class="cabecera-inferior" style="display: flex; justify-content: space-between;">
-                        <h3 style="color: white;">SOBRE MÍ</h3>
+            <div class="fila-inferior">
+                <div class="tarjeta-acordeon info-half-card">
+                    <div class="cabecera-tarjeta">
+                        <h3>SOBRE MÍ</h3>
                         <i class="fas fa-edit icono-editar-texto"></i>
                     </div>
-                    <div class="contenido-inferior">
-                        <p style="color: #ccc;">Desarrollador Full Stack apasionado por el código limpio y la arquitectura de software. En busca de mi primera oportunidad laboral.</p>
-                    </div>
+                    <p>Desarrollador Full Stack apasionado por el código limpio y la arquitectura de software.</p>
                 </div>
 
-                <div class="tarjeta-inferior tarjeta-acordeon" style="flex: 1;">
-                    <div class="cabecera-inferior">
-                        <h3 style="color: white;">RESEÑAS RECIBIDAS</h3>
+                <div class="tarjeta-acordeon info-half-card">
+                    <div class="cabecera-tarjeta">
+                        <h3>RESEÑAS RECIBIDAS</h3>
                     </div>
-                    <div class="contenido-inferior">
-                        <p style="color: #ccc;">Aún nadie ha valorado tus proyectos. ¡Sigue programando!</p>
-                    </div>
+                    <p>Aún nadie ha valorado tus proyectos. ¡Sigue programando!</p>
                 </div>
-
             </div>
         </div> 
     </main>
 
     <div id="footer-placeholder"></div>
 
-    <!-- JS para cargar header y footer -->
     <script>
-    // Ajusta las rutas según la ubicación del HTML
-    const headerPath = "../../includes/header.html";
-    const footerPath = "../../includes/footer.html";
-
-    fetch(headerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("header-placeholder").innerHTML = html);
-
-    fetch(footerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
     </script>
 </body>
 </html>

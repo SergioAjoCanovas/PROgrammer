@@ -1,25 +1,15 @@
-
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-}
-
-.contenedor-principal {
-    flex: 1; 
-}
-
+/* =========================================================
+   FOOTER DEFINITIVO Y UNIFICADO
+   ========================================================= */
 .footer-principal {
-    background-color: #4f4f4f;
-    border-top: 3px solid #FFCC00;
-    padding: 20px 25px;
-    box-shadow: 0 -4px 12px rgba(255, 204, 0, 0.7);
-    width: 100%; 
+    background-color: #4f4f4f !important; 
+    border-top: 2px solid #FFCC00; 
+    padding: 30px 25px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 -5px 20px rgba(255, 204, 0, 0.2);
 }
 
 .footer-contenido {
@@ -28,8 +18,11 @@ body {
     align-items: center;
     gap: 30px;
     flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+/* Alineación de la izquierda (Logo y nombres) */
 .footer-seccion {
     display: flex;
     align-items: center;
@@ -37,49 +30,66 @@ body {
 }
 
 .footer-logo {
-    max-height: 40px;
+    max-height: 50px; 
+    width: auto;
 }
 
+.footer-texto p {
+    margin: 0 !important; 
+    line-height: 1.4;
+}
+
+.footer-texto p:first-of-type {
+    font-weight: bold;
+    color: #ffffff; 
+}
+
+.footer-texto p:last-of-type {
+    font-size: 0.85rem;
+    color: #ffffff; 
+}
+
+/* Enlaces centrales */
 .footer-links a {
-    color: white;
+    color: #eee !important;
     text-decoration: none;
     font-size: 0.9rem;
-    transition: 0.2s;
+    margin: 0 10px;
+    transition: 0.3s;
 }
 
 .footer-links a:hover {
-    color: #FFCC00;
+    color: #FFCC00 !important;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
+/* Iconos redes sociales */
 .footer-redes a {
-    color: white;
-    font-size: 1.4rem;
-    transition: 0.2s;
+    color: #eee !important; 
+    font-size: 1.5rem;
+    margin-left: 15px;
+    transition: 0.3s;
+    display: inline-block;
 }
 
+/* HOVER REDES SOCIALES (RESTABLECIDO AL ESTILO NEÓN) */
 .footer-redes a:hover {
-    color: #FFCC00;
-    text-shadow: 0 0 8px #FFCC00;
+    color: #FFCC00 !important; 
+    text-shadow: 0 0 15px #FFCC00; 
+    transform: translateY(-3px); 
+    filter: brightness(1.2);
 }
 
-
-.footer-seccion p:first-of-type {
-    font-weight: bold;
-    color: #FFCC00;
-}
-
-.footer-seccion p:last-of-type {
-    font-size: 0.85rem;
-    color: #ccc;
-}
-
-.footer-texto {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2; /* compacta altura */
-}
-
-.footer-texto p:last-child {
-    font-size: 0.8rem;
-    color: #ccc;
+/* AJUSTE PARA MÓVILES */
+@media (max-width: 768px) {
+    .footer-contenido {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-seccion {
+        flex-direction: column;
+    }
+    .footer-redes {
+        margin-top: 10px;
+    }
 }

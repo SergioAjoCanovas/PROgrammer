@@ -1,9 +1,118 @@
-.boton-curriculum, .boton-anadir, .boton-ver {
-    border: 3px solid #FFCC00;
-    box-shadow: 0 0 5px #FFCC00;
+/* =========================================================
+   ESTILO GLOBAL: ATMÓSFERA NEÓN AMARILLA (SIN CUADRÍCULA)
+   ========================================================= */
+
+body.fondo-oscuro-neon {
+    background-color: #000000 !important;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    z-index: 0;
+    
+    /* Solo mantenemos la animación de parpadeo inicial al entrar */
+    animation: encendidoNeon 1.5s ease-out !important;
 }
 
-/* Al pasar el ratón, el neón brilla más fuerte */
+/* Transparencia total de contenedores para no tapar el fondo */
+.contenedor-principal, .contenedor-selector, main, section {
+    background: transparent !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* =========================================================
+   LAS 5 BOLAS (Amarillo con Super-Difusión)
+   ========================================================= */
+
+body.fondo-oscuro-neon::before,
+body.fondo-oscuro-neon::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    z-index: -1 !important;
+    pointer-events: none;
+}
+
+/* 🟢 CAPA ALTA: 3 Bolas Grandes (Efecto Nube Suave) 🟢 */
+body.fondo-oscuro-neon::before {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, rgba(255, 204, 0, 0.05) 50%, rgba(0, 0, 0, 0) 80%);
+    filter: blur(90px); /* Desenfoque extremo */
+    top: -15%;
+    left: -15%;
+
+    box-shadow: 
+        1100px 400px 200px rgba(255, 204, 0, 0.1), 
+        500px 900px 220px rgba(255, 204, 0, 0.08),
+        200px 400px 1px rgba(255, 204, 0, 0.2),
+        800px 100px 1px rgba(255, 204, 0, 0.2) !important;
+
+    animation: viajeGranDiagonal 50s linear infinite !important;
+}
+
+/* 🟡 CAPA BAJA: 2 Bolas pequeñas (Contraste Controlado) 🟡 */
+body.fondo-oscuro-neon::after {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.25) 0%, rgba(255, 204, 0, 0.1) 50%, rgba(0, 0, 0, 0) 80%);
+    filter: blur(45px);
+    top: 35%;
+    right: -250px;
+
+    box-shadow: 
+        -1000px 400px 100px rgba(255, 204, 0, 0.2),
+        -400px -200px 1px rgba(255, 204, 0, 0.2) !important;
+
+    animation: viajeLateral 35s ease-in-out infinite alternate !important;
+}
+
+/* =========================================================
+   ANIMACIONES (Suavizadas)
+   ========================================================= */
+
+/* Efecto de encendido de neón al cargar la página */
+@keyframes encendidoNeon {
+    0% { opacity: 0; filter: brightness(3); }
+    10% { opacity: 0.8; }
+    20% { opacity: 1; filter: brightness(1.5); }
+    30% { opacity: 1; filter: brightness(1); }
+}
+
+@keyframes viajeGranDiagonal {
+    0% { transform: translate(-5vw, -5vh) rotate(0deg); }
+    50% { transform: translate(105vw, 105vh) rotate(180deg); }
+    100% { transform: translate(-5vw, -5vh) rotate(360deg); }
+}
+
+@keyframes viajeLateral {
+    0% { transform: translateX(0) scale(1); opacity: 0.4; }
+    50% { transform: translateX(-120vw) scale(1.1); opacity: 0.7; }
+    100% { transform: translateX(10vw) scale(1); opacity: 0.4; }
+}
+
+/* =========================================================
+   BOTONES NEÓN (Amarillo #FFCC00)
+   ========================================================= */
+.boton-curriculum, .boton-anadir, .boton-ver {
+    background-color: #1a1a1a !important;
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
 .boton-curriculum:hover, .boton-anadir:hover, .boton-ver:hover {
-    box-shadow: 0 0 15px #FFCC00, 0 0 25px #FFCC00;
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    box-shadow: 0 0 30px #FFCC00 !important;
+    transform: translateY(-5px) scale(1.05);
 }

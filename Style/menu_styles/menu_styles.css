@@ -1,0 +1,145 @@
+/* --- ESTILOS GENERALES (Matches TFG Style) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #000; 
+    color: white;
+    /* Optional subtly dark background pattern or gradient for depth on full pages */
+    background-image: linear-gradient(135deg, #000 0%, #111 100%);
+    min-height: 100vh;
+}
+
+/* --- MAIN CONTAINER (Ensures footer is at bottom) --- */
+.contenedor-principal-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically on full pages */
+    padding: 60px 20px;
+    min-height: calc(100vh - 180px); /* Assumes header/footer combined height ~180px */
+}
+
+/* --- TARJETA PRINCIPAL DEL MENÚ (REUSING CARD STYLE FOUNDATION) --- */
+.tarjeta-menu-completo {
+    background-color: #1a1a1a;
+    width: 95%;
+    max-width: 1000px;
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 40px rgba(255, 204, 0, 0.1); /* Very subtle yellow glow for standalone pages */
+}
+
+/* Header style standard with matching yellow border */
+.cabecera-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #FFCC00;
+    padding-bottom: 15px;
+}
+
+.cabecera-menu h2 {
+    color: #FFCC00;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+.introduccion-menu {
+    color: #ccc;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* --- GRID LAYOUT --- */
+.grid-menu-completo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for desktop */
+    gap: 25px;
+}
+
+/* --- ITEM CARD STYLE (Dev Drawer style foundation specialized) --- */
+.item-menu-card {
+    background-color: #222;
+    border: 1px solid #444;
+    padding: 30px 20px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elástico style matching header nav hovers */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- HOVER EFFECT (CRUCIAL TFG NEON STYLE) --- */
+.item-menu-card:hover {
+    border-color: #FFCC00;
+    background-color: #2a2a2a;
+    transform: translateY(-8px) scale(1.03);
+    /* Neon Glow effect seen in login/buttons */
+    box-shadow: 0 5px 25px rgba(255, 204, 0, 0.4); 
+}
+
+.item-menu-card i {
+    font-size: 3.5rem; /* Large icons Drawer style */
+    color: white; /* Base icon color */
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Glow icon and text slightly on hover */
+.item-menu-card:hover i {
+    color: #FFCC00;
+    text-shadow: 0 0 15px #FFCC00;
+}
+
+.item-menu-card:hover h3 {
+    color: #FFCC00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+}
+
+.item-menu-card h3 {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.item-menu-card p {
+    color: #aaa;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 900px) {
+    .grid-menu-completo {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+    }
+    .tarjeta-menu-completo {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 500px) {
+    .grid-menu-completo {
+        grid-template-columns: repeat(1, 1fr); /* 1 column for mobile */
+    }
+    .cabecera-menu h2 {
+        font-size: 1.3rem;
+    }
+    .introduccion-menu {
+        font-size: 1rem;
+    }
+}

@@ -1,210 +1,187 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProGrammer - Reseñas de Proyecto</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Reseñas de Proyecto</title>
 
-<link rel="stylesheet" href="../../Style/general_styles/header.css">
-<link rel="stylesheet" href="../../Style/general_styles/footer.css">
-<link rel="stylesheet" href="../../Style/viewprojectreviews/viewprojectreviews.css">
-<link rel="stylesheet" href="../../Style/general_styles/general_styles.css">  
-<link rel="stylesheet" href="../../Style/profileView_styles/profileView.css">
-<link rel="stylesheet" href="../../Style/projectview_styles/projectview.css">
-<link rel="stylesheet" href="../../Style/projectview_styles/images.css">
-<link rel="stylesheet" href="../../Style/projectview_styles/images-modals.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../Style/general_styles/header.css">
+    <link rel="stylesheet" href="../../Style/general_styles/footer.css">
+    <link rel="stylesheet" href="../../Style/viewprojectreviews/viewprojectreviews.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
 
-<div id="header-placeholder"></div>
+    <div id="header-placeholder"></div>
 
-<main class="contenedor-principal">
+    <main class="contenedor-principal">
 
-    <!-- IZQUIERDA -->
-    <aside class="columna-perfil">
-        <div class="tarjeta-perfil">
-            <div class="perfil-superior">
-                <div class="foto-perfil-contenedor">
-                    <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        <aside class="columna-perfil">
+            <div class="tarjeta-perfil">
+                <div class="cabecera-tarjeta">
+                    <div class="foto-perfil-contenedor">
+                        <div class="circulo-foto"></div>
+                        <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                    </div>
+                    <h2 class="nombre-usuario">Nombre del Autor</h2>
                 </div>
-                <h2 class="nombre-usuario">Nombre del usuario del proyecto</h2>
-            </div>
 
-            <div class="perfil-inferior">
-                <ul class="redes-sociales">
-                    <li>- Insta</li>
-                    <li>- Twiter</li>
-                    <li>- Tel</li>
-                </ul>
-                <button class="boton-curriculum">CURRICULUM</button>
+                <div class="cuerpo-tarjeta">
+                    <ul class="redes-sociales">
+                        <li><i class="fab fa-instagram"></i> Instagram</li>
+                        <li><i class="fab fa-twitter"></i> Twitter</li>
+                        <li><i class="fas fa-phone"></i> Teléfono</li>
+                    </ul>
+                    <button class="boton-curriculum">CURRICULUM</button>
+                </div>
             </div>
+        </aside>
+
+        <section class="seccion-central">
+            <div class="tarjeta-proyecto-detalle">
+                <div class="cabecera-proyecto">
+                    <h2>Nombre del Proyecto</h2>
+                    <a href="../projectview/projectview.html" class="boton-volver-circular" title="Volver al proyecto">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
+
+                <div class="contenedor-detalles-proyecto">
+                    <p class="autor-texto"><strong>Autor:</strong> David Alcázar</p>
+                    
+                    <div class="fila-botones-neon">
+                        <span class="badge-validado">
+                            <i class="fas fa-check-circle"></i> Validado
+                        </span>
+                        <button class="btn-accion-neon">
+                            <i class="fas fa-download"></i> DESCARGAR
+                        </button>
+                    </div>
+
+                    <div class="galeria-capturas">
+                        <div class="marco-captura">
+                            <img src="../../Img/stock/ejemplo1.jpg" alt="CAPTURA 1" class="img-disparador">
+                        </div>
+                        <div class="marco-captura">
+                            <img src="../../Img/stock/ejemplo2.jpg" alt="CAPTURA 2" class="img-disparador">
+                        </div>
+                        <div class="marco-captura">
+                            <img src="../../Img/stock/ejemplo3.jpg" alt="CAPTURA 3" class="img-disparador">
+                        </div>
+                        <div class="marco-captura">
+                            <img src="../../Img/stock/ejemplo4.jpg" alt="CAPTURA 4" class="img-disparador">
+                        </div>
+                    </div>
+
+                    <div class="bloque-texto-informativo">
+                        <h3 class="titulo-seccion">Descripción</h3>
+                        <p class="texto-parrafo">Resumen del proyecto para contextualizar las reseñas. Aquí se explica el funcionamiento general y las tecnologías clave utilizadas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="zona-derecha">
+            <div class="tarjeta-reseñas-ver">
+                <div class="cabecera-tarjeta">
+                    <h3><i class="fas fa-comments"></i> FEEDBACK</h3>
+                </div>
+
+                <div class="medias-reseñas-ver">
+                    <div class="media-stat">
+                        <span>Arquitectura:</span> <span class="estrellas-media" data-tipo="arquitectura"></span>
+                    </div>
+                    <div class="media-stat">
+                        <span>Limpieza:</span> <span class="estrellas-media" data-tipo="limpieza"></span>
+                    </div>
+                    <div class="media-stat">
+                        <span>Documentación:</span> <span class="estrellas-media" data-tipo="documentacion"></span>
+                    </div>
+                    <div class="media-total">
+                        <span>CALIFICACIÓN TOTAL:</span> <span class="estrellas-media" data-tipo="total"></span>
+                    </div>
+                </div>
+
+                <div class="contenedor-reseñas">
+                    </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <div id="modal-imagen" class="modal">
+        <span class="cerrar-modal">&times;</span>
+        <div class="contenedor-modal-neon">
+            <img class="contenido-modal" id="img-ampliada">
+            <div id="caption-modal"></div>
         </div>
-    </aside>
+    </div>
 
-    <!-- CENTRO -->
-    <section class="seccion-derecha-dinamica">
-        <div class="tarjeta-proyecto-detalle">
-            <div class="cabecera-proyecto">
-                <h2>Nombre del Proyecto</h2>
-                <a href="../projectlist/projectlist.html" class="boton-volver-curvo" title="Volver a la lista de proyectos">
-                    <i class="fas fa-undo"></i>
-                </a>
-            </div>
+    <div id="footer-placeholder"></div>
 
-            <div class="info-superior">
-                <p><strong>Autor:</strong> David Alcázar</p>
-                <div class="estado-proyecto">
-                    <span class="badge validado"><i class="fas fa-check-circle"></i> Validado</span>
-                    <button class="boton-descargar"><i class="fas fa-download"></i> Descargar</button>
-                </div>
-            </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Carga de componentes
+        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
 
-            <div class="galeria-proyecto">
-                <img src="../../Img/stock/ejemplo1.jpg" class="img-proyecto">
-                <img src="../../Img/stock/ejemplo2.jpg" class="img-proyecto">
-                <img src="../../Img/stock/ejemplo3.jpg" class="img-proyecto">
-                <img src="../../Img/stock/ejemplo4.jpg" class="img-proyecto">
-            </div>
+        // Lógica del Modal
+        $(document).ready(function() {
+            $(".img-disparador").on("click", function() {
+                $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
+                $("#img-ampliada").attr("src", $(this).attr("src"));
+                $("#caption-modal").text($(this).attr("alt"));
+                $("body").css("overflow", "hidden");
+            });
 
-            <div class="modal-img" id="modal">
-                <span class="cerrar">&times;</span>
-                <img class="modal-contenido" id="img-grande">
-            </div>
+            $(".cerrar-modal, #modal-imagen").on("click", function(e) {
+                if(e.target !== document.getElementById("img-ampliada")) {
+                    $("#modal-imagen").fadeOut(300, function() {
+                        $("body").css("overflow", "auto");
+                    });
+                }
+            });
+        });
 
-            <div class="descripcion-proyecto">
-                <h3>Descripción</h3>
-                <p>Este proyecto consiste en una plataforma para conectar desarrolladores...</p>
-            </div>
+        // Datos de Reseñas
+        const reseñas = [
+            { usuario: "Carlos_Dev", arquitectura: 4, limpieza: 5, documentacion: 3, comentario: "La lógica del backend es impecable, aunque faltan comentarios." },
+            { usuario: "Laura_UX", arquitectura: 3, limpieza: 4, documentacion: 5, comentario: "Código muy limpio y fácil de seguir. Documentación excelente." },
+            { usuario: "Mike_Tech", arquitectura: 5, limpieza: 4, documentacion: 4, comentario: "Un ejemplo a seguir en patrones de diseño." }
+        ];
 
-            <div class="repo">
-                <h3>Repositorio</h3>
-                <a href="#" target="_blank">https://github.com/proyecto</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- DERECHA -->
-    <section class="zona-derecha">
-        <div class="tarjeta-reseñas-ver">
-            <h2><i class="fas fa-comments"></i> Reseñas del proyecto</h2>
-
-            <!-- MEDIAS DE ESTRELLAS EN TARJETA DERECHA -->
-            <div class="medias-reseñas-ver">
-                <div class="media-stat">
-                    <span>Arquitectura:</span> <span class="estrellas-media" data-tipo="arquitectura"></span>
-                </div>
-                <div class="media-stat">
-                    <span>Limpieza:</span> <span class="estrellas-media" data-tipo="limpieza"></span>
-                </div>
-                <div class="media-stat">
-                    <span>Documentación:</span> <span class="estrellas-media" data-tipo="documentacion"></span>
-                </div>
-                <div class="media-total">
-                    <span>Total:</span> <span class="estrellas-media" data-tipo="total"></span>
-                </div>
-            </div>
-
-            <div class="contenedor-reseñas"></div>
-        </div>
-    </section>
-
-</main>
-
-<div id="footer-placeholder"></div>
-
-<script>
-    // --- HEADER / FOOTER ---
-    fetch("../../includes/header.html")
-        .then(res => res.text())
-        .then(html => document.getElementById("header-placeholder").innerHTML = html);
-
-    fetch("../../includes/footer.html")
-        .then(res => res.text())
-        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
-
-    // --- MODAL DE IMÁGENES ---
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("img-grande");
-    document.querySelectorAll(".img-proyecto").forEach(img => {
-        img.onclick = function() {
-            modal.style.display = "block";
-            modalImg.src = this.src;
+        function generarEstrellas(rating) {
+            let html = "";
+            for(let i=1; i<=5; i++) html += `<i class="${i <= rating ? 'fas' : 'far'} fa-star"></i>`;
+            return html;
         }
-    });
-    document.querySelector(".cerrar").onclick = function() {
-        modal.style.display = "none";
-    }
-    modal.onclick = function(e) {
-        if(e.target === modal) modal.style.display = "none";
-    }
 
-    // --- RESEÑAS DE EJEMPLO ---
-    const reseñas = [
-        { usuario: "Carlos", arquitectura: 4, limpieza: 4, documentacion: 3, comentario: "Muy buen proyecto, la arquitectura está clara y consistente." },
-        { usuario: "Laura", arquitectura: 3, limpieza: 4, documentacion: 4, comentario: "El código está limpio y la documentación muy completa." },
-        { usuario: "Miguel", arquitectura: 4, limpieza: 3, documentacion: 4, comentario: "Muy buen proyecto, la documentación está clara y el código bien organizado." },
-        { usuario: "Laura", arquitectura: 5, limpieza: 4, documentacion: 5, comentario: "El proyecto es impecable, la arquitectura es sólida y fácil de entender." },
-        { usuario: "Carlos", arquitectura: 4, limpieza: 4, documentacion: 3, comentario: "Buen proyecto, pero la documentación podría ser un poco más detallada." }
-    ];
-
-    // --- RENDERIZAR RESEÑAS ---
-    function renderizarReseñas() {
-        const contenedor = document.querySelector(".contenedor-reseñas");
-        contenedor.innerHTML = "";
-        reseñas.forEach(r => {
-            const tarjeta = document.createElement("div");
-            tarjeta.classList.add("reseña");
-            tarjeta.innerHTML = `
-                <div class="reseña-header">${r.usuario}</div>
-                <div class="stats-reseña">
-                    <div>Arquitectura: ${"⭐".repeat(r.arquitectura)}</div>
-                    <div>Limpieza: ${"⭐".repeat(r.limpieza)}</div>
-                    <div>Documentación: ${"⭐".repeat(r.documentacion)}</div>
-                </div>
-                <p>${r.comentario}</p>
-            `;
-            contenedor.appendChild(tarjeta);
+        $(document).ready(() => {
+            const contenedor = $(".contenedor-reseñas");
+            reseñas.forEach(r => {
+                contenedor.append(`
+                    <div class="reseña-item">
+                        <div class="reseña-user"><i class="fas fa-user-circle"></i> ${r.usuario}</div>
+                        <div class="reseña-scores">
+                            <div class="score-line">Arq: <span>${generarEstrellas(r.arquitectura)}</span></div>
+                            <div class="score-line">Lim: <span>${generarEstrellas(r.limpieza)}</span></div>
+                            <div class="score-line">Doc: <span>${generarEstrellas(r.documentacion)}</span></div>
+                        </div>
+                        <p class="reseña-texto">"${r.comentario}"</p>
+                    </div>
+                `);
+            });
+            
+            // Medias
+            const n = reseñas.length;
+            const m = {
+                arquitectura: Math.round(reseñas.reduce((a,b)=>a+b.arquitectura,0)/n),
+                limpieza: Math.round(reseñas.reduce((a,b)=>a+b.limpieza,0)/n),
+                documentacion: Math.round(reseñas.reduce((a,b)=>a+b.documentacion,0)/n),
+                total: Math.round(reseñas.reduce((a,b)=>a+(b.arquitectura+b.limpieza+b.documentacion)/3,0)/n)
+            };
+            Object.keys(m).forEach(t => $(`.estrellas-media[data-tipo="${t}"]`).html(generarEstrellas(m[t])));
         });
-    }
-
-    // --- CALCULAR MEDIAS ---
-    function calcularMedias() {
-        if(reseñas.length === 0) return;
-        const totales = { arquitectura: 0, limpieza: 0, documentacion: 0 };
-        reseñas.forEach(r => {
-            totales.arquitectura += r.arquitectura;
-            totales.limpieza += r.limpieza;
-            totales.documentacion += r.documentacion;
-        });
-        const n = reseñas.length;
-        const medias = {
-            arquitectura: Math.round(totales.arquitectura / n),
-            limpieza: Math.round(totales.limpieza / n),
-            documentacion: Math.round(totales.documentacion / n),
-            total: Math.round((totales.arquitectura + totales.limpieza + totales.documentacion)/(n*3))
-        };
-
-        // Tarjeta derecha
-        Object.keys(medias).forEach(tipo => {
-            const cont = document.querySelector(`.estrellas-media[data-tipo="${tipo}"]`);
-            if(!cont) return;
-            cont.innerHTML = "";
-            for(let i=1;i<=5;i++){
-                const estrella = document.createElement("i");
-                estrella.classList.add(i<=medias[tipo]?"fas":"far","fa-star");
-                cont.appendChild(estrella);
-            }
-        });
-    }
-
-    // --- INICIALIZAR ---
-    document.addEventListener("DOMContentLoaded", () => {
-        renderizarReseñas();
-        calcularMedias();
-    });
-</script>
-
+    </script>
 </body>
 </html>

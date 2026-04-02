@@ -1,166 +1,213 @@
 /* =========================================================
-   projectview.css (Limpio y eficiente - Solo Columna Derecha)
+   1. FONDO Y ESTRUCTURA (ESTILO REJILLA NEÓN)
    ========================================================= */
+body.fondo-oscuro-neon {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
+    color: #FFFFFF;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
 
-/* Mantenemos el contenedor principal para asegurar el gap de 60px en esta vista */
+body.fondo-oscuro-neon::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+}
+
 .contenedor-principal {
     display: flex;
     max-width: 1800px;
     width: 98%;
     margin: 40px auto;
     padding: 0 20px;
-    gap: 60px;
-    flex-wrap: nowrap;
+    gap: 45px; 
     align-items: flex-start;
 }
 
 /* =========================================================
-   COLUMNA DERECHA (Detalles del Proyecto)
+   2. TARJETAS UNIFICADAS
    ========================================================= */
-.seccion-derecha-dinamica {
-    flex: 1;
-    min-width: 0;
-}
-
+.tarjeta-perfil, 
+.tarjeta-resenas-izq, 
 .tarjeta-proyecto-detalle {
-    background-color: #333333 !important;
+    background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 20px !important;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
     padding: 30px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    color: white;
 }
 
-.cabecera-proyecto {
+/* =========================================================
+   3. COLUMNA IZQUIERDA
+   ========================================================= */
+.columna-perfil {
+    flex: 0 0 380px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    border-bottom: 2px solid #aaaaaa !important;
-    padding-bottom: 15px;
-    margin-bottom: 10px;
+    flex-direction: column;
+    gap: 35px;
 }
 
-.cabecera-proyecto h2 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: white;
+.cabecera-tarjeta {
+    border-bottom: 2px solid rgba(170, 170, 170, 0.3);
+    padding-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-.info-superior {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.foto-perfil-contenedor { position: relative; width: 140px; height: 140px; margin: 0 auto 20px auto; }
+.circulo-foto { width: 100%; height: 100%; border-radius: 50%; background-color: #222; border: 3px solid #FFCC00; }
+.icono-corazon { 
+    position: absolute; bottom: 5px; right: 5px; 
+    color: #FFCC00; background: #333; padding: 8px; 
+    border-radius: 50%; border: 2px solid #FFCC00; 
 }
 
-.estado-proyecto {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.nombre-usuario { font-size: 1.6rem; color: #FFFFFF; font-weight: bold; text-align: center; margin: 0; }
+
+.redes-sociales { list-style: none; padding: 0; margin-bottom: 25px; }
+.redes-sociales li { padding: 12px 0; color: #ccc; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+
+.input-resena {
+    width: 100%; height: 100px; background-color: #0e0e0e; color: #FFFFFF;
+    border: 1px solid #444; border-radius: 10px; padding: 12px; margin-bottom: 20px;
+    resize: none; outline: none; transition: all 0.4s ease;
+}
+.input-resena:focus { border: 1px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
+
+/* =========================================================
+   4. BOTONES
+   ========================================================= */
+.boton-curriculum, .boton-anadir, .btn-accion-neon {
+    width: 100%; padding: 12px; background-color: #0e0e0e !important; color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important; border-radius: 10px; font-weight: bold;
+    cursor: pointer; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
 }
 
-/* COLOR VALIDADO / NO VALIDADO */
-.validado {
-    color: #00ff88 !important; 
-    font-size: 1.5rem;
+.boton-curriculum:hover, .boton-anadir:hover, .btn-accion-neon:hover {
+    background-color: #FFCC00 !important; color: #111 !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
+    transform: scale(1.06) translateY(-2px); 
 }
 
-.no-validado {
-    color: #ff4d4d !important; 
-    font-size: 1.5rem;
+/* =========================================================
+   5. SECCIÓN DERECHA
+   ========================================================= */
+.seccion-derecha-dinamica { flex: 1; }
+
+.cabecera-proyecto { 
+    display: flex; justify-content: space-between; align-items: center; 
+    border-bottom: 2px solid rgba(170, 170, 170, 0.3); 
+    padding-bottom: 20px; margin-bottom: 25px; 
 }
 
-/* Botón descargar */
-.boton-descargar {
-    background-color: #FFCC00 !important;
-    color: #111 !important;
-    border: none !important;
-    padding: 12px 25px;
-    border-radius: 10px !important;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: transform 0.2s, box-shadow 0.2s;
+.cabecera-proyecto h2 { font-size: 2.2rem; margin: 0; color: #fff; }
+
+.boton-volver-circular {
+    display: flex; align-items: center; justify-content: center;
+    width: 45px; height: 45px; border: 2px solid #FFCC00; border-radius: 50%;
+    background-color: #0e0e0e; color: #FFCC00; text-decoration: none;
+    transition: all 0.4s ease;
+}
+.boton-volver-circular:hover { 
+    background-color: #FFCC00; color: #111; 
+    transform: scale(1.15) rotate(-15deg); 
 }
 
-/* Otros botones*/
-.boton-nuevareview,
-.boton-verreviews {
-    background-color: #FFCC00 !important;
-    color: #111 !important;
-    border: none !important;
-    padding: 12px 25px;
-    border-radius: 10px !important;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.2s, box-shadow 0.2s;
+.autor-texto { font-size: 1.4rem; margin: 10px 0 50px 0; font-weight: 500; color: #FFFFFF; }
+
+.fila-botones-neon { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 45px; }
+.fila-botones-neon .btn-accion-neon { width: auto; padding: 10px 22px; border-radius: 12px; }
+
+.badge-validado { 
+    border: 2px solid #00FF00; color: #00FF00; padding: 10px 22px; 
+    border-radius: 50px; font-weight: bold; display: flex; align-items: center; gap: 8px; 
 }
 
-.boton-nuevareview i,
-.boton-verreviews i {
-    font-size: 1rem;
+/* =========================================================
+   6. GALERÍA
+   ========================================================= */
+.galeria-capturas { display: flex; gap: 25px; margin-bottom: 45px; }
+.marco-captura { 
+    flex: 1; max-width: 350px; height: 190px; border-radius: 15px; 
+    overflow: hidden; cursor: pointer; transition: all 0.4s ease; 
+    border: 2px solid transparent; 
 }
-
-/* Hover efecto */
-.boton-nuevareview:hover,
-.boton-verreviews:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+.marco-captura:hover { 
+    transform: translateY(-10px); border-color: #FFCC00; 
+    box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5); 
 }
+.marco-captura img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+.marco-captura:hover img { transform: scale(1.1); }
 
-.boton-descargar:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5) !important;
+/* =========================================================
+   7. TEXTOS
+   ========================================================= */
+.titulo-seccion { 
+    font-size: 1.7rem; margin-bottom: 15px; color: #fff; 
+    border-left: 4px solid #FFCC00; padding-left: 15px; 
 }
+.texto-parrafo { color: #ccc; line-height: 1.7; margin-bottom: 35px; font-size: 1.1rem; }
 
-.descripcion-proyecto p {
-    color: #ccc;
-    line-height: 1.6;
-    font-size: 1.1rem;
+.enlace-repositorio { 
+    color: #FFFFFF; text-decoration: none; font-size: 1.2rem; font-weight: 500;
+    transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;
 }
+.enlace-repositorio:hover { color: #FFCC00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.8); transform: translateX(5px); }
 
-.repo h3 {
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-    color: white;
-}
-
-.repo a {
-    color: #FFCC00;
-    text-decoration: none;
-    font-size: 1.1rem;
-}
-
-.repo a:hover {
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
-}
-
-.boton-volver-curvo {
-    display: flex;
-    align-items: center;
+/* =========================================================
+   8. MODAL (SIN BOTÓN X)
+   ========================================================= */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; top: 0; 
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.95); 
+    backdrop-filter: blur(10px);
     justify-content: center;
-    width: 45px;
-    height: 45px;
-    background-color: #333333;
-    color: #FFCC00;
-    border: 2px solid #FFCC00;
-    border-radius: 50%;
-    text-decoration: none;
-    transition: all 0.3s ease;
+    align-items: center;
+    flex-direction: column;
+    cursor: zoom-out; /* Cursor indica que al clicar se cierra */
 }
 
-.boton-volver-curvo:hover {
-    background-color: #FFCC00;
-    color: #1a1a1a;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
-    transform: scale(1.1) rotate(-15deg);
+.contenido-modal {
+    display: block; 
+    width: 85%; 
+    max-width: 1100px;
+    border: 2px solid #FFCC00; 
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(255, 204, 0, 0.5);
+    animation: zoomIn 0.3s ease;
+    cursor: default; /* En la imagen el cursor es normal */
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+#caption-modal {
+    text-align: center; color: #FFCC00; padding: 25px; 
+    font-weight: bold; font-size: 1.3rem; text-transform: uppercase;
+}
+
+/* =========================================================
+   9. RESPONSIVE
+   ========================================================= */
+@media (max-width: 1200px) {
+    .contenedor-principal { flex-direction: column; align-items: center; }
+    .columna-perfil { width: 100%; max-width: 600px; }
+    .galeria-capturas { flex-direction: column; align-items: center; }
+    .marco-captura { width: 100%; max-width: 500px; height: 250px; }
 }

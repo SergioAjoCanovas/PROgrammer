@@ -231,7 +231,7 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
 /* Animación Hover: Solo se aplica si NO tiene la clase active */
 #acordeon-proyectos .ui-accordion-header:not(.ui-accordion-header-active):hover {
     transform: translateY(-5px) scale(1.01);
-    background-color: #333 !important;
+    background-color: #292929 !important;
     box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
 }
 

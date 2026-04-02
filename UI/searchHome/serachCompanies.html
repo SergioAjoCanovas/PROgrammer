@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../../Style/homePage_styles/searchCompanies.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body class="body-layout">
 
     <div id="header-placeholder"></div>
 
@@ -67,20 +67,18 @@
 
     <div id="footer-placeholder"></div>
 
-    <!-- JS para cargar header y footer -->
-<script>
-    // Ajusta las rutas según la ubicación del HTML
-    const headerPath = "../../includes/header.html";
-    const footerPath = "../../includes/footer.html";
+    <script>
+        const headerPath = "../../includes/header.html";
+        const footerPath = "../../includes/footer.html";
 
-    fetch(headerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch(headerPath)
+            .then(res => res.text())
+            .then(html => document.getElementById("header-placeholder").innerHTML = html);
 
-    fetch(footerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
-</script>
+        fetch(footerPath)
+            .then(res => res.text())
+            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+    </script>
 
 </body>
 </html>

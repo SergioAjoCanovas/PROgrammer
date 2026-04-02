@@ -23,14 +23,14 @@
     text-shadow: 0 0 15px #FFCC00;
 }
 
-/* BUSCADOR CENTRAL (Efecto que pediste) */
+/* BUSCADOR CENTRAL */
 .caja-busqueda-neon {
     display: flex;
     width: 100%;
     max-width: 800px;
     background: #222;
     border: 2px solid #FFCC00;
-    border-radius: 50px; /* Redondeado total como el original */
+    border-radius: 50px;
     padding: 5px 10px;
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
     margin-bottom: 80px;
@@ -46,24 +46,36 @@
     outline: none;
 }
 
-/* BOTÓN CON EL EFECTO EXACTO DEL CÓDIGO QUE PASASTE */
+/* BOTÓN BUSCAR (Estilo unificado con Ver Perfil) */
 .btn-buscar-neon {
-    background: #FFCC00;
-    border: none;
+    background: transparent;
+    border: 2px solid #FFCC00;
+    color: #FFCC00;
     padding: 0 30px;
-    border-radius: 40px; /* Redondeado tipo píldora */
+    border-radius: 40px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     margin: 5px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
+.btn-buscar-neon i {
+    color: #FFCC00;
+    transition: all 0.3s ease;
+}
+
 .btn-buscar-neon:hover {
+    background: #FFCC00;
+    color: black;
     box-shadow: 0 0 20px #FFCC00;
-    transform: scale(1.05); /* El efecto de agrandarse del original */
+    transform: scale(1.05);
+}
+
+.btn-buscar-neon:hover i {
+    color: black;
 }
 
 /* CARRUSEL DE EMPRESAS */
@@ -141,6 +153,7 @@
     border: 1px solid #FFCC00;
 }
 
+/* BOTÓN VER VACANTES */
 .btn-perfil {
     margin-top: 20px;
     background: transparent;
@@ -151,9 +164,11 @@
     cursor: pointer;
     transition: 0.3s;
     width: 100%;
+    font-weight: bold;
 }
 
 .btn-perfil:hover {
     background: #FFCC00;
     color: black;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }

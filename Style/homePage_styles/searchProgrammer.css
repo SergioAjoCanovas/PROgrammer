@@ -46,20 +46,36 @@
     outline: none;
 }
 
+/* BOTÓN BUSCAR (MODIFICADO: ESTILO "VER PERFIL") */
 .btn-buscar-neon {
-    background: #FFCC00;
-    border: none;
+    background: transparent;
+    border: 2px solid #FFCC00;
+    color: #FFCC00;
     padding: 0 30px;
     border-radius: 40px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     margin: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-buscar-neon i {
+    color: #FFCC00;
+    transition: all 0.3s ease;
 }
 
 .btn-buscar-neon:hover {
+    background: #FFCC00;
+    color: black;
     box-shadow: 0 0 20px #FFCC00;
     transform: scale(1.05);
+}
+
+.btn-buscar-neon:hover i {
+    color: black;
 }
 
 /* CARRUSEL DE PERFILES */
@@ -133,6 +149,7 @@
     border: 1px solid #FFCC00;
 }
 
+/* BOTÓN VER PERFIL (ORIGINAL) */
 .btn-perfil {
     margin-top: 20px;
     background: transparent;

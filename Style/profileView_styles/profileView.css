@@ -1,3 +1,6 @@
+/* =========================================================
+   GENERAL Y CONTENEDORES
+   ========================================================= */
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
@@ -7,8 +10,8 @@ body.fondo-oscuro-neon {
 
 .contenedor-principal {
     display: flex;
-    max-width: 1800px; /* ¡Expansión al máximo! */
-    width: 98%; /* Ocupará casi toda la pantalla a lo ancho */
+    max-width: 1800px;
+    width: 98%;
     margin: 40px auto;
     padding: 0 20px;
     gap: 40px; 
@@ -16,25 +19,28 @@ body.fondo-oscuro-neon {
 }
 
 .columna-perfil {
-    flex: 0 0 380px; /* Ancho fijo y amplio para la izquierda */
+    flex: 0 0 380px;
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
 .columna-derecha {
-    flex: 1; /* Toma todo el ancho sobrante (que ahora es muchísimo) */
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    width: 100%; /* Se asegura de estirarse del todo */
+    width: 100%;
 }
 
+/* =========================================================
+   TARJETAS BASE
+   ========================================================= */
 .tarjeta-perfil, 
 .tarjeta-resenas-izq, 
 .tarjeta-proyectos-contenedor, 
 .tarjeta-inferior {
-    background-color: #333333 !important;
+    background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 20px !important;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
@@ -45,36 +51,30 @@ body.fondo-oscuro-neon {
 .tarjeta-resenas-izq,
 .tarjeta-proyectos-contenedor,
 .tarjeta-inferior {
-    padding: 30px; /* Padding cómodo pero sin forzar altura extra */
+    padding: 30px;
 }
 
+/* Líneas divisorias de títulos */
 .perfil-superior, 
 .cabecera-proyectos, 
 .cabecera-inferior,
 .tarjeta-resenas-izq h3 {
-    border-bottom: 2px solid #aaaaaa !important;
+    border-bottom: 2px solid #aaaaaa;
     padding-bottom: 15px;
     margin-bottom: 20px; 
+    transition: border-color 0.3s ease;
 }
 
+.tarjeta-proyectos-contenedor:hover .cabecera-proyectos {
+    border-bottom: 2px solid #FFCC00 !important;
+}
+
+/* =========================================================
+   PERFIL (BLOQUE SUPERIOR)
+   ========================================================= */
 .perfil-superior {
     padding: 30px 20px 20px 20px;
     text-align: center;
-}
-
-.cabecera-proyectos h2 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #FFFFFF;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cabecera-inferior h3,
-.tarjeta-resenas-izq h3 {
-    margin: 0;
-    font-size: 1.5rem; 
 }
 
 .foto-perfil-contenedor {
@@ -106,11 +106,6 @@ body.fondo-oscuro-neon {
     justify-content: center;
     border: 2px solid #FFCC00;
     cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.icono-corazon:hover {
-    transform: scale(1.1);
 }
 
 .nombre-usuario {
@@ -135,45 +130,101 @@ body.fondo-oscuro-neon {
     font-size: 1.05rem;
 }
 
-.tarjeta-resenas-izq p {
-    color: #888;
-    background-color: #222;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #555;
-    margin: 0 0 20px 0;
-    font-style: italic;
+/* =========================================================
+   ENLACES NEÓN (TÍTULOS E ICONO GRID)
+   ========================================================= */
+.cabecera-proyectos h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
+.enlace-titulo-proyectos {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.enlace-titulo-proyectos:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 15px #FFCC00;
+}
+
+.enlace-grid-proyectos {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.6rem;
+    transition: all 0.3s ease;
+}
+
+.enlace-grid-proyectos:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 15px #FFCC00;
+    transform: scale(1.1);
+}
+
+/* =========================================================
+   TEXTAREA RESEÑAS (FOCO NEÓN)
+   ========================================================= */
+.tarjeta-resenas-izq {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.input-resena {
+    width: 100%;
+    height: 80px;
+    background-color: #222;
+    color: #FFFFFF;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-resena:focus {
+    border: 1px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+}
+
+/* =========================================================
+   BOTONES (COLOR FONDO #1A1A1A)
+   ========================================================= */
 .boton-curriculum,
 .boton-anadir,
 .boton-ver {
     width: 100%;
-    padding: 14px; 
-    background-color: #FFCC00 !important;
-    color: #111 !important;
-    border: none !important;
+    padding: 12px;
+    background-color: #0e0e0e !important; /* Gris oscuro solicitado */
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
     border-radius: 10px;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     text-transform: uppercase;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
 }
 
 .boton-curriculum:hover,
 .boton-anadir:hover,
 .boton-ver:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5) !important;
+    background-color: #FFCC00 !important;
+    color: #111 !important;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6) !important;
 }
 
-.enlace-grid-proyectos {
-    color: #FFCC00;
-    text-decoration: none;
-    font-size: 1.6rem;
-}
-
+/* =========================================================
+   TARJETAS MINI PROYECTO
+   ========================================================= */
 .rejilla-proyectos {
     display: flex;
     gap: 25px; 
@@ -181,19 +232,33 @@ body.fondo-oscuro-neon {
 }
 
 .tarjeta-mini-proyecto {
-    background-color: #333333 !important;
+    background-color: #292929 !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 15px;
-    padding: 25px; 
-    /* Al hacer la página más ancha, las tarjetas también lo serán */
+    padding: 25px 20px; 
     width: calc(33.333% - 25px);
     min-width: 260px; 
+    min-height: 220px; 
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s;
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    box-sizing: border-box;
+}
+
+.tarjeta-mini-proyecto h3 {
+    margin: 0 0 10px 0;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+}
+
+.tarjeta-mini-proyecto p {
+    margin: 0 0 20px 0;
+    color: #ccc;
+    font-size: 0.95rem;
+    flex-grow: 1;
 }
 
 .tarjeta-mini-proyecto:hover {
@@ -201,72 +266,16 @@ body.fondo-oscuro-neon {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
-.tarjeta-mini-proyecto h3 {
-    margin: 0 0 15px 0;
-    color: #FFFFFF;
-    font-size: 1.35rem;
-}
-
-.tarjeta-mini-proyecto p {
-    margin: 0 0 25px 0;
-    color: #ccc;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    flex-grow: 1;
-}
-
 /* =========================================================
-   RESEÑAS Y SOBRE MÍ (Misma línea, máximo ancho)
+   SECCIÓN INFERIOR
    ========================================================= */
 .contenedor-inferior-derecha {
     display: flex;
-    flex-direction: row; /* Fuerza a que estén en la misma línea */
+    flex-direction: row; 
     gap: 40px; 
-    margin-top: 10px;
-    width: 100%; /* Ocupa todo el ancho de la columna derecha */
+    width: 100%; 
 }
 
 .tarjeta-inferior {
-    flex: 1; /* Se reparten el espacio disponible exactamente al 50% */
-}
-
-.contenido-inferior p {
-    margin: 0;
-    color: #ccc;
-    line-height: 1.6;
-    font-size: 1.1rem;
-}
-
-/* =========================================================
-   FIX: BLINDAJE PARA LA TARJETA DE RESEÑAS
-   (Esto arregla el fallo del margen sin romper el resto de tus estilos)
-   ========================================================= */
-.tarjeta-resenas-izq {
-    display: flex !important;
-    flex-direction: column !important;
-    box-sizing: border-box !important;
-}
-
-.tarjeta-resenas-izq h3 {
-    margin: 0 0 20px 0 !important;
-    font-size: 1.5rem !important;
-    border-bottom: 2px solid #aaaaaa !important; 
-    padding-bottom: 15px !important;
-    color: #FFFFFF !important;
-}
-
-.tarjeta-resenas-izq p {
-    color: #888 !important;
-    background-color: #222 !important;
-    padding: 15px !important;
-    border-radius: 10px !important;
-    border: 1px solid #555 !important;
-    margin: 0 0 20px 0 !important;
-    font-style: italic !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.tarjeta-resenas-izq .boton-anadir {
-    margin-top: auto !important;
+    flex: 1; 
 }

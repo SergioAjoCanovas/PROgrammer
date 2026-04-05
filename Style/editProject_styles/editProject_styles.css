@@ -1,0 +1,262 @@
+/* =========================================
+   ESTILOS PARA LA PÁGINA: EDITAR PROYECTO
+   (Sin fondo animado)
+   ========================================= */
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.contenedor-principal-edicion {
+    background-color: transparent; 
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    min-height: 80vh;
+}
+
+/* --- TARJETA DE FORMULARIO --- */
+.tarjeta-edicion {
+    background-color: #1a1a1a;
+    width: 90%;
+    max-width: 750px;
+    padding: 35px;
+    border-radius: 15px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.cabecera-edicion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #FFCC00;
+    padding-bottom: 15px;
+}
+
+.cabecera-edicion h2 {
+    color: #FFCC00;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.boton-volver {
+    background: none;
+    border: none;
+    color: #FFCC00;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.boton-volver:hover {
+    transform: scale(1.2) rotate(90deg);
+    color: #fff;
+}
+
+/* --- CAMPOS BÁSICOS (INPUTS Y TEXTAREA) --- */
+.campo {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fila-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+label {
+    color: #FFCC00;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input[type="text"], 
+input[type="url"], 
+textarea {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    padding: 14px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #FFCC00;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    background-color: #333;
+}
+
+/* --- ZONA DE PORTADA DE IMAGEN --- */
+.portada-contenedor {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    margin-top: 5px;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 2px dashed #444;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portada-contenedor:hover {
+    border-color: #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+#preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.portada-contenedor:hover #preview-img {
+    transform: scale(1.02);
+}
+
+.overlay-subir-portada {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.overlay-subir-portada label {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #FFCC00;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    border: 2px solid #FFCC00;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.overlay-subir-portada label:hover {
+    background-color: #FFCC00;
+    color: black;
+    transform: scale(1.1);
+}
+
+/* --- CHECKBOXES DE TECNOLOGÍAS --- */
+.contenedor-checkboxes {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.item-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.item-check:hover {
+    color: #FFCC00;
+}
+
+.item-check input {
+    display: none;
+}
+
+.custom-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #666;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.item-check input:checked + .custom-check {
+    background-color: #FFCC00;
+    border-color: #FFCC00;
+}
+
+.item-check input:checked + .custom-check::after {
+    content: '\f00c';
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 12px;
+    color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.contenedor-checkboxes::-webkit-scrollbar {
+    width: 8px;
+}
+.contenedor-checkboxes::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+}
+.contenedor-checkboxes::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+/* --- BOTÓN DE GUARDAR CAMBIOS --- */
+.contenedor-botones {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-guardar {
+    background-color: #FFCC00;
+    color: black;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-guardar:hover {
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.6);
+    transform: translateY(-4px);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 650px) {
+    .fila-doble {
+        grid-template-columns: 1fr;
+    }
+    .tarjeta-edicion {
+        padding: 20px;
+    }
+}

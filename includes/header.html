@@ -1,37 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
 
-<header class="encabezado-principal">
-    <div class="seccion-izquierda">
-        <div class="contenedor-logotipo">
-            <img src="../../Img/fondogris2.png" alt="Logotipo ProGrammer" class="imagen-logotipo">            
+    <header class="encabezado-principal">
+        <div class="seccion-izquierda">
+            <div class="contenedor-logotipo">
+                <a href="/UI/main.html">
+                    <img src="../../Img/fondogris2.png" alt="Logotipo ProGrammer" class="imagen-logotipo">
+                </a>      
+            </div>
         </div>
-    </div>
 
-    <nav class="navegacion-central">
-        <a href="/UI/main.html" class="icono-nav"><i class="fas fa-home"></i></a>
-        <a href="/UI/searchHome/searchProgrammer.html" class="icono-nav"><i class="fas fa-users"></i></a>
-        <a href="/UI/jobsearching/jobsearching.html" class="icono-nav"><i class="fas fa-briefcase"></i></a>
-        <a href="#" class="icono-nav"><i class="fas fa-comment"></i></a>
-        <a href="#" class="icono-nav"><i class="fas fa-bell"></i></a>
-        <a href="#" class="icono-nav"><i class="fas fa-th"></i></a>
-    </nav>
-
-    <div class="seccion-derecha">
-        <div class="avatar-usuario">
-            <a href="/UI/loginPage/loginPage.html" class="avatar-usuario">
-                <i class="fas fa-user"></i>
+        <nav class="navegacion-central">
+            <a href="/UI/main.html" class="icono-nav">
+                <i class="fas fa-home"></i>
+                <span class="texto-icono">Inicio</span>
             </a>
+            <a href="/UI/searchHome/searchProgrammer.html" class="icono-nav">
+                <i class="fas fa-users"></i>
+                <span class="texto-icono">Red</span>
+            </a>
+            <a href="/UI/jobsearching/jobsearching.html" class="icono-nav">
+                <i class="fas fa-briefcase"></i>
+                <span class="texto-icono">Empleos</span>
+            </a>
+            <a href="/UI/chats/chats.html" class="icono-nav">
+                <i class="fas fa-comment"></i>
+                <span class="texto-icono">Chats</span>
+            </a>
+
+            <div class="contenedor-avisos" id="contenedor-avisos" onmouseleave="document.getElementById('panel-notificaciones').classList.remove('activo')">
+                <a href="#" class="icono-nav" onclick="event.preventDefault(); document.getElementById('panel-notificaciones').classList.toggle('activo');">
+                    <i class="fas fa-bell"></i>
+                    <span class="texto-icono">Avisos</span>
+                    <span class="globo-notificacion">2</span>
+                </a>
+
+                <div class="panel-notificaciones" id="panel-notificaciones">
+                    <div class="cabecera-notificaciones">
+                        <h4>Avisos</h4>
+                        <a href="#" class="marcar-leido"><i class="fas fa-check-double"></i> Leídos</a>
+                    </div>
+                    
+                    <div class="lista-notificaciones">
+                        <div class="item-notificacion no-leido">
+                            <div class="icono-noti empresa"><i class="fas fa-briefcase"></i></div>
+                            <div class="texto-noti">
+                                <p><strong>Tech Corp</strong> ha visto tu perfil.</p>
+                                <span class="tiempo-noti">Hace 10 min</span>
+                            </div>
+                        </div>
+
+                        <div class="item-notificacion no-leido">
+                            <div class="icono-noti chat"><i class="fas fa-comment"></i></div>
+                            <div class="texto-noti">
+                                <p>Nuevo mensaje de <strong>Carlos Dev</strong>.</p>
+                                <span class="tiempo-noti">Hace 1 hora</span>
+                            </div>
+                        </div>
+
+                        <div class="item-notificacion">
+                            <div class="icono-noti sistema"><i class="fas fa-cog"></i></div>
+                            <div class="texto-noti">
+                                <p>Tu proyecto "API REST" ha sido publicado con éxito.</p>
+                                <span class="tiempo-noti">Ayer</span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <a href="/UI/menu/menu.html" class="icono-nav">
+                <i class="fas fa-th"></i>
+                <span class="texto-icono">Menú</span>
+            </a>
+        </nav>
+
+        <div class="seccion-derecha">
+            <a href="/UI/loginPage/loginPage.html" class="item-derecha">
+                <div class="avatar-usuario">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="texto-icono">Perfil</span>
+            </a>
+            
+            <button class="item-derecha" onclick="window.location.href='/UI/ownProfile/ownProfile.html'">
+                <i class="fas fa-cog icono-engranaje"></i>
+                <span class="texto-icono">Ajustes</span>
+            </button>
         </div>
-        <button class="boton-ajustes" onclick="window.location.href='/UI/ownProfile/ownProfile.html'">
-            <i class="fas fa-cog"></i>
-        </button>
-    </div>
-</header>
+    </header>
 
-
-
-
-<!--   BUSCADOR POR LOS LOLES
-        <div class="contenedor-buscador">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Buscar...">
-        </div>-->
+</body>
+</html>

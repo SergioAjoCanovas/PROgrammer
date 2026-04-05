@@ -1,129 +1,284 @@
+/* =========================================================
+   GENERAL Y CONTENEDORES
+   ========================================================= */
+body.fondo-oscuro-neon {
+    background-color: #000000 !important;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.contenedor-principal {
+    display: flex;
+    max-width: 1800px;
+    width: 98%;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 40px; 
+    align-items: flex-start;
+}
+
+.columna-perfil {
+    flex: 0 0 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .seccion-derecha-dinamica {
-    flex: 2;
-    min-width: 300px;
+    flex: 1;
 }
 
-.tarjeta-acordeon {
-    background-color: #333;
-    border: 3px solid #FFCC00;
-    border-radius: 35px;
-    padding: 25px;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+/* =========================================================
+   TARJETAS BASE
+   ========================================================= */
+.tarjeta-perfil, 
+.tarjeta-resenas-izq, 
+.tarjeta-acordeon-contenedor {
+    background-color: #1a1a1a !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.2) !important;
+    overflow: hidden;
 }
 
-.tarjeta-acordeon h2 {
+.tarjeta-resenas-izq, .tarjeta-acordeon-contenedor { 
+    padding: 30px; 
+}
+
+.perfil-superior, 
+.tarjeta-resenas-izq h3, 
+.cabecera-acordeon {
+    border-bottom: 2px solid #aaaaaa;
+    padding-bottom: 15px;
     margin-bottom: 20px;
-    color: white;
 }
 
-/* Cabeceras */
-#acordeon-proyectos h3 {
-    background-color: #444;
-    color: white;
-    padding: 15px;
-    border: 2px solid #FFCC00;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
+/* =========================================================
+   PERFIL
+   ========================================================= */
+.perfil-superior { 
+    padding: 30px 20px 20px 20px; 
+    text-align: center; 
 }
 
-/* Contenido */
-#acordeon-proyectos div {
-    background-color: #222;
-    border: 2px solid #FFCC00;
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 10px;
+.foto-perfil-contenedor { 
+    position: relative; 
+    width: 140px; 
+    height: 140px; 
+    margin: 0 auto 20px auto; 
 }
 
-.boton-ver {
-    background-color: #FFCC00;
-    color: #1a1a1a;
-    border: 2px solid #1a1a1a;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-div p{
-    color: grey;
-}
-
-.cabecera-acordeon h2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    width: 100%;
-    color: white;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-}
-
-.boton-volver-curvo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    background-color: #333;
-    color: #FFCC00;
-    border: 2px solid #FFCC00;
+.circulo-foto { 
+    width: 100%; height: 100%; 
     border-radius: 50%; 
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.6), inset 0 0 5px rgba(255, 204, 0, 0.4);
+    background-color: #222; 
+    border: 3px solid #FFCC00; 
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+.icono-corazon { 
+    position: absolute; 
+    bottom: 5px; 
+    right: 5px; 
+    background-color: #333; 
+    color: #FFCC00; 
+    width: 38px; 
+    height: 38px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border: 2px solid #FFCC00; 
 }
 
-.boton-volver-curvo:hover {
-    background-color: #FFCC00;
-    color: #1a1a1a;
-    box-shadow: 0 0 20px #FFCC00;
+.nombre-usuario { 
+    font-size: 1.6rem; 
+    margin: 0; 
+    color: #FFFFFF; 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1); 
+}
+
+.perfil-inferior { 
+    padding: 30px; 
+}
+
+.redes-sociales { 
+    list-style: none; 
+    padding: 0; 
+    margin-bottom: 25px; 
+}
+
+.redes-sociales li { 
+    padding: 10px 0; 
+    color: #ccc; 
+    font-size: 1.05rem; 
+}
+
+/* =========================================================
+   RESEÑAS (INPUT)
+   ========================================================= */
+.input-resena {
+    width: 100%; 
+    height: 80px;
+    background-color: #222; 
+    color: #FFFFFF;
+    border: 1px solid #555; 
+    border-radius: 10px;
+    padding: 12px; 
+    margin-top: 15px; 
+    margin-bottom: 20px;
+    font-family: inherit; 
+    resize: none; 
+    outline: none; 
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-resena:focus { 
+    border: 1px solid #FFCC00; 
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); 
+}
+
+/* =========================================================
+   BOTONES UNIFICADOS (FONDO #050505 FORZADO)
+   ========================================================= */
+body.fondo-oscuro-neon .boton-curriculum, 
+body.fondo-oscuro-neon .boton-anadir,
+body.fondo-oscuro-neon .boton-ver-proyecto {
+    display: inline-block;
+    width: 100%; 
+    padding: 12px;
+    background-color: #050505 !important;
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 10px !important;
+    font-weight: bold !important; 
+    cursor: pointer; 
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+}
+
+/* Ajuste específico para el de ver proyecto (No ocupa todo el ancho) */
+body.fondo-oscuro-neon .boton-ver-proyecto {
+    margin-top: 25px;
+    width: auto !important; 
+    padding: 12px 40px !important;
+}
+
+/* Hover de los botones */
+body.fondo-oscuro-neon .boton-curriculum:hover, 
+body.fondo-oscuro-neon .boton-anadir:hover,
+body.fondo-oscuro-neon .boton-ver-proyecto:hover { 
+    background-color: #FFCC00 !important; 
+    color: #050505 !important; 
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
+    transform: translateY(-3px);
+}
+
+/* =========================================================
+   ACORDEÓN Y BOTÓN VOLVER
+   ========================================================= */
+.cabecera-acordeon { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.cabecera-acordeon h2 { 
+    margin: 0; 
+    font-size: 2rem; 
+    color: white; 
+}
+
+.boton-volver-circular {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    width: 45px; 
+    height: 45px; 
+    border: 2px solid #FFCC00; 
+    border-radius: 50%;
+    background-color: #050505; 
+    color: #FFCC00; 
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.boton-volver-circular:hover { 
+    background-color: #FFCC00; 
+    color: #1a1a1a; 
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); 
     transform: scale(1.1) rotate(-15deg); 
 }
 
-#acordeon-proyectos .ui-accordion-header .ui-icon {
-    display: none !important; 
-}
-
-.boton-ver:hover {
-    transform: scale(1.05); 
-    filter: brightness(1.1); 
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-.boton-ver:active {
-    transform: scale(1.02);
-}
-
+/* Títulos del Acordeón */
 #acordeon-proyectos .ui-accordion-header {
-    background-color: #4f4f4f;
-    border: 1px solid #FFCC00;
-    color: white;
-    border-radius: 8px;
-    margin-top: 5px;
-    box-shadow: inset 0 0 5px rgba(255, 204, 0, 0.3), 0 0 10px rgba(255, 204, 0, 0.5);
+    background-color: #292929 !important; 
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important; 
+    border-radius: 10px !important;
+    margin-top: 15px !important; 
+    padding: 15px 25px !important; 
+    font-weight: bold; 
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
 }
 
-#acordeon-proyectos .ui-accordion-header:hover {
-    box-shadow: 0 0 15px #FFCC00, 0 0 10px #FFCC00;
-    cursor: pointer;
+/* Animación Hover: Solo se aplica si NO tiene la clase active */
+#acordeon-proyectos .ui-accordion-header:not(.ui-accordion-header-active):hover {
+    transform: translateY(-5px) scale(1.01);
+    background-color: #292929 !important;
+    box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
 }
 
+/* Cuando está abierto: Se quita la animación y se queda fijo */
+#acordeon-proyectos .ui-accordion-header-active { 
+    background-color: #FFCC00 !important;
+    color: #111 !important;
+    border-bottom-left-radius: 0 !important; 
+    border-bottom-right-radius: 0 !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+    transform: translateY(0) scale(1) !important; 
+}
+
+/* Contenido del Acordeón */
 #acordeon-proyectos .ui-accordion-content {
-    background-color: #222;
-    color: #fff;
-    border: 2px solid #FFCC00;
-    border-radius: 0 0 10px 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.5);
+    background-color: #111 !important;
+    color: white !important;
+    border: 2px solid #FFCC00 !important; 
+    border-top: none !important;
+    border-radius: 0 0 10px 10px !important; 
+    padding: 30px !important;
+    overflow: hidden;
+    box-shadow: 0 10px 20px -10px rgba(255, 204, 0, 0.5);
 }
 
-#acordeon-proyectos .ui-accordion-header-active {
-    background-color: #444;
-    box-shadow: 0 0 15px #FFCC00, inset 0 0 8px rgba(255, 204, 0, 0.5);
+/* EFECTO FOCUS & ZOOM INTERNO */
+.inner-content {
+    opacity: 0;
+    filter: blur(15px);
+    transform: scale(1.05);
+    transition: 
+        opacity 0.6s ease-out, 
+        filter 0.7s ease-out, 
+        transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.ui-accordion-content-active .inner-content {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+}
+
+.ui-accordion-header .ui-icon { display: none; }
+
+.inner-content p {
+    color: #e0e0e0;
+    line-height: 1.8;
+    margin: 0;
+    font-size: 1.1rem;
 }

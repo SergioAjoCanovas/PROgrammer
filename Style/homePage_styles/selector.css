@@ -31,35 +31,44 @@
     justify-content: center;
 }
 
-/* Estilo de los botones (basado en el efecto que te gustó) */
+/* BOTONES IGUALES EN ANCHO Y MENOS REDONDEADOS */
 .btn-seleccion-neon {
     text-decoration: none;
     background: transparent;
     border: 3px solid #FFCC00;
     color: #FFCC00;
-    padding: 30px 60px;
-    border-radius: 50px; /* Redondeado total estilo píldora */
+    padding: 40px 0; 
+    border-radius: 20px; 
+    width: 380px;  
     font-size: 1.5rem;
     font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 15px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    min-width: 280px;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+    
+    /* ILUMINACIÓN BASE SUBIDA: Brillo constante más notable */
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3), 
+                inset 0 0 8px rgba(255, 204, 0, 0.1);
 }
 
 .btn-seleccion-neon i {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
 }
 
-/* Efecto HOVER igual al original */
+.btn-seleccion-neon span {
+    letter-spacing: 2px;
+}
+
+/* Efecto HOVER: Iluminación máxima */
 .btn-seleccion-neon:hover {
     background: #FFCC00;
     color: #000;
-    box-shadow: 0 0 30px #FFCC00;
-    transform: scale(1.1); /* Se hace un poco más grande */
+    box-shadow: 0 0 45px #FFCC00, 
+                0 0 10px rgba(255, 204, 0, 0.5);
+    transform: scale(1.08);
 }
 
 /* Efecto al pulsar */
@@ -68,12 +77,20 @@
 }
 
 /* Responsive para móviles */
+@media (max-width: 850px) {
+    .btn-seleccion-neon {
+        width: 300px;
+        padding: 30px 0;
+        font-size: 1.3rem;
+    }
+}
+
 @media (max-width: 600px) {
     .titulo-selector {
         font-size: 2rem;
     }
     .btn-seleccion-neon {
-        min-width: 200px;
-        padding: 20px 40px;
+        width: 260px;
+        border-radius: 15px; 
     }
 }

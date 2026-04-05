@@ -1,0 +1,345 @@
+/* =========================================================
+   CONTENEDOR PRINCIPAL CHATS
+   ========================================================= */
+.contenedor-principal-chats {
+    background-color: transparent; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    height: calc(100vh - 100px);
+    position: relative;
+    z-index: 10;
+}
+
+/* DIV GRANDE DEL CHAT CON BORDE AMARILLO NEÓN */
+.tarjeta-chats {
+    background-color: rgba(26, 26, 26, 0.95); 
+    width: 100%;
+    max-width: 1100px;
+    height: 100%;
+    border-radius: 15px;
+    display: flex;
+    overflow: hidden;
+    
+    /* EFECTO NEÓN AMARILLO */
+    border: 2px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4), 
+                0 0 30px rgba(255, 204, 0, 0.1),
+                inset 0 0 10px rgba(255, 204, 0, 0.1);
+}
+
+/* =========================================================
+   PANEL IZQUIERDO: CONTACTOS
+   ========================================================= */
+.panel-contactos {
+    width: 35%;
+    min-width: 300px;
+    background-color: rgba(22, 22, 22, 0.6);
+    border-right: 1px solid rgba(255, 204, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.cabecera-contactos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.cabecera-contactos h2 {
+    color: #FFCC00;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* BOTÓN NUEVO CHAT (MÁS) */
+.btn-nuevo-chat {
+    background-color: #FFCC00;
+    color: black;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-nuevo-chat:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(255, 204, 0, 0.8); 
+}
+
+.buscador-chats {
+    padding: 15px;
+    position: relative;
+}
+
+.buscador-chats i {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.buscador-chats input {
+    width: 100%;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 20px;
+    padding: 10px 15px 10px 40px;
+    color: white;
+    outline: none;
+}
+
+/* LISTA DE CONVERSACIONES */
+.lista-conversaciones {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.item-chat {
+    display: flex;
+    padding: 15px 20px;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #222;
+    transition: background 0.2s;
+}
+
+.item-chat:hover {
+    background-color: rgba(255, 204, 0, 0.05);
+}
+
+.item-chat.activo {
+    background-color: rgba(255, 204, 0, 0.1);
+    border-left: 4px solid #FFCC00;
+}
+
+.avatar-chat {
+    position: relative;
+    width: 45px;
+    height: 45px;
+}
+
+.avatar-chat img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.estado {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #161616;
+}
+
+.en-linea { background-color: #4CAF50; }
+.ausente { background-color: #FFC107; }
+
+.info-chat h4 {
+    color: white;
+    font-size: 1rem;
+    margin: 0 0 5px 0;
+}
+
+.info-chat p {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.badge-no-leido {
+    background-color: #FFCC00;
+    color: black;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+}
+
+/* =========================================================
+   PANEL DERECHO: CONVERSACIÓN
+   ========================================================= */
+.panel-conversacion {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+}
+
+.cabecera-chat-activo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    border-bottom: 1px solid #333;
+    background-color: rgba(22, 22, 22, 0.8);
+}
+
+.info-usuario-activo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar-pequeno {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.subtitulo-estado {
+    color: #FFCC00;
+    font-size: 0.8rem;
+}
+
+/* BOTONES DE ACCIÓN */
+.acciones-chat button {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.2rem;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.acciones-chat button:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+/* HISTORIAL DE MENSAJES */
+.area-mensajes {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-image: radial-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.mensaje {
+    display: flex;
+    max-width: 75%;
+}
+
+.mensaje.recibido { align-self: flex-start; }
+.mensaje.enviado { align-self: flex-end; }
+
+.burbuja {
+    padding: 12px 18px;
+    border-radius: 15px;
+}
+
+.mensaje.recibido .burbuja {
+    background-color: #2a2a2a;
+    color: white;
+    border-radius: 15px 15px 15px 0;
+    border: 1px solid #444;
+}
+
+.mensaje.enviado .burbuja {
+    background-color: #FFCC00;
+    color: black;
+    border-radius: 15px 15px 0 15px;
+    font-weight: 500;
+}
+
+/* ZONA DE ESCRITURA */
+.zona-input-chat {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: rgba(22, 22, 22, 0.9);
+    border-top: 1px solid #333;
+    gap: 15px;
+}
+
+.btn-adjuntar {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-adjuntar:hover {
+    color: #FFCC00;
+}
+
+/* INPUT CON BORDE NEÓN AL ESCRIBIR */
+.zona-input-chat input {
+    flex-grow: 1;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 25px;
+    padding: 12px 20px;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease; /* Para que el neón aparezca suavemente */
+}
+
+.zona-input-chat input:focus {
+    border-color: #FFCC00;
+    /* Efecto neón: resplandor externo e interno sutil */
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.5), 
+                inset 0 0 8px rgba(255, 204, 0, 0.1);
+}
+
+/* BOTÓN ENVIAR */
+.btn-enviar {
+    background-color: #FFCC00;
+    color: black;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-enviar:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8); 
+}
+
+/* SCROLLBAR PERSONALIZADO AMARILLO */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+    .panel-contactos { width: 100%; }
+    .panel-conversacion { display: none; }
+}

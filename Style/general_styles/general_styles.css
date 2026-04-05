@@ -12,8 +12,7 @@ body.fondo-oscuro-neon {
     overflow-x: hidden;
     z-index: 0;
     
-    /* Solo mantenemos la animación de parpadeo inicial al entrar */
-    animation: encendidoNeon 1.5s ease-out !important;
+    /* ¡Animación inicial eliminada! */
 }
 
 /* Transparencia total de contenedores para no tapar el fondo */
@@ -73,14 +72,6 @@ body.fondo-oscuro-neon::after {
 /* =========================================================
    ANIMACIONES (Suavizadas)
    ========================================================= */
-
-/* Efecto de encendido de neón al cargar la página */
-@keyframes encendidoNeon {
-    0% { opacity: 0; filter: brightness(3); }
-    10% { opacity: 0.8; }
-    20% { opacity: 1; filter: brightness(1.5); }
-    30% { opacity: 1; filter: brightness(1); }
-}
 
 @keyframes viajeGranDiagonal {
     0% { transform: translate(-5vw, -5vh) rotate(0deg); }

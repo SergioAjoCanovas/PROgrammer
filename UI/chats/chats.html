@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Chats</title>
+
+    <link rel="stylesheet" href="../../Style/general_styles/header.css">
+    <link rel="stylesheet" href="../../Style/general_styles/footer.css">
+    <link rel="stylesheet" href="../../Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="../../Style/chats_styles/chats_styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fondo-oscuro-neon">
+
+    <div id="header-placeholder"></div>
+
+    <main class="contenedor-principal-chats">
+        <section class="tarjeta-chats border-neon">
+            
+            <aside class="panel-contactos">
+                <div class="cabecera-contactos">
+                    <h2><i class="fas fa-comments"></i> Mensajes</h2>
+                    <button class="btn-nuevo-chat neon-button" title="Nuevo mensaje"><i class="fas fa-plus"></i></button>
+                </div>
+                
+                <div class="buscador-chats">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar conversación...">
+                </div>
+
+                <div class="lista-conversaciones">
+                    <div class="item-chat activo">
+                        <div class="avatar-chat">
+                            <img src="../../Img/stock/empresa1.png" alt="Avatar">
+                            <span class="estado en-linea"></span>
+                        </div>
+                        <div class="info-chat">
+                            <h4>Tech Solutions SL</h4>
+                            <p>Nos interesa tu perfil para...</p>
+                        </div>
+                        <div class="meta-chat">
+                            <span class="hora">10:45</span>
+                            <span class="badge-no-leido">2</span>
+                        </div>
+                    </div>
+
+                    <div class="item-chat">
+                        <div class="avatar-chat">
+                            <i class="fas fa-user-circle fa-2x" style="color: #ccc;"></i>
+                            <span class="estado ausente"></span>
+                        </div>
+                        <div class="info-chat">
+                            <h4>Marta Backend Dev</h4>
+                            <p>He revisado la API, todo ok.</p>
+                        </div>
+                        <div class="meta-chat">
+                            <span class="hora">Ayer</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="panel-conversacion">
+                <div class="cabecera-chat-activo">
+                    <div class="info-usuario-activo">
+                        <img src="../../Img/stock/empresa1.png" alt="Avatar" class="avatar-pequeno">
+                        <div>
+                            <h3>Tech Solutions SL</h3>
+                            <span class="subtitulo-estado">Escribiendo...</span>
+                        </div>
+                    </div>
+                    <div class="acciones-chat">
+                        <button title="Videollamada"><i class="fas fa-video"></i></button>
+                        <button title="Opciones"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+
+                <div class="area-mensajes">
+                    <div class="mensaje recibido">
+                        <div class="burbuja">
+                            <p>¡Hola! Hemos visto tu perfil en ProGrammer y tu último proyecto de e-commerce nos ha gustado mucho.</p>
+                            <span class="hora-mensaje">10:40</span>
+                        </div>
+                    </div>
+
+                    <div class="mensaje enviado">
+                        <div class="burbuja">
+                            <p>¡Hola! Muchas gracias, me alegro de que os haya gustado. Fue un resto integrar la pasarela de pagos.</p>
+                            <span class="hora-mensaje">10:42 <i class="fas fa-check-double leido"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="zona-input-chat">
+                    <button class="btn-adjuntar" title="Adjuntar archivo o código"><i class="fas fa-paperclip"></i></button>
+                    <input type="text" placeholder="Escribe un mensaje aquí...">
+                    <button class="btn-enviar neon-button"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </section>
+
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        const headerPath = "../../includes/header.html";
+        const footerPath = "../../includes/footer.html";
+        fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+    </script>
+</body>
+</html>

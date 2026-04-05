@@ -10,12 +10,11 @@
     <link rel="stylesheet" href="../../Style/homePage_styles/searchProgrammer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-
+<body class="body-layout fondo-oscuro-neon">
+    
     <div id="header-placeholder"></div>
 
     <main class="contenedor-busqueda">
-        
         <section class="seccion-buscador-central">
             <h1 class="titulo-neon">CONECTA CON <span class="resaltado">PROGRAMADORES</span></h1>
             <div class="caja-busqueda-neon">
@@ -28,54 +27,123 @@
 
         <section class="seccion-carrusel">
             <h2 class="subtitulo-neon">Perfiles Destacados</h2>
-            <div class="carrusel-contenedor">
-                <div class="tarjeta-perfil-neon">
-                    <div class="foto-perfil-dummy"></div>
-                    <h3>David Alcázar</h3>
-                    <p>Full Stack Developer</p>
-                    <div class="tags">
-                        <span>Java</span><span>Python</span>
+            
+            <div class="carrusel-wrapper">
+                <button class="btn-nav prev" onclick="moverCarrusel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="carrusel-contenedor">
+                    <div class="carrusel-track" id="track">
+                        
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"></div>
+                            <h3>David Alcázar</h3>
+                            <p>Full Stack Developer</p>
+                            <div class="tags"><span>Java</span><span>Python</span></div>
+                            <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
+                        </div>
+
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"></div>
+                            <h3>Cristian Escobar</h3>
+                            <p>UI/UX Designer</p>
+                            <div class="tags"><span>Figma</span><span>CSS3</span></div>
+                            <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
+                        </div>
+
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"></div>
+                            <h3>Sergio Ajo</h3>
+                            <p>Backend Engineer</p>
+                            <div class="tags"><span>Node.js</span><span>SQL</span></div>
+                            <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
+                        </div>
+
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"></div>
+                            <h3>Elena Rivas</h3>
+                            <p>Data Scientist</p>
+                            <div class="tags"><span>Python</span><span>R</span></div>
+                            <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
+                        </div>
+
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"></div>
+                            <h3>Laura Torres</h3>
+                            <p>Mobile Dev</p>
+                            <div class="tags"><span>Swift</span><span>Kotlin</span></div>
+                            <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
+                        </div>
+
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"></div>
+                            <h3>Marc Soler</h3>
+                            <p>DevOps Engineer</p>
+                            <div class="tags"><span>Docker</span><span>AWS</span></div>
+                            <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
+                        </div>
+
                     </div>
-                    <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
                 </div>
-                <div class="tarjeta-perfil-neon activo">
-                    <div class="foto-perfil-dummy"></div>
-                    <h3>Cristian Escobar</h3>
-                    <p>UI/UX Designer & Dev</p>
-                    <div class="tags">
-                        <span>Figma</span><span>CSS3</span>
-                    </div>
-                    <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
-                </div>
-                <div class="tarjeta-perfil-neon">
-                    <div class="foto-perfil-dummy"></div>
-                    <h3>Sergio Ajo</h3>
-                    <p>Backend Engineer</p>
-                    <div class="tags">
-                        <span>Node.js</span><span>SQL</span>
-                    </div>
-                    <button class="btn-perfil" onclick="window.location.href='../profileView.html'">Ver Perfil</button>
-                </div>
+
+                <button class="btn-nav next" onclick="moverCarrusel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </section>
-
     </main>
 
     <div id="footer-placeholder"></div>
 
-    <!-- JS para cargar header y footer -->
-<script>
-    // Ajusta las rutas según la ubicación del HTML
-    const headerPath = "../../includes/header.html";
-    const footerPath = "../../includes/footer.html";
+    <script>
+        // Carga de componentes externos
+        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
 
-    fetch(headerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("header-placeholder").innerHTML = html);
+        const track = document.getElementById('track');
+        let index = 0;
+        
+        // Paso de scroll: Ancho tarjeta (260) + Gap (30) = 290px
+        const cardStep = 290; 
+        
+        function actualizarCarrusel() {
+            const totalCards = document.querySelectorAll('.tarjeta-perfil-neon').length;
+            const isMobile = window.innerWidth <= 1050;
+            // En escritorio mostramos 3 tarjetas, en móvil 1
+            const visibleCards = isMobile ? 1 : 3;
+            
+            const maxIndex = totalCards - visibleCards;
 
-    fetch(footerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
-</script>
+            // Lógica circular (vuelve al inicio si llega al final)
+            if (index > maxIndex) index = 0;
+            if (index < 0) index = maxIndex;
+            
+            track.style.transform = `translateX(-${index * cardStep}px)`;
+        }
+
+        function moverCarrusel(direccion) {
+            index += direccion;
+            actualizarCarrusel();
+            reiniciarIntervalo(); // Reinicia el contador si el usuario hace clic
+        }
+
+        // Movimiento automático cada 5 segundos
+        let intervalo = setInterval(() => { 
+            index++; 
+            actualizarCarrusel(); 
+        }, 5000);
+
+        function reiniciarIntervalo() { 
+            clearInterval(intervalo); 
+            intervalo = setInterval(() => { 
+                index++; 
+                actualizarCarrusel(); 
+            }, 5000); 
+        }
+        
+        // Ajustar posición si se cambia el tamaño de la ventana
+        window.addEventListener('resize', actualizarCarrusel);
+    </script>
 </body>
 </html>

@@ -3,177 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProGrammer - Proyectos</title>
+    <title>ProGrammer - Vista de Proyecto</title>
+    
+    <link rel="stylesheet" href="../../Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="../../Style/general_styles/header.css">
     <link rel="stylesheet" href="../../Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../Style/mainin_style/profile.css">
-    <link rel="stylesheet" href="../../Style/mainin_style/review.css">
     <link rel="stylesheet" href="../../Style/projectview_styles/projectview.css">
-    <link rel="stylesheet" href="../../Style/projectview_styles/images.css">
-    <link rel="stylesheet" href="../../Style/projectview_styles/images-modals.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-
-    <!-- Cabecera -->
+<body class="body-layout fondo-oscuro-neon">
 
     <div id="header-placeholder"></div>
 
-
-
-    <!-- Perfil -->
-
     <main class="contenedor-principal">
         <aside class="columna-perfil">
-            <div class="tarjeta-perfil">
-                <div class="perfil-superior">
+            <div class="tarjeta-perfil tarjeta-neon-estatica">
+                <div class="cabecera-tarjeta">
                     <div class="foto-perfil-contenedor">
                         <div class="circulo-foto"></div>
                         <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                     </div>
-                    <h2 class="nombre-usuario">Nombre del usuario del proyecto</h2>
+                    <h2 class="nombre-usuario">David Alcázar</h2>
                 </div>
 
-                <div class="perfil-inferior">
+                <div class="cuerpo-tarjeta">
                     <ul class="redes-sociales">
-                        <li>- Insta</li>
-                        <li>- Twiter</li>
-                        <li>- Tel</li>
+                        <li><i class="fab fa-instagram"></i> Instagram</li>
+                        <li><i class="fab fa-twitter"></i> Twitter</li>
+                        <li><i class="fas fa-phone"></i> Teléfono</li>
                     </ul>
-                    <button class="boton-curriculum">CURRICULUM</button>
+                    <button class="btn-accion-neon">CURRICULUM</button>
                 </div>
             </div>
-
             
-            <!-- Reseñas -->
-
-            <div class="tarjeta-resenas-izq">
-                <h3>RESEÑAS</h3>
-                <p>Escribe aquí....</p>
-                <button class="boton-anadir" onclick="window.location.href='/UI/newreview/newreview.html'">Añadir reseña</button>
+            <div class="tarjeta-resenas-izq tarjeta-neon-estatica">
+                <div class="cabecera-tarjeta">
+                    <h3>RESEÑAS</h3>
+                </div>
+                <div class="cuerpo-tarjeta">
+                    <textarea class="input-resena" placeholder="Escribe tu reseña aquí..."></textarea>
+                    <button class="btn-accion-neon" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+                </div>
             </div>
         </aside>
 
+        <section class="seccion-derecha-dinamica">
+            <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
+                <div class="cabecera-proyecto">
+                    <h2>Nombre del Proyecto</h2>
+                    <a href="../profileView.html" class="boton-volver-circular" title="Volver al Perfil">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
 
+                <div class="contenedor-detalles-proyecto">
+                    <p class="autor-texto"><strong>Autor:</strong> David Alcázar</p>
+                    
+                    <div class="fila-botones-neon">
+                        <span class="badge-validado">
+                            <i class="fas fa-check-circle"></i> Validado
+                        </span>
+                        
+                        <button class="btn-accion-neon" onclick="window.location.href='../newprojectreview/newprojectreview.html'">
+                            <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
+                        </button>
+                        
+                        <button class="btn-accion-neon" onclick="window.location.href='../viewprojectreviews/viewprojectreviews.html'">
+                            <i class="fas fa-comments"></i> VER RESEÑAS
+                        </button>
+                        
+                        <button class="btn-accion-neon btn-brillante">
+                            <i class="fas fa-download"></i> DESCARGAR
+                        </button>
+                    </div>
 
-    <!-- Vista de proyecto -->
-
-    <section class="seccion-derecha-dinamica">
-
-        <div class="tarjeta-proyecto-detalle">
-    
-            <!-- TÍTULO -->
-            <div class="cabecera-proyecto">
-                <h2>Nombre del Proyecto</h2>
-                <a href="../profileView.html" class="boton-volver-curvo" title="Volver a la lista de proyectos">
-                    <i class="fas fa-undo"></i>
-                </a>
-            </div>
-            <!-- AUTOR + VALIDACIÓN + DESCARGA -->
-            <div class="info-superior">
-                <p><strong>Autor:</strong> David Alcázar</p>
-
-                <div class="estado-proyecto">
-                    <span class="badge validado">
-                        <i class="fas fa-check-circle"></i> Validado
-                    </span>
-
-                    <button class="boton-nuevareview" onclick="window.location.href='/UI/newprojectreview/newprojectreview.html'">
-                        <i class="fas fa-plus-circle"></i> Nueva reseña
-                    </button>
-
-                    <button class="boton-verreviews" onclick="window.location.href='/UI/viewprojectreviews/viewprojectreviews.html'">
-                        <i class="fas fa-comments"></i> Ver reseñas
-                    </button>
-                
-                    <button class="boton-descargar">
-                        <i class="fas fa-download"></i> Descargar
-                    </button>
+                    <div class="galeria-capturas">
+                        <div class="marco-captura"><img src="../../Img/stock/ejemplo1.jpg" alt="Captura 1"></div>
+                        <div class="marco-captura"><img src="../../Img/stock/ejemplo2.jpg" alt="Captura 2"></div>
+                        <div class="marco-captura"><img src="../../Img/stock/ejemplo3.jpg" alt="Captura 3"></div>
+                    </div>
+                    
+                    <div class="bloque-texto-informativo">
+                        <h3 class="titulo-seccion">Descripción</h3>
+                        <p class="texto-parrafo">Este proyecto consiste en una plataforma para conectar desarrolladores y fomentar el aprendizaje colaborativo...</p>
+                        
+                        <h3 class="titulo-seccion">Repositorio</h3>
+                        <a href="#" class="enlace-repositorio" target="_blank">
+                            <i class="fab fa-github"></i> https://github.com/proyecto
+                        </a>
+                    </div>
                 </div>
             </div>
-
-            <!-- CAROUSEL -->
-            <div class="galeria-proyecto">
-
-                <img src="../../Img/stock/ejemplo1.jpg" class="img-proyecto">
-                <img src="../../Img/stock/ejemplo2.jpg" class="img-proyecto">
-                <img src="../../Img/stock/ejemplo3.jpg" class="img-proyecto">
-                <img src="../../Img/stock/ejemplo4.jpg" class="img-proyecto">
-            
-            </div>
-            
-            <!-- MODAL -->
-            <div class="modal-img" id="modal">
-                <span class="cerrar">&times;</span>
-                <img class="modal-contenido" id="img-grande">
-            </div>
-    
-            <!-- DESCRIPCIÓN -->
-            <div class="descripcion-proyecto">
-                <h3>Descripción</h3>
-                <p>
-                    Este proyecto consiste en una plataforma para conectar desarrolladores...
-                </p>
-            </div>
-    
-            <!-- REPO -->
-            <div class="repo">
-                <h3>Repositorio</h3>
-                <a href="#" target="_blank">https://github.com/proyecto</a>
-            </div>
-    
-        </div>
-    
-    </section>
+        </section>
     </main>
 
-    <!-- Footer -->
+    <div id="modal-imagen" class="modal">
+        <img class="contenido-modal" id="img-ampliada">
+        <div id="caption-modal"></div>
+    </div>
 
     <div id="footer-placeholder"></div>
 
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- jQuery UI -->
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
     <script>
-        const modal = document.getElementById("modal");
-        const modalImg = document.getElementById("img-grande");
-    
-        document.querySelectorAll(".img-proyecto").forEach(img => {
-            img.onclick = function() {
-                modal.style.display = "block";
-                modalImg.src = this.src;
-            }
+        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+
+        $(document).ready(function() {
+            // ABRIR MODAL
+            $(".marco-captura img").on("click", function() {
+                $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
+                $("#img-ampliada").attr("src", $(this).attr("src"));
+                $("#caption-modal").text($(this).attr("alt"));
+                $("body").css("overflow", "hidden"); 
+            });
+
+            // CERRAR MODAL
+            $("#modal-imagen").on("click", function(e) {
+                if(e.target !== document.getElementById("img-ampliada")) {
+                    $(this).fadeOut(300, function() {
+                        $("body").css("overflow", "auto");
+                    });
+                }
+            });
         });
-    
-        document.querySelector(".cerrar").onclick = function() {
-            modal.style.display = "none";
-        }
-    
-        modal.onclick = function(e) {
-            if(e.target === modal) {
-                modal.style.display = "none";
-            }
-        }
     </script>
-
-    <!-- JS para cargar header y footer -->
-<script>
-    // Ajusta las rutas según la ubicación del HTML
-    const headerPath = "../../includes/header.html";
-    const footerPath = "../../includes/footer.html";
-
-    fetch(headerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("header-placeholder").innerHTML = html);
-
-    fetch(footerPath)
-        .then(res => res.text())
-        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
-</script>
 </body>
 </html>

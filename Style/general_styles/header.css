@@ -25,7 +25,7 @@ body {
 
 /* --- ENCABEZADO PRINCIPAL --- */
 .encabezado-principal {
-    background-color: #4f4f4f; 
+    background-color: #1a1a1a; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -41,7 +41,7 @@ body {
     flex: 1; 
 }
 
-/* --- NAVEGACIÓN CENTRAL (SÚPER ESPACIADA) --- */
+/* --- NAVEGACIÓN CENTRAL --- */
 .navegacion-central {
     display: flex;
     gap: 70px; 
@@ -51,19 +51,36 @@ body {
 
 .navegacion-central a {
     color: white;
-    font-size: 1.8rem; 
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    display: inline-block;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 5px; 
 }
 
-/* ANIMACIÓN DE ILUMINACIÓN NEÓN AL HOVER */
+.navegacion-central a i {
+    font-size: 1.8rem; 
+    height: 42px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}
+
+.texto-icono {
+    font-size: 0.75rem; 
+    font-weight: 600;
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
 .navegacion-central a:hover {
     color: #FFCC00;
-    transform: scale(1.3); 
+    transform: scale(1.15); 
     text-shadow: 0 0 10px #FFCC00, 
-                 0 0 20px #FFCC00, 
-                 0 0 40px rgba(255, 204, 0, 0.6);
+                  0 0 20px #FFCC00, 
+                  0 0 40px rgba(255, 204, 0, 0.6);
 }
 
 /* --- SECCIÓN DERECHA --- */
@@ -75,6 +92,22 @@ body {
     flex: 1;
 }
 
+.item-derecha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none; 
+    background: none;      
+    border: none;          
+}
+
+.item-derecha .texto-icono {
+    color: white;
+}
+
+/* --- ESTILOS DE LOS ICONOS DERECHOS --- */
 .avatar-usuario {
     width: 42px;
     height: 42px;
@@ -84,77 +117,218 @@ body {
     justify-content: center;
     align-items: center;
     color: #4f4f4f;
-    cursor: pointer;
     transition: all 0.3s ease;
-    text-decoration: none;
 }
 
-.avatar-usuario:hover {
+/* LA CAJA DEL ICONO (Estática) */
+.icono-engranaje {
+    color: white;
+    font-size: 1.8rem;
+    height: 42px; 
+    width: 42px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    position: relative;
+    top: 9px; 
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* EL DIBUJO DEL ICONO (Lo que realmente gira) */
+.icono-engranaje::before {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+}
+
+/* --- ANIMACIONES EN CONJUNTO --- */
+.item-derecha:hover .avatar-usuario {
     box-shadow: 0 0 20px #FFCC00;
     transform: scale(1.1);
 }
 
-.boton-ajustes {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.8rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.boton-ajustes:hover {
+.item-derecha:hover .icono-engranaje {
     color: #FFCC00;
-    transform: rotate(90deg) scale(1.1);
-    text-shadow: 0 0 15px #FFCC00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
 }
 
-/* --- RESPONSIVE / ADAPTACIÓN A PANTALLAS --- */
-
-/* TABLETS (Pantallas menores a 1100px para este espaciado) */
-@media (max-width: 1100px) {
-    .navegacion-central {
-        gap: 40px; 
-    }
+.item-derecha:hover .icono-engranaje::before {
+    transform: rotate(180deg); 
 }
 
-@media (max-width: 900px) {
-    .navegacion-central {
-        gap: 25px;
-    }
-    .seccion-izquierda, .seccion-derecha {
-        gap: 15px;
-    }
+.item-derecha:hover .texto-icono {
+    color: #FFCC00;
+    transform: scale(1.15); 
+    text-shadow: 0 0 10px #FFCC00, 
+                 0 0 20px #FFCC00, 
+                 0 0 40px rgba(255, 204, 0, 0.6);
 }
 
-/* MÓVILES (Pantallas menores a 600px) */
-@media (max-width: 600px) {
-    .encabezado-principal {
-        padding: 10px 15px;
-    }
 
-    .navegacion-central {
-        gap: 15px;
-    }
+/* =========================================
+   SISTEMA DE NOTIFICACIONES (AVISOS) - ANIMACIÓN SUAVE
+   ========================================= */
 
-    .navegacion-central a {
-        font-size: 1.4rem;
-    }
-
-    .imagen-logotipo {
-        max-height: 40px;
-    }
+.contenedor-avisos {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* PANTALLAS MUY PEQUEÑAS (Menos de 400px) */
-@media (max-width: 400px) {
-    .navegacion-central {
-        order: 3;
-        width: 100%;
-        justify-content: space-around; 
-        margin-top: 15px;
-        border-top: 1px solid #666;
-        padding-top: 15px;
-        gap: 10px;
-    }
+.globo-notificacion {
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    background-color: #FFCC00;
+    color: black;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    border: 2px solid #4f4f4f;
+    pointer-events: none;
 }
+
+/* --- PANEL CON ANIMACIÓN DE ENTRADA Y SALIDA --- */
+.panel-notificaciones {
+    /* En lugar de display: none, usamos visibility y opacity para poder animar */
+    visibility: hidden; 
+    opacity: 0;
+    transform: translateY(-15px) scale(0.98); /* Entra ligeramente desde arriba y un pelín más pequeño */
+    
+    position: absolute;
+    top: 65px;
+    right: -100px;
+    width: 320px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8); /* Sombra más pronunciada */
+    z-index: 9999;
+    overflow: hidden;
+    cursor: default;
+    
+    /* Esta es la magia: una transición suave ("swift") para todas las propiedades */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+}
+
+/* Estado activo: se vuelve 100% visible y a tamaño real */
+.panel-notificaciones.activo {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.cabecera-notificaciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #222;
+    background: linear-gradient(180deg, #1f1f1f 0%, #151515 100%); /* Le da profundidad visual */
+}
+
+.cabecera-notificaciones h4 {
+    color: white;
+    font-size: 1.1rem; /* Un poco más grande y claro */
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* --- Botón "Marcar como leído" horizontal --- */
+.marcar-leido {
+    background-color: #2a2a2a;
+    color: #aaa;
+    font-size: 0.8rem;
+    text-decoration: none !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row !important; /* Fuerza que vaya de izquierda a derecha */
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    height: auto !important; /* Evita que herede la altura del menú */
+}
+
+/* Arreglamos el icono para que no herede el tamaño gigante del menú */
+.marcar-leido i {
+    font-size: 0.9rem !important;
+    height: auto !important;
+    display: block !important;
+}
+
+.marcar-leido:hover {
+    background-color: #FFCC00;
+    color: black !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+.lista-notificaciones {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.item-notificacion {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #222;
+    transition: background 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.item-notificacion:hover {
+    background-color: #222;
+}
+
+.item-notificacion.no-leido {
+    background-color: #2a2a20;
+    border-left: 3px solid #FFCC00;
+}
+
+.icono-noti {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.icono-noti.empresa { background-color: #FFCC00; color: black; }
+.icono-noti.chat { background-color: #333; color: #FFCC00; border: 1px solid #FFCC00;}
+.icono-noti.sistema { background-color: #444; color: white; }
+
+.texto-noti p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin: 0 0 5px 0;
+    line-height: 1.3;
+}
+
+.texto-noti strong {
+    color: white;
+}
+
+.tiempo-noti {
+    color: #888;
+    font-size: 0.75rem;
+}
+
+.lista-notificaciones::-webkit-scrollbar {
+    width: 6px;
+}
+.lista-notificaciones::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+.lista-notificaciones::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+

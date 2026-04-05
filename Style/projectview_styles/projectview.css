@@ -1,5 +1,5 @@
 /* =========================================================
-   1. FONDO Y ESTRUCTURA (ESTILO REJILLA NEÓN)
+   1. FONDO Y ESTRUCTURA (FOOTER SIEMPRE ABAJO)
    ========================================================= */
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
@@ -7,6 +7,8 @@ body.fondo-oscuro-neon {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     position: relative;
     overflow-x: hidden;
 }
@@ -30,14 +32,13 @@ body.fondo-oscuro-neon::before {
     padding: 0 20px;
     gap: 45px; 
     align-items: flex-start;
+    flex: 1; /* Empuja el footer al fondo */
 }
 
 /* =========================================================
-   2. TARJETAS UNIFICADAS
+   2. TARJETAS NEÓN ESTÁTICAS
    ========================================================= */
-.tarjeta-perfil, 
-.tarjeta-resenas-izq, 
-.tarjeta-proyecto-detalle {
+.tarjeta-neon-estatica {
     background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 20px !important;
@@ -48,7 +49,7 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================================
-   3. COLUMNA IZQUIERDA
+   3. COLUMNA IZQUIERDA (PERFIL Y MINI RESEÑA)
    ========================================================= */
 .columna-perfil {
     flex: 0 0 380px;
@@ -72,7 +73,6 @@ body.fondo-oscuro-neon::before {
 }
 
 .nombre-usuario { font-size: 1.6rem; color: #FFFFFF; font-weight: bold; text-align: center; margin: 0; }
-
 .redes-sociales { list-style: none; padding: 0; margin-bottom: 25px; }
 .redes-sociales li { padding: 12px 0; color: #ccc; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
 
@@ -84,26 +84,25 @@ body.fondo-oscuro-neon::before {
 .input-resena:focus { border: 1px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
 
 /* =========================================================
-   4. BOTONES
+   4. BOTONES NEÓN
    ========================================================= */
-.boton-curriculum, .boton-anadir, .btn-accion-neon {
+.btn-accion-neon {
     width: 100%; padding: 12px; background-color: #0e0e0e !important; color: #FFCC00 !important;
     border: 2px solid #FFCC00 !important; border-radius: 10px; font-weight: bold;
     cursor: pointer; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex; align-items: center; justify-content: center; gap: 10px;
 }
 
-.boton-curriculum:hover, .boton-anadir:hover, .btn-accion-neon:hover {
+.btn-accion-neon:hover {
     background-color: #FFCC00 !important; color: #111 !important;
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
     transform: scale(1.06) translateY(-2px); 
 }
 
 /* =========================================================
-   5. SECCIÓN DERECHA
+   5. SECCIÓN DERECHA (DETALLES)
    ========================================================= */
 .seccion-derecha-dinamica { flex: 1; }
-
 .cabecera-proyecto { 
     display: flex; justify-content: space-between; align-items: center; 
     border-bottom: 2px solid rgba(170, 170, 170, 0.3); 
@@ -118,13 +117,9 @@ body.fondo-oscuro-neon::before {
     background-color: #0e0e0e; color: #FFCC00; text-decoration: none;
     transition: all 0.4s ease;
 }
-.boton-volver-circular:hover { 
-    background-color: #FFCC00; color: #111; 
-    transform: scale(1.15) rotate(-15deg); 
-}
+.boton-volver-circular:hover { background-color: #FFCC00; color: #111; transform: scale(1.15) rotate(-15deg); }
 
 .autor-texto { font-size: 1.4rem; margin: 10px 0 50px 0; font-weight: 500; color: #FFFFFF; }
-
 .fila-botones-neon { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 45px; }
 .fila-botones-neon .btn-accion-neon { width: auto; padding: 10px 22px; border-radius: 12px; }
 
@@ -134,7 +129,7 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================================
-   6. GALERÍA
+   6. GALERÍA DE CAPTURAS
    ========================================================= */
 .galeria-capturas { display: flex; gap: 25px; margin-bottom: 45px; }
 .marco-captura { 
@@ -142,54 +137,70 @@ body.fondo-oscuro-neon::before {
     overflow: hidden; cursor: pointer; transition: all 0.4s ease; 
     border: 2px solid transparent; 
 }
-.marco-captura:hover { 
-    transform: translateY(-10px); border-color: #FFCC00; 
-    box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5); 
-}
+.marco-captura:hover { transform: translateY(-10px); border-color: #FFCC00; box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5); }
 .marco-captura img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
 .marco-captura:hover img { transform: scale(1.1); }
 
 /* =========================================================
-   7. TEXTOS
+   7. TEXTOS (MÁS ESPACIADO Y ENLACE + ICONO BLANCO)
    ========================================================= */
+.bloque-texto-informativo { margin-top: 50px; }
+
 .titulo-seccion { 
-    font-size: 1.7rem; margin-bottom: 15px; color: #fff; 
+    font-size: 1.7rem; margin-bottom: 25px; color: #fff; 
     border-left: 4px solid #FFCC00; padding-left: 15px; 
 }
-.texto-parrafo { color: #ccc; line-height: 1.7; margin-bottom: 35px; font-size: 1.1rem; }
 
-.enlace-repositorio { 
-    color: #FFFFFF; text-decoration: none; font-size: 1.2rem; font-weight: 500;
-    transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;
+.texto-parrafo { 
+    color: #ccc; line-height: 1.8; margin-bottom: 50px; 
+    font-size: 1.1rem; text-align: justify;
 }
-.enlace-repositorio:hover { color: #FFCC00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.8); transform: translateX(5px); }
+
+/* El enlace ahora controla el color de todo su contenido */
+.enlace-repositorio { 
+    color: #FFFFFF !important; 
+    text-decoration: none; 
+    font-size: 1.2rem; 
+    font-weight: 500; 
+    transition: all 0.3s ease; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 12px;
+}
+
+/* Forzamos que el icono sea blanco inicialmente */
+.enlace-repositorio i { 
+    color: #FFFFFF; 
+    transition: color 0.3s ease; 
+}
+
+/* Al pasar el ratón, AMBOS cambian a amarillo */
+.enlace-repositorio:hover { 
+    color: #FFCC00 !important; 
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.8); 
+    transform: translateX(8px); 
+}
+
+.enlace-repositorio:hover i { 
+    color: #FFCC00; 
+}
 
 /* =========================================================
-   8. MODAL (SIN BOTÓN X)
+   8. MODAL (VISTA AMPLIADA)
    ========================================================= */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 9999; 
-    left: 0; top: 0; 
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.95); 
-    backdrop-filter: blur(10px);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    cursor: zoom-out; /* Cursor indica que al clicar se cierra */
+    display: none; position: fixed; z-index: 9999; 
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+    justify-content: center; align-items: center; flex-direction: column;
+    cursor: zoom-out;
 }
 
 .contenido-modal {
-    display: block; 
-    width: 85%; 
-    max-width: 1100px;
-    border: 2px solid #FFCC00; 
-    border-radius: 15px;
+    display: block; width: 85%; max-width: 1100px;
+    border: 2px solid #FFCC00; border-radius: 15px;
     box-shadow: 0 0 40px rgba(255, 204, 0, 0.5);
-    animation: zoomIn 0.3s ease;
-    cursor: default; /* En la imagen el cursor es normal */
+    animation: zoomIn 0.3s ease; cursor: default;
 }
 
 @keyframes zoomIn {
@@ -197,10 +208,7 @@ body.fondo-oscuro-neon::before {
     to { transform: scale(1); opacity: 1; }
 }
 
-#caption-modal {
-    text-align: center; color: #FFCC00; padding: 25px; 
-    font-weight: bold; font-size: 1.3rem; text-transform: uppercase;
-}
+#caption-modal { text-align: center; color: #FFCC00; padding: 25px; font-weight: bold; font-size: 1.3rem; text-transform: uppercase; }
 
 /* =========================================================
    9. RESPONSIVE

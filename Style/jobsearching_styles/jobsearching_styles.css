@@ -1,4 +1,6 @@
-/* --- ESTRUCTURA PARA PEGAR EL FOOTER ABAJO --- */
+/* =========================================================
+   1. ESTRUCTURA PARA PEGAR EL FOOTER ABAJO
+   ========================================================= */
 html, body {
     height: 100%;
     margin: 0;
@@ -7,49 +9,51 @@ html, body {
 .body-layout {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ocupa el 100% de la pantalla */
+    min-height: 100vh;
     background-color: #000;
 }
 
-#header-placeholder {
-    flex-shrink: 0; /* Que no se encoja */
-}
-
-#footer-placeholder {
-    flex-shrink: 0; /* Que no se encoja */
+#header-placeholder, #footer-placeholder {
+    flex-shrink: 0;
 }
 
 .contenedor-principal-ofertas {
-    flex: 1; /* Esto estira el contenido para empujar el footer */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Más espacio entre tarjetas */
+    gap: 25px;
     padding: 40px 25px;
-    max-width: 1400px; /* CAMBIO: De 1000px a 1400px para que sean más largos */
-    margin: 0 auto; /* Centrado horizontal */
+    max-width: 1400px;
+    margin: 0 auto;
     width: 100%;
 }
 
-/* --- TARJETAS CON ILUMINACIÓN FIJA --- */
+/* =========================================================
+   2. TARJETAS CON ILUMINACIÓN NEÓN AJUSTADA
+   ========================================================= */
 .tarjeta-oferta {
     display: flex;
     align-items: center;
     gap: 20px;
-    background-color: #333;
-    border: 3px solid #FFCC00;
+    background-color: #1a1a1a;
+    border: 2px solid #FFCC00;
     border-radius: 25px;
-    padding: 20px 40px; /* CAMBIO: Más padding lateral para acentuar lo largo */
+    padding: 20px 40px;
     flex-wrap: wrap;
-    /* CAMBIO: Brillo neón constante más intenso de normal */
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6), 
-                inset 0 0 10px rgba(255, 204, 0, 0.2); 
+    
+    /* ILUMINACIÓN NORMAL: Subida a 0.35 para que brille más de base */
+    box-shadow: 0 0 18px rgba(255, 204, 0, 0.35), 
+                inset 0 0 8px rgba(255, 204, 0, 0.15); 
+    
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* ILUMINACIÓN HOVER: Brillo neón máximo */
 .tarjeta-oferta:hover {
-    transform: translateY(-5px); /* Pequeño salto al pasar el ratón */
-    /* Aumenta un poco el brillo al hacer hover */
-    box-shadow: 0 0 30px rgba(255, 204, 0, 0.8);
+    transform: translateY(-5px);
+    /* Resplandor más expansivo */
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.75), 
+                inset 0 0 12px rgba(255, 204, 0, 0.25);
 }
 
 .logo-empresa img {
@@ -57,12 +61,12 @@ html, body {
     height: 80px;
     object-fit: contain;
     border-radius: 12px;
-    background-color: #444; /* Fondo para logos con transparencia */
+    background-color: #333;
 }
 
 .info-oferta {
     flex: 1;
-    min-width: 250px; /* Evita que se aplaste mucho */
+    min-width: 250px;
 }
 
 .nombre-empresa {
@@ -72,7 +76,7 @@ html, body {
 }
 
 .titulo-puesto {
-    color: #FFCC00; /* Amarillo ProGrammer */
+    color: #FFCC00;
     font-size: 1.1rem;
     margin-bottom: 10px;
     font-weight: bold;
@@ -84,7 +88,9 @@ html, body {
     line-height: 1.4;
 }
 
-/* --- ACCIONES --- */
+/* =========================================================
+   3. ACCIONES Y ESTADOS
+   ========================================================= */
 .acciones-oferta {
     display: flex;
     flex-direction: column;
@@ -98,53 +104,64 @@ html, body {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .estado-oferta.activo {
     color: #4CAF50;
-    border: 1px solid #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.5);
 }
 
 .estado-oferta.inactivo {
     color: #f44336;
-    border: 1px solid #f44336;
+    border: 1px solid rgba(244, 67, 54, 0.5);
 }
 
-/* --- BOTÓN POSTULAR --- */
+/* =========================================================
+   4. BOTÓN POSTULAR
+   ========================================================= */
 .boton-postular {
-    background: linear-gradient(to bottom, #f9d423 0%, #ffcc00 100%);
-    border: 2px solid #000;
-    padding: 10px 20px;
+    background-color: #050505 !important;
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
     border-radius: 12px;
+    padding: 12px 25px;
     font-weight: bold;
     font-size: 0.95rem;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s ease;
 }
 
 .boton-postular:hover:not(:disabled) {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px #FFCC00;
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5) !important;
 }
 
 .boton-postular:disabled {
-    background: #555;
-    border-color: #777;
-    color: #888;
+    background: #222 !important;
+    border-color: #444 !important;
+    color: #666 !important;
     cursor: not-allowed;
-    opacity: 0.7;
 }
 
-/* --- RESPONSIVE --- */
+/* =========================================================
+   5. RESPONSIVE
+   ========================================================= */
 @media (max-width: 600px) {
     .tarjeta-oferta {
         flex-direction: column;
         text-align: center;
-        padding: 20px;
+        padding: 25px;
     }
     .acciones-oferta {
         align-items: center;

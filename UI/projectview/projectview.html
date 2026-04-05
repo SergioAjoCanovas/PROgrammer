@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Vista de Proyecto</title>
     
+    <link rel="stylesheet" href="../../Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="../../Style/general_styles/header.css">
     <link rel="stylesheet" href="../../Style/general_styles/footer.css">
     <link rel="stylesheet" href="../../Style/projectview_styles/projectview.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="fondo-oscuro-neon">
+<body class="body-layout fondo-oscuro-neon">
 
     <div id="header-placeholder"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
-            <div class="tarjeta-perfil">
+            <div class="tarjeta-perfil tarjeta-neon-estatica">
                 <div class="cabecera-tarjeta">
                     <div class="foto-perfil-contenedor">
                         <div class="circulo-foto"></div>
                         <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                     </div>
-                    <h2 class="nombre-usuario">Nombre del usuario</h2>
+                    <h2 class="nombre-usuario">David Alcázar</h2>
                 </div>
 
                 <div class="cuerpo-tarjeta">
@@ -32,26 +33,26 @@
                         <li><i class="fab fa-twitter"></i> Twitter</li>
                         <li><i class="fas fa-phone"></i> Teléfono</li>
                     </ul>
-                    <button class="boton-curriculum">CURRICULUM</button>
+                    <button class="btn-accion-neon">CURRICULUM</button>
                 </div>
             </div>
             
-            <div class="tarjeta-resenas-izq">
+            <div class="tarjeta-resenas-izq tarjeta-neon-estatica">
                 <div class="cabecera-tarjeta">
                     <h3>RESEÑAS</h3>
                 </div>
                 <div class="cuerpo-tarjeta">
                     <textarea class="input-resena" placeholder="Escribe tu reseña aquí..."></textarea>
-                    <button class="boton-anadir" onclick="window.location.href='/UI/newreview/newreview.html'">Añadir reseña</button>
+                    <button class="btn-accion-neon" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
                 </div>
             </div>
         </aside>
 
         <section class="seccion-derecha-dinamica">
-            <div class="tarjeta-proyecto-detalle">
+            <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
                 <div class="cabecera-proyecto">
                     <h2>Nombre del Proyecto</h2>
-                    <a href="../profileView.html" class="boton-volver-circular" title="Volver">
+                    <a href="../profileView.html" class="boton-volver-circular" title="Volver al Perfil">
                         <i class="fas fa-undo"></i>
                     </a>
                 </div>
@@ -64,11 +65,11 @@
                             <i class="fas fa-check-circle"></i> Validado
                         </span>
                         
-                        <button class="btn-accion-neon" onclick="window.location.href='/UI/newprojectreview/newprojectreview.html'">
+                        <button class="btn-accion-neon" onclick="window.location.href='../newprojectreview/newprojectreview.html'">
                             <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
                         </button>
                         
-                        <button class="btn-accion-neon" onclick="window.location.href='/UI/viewprojectreviews/viewprojectreviews.html'">
+                        <button class="btn-accion-neon" onclick="window.location.href='../viewprojectreviews/viewprojectreviews.html'">
                             <i class="fas fa-comments"></i> VER RESEÑAS
                         </button>
                         
@@ -97,12 +98,12 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
-
     <div id="modal-imagen" class="modal">
         <img class="contenido-modal" id="img-ampliada">
         <div id="caption-modal"></div>
     </div>
+
+    <div id="footer-placeholder"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -110,20 +111,19 @@
         fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
 
         $(document).ready(function() {
-            // Abrir modal al clicar imagen
+            // ABRIR MODAL
             $(".marco-captura img").on("click", function() {
                 $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
                 $("#img-ampliada").attr("src", $(this).attr("src"));
                 $("#caption-modal").text($(this).attr("alt"));
-                $("body").css("overflow", "hidden"); // Bloquea scroll
+                $("body").css("overflow", "hidden"); 
             });
 
-            // Cerrar modal al clicar en el fondo oscuro
+            // CERRAR MODAL
             $("#modal-imagen").on("click", function(e) {
-                // Si el clic NO es en la imagen, cerrar
                 if(e.target !== document.getElementById("img-ampliada")) {
                     $(this).fadeOut(300, function() {
-                        $("body").css("overflow", "auto"); // Libera scroll
+                        $("body").css("overflow", "auto");
                     });
                 }
             });

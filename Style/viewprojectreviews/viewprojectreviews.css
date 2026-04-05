@@ -1,29 +1,42 @@
 /* =========================================================
-   1. FONDO Y ESTRUCTURA (UNIFICADO)
+   1. FONDO Y ESTRUCTURA (UNIFICADO CON GRID)
    ========================================================= */
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
     color: #FFFFFF;
     font-family: 'Segoe UI', Arial, sans-serif;
-    margin: 0; min-height: 100vh;
-    position: relative; overflow-x: hidden;
+    margin: 0; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative; 
+    overflow-x: hidden;
 }
 
 body.fondo-oscuro-neon::before {
-    content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    content: ""; 
+    position: fixed; 
+    top: 0; left: 0; width: 100%; height: 100%;
     background-image: 
         linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px; z-index: -1;
+    background-size: 50px 50px; 
+    z-index: -1;
 }
 
 .contenedor-principal {
-    display: flex; max-width: 1800px; width: 98%;
-    margin: 40px auto; padding: 0 20px; gap: 30px; align-items: flex-start;
+    display: flex; 
+    max-width: 1800px; 
+    width: 98%;
+    margin: 60px auto; 
+    padding: 0 20px; 
+    gap: 30px; 
+    align-items: flex-start;
+    flex: 1;
 }
 
 /* =========================================================
-   2. TARJETAS NEÓN
+   2. TARJETAS NEÓN (ESTILO ORIGINAL)
    ========================================================= */
 .tarjeta-perfil, .tarjeta-proyecto-detalle, .tarjeta-reseñas-ver {
     background-color: #1a1a1a !important;
@@ -41,7 +54,7 @@ body.fondo-oscuro-neon::before {
 .foto-perfil-contenedor { position: relative; width: 120px; height: 120px; margin: 0 auto 15px; }
 .circulo-foto { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #FFCC00; background: #222; }
 .icono-corazon { position: absolute; bottom: 5px; right: 5px; color: #FFCC00; background: #333; padding: 6px; border-radius: 50%; border: 1px solid #FFCC00; }
-.nombre-usuario { font-size: 1.4rem; text-align: center; font-weight: bold; }
+.nombre-usuario { font-size: 1.4rem; text-align: center; font-weight: bold; margin: 0; }
 
 .redes-sociales { list-style: none; padding: 0; margin-bottom: 20px; }
 .redes-sociales li { padding: 8px 0; color: #ccc; display: flex; align-items: center; gap: 10px; }
@@ -50,10 +63,10 @@ body.fondo-oscuro-neon::before {
    3. BOTONES Y ACCIONES
    ========================================================= */
 .btn-accion-neon {
-    padding: 8px 18px; font-size: 0.85rem; width: auto;
+    padding: 10px 20px; font-size: 0.85rem;
     background: #0e0e0e; color: #FFCC00; border: 2px solid #FFCC00;
     border-radius: 10px; font-weight: bold; cursor: pointer;
-    text-transform: uppercase; transition: all 0.4s;
+    text-transform: uppercase; transition: 0.4s;
     display: inline-flex; align-items: center; gap: 10px;
 }
 
@@ -80,22 +93,41 @@ body.fondo-oscuro-neon::before {
 .badge-validado { border: 2px solid #00FF00; color: #00FF00; padding: 8px 15px; border-radius: 50px; font-size: 0.9rem; font-weight: bold; }
 
 /* =========================================================
-   4. GALERÍA (MÁS GRANDE + ZOOM)
+   4. GALERÍA Y DESCRIPCIÓN (BARRA 5PX + TEXTO BLANCO)
    ========================================================= */
-.galeria-capturas { display: flex; gap: 20px; margin-bottom: 30px; }
+.galeria-capturas { display: flex; gap: 20px; margin-bottom: 40px; }
 .marco-captura { 
     flex: 1; height: 180px; border-radius: 15px; overflow: hidden; 
     cursor: pointer; border: 2px solid transparent; transition: 0.4s; 
 }
-.marco-captura:hover { 
-    border-color: #FFCC00; transform: translateY(-5px); 
-    box-shadow: 0 10px 20px rgba(255, 204, 0, 0.4); 
-}
+.marco-captura:hover { border-color: #FFCC00; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255, 204, 0, 0.4); }
 .marco-captura img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; }
 .marco-captura:hover img { transform: scale(1.15); }
 
+/* Bloque Descripción */
+.bloque-texto-informativo { margin-top: 50px; }
+
+.titulo-seccion { 
+    color: #FFFFFF; 
+    font-size: 1.8rem; 
+    font-weight: bold;
+    margin-bottom: 25px; 
+    border-left: 5px solid #FFCC00; 
+    padding-left: 15px;
+    line-height: 1.1;
+}
+
+.texto-parrafo { 
+    color: #FFFFFF; 
+    line-height: 1.8; 
+    font-size: 1.1rem; 
+    text-align: justify;
+    padding-left: 5px;
+    margin: 0;
+}
+
 /* =========================================================
-   5. SECCIÓN RESEÑAS
+   5. SECCIÓN RESEÑAS / FEEDBACK
    ========================================================= */
 .medias-reseñas-ver { background: rgba(255, 204, 0, 0.05); padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(255, 204, 0, 0.2); }
 .media-stat { display: flex; justify-content: space-between; margin-bottom: 8px; }
@@ -116,7 +148,7 @@ body.fondo-oscuro-neon::before {
 .contenedor-reseñas::-webkit-scrollbar-track { background: #111; }
 
 /* =========================================================
-   6. MODAL NEÓN (ESTILO CAPTURA 1)
+   6. MODAL NEÓN
    ========================================================= */
 .modal {
     display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
@@ -124,27 +156,17 @@ body.fondo-oscuro-neon::before {
     align-items: center; justify-content: center;
 }
 
-.contenedor-modal-neon {
-    position: relative;
-    max-width: 90%;
-    text-align: center;
-}
-
+.contenedor-modal-neon { position: relative; max-width: 90%; text-align: center; }
 .contenido-modal {
     display: block; margin: auto; max-width: 100%; max-height: 80vh;
-    border: 2px solid #FFCC00; /* BORDE AMARILLO CAPTURA */
-    border-radius: 15px;       /* ESQUINAS REDONDEADAS CAPTURA */
-    box-shadow: 0 0 30px rgba(255, 204, 0, 0.5);
+    border: 2px solid #FFCC00; border-radius: 15px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.5);
     animation: zoomIn 0.3s;
 }
 
 @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-.cerrar-modal {
-    position: absolute; top: -50px; right: 0; color: #fff; font-size: 40px; cursor: pointer; transition: 0.3s;
-}
+.cerrar-modal { position: absolute; top: -50px; right: 0; color: #fff; font-size: 40px; cursor: pointer; transition: 0.3s; }
 .cerrar-modal:hover { color: #FFCC00; transform: rotate(90deg); }
-
 #caption-modal { color: #FFCC00; padding: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
 
 /* RESPONSIVE */

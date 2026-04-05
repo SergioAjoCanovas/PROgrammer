@@ -210,3 +210,59 @@ textarea:focus {
     .columna-perfil, .seccion-derecha-dinamica, .zona-derecha { width: 100%; max-width: 850px; }
     .boton-descargar { width: 100%; }
 }
+
+/* =========================================================
+   SOLO SECCIÓN: DESCRIPCIÓN Y REPOSITORIO
+   ========================================================= */
+
+.descripcion-proyecto, .repo { 
+    margin-bottom: 50px; 
+}
+
+/* Título con barra lateral de 5px (Igual a la imagen) */
+.descripcion-proyecto h3, .repo h3 { 
+    color: #FFFFFF; 
+    font-size: 1.8rem; 
+    font-weight: bold;
+    margin-bottom: 25px; 
+    text-transform: none; 
+    border-left: 5px solid #FFCC00; 
+    padding-left: 15px;
+    line-height: 1;
+}
+
+/* Párrafo en blanco puro */
+.descripcion-proyecto p {
+    color: #FFFFFF; 
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin: 0;
+    padding-left: 5px;
+}
+
+/* Enlace blanco con hover amarillo */
+.repo a {
+    color: #FFFFFF !important; 
+    text-decoration: none; 
+    font-size: 1.2rem;
+    display: inline-flex; 
+    align-items: center; 
+    gap: 12px; 
+    transition: all 0.3s ease;
+    padding-left: 5px;
+}
+
+.repo a i { 
+    color: #FFFFFF; 
+    transition: color 0.3s ease;
+}
+
+.repo a:hover { 
+    color: #FFCC00 !important; 
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    transform: translateX(8px);
+}
+
+.repo a:hover i { 
+    color: #FFCC00; 
+}

@@ -7,19 +7,21 @@
 
     <link rel="stylesheet" href="../../Style/general_styles/header.css">
     <link rel="stylesheet" href="../../Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../Style/chats_styles/chats_styles.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="../../Style/chats_styles/chats_styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
+<body class="fondo-oscuro-neon">
 
     <div id="header-placeholder"></div>
 
     <main class="contenedor-principal-chats">
-        <section class="tarjeta-chats">
+        <section class="tarjeta-chats border-neon">
             
             <aside class="panel-contactos">
                 <div class="cabecera-contactos">
                     <h2><i class="fas fa-comments"></i> Mensajes</h2>
-                    <button class="btn-nuevo-chat" title="Nuevo mensaje"><i class="fas fa-plus"></i></button>
+                    <button class="btn-nuevo-chat neon-button" title="Nuevo mensaje"><i class="fas fa-plus"></i></button>
                 </div>
                 
                 <div class="buscador-chats">
@@ -56,19 +58,6 @@
                             <span class="hora">Ayer</span>
                         </div>
                     </div>
-                    
-                    <div class="item-chat">
-                        <div class="avatar-chat">
-                            <i class="fas fa-user-circle fa-2x" style="color: #ccc;"></i>
-                        </div>
-                        <div class="info-chat">
-                            <h4>Grupo: Proyecto React</h4>
-                            <p>Carlos: ¿Quién sube el PR?</p>
-                        </div>
-                        <div class="meta-chat">
-                            <span class="hora">Lun</span>
-                        </div>
-                    </div>
                 </div>
             </aside>
 
@@ -97,15 +86,8 @@
 
                     <div class="mensaje enviado">
                         <div class="burbuja">
-                            <p>¡Hola! Muchas gracias, me alegro de que os haya gustado. Fue un reto integrar la pasarela de pagos.</p>
+                            <p>¡Hola! Muchas gracias, me alegro de que os haya gustado. Fue un resto integrar la pasarela de pagos.</p>
                             <span class="hora-mensaje">10:42 <i class="fas fa-check-double leido"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="mensaje recibido">
-                        <div class="burbuja">
-                            <p>¿Tendrías disponibilidad para una breve llamada esta tarde para comentar una oferta de Frontend?</p>
-                            <span class="hora-mensaje">10:45</span>
                         </div>
                     </div>
                 </div>
@@ -113,7 +95,7 @@
                 <div class="zona-input-chat">
                     <button class="btn-adjuntar" title="Adjuntar archivo o código"><i class="fas fa-paperclip"></i></button>
                     <input type="text" placeholder="Escribe un mensaje aquí...">
-                    <button class="btn-enviar"><i class="fas fa-paper-plane"></i></button>
+                    <button class="btn-enviar neon-button"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </section>
 
@@ -128,6 +110,5 @@
         fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
         fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
     </script>
-
 </body>
 </html>

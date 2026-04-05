@@ -1,54 +1,111 @@
-/* --- ESTILOS GENERALES (Matches TFG Style) --- */
-* {
+/* =========================================================
+   1. ESTILO GLOBAL Y ATMÓSFERA NEÓN (FONDO)
+   ========================================================= */
+
+body.fondo-oscuro-neon {
+    background-color: #000000 !important;
+    color: #FFFFFF;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    z-index: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-    background-color: #000; 
-    color: white;
-    /* Optional subtly dark background pattern or gradient for depth on full pages */
-    background-image: linear-gradient(135deg, #000 0%, #111 100%);
-    min-height: 100vh;
+/* Bolas de fondo animadas (Solo se ven fuera de la tarjeta principal) */
+body.fondo-oscuro-neon::before,
+body.fondo-oscuro-neon::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    z-index: -1 !important;
+    pointer-events: none;
 }
 
-/* --- MAIN CONTAINER (Ensures footer is at bottom) --- */
+body.fondo-oscuro-neon::before {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, rgba(255, 204, 0, 0.05) 50%, rgba(0, 0, 0, 0) 80%);
+    filter: blur(90px);
+    top: -15%;
+    left: -15%;
+    box-shadow: 
+        1100px 400px 200px rgba(255, 204, 0, 0.1), 
+        500px 900px 220px rgba(255, 204, 0, 0.08);
+    animation: viajeGranDiagonal 50s linear infinite !important;
+}
+
+body.fondo-oscuro-neon::after {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.25) 0%, rgba(255, 204, 0, 0.1) 50%, rgba(0, 0, 0, 0) 80%);
+    filter: blur(45px);
+    top: 35%;
+    right: -250px;
+    box-shadow: -1000px 400px 100px rgba(255, 204, 0, 0.2);
+    animation: viajeLateral 35s ease-in-out infinite alternate !important;
+}
+
+@keyframes viajeGranDiagonal {
+    0% { transform: translate(-5vw, -5vh) rotate(0deg); }
+    50% { transform: translate(105vw, 105vh) rotate(180deg); }
+    100% { transform: translate(-5vw, -5vh) rotate(360deg); }
+}
+
+@keyframes viajeLateral {
+    0% { transform: translateX(0); opacity: 0.4; }
+    50% { transform: translateX(-120vw); opacity: 0.7; }
+    100% { transform: translateX(10vw); opacity: 0.4; }
+}
+
+/* =========================================================
+   2. CONTENEDORES DEL MENÚ
+   ========================================================= */
+
 .contenedor-principal-menu {
+    background-color: transparent !important;
     display: flex;
     justify-content: center;
-    align-items: center; /* Center vertically on full pages */
+    align-items: center;
     padding: 60px 20px;
-    min-height: calc(100vh - 180px); /* Assumes header/footer combined height ~180px */
+    min-height: calc(100vh - 180px);
+    position: relative;
+    z-index: 10;
 }
 
-/* --- TARJETA PRINCIPAL DEL MENÚ (REUSING CARD STYLE FOUNDATION) --- */
+/* TARJETA PRINCIPAL (OPACA / FONDO SÓLIDO) */
 .tarjeta-menu-completo {
-    background-color: #1a1a1a;
+    background-color: #1a1a1a !important; /* Gris oscuro sólido para tapar el fondo */
     width: 95%;
-    max-width: 1000px;
+    max-width: 1100px;
     padding: 40px;
     border-radius: 15px;
-    border: 1px solid #333;
-    box-shadow: 0 10px 40px rgba(255, 204, 0, 0.1); /* Very subtle yellow glow for standalone pages */
+    border: 2px solid #FFCC00;
+    
+    /* Sombra negra profunda + sutil glow neón */
+    box-shadow: 0 0 40px rgba(0, 0, 0, 1), 
+                0 0 20px rgba(255, 204, 0, 0.15);
+    
+    position: relative;
+    z-index: 20;
 }
 
-/* Header style standard with matching yellow border */
 .cabecera-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 3px solid #FFCC00;
+    border-bottom: 2px solid #FFCC00;
     padding-bottom: 15px;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 .cabecera-menu h2 {
     color: #FFCC00;
     text-transform: uppercase;
-    font-size: 1.6rem;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-size: 1.8rem;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
 }
 
 .introduccion-menu {
@@ -56,90 +113,113 @@ body {
     text-align: center;
     margin-bottom: 40px;
     font-size: 1.1rem;
-    line-height: 1.6;
 }
 
-/* --- GRID LAYOUT --- */
+/* =========================================================
+   3. GRID Y TARJETAS INTERNAS (ITEMS)
+   ========================================================= */
+
 .grid-menu-completo {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columns for desktop */
-    gap: 25px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
 
-/* --- ITEM CARD STYLE (Dev Drawer style foundation specialized) --- */
 .item-menu-card {
-    background-color: #222;
-    border: 1px solid #444;
-    padding: 30px 20px;
+    background-color: #242424; 
+    /* Borde amarillo sutil inicial */
+    border: 2px solid rgba(255, 204, 0, 0.2); 
+    padding: 25px 15px;
     border-radius: 12px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elástico style matching header nav hovers */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    
+    /* Transición elástica y suave */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* --- HOVER EFFECT (CRUCIAL TFG NEON STYLE) --- */
+/* ANIMACIÓN HOVER: BORDE ILUMINADO Y LEVANTE */
 .item-menu-card:hover {
-    border-color: #FFCC00;
+    border-color: #FFCC00; /* El borde se enciende */
     background-color: #2a2a2a;
-    transform: translateY(-8px) scale(1.03);
-    /* Neon Glow effect seen in login/buttons */
-    box-shadow: 0 5px 25px rgba(255, 204, 0, 0.4); 
+    transform: translateY(-10px); /* Elevación */
+    
+    /* Resplandor neón del borde */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 
+                0 0 15px rgba(255, 204, 0, 0.5);
 }
 
+/* ICONOS CON EFECTO DE LUZ */
 .item-menu-card i {
-    font-size: 3.5rem; /* Large icons Drawer style */
-    color: white; /* Base icon color */
-    margin-bottom: 10px;
+    font-size: 2.8rem;
+    color: #FFCC00;
+    margin-bottom: 15px;
     transition: all 0.3s ease;
+    opacity: 0.8;
 }
 
-/* Glow icon and text slightly on hover */
 .item-menu-card:hover i {
-    color: #FFCC00;
-    text-shadow: 0 0 15px #FFCC00;
+    opacity: 1;
+    transform: scale(1.15);
+    text-shadow: 0 0 15px #FFCC00; /* Brillo del icono */
+}
+
+/* TEXTOS DENTRO DEL ITEM */
+.item-menu-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #fff;
+    transition: color 0.3s ease;
 }
 
 .item-menu-card:hover h3 {
     color: #FFCC00;
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
-}
-
-.item-menu-card h3 {
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
 }
 
 .item-menu-card p {
+    font-size: 0.85rem;
     color: #aaa;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
-/* --- RESPONSIVE ADJUSTMENTS --- */
-@media (max-width: 900px) {
-    .grid-menu-completo {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
-    }
-    .tarjeta-menu-completo {
-        padding: 30px;
-    }
+/* EFECTO DE DESTELLO INTERNO AL PASAR EL MOUSE (OPCIONAL) */
+.item-menu-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 204, 0, 0.05),
+        transparent
+    );
+    transform: skewX(-25deg);
+    transition: 0.5s;
 }
 
-@media (max-width: 500px) {
-    .grid-menu-completo {
-        grid-template-columns: repeat(1, 1fr); /* 1 column for mobile */
-    }
-    .cabecera-menu h2 {
-        font-size: 1.3rem;
-    }
-    .introduccion-menu {
-        font-size: 1rem;
-    }
+.item-menu-card:hover::before {
+    left: 150%;
+}
+
+/* =========================================================
+   4. RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .grid-menu-completo { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .grid-menu-completo { grid-template-columns: 1fr; }
+    .tarjeta-menu-completo { padding: 25px; }
+    .cabecera-menu h2 { font-size: 1.4rem; }
+    .contenedor-principal-menu { padding: 30px 15px; }
 }

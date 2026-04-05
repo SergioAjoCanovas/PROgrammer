@@ -166,13 +166,8 @@ body.fondo-oscuro-neon {
 }
 
 /* =========================================================
-   TEXTAREA RESEÑAS (FOCO NEÓN)
+   TEXTAREA RESEÑAS
    ========================================================= */
-.tarjeta-resenas-izq {
-    display: flex !important;
-    flex-direction: column !important;
-}
-
 .input-resena {
     width: 100%;
     height: 80px;
@@ -196,14 +191,14 @@ body.fondo-oscuro-neon {
 }
 
 /* =========================================================
-   BOTONES (COLOR FONDO #1A1A1A)
+   BOTONES (ILUMINACIÓN AJUSTADA AL SEGUNDO CÓDIGO)
    ========================================================= */
 .boton-curriculum,
 .boton-anadir,
 .boton-ver {
     width: 100%;
     padding: 12px;
-    background-color: #0e0e0e !important; /* Gris oscuro solicitado */
+    background-color: #0e0e0e !important; 
     color: #FFCC00 !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 10px;
@@ -211,7 +206,11 @@ body.fondo-oscuro-neon {
     font-size: 0.95rem;
     cursor: pointer;
     text-transform: uppercase;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .boton-curriculum:hover,
@@ -219,7 +218,9 @@ body.fondo-oscuro-neon {
 .boton-ver:hover {
     background-color: #FFCC00 !important;
     color: #111 !important;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6) !important;
+    /* Iluminación igualada al segundo código */
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
+    transform: scale(1.06) translateY(-2px); 
 }
 
 /* =========================================================

@@ -1,167 +1,259 @@
-/* Configuración base del contenedor */
+/* =========================================
+   1. ESTRUCTURA BASE Y FOOTER AL FINAL
+   ========================================= */
+body.fondo-oscuro-neon {
+    background-color: #000 !important;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .contenedor-busqueda {
-    flex: 1;
+    flex: 1; 
+    padding: 60px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 20px;
-    background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
-    min-height: calc(100vh - 160px);
+    z-index: 10;
+    position: relative;
 }
 
-/* TÍTULOS NEÓN */
+/* Efecto de luces neón de fondo */
+body.fondo-oscuro-neon::before {
+    content: '';
+    position: fixed;
+    width: 500px; 
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, transparent 70%);
+    filter: blur(80px);
+    top: -10%; 
+    left: -10%;
+    z-index: -1;
+    animation: flotar 20s infinite alternate;
+}
+
+@keyframes flotar {
+    from { transform: translate(0, 0); }
+    to { transform: translate(100px, 50px); }
+}
+
+/* =========================================
+   2. SECCIÓN BUSCADOR (ILUMINACIÓN POTENCIADA)
+   ========================================= */
 .titulo-neon {
-    color: white;
     font-size: 2.5rem;
+    margin-bottom: 30px;
     text-align: center;
-    margin-bottom: 40px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    letter-spacing: 2px;
 }
 
 .titulo-neon .resaltado {
     color: #FFCC00;
-    text-shadow: 0 0 15px #FFCC00;
+    /* Aumento de resplandor en el texto */
+    text-shadow: 0 0 20px rgba(255, 204, 0, 0.9), 0 0 40px rgba(255, 204, 0, 0.4);
 }
 
-/* BUSCADOR CENTRAL */
 .caja-busqueda-neon {
     display: flex;
     width: 100%;
-    max-width: 800px;
-    background: #222;
+    max-width: 700px;
+    background: #1a1a1a; 
     border: 2px solid #FFCC00;
     border-radius: 50px;
-    padding: 5px 10px;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 80px;
+    padding: 5px;
+    /* Iluminación exterior e interior más fuerte */
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4), inset 0 0 10px rgba(255, 204, 0, 0.2);
+    margin-bottom: 60px;
 }
 
 .caja-busqueda-neon input {
     flex: 1;
     background: transparent;
     border: none;
-    padding: 15px 25px;
-    color: white;
-    font-size: 1.1rem;
+    padding: 12px 25px;
+    color: #fff;
     outline: none;
+    font-size: 1rem;
 }
 
-/* BOTÓN BUSCAR (MODIFICADO: ESTILO "VER PERFIL") */
 .btn-buscar-neon {
-    background: transparent;
-    border: 2px solid #FFCC00;
-    color: #FFCC00;
-    padding: 0 30px;
+    background: #050505; 
+    border: 1px solid #FFCC00; 
+    color: #FFCC00; 
+    padding: 10px 30px;
     border-radius: 40px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-buscar-neon i {
-    color: #FFCC00;
-    transition: all 0.3s ease;
+    transition: 0.3s;
+    /* Resplandor constante en el botón */
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
 }
 
 .btn-buscar-neon:hover {
-    background: #FFCC00;
-    color: black;
-    box-shadow: 0 0 20px #FFCC00;
+    background: #FFCC00; 
+    color: #050505;
+    /* Brillo de explosión en hover */
+    box-shadow: 0 0 35px #FFCC00, 0 0 60px rgba(255, 204, 0, 0.6);
     transform: scale(1.05);
 }
 
-.btn-buscar-neon:hover i {
-    color: black;
-}
-
-/* CARRUSEL DE PERFILES */
+/* =========================================
+   3. CARRUSEL
+   ========================================= */
 .seccion-carrusel {
     width: 100%;
-    max-width: 1100px;
+    max-width: 840px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .subtitulo-neon {
-    color: white;
+    color: #fff;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-align: left;
     border-left: 5px solid #FFCC00;
     padding-left: 15px;
-    margin-bottom: 30px;
-    text-shadow: 0 0 5px #FFCC00;
+    /* Aumento de brillo en el título de sección */
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+.carrusel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; 
+    margin: 0 auto;
+    padding: 30px 0; 
 }
 
 .carrusel-contenedor {
+    overflow: visible; 
+    width: 100%;
+    clip-path: inset(-100px 0px -100px 0px); 
+}
+
+.carrusel-track {
     display: flex;
-    justify-content: center;
     gap: 30px;
-    overflow-x: auto;
-    padding: 20px 0;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* =========================================
+   4. TARJETAS DE PERFIL (ILUMINACIÓN POTENCIADA)
+   ========================================= */
 .tarjeta-perfil-neon {
-    background: #1a1a1a;
-    border: 2px solid #444;
+    background: #1a1a1a; 
+    border: 1px solid rgba(255, 204, 0, 0.4);
     border-radius: 20px;
-    padding: 30px;
-    width: 250px;
+    padding: 40px 25px;
+    width: 260px; 
+    min-height: 380px;
     text-align: center;
-    transition: all 0.4s ease;
     flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Brillo base en la tarjeta */
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);
 }
 
-/* La tarjeta "enfocada" o activa */
-.tarjeta-perfil-neon:hover, .tarjeta-perfil-neon.activo {
+.tarjeta-perfil-neon:hover {
     border-color: #FFCC00;
-    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
-    transform: translateY(-10px);
+    /* Brillo intenso al pasar el mouse */
+    box-shadow: 0 0 35px rgba(255, 204, 0, 0.5), inset 0 0 10px rgba(255, 204, 0, 0.2);
+    transform: translateY(-20px);
 }
 
 .foto-perfil-dummy {
-    width: 80px;
-    height: 80px;
-    background: #333;
+    width: 85px; 
+    height: 85px;
+    background: #050505; 
     border-radius: 50%;
     margin: 0 auto 15px;
     border: 2px solid #FFCC00;
+    /* Iluminación circular de la foto */
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
 }
 
 .tarjeta-perfil-neon h3 {
-    color: white;
-    margin-bottom: 5px;
-}
-
-.tarjeta-perfil-neon p {
-    color: #888;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-}
-
-.tags span {
-    display: inline-block;
-    background: rgba(255, 204, 0, 0.1);
+    font-size: 1.2rem;
+    margin: 0 0 8px 0;
     color: #FFCC00;
-    padding: 4px 10px;
-    border-radius: 5px;
-    font-size: 0.7rem;
-    margin: 2px;
-    border: 1px solid #FFCC00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
 }
 
-/* BOTÓN VER PERFIL (ORIGINAL) */
 .btn-perfil {
-    margin-top: 20px;
-    background: transparent;
+    background: #050505; 
     border: 1px solid #FFCC00;
     color: #FFCC00;
     padding: 8px 20px;
     border-radius: 10px;
     cursor: pointer;
+    font-weight: 600;
     transition: 0.3s;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
 }
 
 .btn-perfil:hover {
     background: #FFCC00;
-    color: black;
+    color: #050505;
+    box-shadow: 0 0 25px #FFCC00, 0 0 45px rgba(255, 204, 0, 0.4);
+}
+
+/* =========================================
+   5. BOTONES DE NAVEGACIÓN (MÁXIMO NEÓN)
+   ========================================= */
+.btn-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #050505; 
+    border: 2px solid #FFCC00;
+    color: #FFCC00;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 25;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Resplandor potente para las flechas */
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5), inset 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+.btn-nav:hover {
+    background: #FFCC00;
+    color: #050505;
+    box-shadow: 0 0 40px #FFCC00;
+}
+
+.prev { left: -70px; }
+.next { right: -70px; }
+
+/* =========================================
+   6. RESPONSIVE
+   ========================================= */
+@media (max-width: 1050px) {
+    .seccion-carrusel {
+        align-items: center;
+    }
+    .carrusel-wrapper {
+        width: 280px;
+    }
+    .btn-nav {
+        display: none;
+    }
+    .subtitulo-neon {
+        margin-left: 20px;
+    }
 }

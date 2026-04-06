@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../Style/general_styles/general_styles.css">  
     <link rel="stylesheet" href="../../Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
 </head>
 <body class="fondo-oscuro-neon">
 
@@ -31,9 +32,9 @@
 
             <div class="perfil-inferior">
                 <ul class="redes-sociales">
-                    <li>- Insta</li>
-                    <li>- Twiter</li>
-                    <li>- Tel</li>
+                    <li><i class="fab fa-instagram"></i> Insta</li>
+                    <li><i class="fab fa-twitter"></i> Twiter</li>
+                    <li><i class="fas fa-phone"></i> Tel</li>
                 </ul>
                 <button class="boton-curriculum">CURRICULUM</button>
             </div>
@@ -46,8 +47,10 @@
         <!-- CREAR RESEÑA -->
         <div class="tarjeta-acordeon tarjeta-crear-reseña">
 
-            <h2><i class="fas fa-pen"></i> Añadir reseña</h2>
-
+            <h2><i class="fas fa-pen"></i> Añadir reseña </h2>
+            <a href="../profileView.html" class="boton-volver-circular" title="Volver">
+                <i class="fas fa-undo"></i>
+            </a>
             <div class="campo">
                 <label>Valoración</label>
                 <div class="estrellas" id="estrellas">
@@ -74,7 +77,7 @@
         <div class="tarjeta-acordeon tarjeta-lista-reseñas">
 
             <h2><i class="fas fa-comments"></i> Reseñas</h2>
-
+            
             <div class="contenedor-reseñas" id="lista-reseñas">
 
                 <div class="reseña">

@@ -1,15 +1,23 @@
+/* ============================================================
+    1. ACTUALIZA LAS VARIABLES (OPCIONAL PERO RECOMENDADO)
+   ============================================================ */
 :root {
     --amarillo-neon: #FFCC00;
     --negro-puro: #000000;
-    --negro-tarjeta: #1a1a1a;
+    --negro-tarjeta: #1a1a1a; /* Este es el color que quieres */
     --negro-input: #050505;
     --gris-texto: #ccc;
     --amarillo-pale: #FFFDDF;
     --fondo-naranjita: #211c12; 
 }
 
+/* ============================================================
+    2. CAMBIO DIRECTO EN EL BODY
+   ============================================================ */
 body.fondo-oscuro-neon {
-    background-color: var(--fondo-naranjita) !important;
+    /* Cambiamos el color al #1a1a1a */
+    background-color: #1a1a1a !important; 
+    
     margin: 0;
     display: flex;
     flex-direction: column;

@@ -1,11 +1,20 @@
 /* =========================================================
    GENERAL Y CONTENEDORES
    ========================================================= */
+html, body {
+    height: 100%; /* Obligatorio para que el cálculo funcione */
+}
+
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
     font-family: Arial, sans-serif;
     margin: 0;
+    
+    /* ESTO ES LO QUE PEGA EL FOOTER */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
 }
 
 .contenedor-principal {
@@ -16,6 +25,15 @@ body.fondo-oscuro-neon {
     padding: 0 20px;
     gap: 40px; 
     align-items: flex-start;
+    
+    /* ESTO EMPUJA EL FOOTER HACIA ABAJO */
+    flex: 1 0 auto; 
+}
+
+#footer-placeholder {
+    /* Evita que el footer se encoja */
+    flex-shrink: 0;
+    width: 100%;
 }
 
 .columna-perfil {

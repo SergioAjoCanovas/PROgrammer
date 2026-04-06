@@ -104,10 +104,8 @@ body.fondo-oscuro-neon {
     margin-bottom: 25px;
     font-size: 1.8rem;
     text-align: left;
-    /* CAMBIO: Restaurada la barra lateral amarilla original */
     border-left: 5px solid #FFCC00; 
     padding-left: 15px;
-    /* Sin box-shadow para no añadir iluminación extra aquí */
     box-shadow: none;
 }
 
@@ -132,7 +130,7 @@ body.fondo-oscuro-neon {
 }
 
 /* =========================================
-   4. TARJETAS (ILUMINACIÓN POTENTE)
+   4. TARJETAS (ILUMINACIÓN POTENTE Y TAGS)
    ========================================= */
 .tarjeta-perfil-neon {
     background: #1a1a1a; 
@@ -140,7 +138,7 @@ body.fondo-oscuro-neon {
     border-radius: 20px;
     padding: 35px 25px;
     width: 260px; 
-    min-height: 380px;
+    min-height: 420px; /* Aumentado ligeramente para los tags */
     text-align: center;
     flex-shrink: 0;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -177,6 +175,35 @@ body.fondo-oscuro-neon {
     font-size: 1.3rem;
     color: #FFCC00;
     margin: 10px 0;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+/* ESTILO DE LENGUAJES (CUADRADOS AMARILLOS NEÓN TRANSPARENTES) */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.tags span {
+    background: rgba(255, 204, 0, 0.08); 
+    color: #FFCC00; 
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #FFCC00; 
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3), inset 0 0 4px rgba(255, 204, 0, 0.1);
+    transition: 0.3s;
+}
+
+.tags span:hover {
+    background: rgba(255, 204, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+    transform: scale(1.05);
 }
 
 /* =========================================

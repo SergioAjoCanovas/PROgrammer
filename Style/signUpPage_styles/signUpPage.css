@@ -1,98 +1,278 @@
 /* =========================================================
-   ESTILOS ESPECÍFICOS PARA LA PÁGINA DE REGISTRO
+   1. VARIABLES Y RESET (ESTILO PROGRAMMER)
    ========================================================= */
-
-/* --- 0. Ajuste del tamaño del Logotipo (NUEVO) --- */
-/* Sobreescribimos el tamaño base de 130px solo para esta página */
-.login-card .login-logo {
-    width: 200px; /* ¡Ahora es mucho más grande! */
-    margin-bottom: 20px; /* Un poco más de espacio abajo */
-    height: auto; /* Mantiene la proporción */
+:root {
+    --amarillo-neon: #FFCC00;
+    --negro-puro: #000000;
+    --negro-tarjeta: #1a1a1a;
+    --negro-input: #050505;
+    --gris-texto: #ccc;
 }
 
-/* --- 1. Estilos para el desplegable (Select) de Rol --- */
+body.fondo-oscuro-neon {
+    background-color: var(--negro-puro) !important;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    color: #fff;
+}
+
+/* =========================================================
+   2. CONTENEDOR Y EFECTOS DE FONDO
+   ========================================================= */
+.contenedor-login {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+body.fondo-oscuro-neon::before {
+    content: '';
+    position: fixed;
+    width: 500px; 
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.12) 0%, transparent 70%);
+    filter: blur(80px);
+    top: -10%; 
+    left: -10%;
+    z-index: -1;
+    animation: flotar 20s infinite alternate;
+}
+
+@keyframes flotar {
+    from { transform: translate(0, 0); }
+    to { transform: translate(100px, 50px); }
+}
+
+/* =========================================================
+   3. LA TARJETA GRANDE (CRISTAL OSCURO)
+   ========================================================= */
+.login-card.tarjeta-acordeon {
+    width: 100%;
+    max-width: 450px;
+    background-color: var(--negro-tarjeta) !important;
+    border: 2px solid var(--amarillo-neon) !important;
+    border-radius: 25px !important;
+    padding: 40px 30px;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.15) !important;
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+.login-logo {
+    width: 200px;
+    display: block;
+    margin: 0 auto 20px auto;
+    height: auto;
+}
+
+.login-card h2 {
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    text-align: center;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+}
+
+/* =========================================================
+   4. FORMULARIO, INPUTS Y SELECTS
+   ========================================================= */
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group label {
+    color: var(--amarillo-neon);
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+    text-transform: uppercase;
+}
+
+.input-group input, 
 .input-group select {
-    background-color: #222;
-    border: 2px solid #555;
-    border-radius: 15px;
+    width: 100%;
+    background-color: var(--negro-input) !important;
+    border: 1px solid #444;
+    border-radius: 12px;
     padding: 12px 15px;
     color: white;
     font-size: 1rem;
     outline: none;
+    box-sizing: border-box;
     transition: all 0.3s ease;
-    width: 100%;
-    cursor: pointer;
-    /* Evita el estilo por defecto feo del navegador */
-    appearance: none; 
-    -webkit-appearance: none;
-    -moz-appearance: none;
 }
 
-/* Brillo amarillo neón al hacer clic en el selector */
+.input-group input:focus, 
 .input-group select:focus {
-    border-color: #FFCC00;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+    border-color: var(--amarillo-neon);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }
 
-/* Color gris para cuando dice "Selecciona tu perfil..." */
-.input-group select:invalid {
-    color: #888;
-}
-
-/* Color de las opciones cuando se despliega la lista */
-.input-group select option {
-    background-color: #222;
-    color: white;
-    padding: 10px;
-}
-
-/* Posicionar la flechita personalizada dentro del selector */
+/* --- ESTILO ESPECÍFICO DEL SELECT (FORZANDO AMARILLO) --- */
 .select-wrapper {
     position: relative;
     width: 100%;
 }
 
+.input-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.input-group select:not(:invalid) {
+    color: var(--amarillo-neon);
+    border-color: var(--amarillo-neon);
+}
+
+/* Estilos para las opciones (Cambiando el azul por amarillo) */
+.input-group select option {
+    background-color: var(--negro-tarjeta) !important;
+    color: white !important;
+    padding: 10px;
+}
+
+/* Intentar forzar el color de selección del sistema */
+.input-group select option:checked,
+.input-group select option:hover {
+    background-color: var(--amarillo-neon) !important;
+    color: var(--negro-puro) !important;
+}
+
 .select-wrapper::after {
-    content: '\f0d7'; /* Código FontAwesome para la flecha hacia abajo */
+    content: '\f0d7';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
+    color: #666;
     pointer-events: none;
+    transition: 0.3s;
 }
 
+.select-wrapper:focus-within::after {
+    color: var(--amarillo-neon);
+}
 
-/* --- 2. Estilos para los Ojos de las Contraseñas --- */
-
-/* Wrapper para que el texto de la contraseña no pise el ojo */
+/* =========================================================
+   5. OJOS DE CONTRASEÑA
+   ========================================================= */
 .password-wrapper {
     position: relative;
     width: 100%;
-    display: flex;
-    align-items: center;
 }
 
-.password-wrapper input {
-    width: 100%;
-    padding-right: 45px !important; /* Hueco para el icono */
-}
-
-/* El ojo en sí: BLANCO por defecto para que se vea */
 .toggle-password {
     position: absolute;
     right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-    color: #f0f0f0; /* ¡SOLUCIÓN! Blanco/gris claro en lugar de negro */
+    color: #f0f0f0;
     font-size: 1.1rem;
-    z-index: 10;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    transition: 0.3s;
 }
 
-/* Efecto neón al pasar el ratón por el ojo */
 .toggle-password:hover {
-    color: #FFCC00;
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+    color: var(--amarillo-neon);
+    text-shadow: 0 0 10px var(--amarillo-neon);
+}
+
+/* =========================================================
+   6. BOTÓN DE ACCIÓN (EFECTO EXPLOSIÓN)
+   ========================================================= */
+.boton-ver {
+    width: 100%;
+    background: var(--negro-input) !important; 
+    border: 2px solid var(--amarillo-neon) !important;
+    color: var(--amarillo-neon) !important;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 10px;
+}
+
+.boton-ver:hover {
+    background-color: var(--amarillo-neon) !important;
+    color: var(--negro-puro) !important;
+    box-shadow: 0 0 35px var(--amarillo-neon), 0 0 60px rgba(255, 204, 0, 0.6) !important;
+    transform: scale(1.04) translateY(-2px);
+}
+
+/* =========================================================
+   7. LINKS Y EXTRAS (ILUMINACIÓN SUAVIZADA)
+   ========================================================= */
+.opciones-extra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--gris-texto);
+}
+
+.opciones-extra input[type="checkbox"] {
+    accent-color: var(--amarillo-neon);
+}
+
+.link-olvido, .registro-link a {
+    color: var(--amarillo-neon);
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+/* Hover suavizado: sin blanco puro, solo resplandor tenue */
+.link-olvido:hover, .registro-link a:hover {
+    color: var(--amarillo-neon); /* Mantiene el amarillo */
+    transform: translateX(5px);   /* Movimiento lateral más sutil */
+    /* Resplandor amarillo con baja opacidad */
+    text-shadow: 20 20 20px rgba(255, 204, 0, 0.5); 
+}
+
+.registro-link {
+    text-align: center;
+    margin-top: 25px;
+}
+
+/* =========================================================
+   8. FOOTER UNIFICADO
+   ========================================================= */
+.footer-principal {
+    background-color: #111;
+    border-top: 3px solid var(--amarillo-neon);
+    padding: 25px;
+    box-shadow: 0 -5px 20px rgba(255, 204, 0, 0.3); 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 20px;
 }

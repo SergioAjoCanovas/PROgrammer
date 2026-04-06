@@ -1,14 +1,21 @@
-/* =========================================================
-   ownProfile.css - DASHBOARD FINAL (BOTONES ESTILO "CREAR AHORA")
-   ========================================================= */
+:root {
+    --amarillo-neon: #FFCC00;
+    --negro-puro: #000000;
+    --negro-tarjeta: #1a1a1a;
+    --negro-input: #050505;
+    --gris-texto: #ccc;
+    --amarillo-pale: #FFFDDF;
+    --fondo-naranjita: #211c12; 
+}
 
-/* 1. Layout Base y Footer al fondo */
 body.fondo-oscuro-neon {
-    background-color: #000000 !important;
+    background-color: var(--fondo-naranjita) !important;
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    color: #fff;
+    font-family: Arial, sans-serif;
 }
 
 .contenedor-principal {
@@ -18,28 +25,27 @@ body.fondo-oscuro-neon {
     margin: 30px auto;
     gap: 30px; 
     align-items: flex-start;
-    flex: 1; /* Empuja el footer hacia abajo */
+    flex: 1; 
 }
 
 .columna-perfil { flex: 0 0 320px; display: flex; flex-direction: column; gap: 20px; }
 .columna-derecha { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 
-/* 2. Tarjetas Estilo General */
 .tarjeta-acordeon {
-    background-color: #333333 !important;
-    border: 2px solid #FFCC00 !important;
-    border-radius: 20px !important;
+    background-color: var(--negro-tarjeta) !important;
+    border: 1px solid var(--amarillo-neon) !important; 
+    border-radius: 25px !important; 
     padding: 25px !important;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.15),
+                0 0 5px rgba(255, 204, 0, 0.05) inset !important;
     color: white;
 }
 
-/* 3. Cabeceras */
 .cabecera-tarjeta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #555 !important;
+    border-bottom: 2px solid #aaaaaa !important;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -49,15 +55,16 @@ body.fondo-oscuro-neon {
     text-transform: uppercase;
     font-weight: 800;
     margin: 0;
+    color: var(--amarillo-pale);
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
-/* 4. PERFIL IZQUIERDO (Nombre debajo de la foto) */
 .perfil-superior {
     display: flex;
     flex-direction: column;
     align-items: center; 
     gap: 15px;
-    border-bottom: 2px solid #555 !important;
+    border-bottom: 2px solid #aaaaaa !important;
     padding-bottom: 15px;
     margin-bottom: 20px;
 }
@@ -65,12 +72,12 @@ body.fondo-oscuro-neon {
 .circulo-foto {
     width: 90px;
     height: 90px;
-    border: 3px solid #FFCC00;
+    border: 3px solid var(--amarillo-neon);
     border-radius: 50% !important;
     display: flex; 
     align-items: center; 
     justify-content: center;
-    background: #222;
+    background: var(--negro-input);
     transition: transform 0.3s ease;
 }
 
@@ -81,7 +88,7 @@ body.fondo-oscuro-neon {
     text-transform: uppercase;
     font-weight: 800;
     text-align: center;
-    color: #FFCC00;
+    color: var(--amarillo-neon);
 }
 
 .redes-sociales { list-style: none; padding: 0; margin-bottom: 20px; }
@@ -89,9 +96,9 @@ body.fondo-oscuro-neon {
     padding: 10px 0;
     display: flex; justify-content: space-between;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--gris-texto);
 }
 
-/* 5. SECCIÓN DE PROYECTOS (Levitación) */
 .rejilla-proyectos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -99,8 +106,8 @@ body.fondo-oscuro-neon {
 }
 
 .tarjeta-mini-proyecto {
-    background-color: #2a2a2a !important;
-    border: 2px solid #444;
+    background-color: #292929 !important;
+    border: 1px solid #333; 
     border-radius: 15px;
     padding: 20px;
     text-align: center;
@@ -112,80 +119,105 @@ body.fondo-oscuro-neon {
 }
 
 .tarjeta-mini-proyecto:hover {
-    border-color: #FFCC00;
+    border-color: var(--amarillo-neon);
     transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(255, 204, 0, 0.2) !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3) !important;
+}
+
+.tarjeta-mini-proyecto h3 {
+    color: var(--amarillo-pale);
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+}
+
+.tarjeta-mini-proyecto p {
+    color: var(--gris-texto);
 }
 
 .tarjeta-anadir { 
-    border: 2px dashed #FFCC00 !important; 
-    background: transparent !important; 
+    border: 2px dashed var(--amarillo-neon) !important; 
+    background: #535353 !important; 
 }
-.tarjeta-anadir i { font-size: 2.5rem; color: #FFCC00; margin-bottom: 10px; }
+.tarjeta-anadir i { font-size: 2.5rem; color: var(--amarillo-neon); margin-bottom: 10px; }
 
-/* 6. BOTONES (ESTILO "CREAR AHORA" - ANCHOS CON MARGEN) */
 .boton-amarillo-solido {
-    background-color: #FFCC00 !important;
-    color: #000 !important;
-    border: none !important;
-    padding: 14px !important; /* Más alto para que sea como el de la foto */
-    border-radius: 15px !important; /* Más redondeado estilo "píldora" */
+    background-color: var(--negro-input) !important;
+    color: var(--amarillo-neon) !important;
+    border: 2px solid var(--amarillo-neon) !important;
+    padding: 14px !important;
+    border-radius: 12px !important;
     font-weight: 900;
     text-transform: uppercase;
     cursor: pointer;
-    
-    /* 🔥 Ocupa el ancho disponible respetando el padding de la tarjeta */
     width: 100% !important; 
     margin-top: 10px !important;
-
-    transition: 0.3s ease;
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .boton-amarillo-solido:hover {
-    box-shadow: 0 0 25px #FFCC00 !important;
-    filter: brightness(1.1);
-    transform: scale(1.02);
+    background-color: var(--amarillo-neon) !important;
+    color: var(--negro-puro) !important;
+    box-shadow: 0 0 35px var(--amarillo-neon), 0 0 60px rgba(255, 204, 0, 0.6) !important;
+    transform: scale(1.04) translateY(-2px);
 }
 
-/* Botones pequeños de proyectos (Editar/Ver) */
 .btn-mini {
-    background-color: #FFCC00 !important;
-    color: #000 !important;
-    border: none !important;
+    background-color: var(--negro-input) !important;
+    color: var(--amarillo-neon) !important;
+    border: 1px solid var(--amarillo-neon) !important;
     padding: 10px;
     border-radius: 10px;
     font-weight: 900;
     text-transform: uppercase;
     cursor: pointer;
     flex: 1;
+    transition: all 0.3s ease;
 }
 
 .btn-mini:hover {
-    box-shadow: 0 0 15px #FFCC00 !important;
-    filter: brightness(1.1);
+    background-color: var(--amarillo-neon) !important;
+    color: var(--negro-puro) !important;
+    box-shadow: 0 0 15px var(--amarillo-neon) !important;
 }
 
 .acciones-proyecto { display: flex; gap: 10px; margin-top: 15px; }
 
-/* 7. TECNOLOGÍAS (CUADRADITOS NEÓN) */
 .tags-tecnologias {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 20px;
 }
 
 .tag-tech {
-    background-color: #2a2a2a !important;
-    border: 2px solid #FFCC00 !important;
-    color: #FFCC00 !important;
-    padding: 6px 12px !important;
-    border-radius: 8px !important;
-    font-weight: bold;
-    font-size: 0.85rem;
+    /* Cambiamos el fondo negro por un tono naranja oscuro transparente */
+    background-color: rgba(33, 28, 18, 0.8) !important; 
+    color: var(--amarillo-neon) !important; 
+    
+    border: 1px solid var(--amarillo-neon) !important;
+    border-radius: 10px !important; 
+    padding: 8px 18px !important; 
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+
+    /* Sombra exterior (glow naranja/amarillo) y sombra interior */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4), 
+                inset 0 0 8px rgba(255, 204, 0, 0.2) !important;
+                
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* 8. SECCIÓN INFERIOR */
+.tag-tech:hover {
+    /* Al pasar el ratón, el fondo se vuelve más naranja/amarillo */
+    background-color: rgba(255, 204, 0, 0.15) !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
+}
+
 .fila-inferior {
     display: grid;
     grid-template-columns: 1fr 1fr;

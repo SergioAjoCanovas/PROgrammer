@@ -53,7 +53,6 @@ body.fondo-oscuro-neon::before {
 
 .titulo-neon .resaltado {
     color: #FFCC00;
-    /* Aumento de resplandor en el texto */
     text-shadow: 0 0 20px rgba(255, 204, 0, 0.9), 0 0 40px rgba(255, 204, 0, 0.4);
 }
 
@@ -65,7 +64,6 @@ body.fondo-oscuro-neon::before {
     border: 2px solid #FFCC00;
     border-radius: 50px;
     padding: 5px;
-    /* Iluminación exterior e interior más fuerte */
     box-shadow: 0 0 25px rgba(255, 204, 0, 0.4), inset 0 0 10px rgba(255, 204, 0, 0.2);
     margin-bottom: 60px;
 }
@@ -89,14 +87,12 @@ body.fondo-oscuro-neon::before {
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
-    /* Resplandor constante en el botón */
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
 }
 
 .btn-buscar-neon:hover {
     background: #FFCC00; 
     color: #050505;
-    /* Brillo de explosión en hover */
     box-shadow: 0 0 35px #FFCC00, 0 0 60px rgba(255, 204, 0, 0.6);
     transform: scale(1.05);
 }
@@ -119,7 +115,6 @@ body.fondo-oscuro-neon::before {
     text-align: left;
     border-left: 5px solid #FFCC00;
     padding-left: 15px;
-    /* Aumento de brillo en el título de sección */
     text-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
 }
 
@@ -145,13 +140,13 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================
-   4. TARJETAS DE PERFIL (ILUMINACIÓN POTENCIADA)
+   4. TARJETAS DE PERFIL Y TAGS NEÓN
    ========================================= */
 .tarjeta-perfil-neon {
     background: #1a1a1a; 
     border: 1px solid rgba(255, 204, 0, 0.4);
     border-radius: 20px;
-    padding: 40px 25px;
+    padding: 30px 20px;
     width: 260px; 
     min-height: 380px;
     text-align: center;
@@ -161,41 +156,67 @@ body.fondo-oscuro-neon::before {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* Brillo base en la tarjeta */
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);
 }
 
 .tarjeta-perfil-neon:hover {
     border-color: #FFCC00;
-    /* Brillo intenso al pasar el mouse */
-    box-shadow: 0 0 35px rgba(255, 204, 0, 0.5), inset 0 0 10px rgba(255, 204, 0, 0.2);
-    transform: translateY(-20px);
+    box-shadow: 0 0 35px rgba(255, 204, 0, 0.4);
+    transform: translateY(-15px);
 }
 
 .foto-perfil-dummy {
-    width: 85px; 
-    height: 85px;
+    width: 80px; 
+    height: 80px;
     background: #050505; 
     border-radius: 50%;
-    margin: 0 auto 15px;
+    margin: 0 auto 10px;
     border: 2px solid #FFCC00;
-    /* Iluminación circular de la foto */
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }
 
 .tarjeta-perfil-neon h3 {
     font-size: 1.2rem;
-    margin: 0 0 8px 0;
+    margin: 5px 0;
     color: #FFCC00;
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+/* ESTILO DE LENGUAJES (CUADRADOS AMARILLOS NEÓN TRANSPARENTES) */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.tags span {
+    background: rgba(255, 204, 0, 0.08); /* Transparente */
+    color: #FFCC00; /* Texto amarillo */
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #FFCC00; /* Borde neón */
+    text-transform: uppercase;
+    /* Resplandor del tag */
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3), inset 0 0 4px rgba(255, 204, 0, 0.1);
+    transition: 0.3s;
+}
+
+.tags span:hover {
+    background: rgba(255, 204, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+    transform: scale(1.05);
 }
 
 .btn-perfil {
     background: #050505; 
     border: 1px solid #FFCC00;
     color: #FFCC00;
-    padding: 8px 20px;
-    border-radius: 10px;
+    padding: 10px 20px;
+    border-radius: 12px;
     cursor: pointer;
     font-weight: 600;
     transition: 0.3s;
@@ -205,11 +226,11 @@ body.fondo-oscuro-neon::before {
 .btn-perfil:hover {
     background: #FFCC00;
     color: #050505;
-    box-shadow: 0 0 25px #FFCC00, 0 0 45px rgba(255, 204, 0, 0.4);
+    box-shadow: 0 0 25px #FFCC00;
 }
 
 /* =========================================
-   5. BOTONES DE NAVEGACIÓN (MÁXIMO NEÓN)
+   5. BOTONES DE NAVEGACIÓN
    ========================================= */
 .btn-nav {
     position: absolute;
@@ -227,8 +248,7 @@ body.fondo-oscuro-neon::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Resplandor potente para las flechas */
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5), inset 0 0 8px rgba(255, 204, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
 }
 
 .btn-nav:hover {
@@ -244,16 +264,8 @@ body.fondo-oscuro-neon::before {
    6. RESPONSIVE
    ========================================= */
 @media (max-width: 1050px) {
-    .seccion-carrusel {
-        align-items: center;
-    }
-    .carrusel-wrapper {
-        width: 280px;
-    }
-    .btn-nav {
-        display: none;
-    }
-    .subtitulo-neon {
-        margin-left: 20px;
-    }
+    .seccion-carrusel { align-items: center; }
+    .carrusel-wrapper { width: 280px; }
+    .btn-nav { display: none; }
+    .subtitulo-neon { margin-left: 20px; }
 }

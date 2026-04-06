@@ -59,7 +59,7 @@ body.fondo-oscuro-neon::before {
 }
 
 .cabecera-tarjeta {
-    border-bottom: 2px solid rgba(170, 170, 170, 0.3);
+    border-bottom: 2px solid #aaaaaa;
     padding-bottom: 20px;
     margin-bottom: 25px;
 }
@@ -105,7 +105,7 @@ body.fondo-oscuro-neon::before {
 .seccion-derecha-dinamica { flex: 1; }
 .cabecera-proyecto { 
     display: flex; justify-content: space-between; align-items: center; 
-    border-bottom: 2px solid rgba(170, 170, 170, 0.3); 
+    border-bottom: 2px solid #aaaaaa; 
     padding-bottom: 20px; margin-bottom: 25px; 
 }
 

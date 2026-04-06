@@ -2,15 +2,25 @@
    ESTILOS PARA LA PÁGINA: CREAR PROYECTO
    ========================================= */
 
-/* --- FONDO ANIMADO (BOLAS) --- */
+:root {
+    --amarillo-neon: #FFCC00;
+    --negro-puro: #000000;
+    --negro-tarjeta: #1a1a1a;
+    --negro-input: #050505;
+    --gris-texto: #ccc;
+    --amarillo-pale: #FFFDDF;
+    --fondo-naranjita: #1a160f; 
+}
+
+/* --- FONDO ANIMADO --- */
 .bolas-fondo {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Se queda detrás de todo */
-    background-color: #000;
+    z-index: -1;
+    background-color: var(--fondo-naranjita);
     overflow: hidden;
 }
 
@@ -18,7 +28,7 @@
     position: absolute;
     width: 450px;
     height: 450px;
-    background: radial-gradient(circle, rgba(255, 204, 0, 0.12) 0%, rgba(255, 204, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.08) 0%, rgba(255, 204, 0, 0) 70%);
     filter: blur(90px);
     border-radius: 50%;
     animation: moverBolas 25s infinite alternate ease-in-out;
@@ -35,24 +45,23 @@
 
 /* --- CONTENEDOR PRINCIPAL --- */
 .contenedor-principal-edicion {
-    background: transparent; /* Transparente para que se vean las bolas */
+    background: transparent;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    min-height: 80vh;
+    padding: 50px 0;
+    min-height: 100vh;
 }
 
 /* --- TARJETA DE FORMULARIO --- */
 .tarjeta-edicion {
-    background-color: #1a1a1a;
+    background-color: var(--negro-tarjeta) !important;
     width: 90%;
     max-width: 750px;
     padding: 35px;
-    border-radius: 15px;
-    border: 1px solid #333;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    border-radius: 25px !important;
+    border: 1px solid var(--amarillo-neon) !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.15) !important;
 }
 
 .cabecera-edicion {
@@ -60,32 +69,33 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    border-bottom: 2px solid #FFCC00;
+    border-bottom: 2px solid #aaaaaa !important;
     padding-bottom: 15px;
 }
 
 .cabecera-edicion h2 {
-    color: #FFCC00;
+    color: var(--amarillo-pale);
     text-transform: uppercase;
+    font-weight: 800;
     font-size: 1.5rem;
-    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
 .boton-volver {
     background: none;
     border: none;
-    color: #FFCC00;
+    color: var(--amarillo-neon);
     font-size: 1.5rem;
     cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .boton-volver:hover {
-    transform: scale(1.2) rotate(90deg); /* Efecto chulo de cierre */
-    color: #fff;
+    transform: scale(1.2) rotate(90deg);
+    text-shadow: 0 0 10px var(--amarillo-neon);
 }
 
-/* --- CAMPOS BÁSICOS (INPUTS Y TEXTAREA) --- */
+/* --- CAMPOS E INPUTS --- */
 .campo {
     margin-bottom: 25px;
     display: flex;
@@ -100,20 +110,19 @@
 }
 
 label {
-    color: #FFCC00;
+    color: var(--amarillo-neon);
     font-weight: 600;
     font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 input[type="text"], 
 input[type="url"], 
 textarea {
-    background-color: #2a2a2a;
+    background-color: var(--negro-input) !important;
     border: 1px solid #444;
     padding: 14px;
-    border-radius: 8px;
+    border-radius: 10px;
     color: white;
     font-size: 1rem;
     outline: none;
@@ -121,73 +130,63 @@ textarea {
 }
 
 input:focus, textarea:focus {
-    border-color: #FFCC00;
+    border-color: var(--amarillo-neon) !important;
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
-    background-color: #333;
 }
 
-/* --- ZONA DE PORTADA DE IMAGEN --- */
+/* --- PORTADA DE IMAGEN (ICONO CENTRADO) --- */
 .portada-contenedor {
     position: relative;
     width: 100%;
     height: 200px;
     margin-top: 5px;
+    border-radius: 15px;
+    border: 2px dashed var(--amarillo-neon);
+    background: var(--negro-input);
     overflow: hidden;
-    border-radius: 12px;
-    border: 2px dashed #444; /* Borde discontinuo para indicar "subir" */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.portada-contenedor:hover {
-    border-color: #FFCC00;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
 }
 
 #preview-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.portada-contenedor:hover #preview-img {
-    transform: scale(1.02);
 }
 
 .overlay-subir-portada {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el icono exactamente en el medio */
     z-index: 10;
 }
 
 .overlay-subir-portada label {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #FFCC00;
-    width: 50px;
-    height: 50px;
+    background-color: rgba(5, 5, 5, 0.7);
+    color: var(--amarillo-neon);
+    width: 60px; /* Un poco más grande para que destaque en el medio */
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    border: 2px solid #FFCC00;
+    border: 2px solid var(--amarillo-neon);
     transition: all 0.3s ease;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .overlay-subir-portada label:hover {
-    background-color: #FFCC00;
-    color: black;
+    background-color: var(--amarillo-neon);
+    color: var(--negro-puro);
+    box-shadow: 0 0 20px var(--amarillo-neon);
     transform: scale(1.1);
 }
 
-/* --- CHECKBOXES DE TECNOLOGÍAS --- */
+/* --- TECNOLOGÍAS --- */
 .contenedor-checkboxes {
-    background-color: #2a2a2a;
+    background-color: var(--negro-input);
     border: 1px solid #444;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -201,93 +200,75 @@ input:focus, textarea:focus {
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    color: #ccc;
-    font-size: 0.95rem;
-    transition: color 0.3s ease;
+    color: var(--gris-texto);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
 }
 
-.item-check:hover {
-    color: #FFCC00;
-}
+.item-check:hover { color: var(--amarillo-neon); }
 
-.item-check input {
-    display: none; /* Ocultamos el original feo */
-}
+.item-check input { display: none; }
 
 .custom-check {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #666;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--amarillo-neon);
     border-radius: 4px;
-    display: inline-block;
+    background: transparent;
     position: relative;
-    transition: all 0.2s ease;
 }
 
 .item-check input:checked + .custom-check {
-    background-color: #FFCC00;
-    border-color: #FFCC00;
+    background-color: var(--amarillo-neon);
+    box-shadow: 0 0 10px var(--amarillo-neon);
 }
 
 .item-check input:checked + .custom-check::after {
-    content: '\f00c'; /* Check de FontAwesome */
+    content: '\f00c';
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    font-size: 12px;
-    color: black;
+    font-size: 11px;
+    color: var(--negro-puro);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-/* Scrollbar personalizado para las tecnologías */
-.contenedor-checkboxes::-webkit-scrollbar {
-    width: 8px;
-}
-.contenedor-checkboxes::-webkit-scrollbar-thumb {
-    background: #FFCC00;
-    border-radius: 10px;
-}
-.contenedor-checkboxes::-webkit-scrollbar-track {
-    background: #1a1a1a;
-}
-
-/* --- BOTÓN DE PUBLICAR PROYECTO --- */
+/* --- BOTÓN GUARDAR (CENTRADÍSIMO) --- */
 .contenedor-botones {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Alineación horizontal al centro */
+    align-items: center;     /* Alineación vertical al centro */
+    width: 100%;
     margin-top: 30px;
 }
 
 .btn-guardar {
-    background-color: #FFCC00;
-    color: black;
-    border: none;
-    padding: 16px 40px;
-    border-radius: 10px;
-    font-weight: bold;
+    background-color: var(--negro-input) !important;
+    color: var(--amarillo-neon) !important;
+    border: 2px solid var(--amarillo-neon) !important;
+    padding: 16px 45px !important;
+    border-radius: 12px !important;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 1px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1.1rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .btn-guardar:hover {
-    box-shadow: 0 0 25px rgba(255, 204, 0, 0.6);
-    transform: translateY(-4px);
+    background-color: var(--amarillo-neon) !important;
+    color: var(--negro-puro) !important;
+    box-shadow: 0 0 35px var(--amarillo-neon), 0 0 60px rgba(255, 204, 0, 0.6) !important;
+    transform: scale(1.05) translateY(-3px);
 }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 650px) {
-    .fila-doble {
-        grid-template-columns: 1fr;
-    }
-    .tarjeta-edicion {
-        padding: 20px;
-    }
-}
+/* --- SCROLLBAR --- */
+.contenedor-checkboxes::-webkit-scrollbar { width: 6px; }
+.contenedor-checkboxes::-webkit-scrollbar-thumb { background: var(--amarillo-neon); border-radius: 10px; }

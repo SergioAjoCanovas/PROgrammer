@@ -212,16 +212,16 @@ textarea:focus {
 }
 
 /* =========================================================
-   SOLO SECCIÓN: DESCRIPCIÓN Y REPOSITORIO
+   SECCIÓN: DESCRIPCIÓN Y REPOSITORIO (CON EFECTO ESTRELLA)
    ========================================================= */
 
 .descripcion-proyecto, .repo { 
     margin-bottom: 50px; 
 }
 
-/* Título con barra lateral de 5px (Igual a la imagen) */
+/* Título con barra lateral y efecto de brillo sutil */
 .descripcion-proyecto h3, .repo h3 { 
-    color: #FFFFFF; 
+    color: #FFCC00; /* Color base de estrella activa */
     font-size: 1.8rem; 
     font-weight: bold;
     margin-bottom: 25px; 
@@ -229,6 +229,8 @@ textarea:focus {
     border-left: 5px solid #FFCC00; 
     padding-left: 15px;
     line-height: 1;
+    /* Efecto Neón de las estrellas */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
 /* Párrafo en blanco puro */
@@ -240,7 +242,7 @@ textarea:focus {
     padding-left: 5px;
 }
 
-/* Enlace blanco con hover amarillo */
+/* Enlace con efecto idéntico a las estrellas activas al hacer hover */
 .repo a {
     color: #FFFFFF !important; 
     text-decoration: none; 
@@ -248,21 +250,71 @@ textarea:focus {
     display: inline-flex; 
     align-items: center; 
     gap: 12px; 
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transición suave como las estrellas */
     padding-left: 5px;
 }
 
 .repo a i { 
     color: #FFFFFF; 
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .repo a:hover { 
     color: #FFCC00 !important; 
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-    transform: translateX(8px);
+    /* El mismo text-shadow de tus estrellas .activa */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 
+                 0 0 20px rgba(255, 204, 0, 0.4);
+    transform: translateX(8px) scale(1.02);
 }
 
 .repo a:hover i { 
     color: #FFCC00; 
+    /* Brillo extra en el icono */
+    filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.6));
+}
+
+/* ============================================================
+    ESTRELLAS (CON EFECTO NEÓN Y ANIMACIÓN)
+   ============================================================ */
+.estrellas {
+    display: flex;
+    gap: 12px; /* Un poco más de espacio para que al rotar no se choquen */
+    padding: 10px 0;
+}
+
+.estrellas i {
+    font-size: 1.8rem; /* Un pelín más grandes */
+    color: #444; 
+    cursor: pointer;
+    
+    /* LA ANIMACIÓN QUE QUERÍAS */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block; /* Necesario para que el transform (rotate) funcione bien */
+}
+
+/* Cuando pasas el ratón por encima (Hover) */
+.estrellas i:hover {
+    transform: scale(1.4) rotate(15deg); /* Escala potente y rotación */
+    color: #FFF000;
+    text-shadow: 0 0 15px rgba(255, 240, 0, 1), 
+                 0 0 25px rgba(255, 204, 0, 0.6);
+}
+
+/* Cuando la estrella está marcada (Activa) */
+.estrellas i.activa {
+    color: #FFD700;
+    transform: scale(1.1); /* Se quedan un pelín más grandes que las grises */
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 
+                 0 0 20px rgba(255, 204, 0, 0.4);
+}
+
+/* Animación extra: si quieres que todas las anteriores brillen al pasar el ratón 
+   (esto es opcional, pero queda de lujo) */
+.estrellas:hover i {
+    opacity: 0.7;
+}
+
+.estrellas i:hover ~ i {
+    opacity: 0.5;
+    transform: scale(0.9);
 }

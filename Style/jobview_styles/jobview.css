@@ -89,7 +89,7 @@ body.fondo-oscuro-neon::before {
     display: flex;
     align-items: center;
     gap: 20px;
-    border-bottom: 1px solid rgba(255, 204, 0, 0.2);
+    border-bottom: 1px solid #aaaa;
     padding-bottom: 20px;
 }
 
@@ -117,7 +117,7 @@ body.fondo-oscuro-neon::before {
 
 /* FORMULARIO */
 .bloque-postulacion {
-    border-top: 2px solid rgba(255, 204, 0, 0.2);
+    border-top: 2px solid #aaaa;
     padding-top: 20px;
     display: flex;
     flex-direction: column;

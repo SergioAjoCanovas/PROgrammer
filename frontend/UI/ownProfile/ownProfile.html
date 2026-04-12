@@ -14,7 +14,6 @@
     <div id="header-placeholder"></div>
 
     <main class="contenedor-principal">
-        
         <aside class="columna-perfil">
             <div class="tarjeta-acordeon profile-main-card">
                 <div class="perfil-superior">
@@ -48,7 +47,6 @@
         </aside>
 
         <div class="columna-derecha">
-            
             <section class="tarjeta-acordeon card-proyectos-principal">
                 <div class="cabecera-tarjeta">
                     <h2>MIS PROYECTOS</h2>
@@ -105,8 +103,48 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        fetch("/frontend/includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("/frontend/includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+    async function cargarInterfaz() {
+        try {
+            // 1. Cargar Header
+            const resHeader = await fetch("/frontend/includes/header.html");
+            const htmlHeader = await resHeader.text();
+            document.getElementById("header-placeholder").innerHTML = htmlHeader;
+            
+            // 2. Esperar un momento para asegurar que el DOM se ha insertado
+            setTimeout(() => {
+                marcarPaginaActual();
+            }, 50);
+
+            // 3. Cargar Footer
+            const resFooter = await fetch("/frontend/includes/footer.html");
+            const htmlFooter = await resFooter.text();
+            document.getElementById("footer-placeholder").innerHTML = htmlFooter;
+        } catch (error) {
+            console.error("Error cargando componentes:", error);
+        }
+    }
+
+    function marcarPaginaActual() {
+        // Seleccionamos todos los enlaces y botones cargados en el header
+        const elementosHeader = document.querySelectorAll('#header-placeholder a, #header-placeholder button');
+        
+        elementosHeader.forEach(elemento => {
+            // Obtenemos la ruta del atributo href o del onclick (donde guardas la ruta en los botones)
+            const ruta = elemento.getAttribute('href') || elemento.getAttribute('onclick') || "";
+            
+            // Si el elemento lleva a ownProfile, activamos el estado neón
+            if (ruta.includes('ownProfile')) {
+                // Usamos la clase unificada para el estado activo
+                elemento.classList.add('activo-btn');
+                
+                // Aseguramos que el icono interno también reciba la clase
+                const icono = elemento.querySelector('i');
+                if (icono) icono.classList.add('activo-btn');
+            }
+        });
+    }
+
+    window.onload = cargarInterfaz;
     </script>
 </body>
 </html>

@@ -6,6 +6,16 @@
     <title>ProGrammer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css"> 
+    <style>
+        /* Agregamos el estilo para cuando el botón esté activo */
+        .activo-btn {
+            color: #FFCC00 !important; /* Amarillo neón */
+        }
+        .activo-btn i {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00;
+        }
+    </style>
 </head>
 <body>
 
@@ -36,8 +46,8 @@
                 <span class="texto-icono">Chats</span>
             </a>
 
-            <div class="contenedor-avisos" id="contenedor-avisos" onmouseleave="document.getElementById('panel-notificaciones').classList.remove('activo')">
-                <a href="#" class="icono-nav" onclick="event.preventDefault(); document.getElementById('panel-notificaciones').classList.toggle('activo');">
+            <div class="contenedor-avisos" id="contenedor-avisos" onmouseleave="document.getElementById('panel-notificaciones').classList.remove('activo'); document.getElementById('link-avisos').classList.remove('activo-btn');">
+                <a href="#" class="icono-nav" id="link-avisos" onclick="event.preventDefault(); document.getElementById('panel-notificaciones').classList.toggle('activo'); this.classList.toggle('activo-btn');">
                     <i class="fas fa-bell"></i>
                     <span class="texto-icono">Avisos</span>
                     <span class="globo-notificacion">2</span>

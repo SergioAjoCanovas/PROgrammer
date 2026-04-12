@@ -9,6 +9,25 @@
     <link rel="stylesheet" href="/frontend/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/frontend/Style/homePage_styles/selector.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilo para el estado seleccionado en el header */
+        /* Lo pongo aquí por si no está en header.css */
+        .activo, .activo i, .activo span {
+            color: #FFCC00 !important; /* Amarillo Neón */
+        }
+    </style>
+</head>
+<body class="fondo-oscuro-neon"><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Conecta</title>
+    <link rel="stylesheet" href="/frontend/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/frontend/Style/homePage_styles/selector.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
 
@@ -35,16 +54,41 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        const headerPath = "/frontend/includes/header.html";
-        const footerPath = "/frontend/includes/footer.html";
+        function cargarComponentes() {
+            const headerPath = "/frontend/includes/header.html";
+            const footerPath = "/frontend/includes/footer.html";
 
-        fetch(headerPath)
-            .then(res => res.text())
-            .then(html => document.getElementById("header-placeholder").innerHTML = html);
+            // Cargar Header y resaltar
+            fetch(headerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("header-placeholder").innerHTML = html;
+                    marcarLinkActivo(); 
+                });
 
-        fetch(footerPath)
-            .then(res => res.text())
-            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+            // Cargar Footer
+            fetch(footerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("footer-placeholder").innerHTML = html;
+                });
+        }
+
+        function marcarLinkActivo() {
+            const currentPath = window.location.pathname;
+            const enlaces = document.querySelectorAll('#header-placeholder a');
+
+            enlaces.forEach(enlace => {
+                const href = enlace.getAttribute('href');
+                // Si el href del enlace coincide con la ruta actual de la web
+                if (href && currentPath.includes(href)) {
+                    enlace.classList.add('activo');
+                }
+            });
+        }
+
+        // Ejecutar al cargar la ventana
+        window.onload = cargarComponentes;
     </script>
 
 </body>

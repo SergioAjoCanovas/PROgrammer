@@ -29,7 +29,7 @@
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
-                <button class="boton-postular" onclick="window.location.href='/UI/jobview/jobview.html'">POSTULAR</button>
+                <button class="boton-postular" onclick="window.location.href='/frontend/UI/jobview/jobview.html'">POSTULAR</button>
             </div>
         </div>
     
@@ -89,16 +89,43 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        const headerPath = "/frontend/includes/header.html";
-        const footerPath = "/frontend/includes/footer.html";
+        // Función para cargar componentes y gestionar el estado activo
+        function cargarComponentes() {
+            const headerPath = "/frontend/includes/header.html";
+            const footerPath = "/frontend/includes/footer.html";
 
-        fetch(headerPath)
-            .then(res => res.text())
-            .then(html => document.getElementById("header-placeholder").innerHTML = html);
+            // Carga Header
+            fetch(headerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("header-placeholder").innerHTML = html;
+                    marcarEnlaceActivo(); // Ejecutar resaltado
+                });
 
-        fetch(footerPath)
-            .then(res => res.text())
-            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+            // Carga Footer
+            fetch(footerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("footer-placeholder").innerHTML = html;
+                });
+        }
+
+        function marcarEnlaceActivo() {
+            const pathActual = window.location.pathname;
+            // Seleccionamos los enlaces dentro del placeholder recién cargado
+            const links = document.querySelectorAll('#header-placeholder a');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                // Si el href del link está contenido en la URL actual, activamos
+                if (href && pathActual.includes(href)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = cargarComponentes;
     </script>
 
 </body>

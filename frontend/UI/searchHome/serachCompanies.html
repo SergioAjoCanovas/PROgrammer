@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Buscar Empresas</title>
+    <link rel="stylesheet" href="/frontend/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/frontend/Style/homePage_styles/searchCompanies.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fondo-oscuro-neon">
+
+    <div id="header-placeholder"></div>
+
+    <main class="contenedor-busqueda">
+        
+        <section class="seccion-buscador-central">
+            <h1 class="titulo-neon">CONECTA CON <span class="resaltado">EMPRESAS</span></h1>
+            <div class="caja-busqueda-neon">
+                <input type="text" placeholder="Busca por sector, tecnología o nombre de empresa...">
+                <button class="btn-buscar-neon">
+                    <i class="fas fa-search"></i> BUSCAR
+                </button>
+            </div>
+        </section>
+
+        <section class="seccion-carrusel">
+            <h2 class="subtitulo-neon">Empresas Destacadas</h2>
+            
+            <div class="carrusel-wrapper">
+                <button class="btn-nav prev"><i class="fas fa-chevron-left"></i></button>
+                
+                <div class="carrusel-contenedor">
+                    <div class="carrusel-track">
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"><i class="fas fa-microchip"></i></div>
+                            <h3>TechNova</h3>
+                            <p>Desarrollo de Software</p>
+                            <div class="tags"><span>AI</span><span>Cloud</span></div>
+                            <button class="btn-perfil">Ver Vacantes</button>
+                        </div>
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"><i class="fas fa-rocket"></i></div>
+                            <h3>Galaxy Systems</h3>
+                            <p>Ciberseguridad & Redes</p>
+                            <div class="tags"><span>Security</span><span>NASA</span></div>
+                            <button class="btn-perfil">Ver Vacantes</button>
+                        </div>
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"><i class="fas fa-laptop-code"></i></div>
+                            <h3>DevCore Inc.</h3>
+                            <p>Consultoría Tecnológica</p>
+                            <div class="tags"><span>Java</span><span>Kotlin</span></div>
+                            <button class="btn-perfil">Ver Vacantes</button>
+                        </div>
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"><i class="fas fa-chart-line"></i></div>
+                            <h3>FinSphere</h3>
+                            <p>Fintech & Blockchain</p>
+                            <div class="tags"><span>Crypto</span><span>React</span></div>
+                            <button class="btn-perfil">Ver Vacantes</button>
+                        </div>
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"><i class="fas fa-shopping-bag"></i></div>
+                            <h3>E-Volution</h3>
+                            <p>E-commerce Solutions</p>
+                            <div class="tags"><span>Python</span><span>Vue</span></div>
+                            <button class="btn-perfil">Ver Vacantes</button>
+                        </div>
+                        <div class="tarjeta-perfil-neon">
+                            <div class="foto-perfil-dummy"><i class="fas fa-gamepad"></i></div>
+                            <h3>Pixel Mind</h3>
+                            <p>Videojuegos & VR</p>
+                            <div class="tags"><span>Unity</span><span>C#</span></div>
+                            <button class="btn-perfil">Ver Vacantes</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-nav next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // CARGA DE HEADER/FOOTER
+        fetch("/frontend/includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch("/frontend/includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+
+        // LÓGICA AUTOMÁTICA DEL CARRUSEL
+        const track = document.querySelector('.carrusel-track');
+        const nextBtn = document.querySelector('.next');
+        const prevBtn = document.querySelector('.prev');
+        const tarjetas = document.querySelectorAll('.tarjeta-perfil-neon');
+        let index = 0;
+        let intervalo;
+
+        function moverCarrusel() {
+            const gap = 30;
+            const anchoTarjeta = tarjetas[0].offsetWidth + gap;
+            track.style.transform = `translateX(${-index * anchoTarjeta}px)`;
+        }
+
+        function siguiente() {
+            // Se ajusta según el número de tarjetas visibles (ej: 3)
+            if (index < tarjetas.length - 3) {
+                index++;
+            } else {
+                index = 0;
+            }
+            moverCarrusel();
+        }
+
+        function anterior() {
+            if (index > 0) {
+                index--;
+            } else {
+                index = tarjetas.length - 3;
+            }
+            moverCarrusel();
+        }
+
+        function iniciarAutoPlay() {
+            intervalo = setInterval(siguiente, 3000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(intervalo);
+            iniciarAutoPlay();
+        }
+
+        nextBtn.addEventListener('click', () => { siguiente(); resetAutoPlay(); });
+        prevBtn.addEventListener('click', () => { anterior(); resetAutoPlay(); });
+
+        window.addEventListener('resize', moverCarrusel);
+        iniciarAutoPlay();
+    </script>
+</body>
+</html>

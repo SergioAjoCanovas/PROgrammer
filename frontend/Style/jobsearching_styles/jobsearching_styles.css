@@ -40,18 +40,13 @@ html, body {
     border-radius: 25px;
     padding: 20px 40px;
     flex-wrap: wrap;
-    
-    /* ILUMINACIÓN NORMAL: Subida a 0.35 para que brille más de base */
     box-shadow: 0 0 18px rgba(255, 204, 0, 0.35), 
                 inset 0 0 8px rgba(255, 204, 0, 0.15); 
-    
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ILUMINACIÓN HOVER: Brillo neón máximo */
 .tarjeta-oferta:hover {
     transform: translateY(-5px);
-    /* Resplandor más expansivo */
     box-shadow: 0 0 30px rgba(255, 204, 0, 0.75), 
                 inset 0 0 12px rgba(255, 204, 0, 0.25);
 }
@@ -167,4 +162,14 @@ html, body {
         align-items: center;
         width: 100%;
     }
+}
+
+/* =========================================================
+   6. ESTILO ENLACE ACTIVO (HEADER)
+   ========================================================= */
+#header-placeholder a.active, 
+#header-placeholder a.active i, 
+#header-placeholder a.active span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
 }

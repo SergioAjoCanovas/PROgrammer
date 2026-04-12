@@ -1,7 +1,8 @@
+/* ... (Se mantienen las secciones 1, 2, 3 y 4 de tu CSS original) ... */
+
 /* =========================================================
    1. ESTILO GLOBAL Y ATMÓSFERA NEÓN (FONDO)
    ========================================================= */
-
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
@@ -14,7 +15,7 @@ body.fondo-oscuro-neon {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Bolas de fondo animadas (Solo se ven fuera de la tarjeta principal) */
+/* Bolas de fondo animadas */
 body.fondo-oscuro-neon::before,
 body.fondo-oscuro-neon::after {
     content: '';
@@ -63,7 +64,6 @@ body.fondo-oscuro-neon::after {
 /* =========================================================
    2. CONTENEDORES DEL MENÚ
    ========================================================= */
-
 .contenedor-principal-menu {
     background-color: transparent !important;
     display: flex;
@@ -75,19 +75,15 @@ body.fondo-oscuro-neon::after {
     z-index: 10;
 }
 
-/* TARJETA PRINCIPAL (OPACA / FONDO SÓLIDO) */
 .tarjeta-menu-completo {
-    background-color: #1a1a1a !important; /* Gris oscuro sólido para tapar el fondo */
+    background-color: #1a1a1a !important;
     width: 95%;
     max-width: 1100px;
     padding: 40px;
     border-radius: 15px;
     border: 2px solid #FFCC00;
-    
-    /* Sombra negra profunda + sutil glow neón */
     box-shadow: 0 0 40px rgba(0, 0, 0, 1), 
                 0 0 20px rgba(255, 204, 0, 0.15);
-    
     position: relative;
     z-index: 20;
 }
@@ -118,7 +114,6 @@ body.fondo-oscuro-neon::after {
 /* =========================================================
    3. GRID Y TARJETAS INTERNAS (ITEMS)
    ========================================================= */
-
 .grid-menu-completo {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -127,7 +122,6 @@ body.fondo-oscuro-neon::after {
 
 .item-menu-card {
     background-color: #242424; 
-    /* Borde amarillo sutil inicial */
     border: 2px solid rgba(255, 204, 0, 0.2); 
     padding: 25px 15px;
     border-radius: 12px;
@@ -138,23 +132,17 @@ body.fondo-oscuro-neon::after {
     align-items: center;
     position: relative;
     overflow: hidden;
-    
-    /* Transición elástica y suave */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* ANIMACIÓN HOVER: BORDE ILUMINADO Y LEVANTE */
 .item-menu-card:hover {
-    border-color: #FFCC00; /* El borde se enciende */
+    border-color: #FFCC00;
     background-color: #2a2a2a;
-    transform: translateY(-10px); /* Elevación */
-    
-    /* Resplandor neón del borde */
+    transform: translateY(-10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 
                 0 0 15px rgba(255, 204, 0, 0.5);
 }
 
-/* ICONOS CON EFECTO DE LUZ */
 .item-menu-card i {
     font-size: 2.8rem;
     color: #FFCC00;
@@ -166,10 +154,9 @@ body.fondo-oscuro-neon::after {
 .item-menu-card:hover i {
     opacity: 1;
     transform: scale(1.15);
-    text-shadow: 0 0 15px #FFCC00; /* Brillo del icono */
+    text-shadow: 0 0 15px #FFCC00;
 }
 
-/* TEXTOS DENTRO DEL ITEM */
 .item-menu-card h3 {
     font-size: 1.1rem;
     margin-bottom: 8px;
@@ -187,32 +174,9 @@ body.fondo-oscuro-neon::after {
     line-height: 1.4;
 }
 
-/* EFECTO DE DESTELLO INTERNO AL PASAR EL MOUSE (OPCIONAL) */
-.item-menu-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        to right,
-        transparent,
-        rgba(255, 204, 0, 0.05),
-        transparent
-    );
-    transform: skewX(-25deg);
-    transition: 0.5s;
-}
-
-.item-menu-card:hover::before {
-    left: 150%;
-}
-
 /* =========================================================
    4. RESPONSIVE
    ========================================================= */
-
 @media (max-width: 1100px) {
     .grid-menu-completo { grid-template-columns: repeat(2, 1fr); }
 }
@@ -222,4 +186,14 @@ body.fondo-oscuro-neon::after {
     .tarjeta-menu-completo { padding: 25px; }
     .cabecera-menu h2 { font-size: 1.4rem; }
     .contenedor-principal-menu { padding: 30px 15px; }
+}
+
+/* =========================================================
+   5. ESTILO ENLACE ACTIVO (HEADER)
+   ========================================================= */
+#header-placeholder a.activo, 
+#header-placeholder a.activo i, 
+#header-placeholder a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.8) !important;
 }

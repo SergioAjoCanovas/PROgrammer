@@ -97,25 +97,45 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        // Carga de componentes externos
-        fetch("/frontend/includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("/frontend/includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        // Carga de componentes y resaltado de página activa
+        function cargarComponentes() {
+            // Cargar Header
+            fetch("/frontend/includes/header.html")
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("header-placeholder").innerHTML = html;
+                    marcarEnlaceActivo();
+                });
 
+            // Cargar Footer
+            fetch("/frontend/includes/footer.html")
+                .then(res => res.text())
+                .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        }
+
+        function marcarEnlaceActivo() {
+            const pathActual = window.location.pathname;
+            const links = document.querySelectorAll('#header-placeholder a');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && pathActual.includes(href)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // --- Lógica del Carrusel ---
         const track = document.getElementById('track');
         let index = 0;
-        
-        // Paso de scroll: Ancho tarjeta (260) + Gap (30) = 290px
         const cardStep = 290; 
-        
+
         function actualizarCarrusel() {
             const totalCards = document.querySelectorAll('.tarjeta-perfil-neon').length;
             const isMobile = window.innerWidth <= 1050;
-            // En escritorio mostramos 3 tarjetas, en móvil 1
             const visibleCards = isMobile ? 1 : 3;
-            
             const maxIndex = totalCards - visibleCards;
 
-            // Lógica circular (vuelve al inicio si llega al final)
             if (index > maxIndex) index = 0;
             if (index < 0) index = maxIndex;
             
@@ -125,10 +145,9 @@
         function moverCarrusel(direccion) {
             index += direccion;
             actualizarCarrusel();
-            reiniciarIntervalo(); // Reinicia el contador si el usuario hace clic
+            reiniciarIntervalo();
         }
 
-        // Movimiento automático cada 5 segundos
         let intervalo = setInterval(() => { 
             index++; 
             actualizarCarrusel(); 
@@ -141,9 +160,9 @@
                 actualizarCarrusel(); 
             }, 5000); 
         }
-        
-        // Ajustar posición si se cambia el tamaño de la ventana
+
         window.addEventListener('resize', actualizarCarrusel);
+        window.onload = cargarComponentes;
     </script>
 </body>
 </html>

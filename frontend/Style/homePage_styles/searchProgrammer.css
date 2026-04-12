@@ -22,7 +22,6 @@ body.fondo-oscuro-neon {
     position: relative;
 }
 
-/* Efecto de luces neón de fondo */
 body.fondo-oscuro-neon::before {
     content: '';
     position: fixed;
@@ -42,7 +41,7 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================
-   2. SECCIÓN BUSCADOR (ILUMINACIÓN POTENCIADA)
+   2. SECCIÓN BUSCADOR
    ========================================= */
 .titulo-neon {
     font-size: 2.5rem;
@@ -140,7 +139,7 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================
-   4. TARJETAS DE PERFIL Y TAGS NEÓN
+   4. TARJETAS DE PERFIL
    ========================================= */
 .tarjeta-perfil-neon {
     background: #1a1a1a; 
@@ -156,7 +155,6 @@ body.fondo-oscuro-neon::before {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);
 }
 
 .tarjeta-perfil-neon:hover {
@@ -166,8 +164,7 @@ body.fondo-oscuro-neon::before {
 }
 
 .foto-perfil-dummy {
-    width: 80px; 
-    height: 80px;
+    width: 80px; height: 80px;
     background: #050505; 
     border-radius: 50%;
     margin: 0 auto 10px;
@@ -175,40 +172,13 @@ body.fondo-oscuro-neon::before {
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }
 
-.tarjeta-perfil-neon h3 {
-    font-size: 1.2rem;
-    margin: 5px 0;
-    color: #FFCC00;
-    text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-}
-
-/* ESTILO DE LENGUAJES (CUADRADOS AMARILLOS NEÓN TRANSPARENTES) */
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin: 15px 0;
-}
-
 .tags span {
-    background: rgba(255, 204, 0, 0.08); /* Transparente */
-    color: #FFCC00; /* Texto amarillo */
+    background: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
     font-size: 0.75rem;
-    font-weight: bold;
     padding: 5px 12px;
     border-radius: 8px;
-    border: 1px solid #FFCC00; /* Borde neón */
-    text-transform: uppercase;
-    /* Resplandor del tag */
-    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3), inset 0 0 4px rgba(255, 204, 0, 0.1);
-    transition: 0.3s;
-}
-
-.tags span:hover {
-    background: rgba(255, 204, 0, 0.2);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
-    transform: scale(1.05);
+    border: 1px solid #FFCC00;
 }
 
 .btn-perfil {
@@ -216,21 +186,17 @@ body.fondo-oscuro-neon::before {
     border: 1px solid #FFCC00;
     color: #FFCC00;
     padding: 10px 20px;
-    border-radius: 12px;
     cursor: pointer;
-    font-weight: 600;
     transition: 0.3s;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
 }
 
 .btn-perfil:hover {
     background: #FFCC00;
     color: #050505;
-    box-shadow: 0 0 25px #FFCC00;
 }
 
 /* =========================================
-   5. BOTONES DE NAVEGACIÓN
+   5. NAVEGACIÓN
    ========================================= */
 .btn-nav {
     position: absolute;
@@ -239,22 +205,13 @@ body.fondo-oscuro-neon::before {
     background: #050505; 
     border: 2px solid #FFCC00;
     color: #FFCC00;
-    width: 50px;
-    height: 50px;
+    width: 50px; height: 50px;
     border-radius: 50%;
     cursor: pointer;
     z-index: 25;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
-}
-
-.btn-nav:hover {
-    background: #FFCC00;
-    color: #050505;
-    box-shadow: 0 0 40px #FFCC00;
 }
 
 .prev { left: -70px; }
@@ -267,5 +224,15 @@ body.fondo-oscuro-neon::before {
     .seccion-carrusel { align-items: center; }
     .carrusel-wrapper { width: 280px; }
     .btn-nav { display: none; }
-    .subtitulo-neon { margin-left: 20px; }
+}
+
+/* =========================================
+   7. ESTILO ENLACE ACTIVO (HEADER)
+   ========================================= */
+/* Esto se aplica al elemento cargado dinámicamente */
+#header-placeholder a.active, 
+#header-placeholder a.active i, 
+#header-placeholder a.active span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
 }

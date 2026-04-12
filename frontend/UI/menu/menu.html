@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="/frontend/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/frontend/Style/menu_styles/menu_styles.css">
 </head>
-<body class="fondo-oscuro-neon"> <div id="header-placeholder"></div>
+<body class="fondo-oscuro-neon"> 
+    
+    <div id="header-placeholder"></div>
 
     <main class="contenedor-principal-menu">
         <section class="tarjeta-menu-completo">
@@ -75,11 +77,39 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        const headerPath = "/frontend/includes/header.html"; 
-        const footerPath = "/frontend/includes/footer.html";
+        function cargarComponentes() {
+            const headerPath = "/frontend/includes/header.html"; 
+            const footerPath = "/frontend/includes/footer.html";
 
-        fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+            // Cargar Header y activar link
+            fetch(headerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("header-placeholder").innerHTML = html;
+                    marcarLinkActivo();
+                });
+
+            // Cargar Footer
+            fetch(footerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("footer-placeholder").innerHTML = html;
+                });
+        }
+
+        function marcarLinkActivo() {
+            const currentPath = window.location.pathname;
+            const enlaces = document.querySelectorAll('#header-placeholder a');
+
+            enlaces.forEach(enlace => {
+                const href = enlace.getAttribute('href');
+                if (href && currentPath.includes(href)) {
+                    enlace.classList.add('activo');
+                }
+            });
+        }
+
+        window.onload = cargarComponentes;
     </script>
 </body>
 </html>

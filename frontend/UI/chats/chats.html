@@ -105,10 +105,41 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        const headerPath = "/frontend/includes/header.html";
-        const footerPath = "/frontend/includes/footer.html";
-        fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        // Función para cargar componentes y gestionar el estado activo
+        function cargarComponentes() {
+            const headerPath = "/frontend/includes/header.html";
+            const footerPath = "/frontend/includes/footer.html";
+
+            // Carga Header
+            fetch(headerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("header-placeholder").innerHTML = html;
+                    marcarEnlaceActivo(); // Ejecutar resaltado neón
+                });
+
+            // Carga Footer
+            fetch(footerPath)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("footer-placeholder").innerHTML = html;
+                });
+        }
+
+        function marcarEnlaceActivo() {
+            const pathActual = window.location.pathname;
+            const links = document.querySelectorAll('#header-placeholder a');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                // Si la URL actual contiene el href del enlace, lo activamos
+                if (href && pathActual.includes(href)) {
+                    link.classList.add('activo');
+                }
+            });
+        }
+
+        window.onload = cargarComponentes;
     </script>
 </body>
 </html>

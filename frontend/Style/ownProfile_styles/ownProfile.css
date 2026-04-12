@@ -1,23 +1,18 @@
 /* ============================================================
-    1. ACTUALIZA LAS VARIABLES (OPCIONAL PERO RECOMENDADO)
+    1. VARIABLES Y CONFIGURACIÓN GLOBAL
    ============================================================ */
 :root {
     --amarillo-neon: #FFCC00;
     --negro-puro: #000000;
-    --negro-tarjeta: #1a1a1a; /* Este es el color que quieres */
+    --negro-tarjeta: #1a1a1a; 
     --negro-input: #050505;
     --gris-texto: #ccc;
     --amarillo-pale: #FFFDDF;
     --fondo-naranjita: #211c12; 
 }
 
-/* ============================================================
-    2. CAMBIO DIRECTO EN EL BODY
-   ============================================================ */
 body.fondo-oscuro-neon {
-    /* Cambiamos el color al #1a1a1a */
     background-color: #1a1a1a !important; 
-    
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -26,6 +21,9 @@ body.fondo-oscuro-neon {
     font-family: Arial, sans-serif;
 }
 
+/* ============================================================
+    2. ESTRUCTURA Y CONTENEDORES
+   ============================================================ */
 .contenedor-principal {
     display: flex;
     max-width: 1550px;
@@ -36,9 +34,24 @@ body.fondo-oscuro-neon {
     flex: 1; 
 }
 
-.columna-perfil { flex: 0 0 320px; display: flex; flex-direction: column; gap: 20px; }
-.columna-derecha { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.columna-perfil { 
+    flex: 0 0 320px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+}
 
+.columna-derecha { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    min-width: 0; 
+}
+
+/* ============================================================
+    3. TARJETAS (ACORDEÓN / PANEL)
+   ============================================================ */
 .tarjeta-acordeon {
     background-color: var(--negro-tarjeta) !important;
     border: 1px solid var(--amarillo-neon) !important; 
@@ -58,7 +71,8 @@ body.fondo-oscuro-neon {
     margin-bottom: 20px;
 }
 
-.cabecera-tarjeta h2, .cabecera-tarjeta h3 {
+.cabecera-tarjeta h2, 
+.cabecera-tarjeta h3 {
     font-size: 1.3rem !important;
     text-transform: uppercase;
     font-weight: 800;
@@ -67,6 +81,9 @@ body.fondo-oscuro-neon {
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
+/* ============================================================
+    4. PERFIL DE USUARIO (IZQUIERDA)
+   ============================================================ */
 .perfil-superior {
     display: flex;
     flex-direction: column;
@@ -89,7 +106,9 @@ body.fondo-oscuro-neon {
     transition: transform 0.3s ease;
 }
 
-.circulo-foto:hover { transform: scale(1.05); }
+.circulo-foto:hover { 
+    transform: scale(1.05); 
+}
 
 .nombre-usuario {
     font-size: 1.2rem !important;
@@ -99,14 +118,23 @@ body.fondo-oscuro-neon {
     color: var(--amarillo-neon);
 }
 
-.redes-sociales { list-style: none; padding: 0; margin-bottom: 20px; }
+.redes-sociales { 
+    list-style: none; 
+    padding: 0; 
+    margin-bottom: 20px; 
+}
+
 .redes-sociales li {
     padding: 10px 0;
-    display: flex; justify-content: space-between;
+    display: flex; 
+    justify-content: space-between;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     color: var(--gris-texto);
 }
 
+/* ============================================================
+    5. REJILLA DE PROYECTOS (DERECHA)
+   ============================================================ */
 .rejilla-proyectos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -145,8 +173,22 @@ body.fondo-oscuro-neon {
     border: 2px dashed var(--amarillo-neon) !important; 
     background: #535353 !important; 
 }
-.tarjeta-anadir i { font-size: 2.5rem; color: var(--amarillo-neon); margin-bottom: 10px; }
 
+.tarjeta-anadir i { 
+    font-size: 2.5rem; 
+    color: var(--amarillo-neon); 
+    margin-bottom: 10px; 
+}
+
+.acciones-proyecto { 
+    display: flex; 
+    gap: 10px; 
+    margin-top: 15px; 
+}
+
+/* ============================================================
+    6. BOTONES NEÓN
+   ============================================================ */
 .boton-amarillo-solido {
     background-color: var(--negro-input) !important;
     color: var(--amarillo-neon) !important;
@@ -188,8 +230,9 @@ body.fondo-oscuro-neon {
     box-shadow: 0 0 15px var(--amarillo-neon) !important;
 }
 
-.acciones-proyecto { display: flex; gap: 10px; margin-top: 15px; }
-
+/* ============================================================
+    7. TECNOLOGÍAS (TAGS)
+   ============================================================ */
 .tags-tecnologias {
     display: flex;
     flex-wrap: wrap;
@@ -198,21 +241,16 @@ body.fondo-oscuro-neon {
 }
 
 .tag-tech {
-    /* Cambiamos el fondo negro por un tono naranja oscuro transparente */
     background-color: rgba(33, 28, 18, 0.8) !important; 
     color: var(--amarillo-neon) !important; 
-    
     border: 1px solid var(--amarillo-neon) !important;
     border-radius: 10px !important; 
     padding: 8px 18px !important; 
     font-weight: 800;
     font-size: 0.9rem;
     text-transform: uppercase;
-
-    /* Sombra exterior (glow naranja/amarillo) y sombra interior */
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.4), 
                 inset 0 0 8px rgba(255, 204, 0, 0.2) !important;
-                
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -220,14 +258,47 @@ body.fondo-oscuro-neon {
 }
 
 .tag-tech:hover {
-    /* Al pasar el ratón, el fondo se vuelve más naranja/amarillo */
     background-color: rgba(255, 204, 0, 0.15) !important;
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
+/* ============================================================
+    8. DISEÑO INFERIOR Y RESPONSIVE
+   ============================================================ */
 .fila-inferior {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+}
+
+@media (max-width: 1000px) {
+    .contenedor-principal { flex-direction: column; align-items: center; }
+    .columna-perfil { width: 100%; flex: none; }
+    .rejilla-proyectos { grid-template-columns: repeat(2, 1fr); }
+    .fila-inferior { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+    10. LÓGICA DE ESTADO ACTIVO (HEADER Y AJUSTES)
+   ============================================================ */
+/* Clase unificada que activa el neón en Campana y Ajustes */
+.activo-btn, 
+.activo-btn i, 
+.activo-btn span {
+    color: var(--amarillo-neon) !important;
+    /* Efecto neón intenso */
+    text-shadow: 0 0 15px var(--amarillo-neon), 
+                 0 0 30px rgba(255, 204, 0, 0.6) !important;
+    opacity: 1 !important;
+    border-color: var(--amarillo-neon) !important;
+    
+    /* Aseguramos que no haya animaciones */
+    animation: none !important; 
+    transform: none !important;
+}
+
+/* Aseguramos que el icono de engranaje no rote */
+.activo-btn .fa-cog {
+    animation: none !important;
 }

@@ -295,12 +295,11 @@
     padding: 12px 20px;
     color: white;
     outline: none;
-    transition: all 0.3s ease; /* Para que el neón aparezca suavemente */
+    transition: all 0.3s ease;
 }
 
 .zona-input-chat input:focus {
     border-color: #FFCC00;
-    /* Efecto neón: resplandor externo e interno sutil */
     box-shadow: 0 0 12px rgba(255, 204, 0, 0.5), 
                 inset 0 0 8px rgba(255, 204, 0, 0.1);
 }
@@ -327,19 +326,22 @@
 }
 
 /* SCROLLBAR PERSONALIZADO AMARILLO */
-::-webkit-scrollbar {
-    width: 6px;
-}
-::-webkit-scrollbar-thumb {
-    background: #FFCC00;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
 
 /* RESPONSIVE */
 @media (max-width: 800px) {
     .panel-contactos { width: 100%; }
     .panel-conversacion { display: none; }
+}
+
+/* =========================================
+   ESTILO ENLACE ACTIVO (HEADER)
+   ========================================= */
+#header-placeholder a.activo, 
+#header-placeholder a.activo i, 
+#header-placeholder a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7) !important;
 }

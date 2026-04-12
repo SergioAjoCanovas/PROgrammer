@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Proyectos</title>
+    
+    <link rel="stylesheet" href="/frontend/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/frontend/Style/projectlist_styles/proyectlist.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/general_styles.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+</head>
+<body class="fondo-oscuro-neon">
+
+    <div id="header-placeholder"></div>
+
+    <main class="contenedor-principal">
+        <aside class="columna-perfil">
+            <div class="tarjeta-perfil">
+                <div class="perfil-superior">
+                    <div class="foto-perfil-contenedor">
+                        <div class="circulo-foto"></div>
+                        <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                    </div>
+                    <h2 class="nombre-usuario">Nombre del usuario</h2>
+                </div>
+
+                <div class="perfil-inferior">
+                    <ul class="redes-sociales">
+                        <li><i class="fab fa-instagram"></i> Instagram</li>
+                        <li><i class="fab fa-twitter"></i> Twitter</li>
+                        <li><i class="fas fa-phone"></i> Teléfono</li>
+                    </ul>
+                    <button class="boton-curriculum">CURRICULUM</button>
+                </div>
+            </div>
+            
+            <div class="tarjeta-resenas-izq">
+                <h3>RESEÑAS</h3>
+                <textarea class="input-resena" placeholder="Escribe aquí..."></textarea>
+                <button class="boton-anadir" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+            </div>
+        </aside>
+
+        <section class="seccion-derecha-dinamica">
+            <div class="tarjeta-acordeon-contenedor">
+                <div class="cabecera-acordeon">
+                    <h2>PROYECTOS</h2>
+                    <a href="/frontend/UI/profileView.html" class="boton-volver-circular" title="Volver">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
+
+                <div id="acordeon-proyectos">
+                    <h3 class="acordeon-titulo">Proyecto 1</h3>
+                    <div class="contenido-desplegable">
+                        <div class="inner-content">
+                            <p>Descripción del proyecto 1 detallada aquí.</p>
+                            <button class="boton-ver-proyecto" onclick="window.location.href='../projectview/projectview.html'">
+                                VER PROYECTO
+                            </button>
+                        </div>
+                    </div>
+
+                    <h3 class="acordeon-titulo">Proyecto 2</h3>
+                    <div class="contenido-desplegable">
+                        <div class="inner-content">
+                            <p>Descripción del proyecto 2 detallada aquí.</p>
+                            <button class="boton-ver-proyecto">VER PROYECTO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <script>
+        $( function() {
+            $("#acordeon-proyectos").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: 0,
+                animate: 400 // Velocidad equilibrada
+            });
+        });
+
+        fetch("/frontend/includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch("/frontend/includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+    </script>
+</body>
+</html>

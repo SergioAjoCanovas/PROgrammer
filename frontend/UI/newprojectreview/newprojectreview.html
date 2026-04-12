@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Reseña de Proyecto</title>
+
+    <link rel="stylesheet" href="/frontend/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/frontend/Style/newprojectreview/newprojectreview.css">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/general_styles.css">  
+    <link rel="stylesheet" href="/frontend/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="/frontend/Style/projectview_styles/projectview.css">
+    <link rel="stylesheet" href="/frontend/Style/projectview_styles/images.css">
+    <link rel="stylesheet" href="/frontend/Style/projectview_styles/images-modals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fondo-oscuro-neon">
+
+<div id="header-placeholder"></div>
+
+<main class="contenedor-principal">
+
+    <aside class="columna-perfil">
+        <div class="tarjeta-perfil">
+            <div class="cabecera-tarjeta">
+                <div class="foto-perfil-contenedor">
+                    <div class="circulo-foto"></div>
+                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                </div>
+                <h2 class="nombre-usuario">Nombre del usuario</h2>
+            </div>
+
+            <div class="perfil-inferior">
+                <ul class="redes-sociales">
+                    <li><i class="fab fa-instagram"></i> Instagram</li>
+                    <li><i class="fab fa-twitter"></i> Twitter</li>
+                    <li><i class="fas fa-phone-alt"></i> Teléfono</li>
+                </ul>
+                <button class="boton-curriculum">CURRICULUM</button>
+            </div>
+        </div>
+    </aside>
+
+    <section class="seccion-derecha-dinamica">
+        <div class="tarjeta-proyecto-detalle">
+            <div class="cabecera-proyecto">
+                <h2>Nombre del Proyecto</h2>
+                <a href="/frontend/UI/projectview/projectview.html" class="boton-volver-curvo">
+                    <i class="fas fa-undo"></i>
+                </a>
+            </div>
+
+            <div class="info-superior">
+                <p><strong>Autor:</strong> David Alcázar</p>
+                <div class="estado-proyecto">
+                    <span class="badge validado"><i class="fas fa-check-circle"></i> Validado</span>
+                    <button class="boton-descargar"><i class="fas fa-download"></i> Descargar</button>
+                </div>
+            </div>
+
+            <div class="galeria-proyecto">
+                <img src="/frontend/Img/stock/ejemplo1.jpg" class="img-proyecto" alt="Captura 1">
+                <img src="/frontend/Img/stock/ejemplo2.jpg" class="img-proyecto" alt="Captura 2">
+                <img src="/frontend/Img/stock/ejemplo3.jpg" class="img-proyecto" alt="Captura 3">
+                <img src="/frontend/Img/stock/ejemplo4.jpg" class="img-proyecto" alt="Captura 4">
+            </div>
+
+            <div class="descripcion-proyecto">
+                <h3>Descripción</h3>
+                <p>Este proyecto consiste en una plataforma para conectar desarrolladores...</p>
+            </div>
+
+            <div class="repo">
+                <h3>Repositorio</h3>
+                <a href="#" target="_blank"><i class="fab fa-github"></i> https://github.com/proyecto</a>
+            </div>
+        </div>
+    </section>
+
+    <aside class="zona-derecha">
+        <div class="tarjeta-formulario">
+            <h2><i class="fas fa-star"></i> Valorar proyecto</h2>
+            <div class="campo">
+                <label>Arquitectura</label>
+                <div class="estrellas" data-tipo="arquitectura"></div>
+            </div>
+            <div class="campo">
+                <label>Limpieza de código</label>
+                <div class="estrellas" data-tipo="limpieza"></div>
+            </div>
+            <div class="campo">
+                <label>Documentación</label>
+                <div class="estrellas" data-tipo="documentacion"></div>
+            </div>
+            <div class="campo">
+                <label>Comentario</label>
+                <textarea id="comentario" placeholder="Escribe tu reseña..."></textarea>
+            </div>
+            <button class="boton-ver" id="btn-publicar">
+                <i class="fas fa-paper-plane"></i> Publicar reseña
+            </button>
+        </div>
+    </aside>
+
+</main>
+
+<div id="miModal" class="modal">
+    <img class="contenido-modal" id="imagenFull">
+    <div id="caption-modal"></div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // 1. CARGA DINÁMICA DE HEADER Y FOOTER
+    $(function(){
+        $("#header-placeholder").load("/frontend/includes/header.html");
+        $("#footer-placeholder").load("/frontend/includes/footer.html");
+    });
+
+    // 2. LÓGICA DE LAS ESTRELLAS
+    document.querySelectorAll(".estrellas").forEach(container => {
+        for (let i = 1; i <= 5; i++) {
+            const estrella = document.createElement("i");
+            estrella.classList.add("far", "fa-star");
+            container.appendChild(estrella);
+            estrella.addEventListener("click", function() {
+                const siblings = container.querySelectorAll("i");
+                const val = Array.from(siblings).indexOf(this);
+                siblings.forEach((s, index) => {
+                    s.classList.toggle("fas", index <= val);
+                    s.classList.toggle("far", index > val);
+                    s.classList.toggle("activa", index <= val);
+                });
+            });
+        }
+    });
+
+    // 3. LÓGICA DEL MODAL (CIERRE POR FONDO)
+    const modal = document.getElementById("miModal");
+    const modalImg = document.getElementById("imagenFull");
+    const captionText = document.getElementById("caption-modal");
+
+    document.querySelectorAll(".img-proyecto").forEach(img => {
+        img.onclick = function() {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+            document.body.style.overflow = "hidden"; // Evita scroll
+        }
+    });
+
+    // Cerrar al clicar en el fondo oscuro
+    window.onclick = function(event) {
+        if (event.target == modal) { 
+            modal.style.display = "none"; 
+            document.body.style.overflow = "auto"; // Devuelve scroll
+        }
+    }
+</script>
+</body>
+</html>

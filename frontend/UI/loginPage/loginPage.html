@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/frontend/Style/loginPage_styles/loginPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Login - PROgrammer</title>
+</head>
+<body>
+    <main class="contenedor-login">
+        <div class="login-card tarjeta-acordeon">
+            <img src="/frontend/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotimo PROgrammer" class="login-logo"/>
+            <h2>Iniciar sesión</h2>
+            <form action="#" method="POST" class="login-form">
+
+                <div class="input-group">
+                    <label for="username">Usuario o Email</label>
+                    <input type="text" id="username" name="username" placeholder="Introduce tu usuario" required/>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Introduce tu contraseña" required >
+                        <i class="far fa-eye" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <div class="opciones-extra">
+                    <label>
+                        <input type="checkbox" name="remember"/>
+                        <span class="checkmark">Recordarme</span>
+                    </label>
+                    <a href="#" class="link-olvido">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="boton-ver">Entrar</button>
+
+                <div class="registro-link">
+                    <p>¿No tienes cuenta? <a href="/frontend/UI/signUpPage/signUpPage.html">Registrarme aquí</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            // Cambia el tipo de input (de password a text y viceversa)
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Cambia el icono del ojo abierto al cerrado
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
+        });
+    </script>
+
+    <!-- JS para cargar header y footer -->
+    <script>
+        // Ajusta las rutas según la ubicación del HTML
+        const headerPath = "/frontend/includes/header.html";
+        const footerPath = "/frontend/includes/footer.html";
+
+        fetch(headerPath)
+            .then(res => res.text())
+            .then(html => document.getElementById("header-placeholder").innerHTML = html);
+
+        fetch(footerPath)
+            .then(res => res.text())
+            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+    </script>
+</body>
+</html>

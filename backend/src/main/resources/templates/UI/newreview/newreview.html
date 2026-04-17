@@ -6,12 +6,11 @@
     <title>ProGrammer - Reseñas</title>
 
     <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../staticc/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
     <link rel="stylesheet" href="../../../static/Style/newreview_styles/newreview.css">
     <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">  
     <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
 </head>
 <body class="fondo-oscuro-neon">
 
@@ -19,7 +18,6 @@
 
 <main class="contenedor-principal">
 
-    <!-- IZQUIERDA (PERFIL) -->
     <aside class="columna-perfil">
         <div class="tarjeta-perfil">
             <div class="perfil-superior">
@@ -27,13 +25,13 @@
                     <div class="circulo-foto"></div>
                     <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                 </div>
-                <h2 class="nombre-usuario">Nombre del usuario del proyecto</h2>
+                <h2 class="nombre-usuario">Nombre del usuario</h2>
             </div>
 
             <div class="perfil-inferior">
                 <ul class="redes-sociales">
                     <li><i class="fab fa-instagram"></i> Insta</li>
-                    <li><i class="fab fa-twitter"></i> Twiter</li>
+                    <li><i class="fab fa-twitter"></i> Twitter</li>
                     <li><i class="fas fa-phone"></i> Tel</li>
                 </ul>
                 <button class="boton-curriculum">CURRICULUM</button>
@@ -41,16 +39,14 @@
         </div>
     </aside>
 
-    <!-- CENTRO + DERECHA -->
     <section class="zona-reseñas">
 
-        <!-- CREAR RESEÑA -->
         <div class="tarjeta-acordeon tarjeta-crear-reseña">
-
             <h2><i class="fas fa-pen"></i> Añadir reseña </h2>
             <a href="../profileView/profileView.html" class="boton-volver-circular" title="Volver">
                 <i class="fas fa-undo"></i>
             </a>
+            
             <div class="campo">
                 <label>Valoración</label>
                 <div class="estrellas" id="estrellas">
@@ -70,16 +66,11 @@
             <button class="boton-ver" id="btn-publicar">
                 <i class="fas fa-paper-plane"></i> Publicar reseña
             </button>
-
         </div>
 
-        <!-- LISTA DE RESEÑAS -->
         <div class="tarjeta-acordeon tarjeta-lista-reseñas">
-
             <h2><i class="fas fa-comments"></i> Reseñas</h2>
-            
             <div class="contenedor-reseñas" id="lista-reseñas">
-
                 <div class="reseña">
                     <div class="reseña-header">
                         <span class="usuario">Carlos</span>
@@ -95,41 +86,26 @@
                     </div>
                     <p>Buen código y buena comunicación.</p>
                 </div>
-
-                <div class="reseña">
-                    <div class="reseña-header">
-                        <span class="usuario">Miguel</span>
-                        <span class="rating">⭐⭐⭐⭐⭐</span>
-                    </div>
-                    <p>Recomendadísimo para proyectos frontend.</p>
-                </div>
-
             </div>
-
         </div>
 
     </section>
-
 </main>
 
 <div id="footer-placeholder"></div>
 
 <script>
-    // =========================
-    // ⭐ ESTRELLAS
-    // =========================
+    // ⭐ Lógica de Estrellas
     let ratingSeleccionado = 0;
     const estrellas = document.querySelectorAll("#estrellas i");
 
     estrellas.forEach(estrella => {
         estrella.addEventListener("click", () => {
             ratingSeleccionado = estrella.getAttribute("data-value");
-
             estrellas.forEach(e => {
                 e.classList.remove("fas", "activa");
                 e.classList.add("far");
             });
-
             for (let i = 0; i < ratingSeleccionado; i++) {
                 estrellas[i].classList.remove("far");
                 estrellas[i].classList.add("fas", "activa");
@@ -137,22 +113,12 @@
         });
     });
 
-    // =========================
-    // ⭐ GENERAR TEXTO ESTRELLAS
-    // =========================
     function generarEstrellasHTML(valor) {
-        let estrellas = "";
-        for (let i = 0; i < valor; i++) {
-            estrellas += "⭐";
-        }
-        return estrellas;
+        return "⭐".repeat(valor);
     }
 
-    // =========================
-    // 🚀 BOTÓN PUBLICAR
-    // =========================
+    // 🚀 Publicar Reseña
     document.getElementById("btn-publicar").addEventListener("click", () => {
-
         const comentario = document.getElementById("comentario").value.trim();
         const lista = document.getElementById("lista-reseñas");
 
@@ -163,7 +129,6 @@
 
         const nuevaReseña = document.createElement("div");
         nuevaReseña.classList.add("reseña");
-
         nuevaReseña.innerHTML = `
             <div class="reseña-header">
                 <span class="usuario">Tú</span>
@@ -172,33 +137,20 @@
             <p>${comentario}</p>
         `;
 
-        // 👉 AQUÍ ES DONDE SE AÑADE
         lista.prepend(nuevaReseña);
-
-        // limpiar
         document.getElementById("comentario").value = "";
         ratingSeleccionado = 0;
-
-        estrellas.forEach(e => {
-            e.classList.remove("fas", "activa");
-            e.classList.add("far");
-        });
+        estrellas.forEach(e => { e.classList.remove("fas", "activa"); e.classList.add("far"); });
     });
 
-    // =========================
-    // HEADER / FOOTER
-    // =========================
-    const headerPath = "../../includes/header.html";
-    const footerPath = "../../includes/footer.html";
-
-    fetch(headerPath)
+    // Cargar Header y Footer
+    fetch("../../includes/header.html")
         .then(res => res.text())
         .then(html => document.getElementById("header-placeholder").innerHTML = html);
 
-    fetch(footerPath)
+    fetch("../../includes/footer.html")
         .then(res => res.text())
         .then(html => document.getElementById("footer-placeholder").innerHTML = html);
-
 </script>
 
 </body>

@@ -6,19 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Reseñas</title>
 
-<<<<<<< HEAD
-    <link rel="stylesheet" href="../../../static//Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static//Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static//Style/newreview_styles/newreview.css">
-    <link rel="stylesheet" href="../../../static//Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static//Style/profileView_styles/profileView.css">
-=======
     <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
     <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
     <link rel="stylesheet" href="../../../static/Style/newreview_styles/newreview.css">
     <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">  
     <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -27,13 +19,6 @@
 <div id="header-placeholder"></div>
 
 <main class="contenedor-principal">
-
-<<<<<<< HEAD
-    <!-- =========================
-         IZQUIERDA PERFIL
-    ========================== -->
-=======
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
     <aside class="columna-perfil">
 
         <div class="tarjeta-perfil">
@@ -45,15 +30,7 @@
                         <i class="fas fa-heart"></i>
                     </div>
                 </div>
-<<<<<<< HEAD
-
-                <h2 class="nombre-usuario"
-                    th:text="${usuario.username}">
-                    Nombre usuario
-                </h2>
-=======
                 <h2 class="nombre-usuario">Nombre del usuario</h2>
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
             </div>
 
             <div class="perfil-inferior">
@@ -71,57 +48,9 @@
         </div>
     </aside>
 
-<<<<<<< HEAD
-    <!-- =========================
-         CENTRO + DERECHA
-    ========================== -->
     <section class="zona-reseñas">
 
-        <!-- =========================
-             FORMULARIO REVIEW
-        ========================== -->
         <div class="tarjeta-acordeon tarjeta-crear-reseña">
-
-            <h2><i class="fas fa-pen"></i> Añadir reseña</h2>
-
-            <a href="/profile" class="boton-volver-circular">
-                <i class="fas fa-undo"></i>
-            </a>
-
-            <form th:action="@{/reviews/crear}" method="post">
-
-                <input type="hidden" name="receptorId" th:value="${usuario.id}">
-            
-                <div class="campo">
-                    <label>Valoración</label>
-            
-                    <div class="estrellas" id="estrellas">
-                        <i class="far fa-star" data-value="1"></i>
-                        <i class="far fa-star" data-value="2"></i>
-                        <i class="far fa-star" data-value="3"></i>
-                        <i class="far fa-star" data-value="4"></i>
-                        <i class="far fa-star" data-value="5"></i>
-                    </div>
-            
-                    <input type="hidden" name="rating" id="rating">
-                </div>
-            
-                <div class="campo">
-                    <label>Comentario</label>
-                    <textarea name="comentario"></textarea>
-                </div>
-            
-                <button type="submit" class="boton-ver">
-                    Publicar reseña
-                </button>
-            
-            </form>
-        </div>
-
-        <!-- =========================
-             LISTA REVIEWS
-        ========================== -->
-=======
     <section class="zona-reseñas">
 
         <div class="tarjeta-acordeon tarjeta-crear-reseña">
@@ -151,54 +80,10 @@
             </button>
         </div>
 
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
         <div class="tarjeta-acordeon tarjeta-lista-reseñas">
             <h2><i class="fas fa-comments"></i> Reseñas</h2>
-<<<<<<< HEAD
-
-            <!-- ⭐ MEDIA VISUAL -->
-            <div class="media-global">
-
-                <h3>Media global</h3>
-
-                <div class="media-estrellas">
-                    <span th:each="i : ${#numbers.sequence(1,5)}">
-
-                        <i class="fa-star"
-                           th:classappend="${i <= media} ? 'fas' : 'far'"
-                           style="color:#FFD700">
-                        </i>
-
-                    </span>
-
-                    <span style="margin-left:10px;"
-                          th:text="${#numbers.formatDecimal(media,1,1)}">
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="contenedor-reseñas">
-
-                <div class="reseña" th:each="r : ${reviews}">
-
-                    <div class="reseña-header">
-                        <span class="usuario" th:text="${r.autor.username}">
-                            Usuario
-                        </span>
-
-                        <span class="rating"
-                              th:text="${#strings.repeat('⭐', r.rating)}">
-                        </span>
-                    </div>
-
-                    <p th:text="${r.comentario}">
-                        Comentario
-                    </p>
-
-                </div>
-
-=======
+        <div class="tarjeta-acordeon tarjeta-lista-reseñas">
+            <h2><i class="fas fa-comments"></i> Reseñas</h2>
             <div class="contenedor-reseñas" id="lista-reseñas">
                 <div class="reseña">
                     <div class="reseña-header">
@@ -215,7 +100,6 @@
                     </div>
                     <p>Buen código y buena comunicación.</p>
                 </div>
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
             </div>
         </div>
 
@@ -228,27 +112,6 @@
      JS SOLO UI (ESTRELLAS)
 ========================== -->
 <script>
-<<<<<<< HEAD
-let ratingSeleccionado = 0;
-const estrellas = document.querySelectorAll("#estrellas i");
-const inputRating = document.getElementById("rating");
-
-estrellas.forEach(estrella => {
-    estrella.addEventListener("click", () => {
-
-        ratingSeleccionado = estrella.dataset.value;
-        inputRating.value = ratingSeleccionado;
-
-        estrellas.forEach(e => {
-            e.classList.remove("fas", "activa");
-            e.classList.add("far");
-        });
-
-        for (let i = 0; i < ratingSeleccionado; i++) {
-            estrellas[i].classList.remove("far");
-            estrellas[i].classList.add("fas", "activa");
-        }
-=======
     // ⭐ Lógica de Estrellas
     let ratingSeleccionado = 0;
     const estrellas = document.querySelectorAll("#estrellas i");
@@ -295,19 +158,10 @@ estrellas.forEach(estrella => {
         document.getElementById("comentario").value = "";
         ratingSeleccionado = 0;
         estrellas.forEach(e => { e.classList.remove("fas", "activa"); e.classList.add("far"); });
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
     });
 });
 </script>
 
-<<<<<<< HEAD
-<script>
-    const headerPath = "../../includes/header.html";
-        const footerPath = "../../includes/footer.html";
-
-        fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
-=======
     // Cargar Header y Footer
     fetch("../../includes/header.html")
         .then(res => res.text())
@@ -316,7 +170,6 @@ estrellas.forEach(estrella => {
     fetch("../../includes/footer.html")
         .then(res => res.text())
         .then(html => document.getElementById("footer-placeholder").innerHTML = html);
->>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
 </script>
 
 </body>

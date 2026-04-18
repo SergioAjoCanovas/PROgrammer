@@ -6,11 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Reseñas</title>
 
+<<<<<<< HEAD
     <link rel="stylesheet" href="../../../static//Style/general_styles/header.css">
     <link rel="stylesheet" href="../../../static//Style/general_styles/footer.css">
     <link rel="stylesheet" href="../../../static//Style/newreview_styles/newreview.css">
     <link rel="stylesheet" href="../../../static//Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="../../../static//Style/profileView_styles/profileView.css">
+=======
+    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
+    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="../../../static/Style/newreview_styles/newreview.css">
+    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">  
+    <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -20,9 +28,12 @@
 
 <main class="contenedor-principal">
 
+<<<<<<< HEAD
     <!-- =========================
          IZQUIERDA PERFIL
     ========================== -->
+=======
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
     <aside class="columna-perfil">
 
         <div class="tarjeta-perfil">
@@ -34,11 +45,15 @@
                         <i class="fas fa-heart"></i>
                     </div>
                 </div>
+<<<<<<< HEAD
 
                 <h2 class="nombre-usuario"
                     th:text="${usuario.username}">
                     Nombre usuario
                 </h2>
+=======
+                <h2 class="nombre-usuario">Nombre del usuario</h2>
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
             </div>
 
             <div class="perfil-inferior">
@@ -56,6 +71,7 @@
         </div>
     </aside>
 
+<<<<<<< HEAD
     <!-- =========================
          CENTRO + DERECHA
     ========================== -->
@@ -105,9 +121,40 @@
         <!-- =========================
              LISTA REVIEWS
         ========================== -->
-        <div class="tarjeta-acordeon tarjeta-lista-reseñas">
+=======
+    <section class="zona-reseñas">
 
+        <div class="tarjeta-acordeon tarjeta-crear-reseña">
+            <h2><i class="fas fa-pen"></i> Añadir reseña </h2>
+            <a href="../profileView/profileView.html" class="boton-volver-circular" title="Volver">
+                <i class="fas fa-undo"></i>
+            </a>
+            
+            <div class="campo">
+                <label>Valoración</label>
+                <div class="estrellas" id="estrellas">
+                    <i class="far fa-star" data-value="1"></i>
+                    <i class="far fa-star" data-value="2"></i>
+                    <i class="far fa-star" data-value="3"></i>
+                    <i class="far fa-star" data-value="4"></i>
+                    <i class="far fa-star" data-value="5"></i>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label>Comentario</label>
+                <textarea id="comentario" placeholder="Escribe tu reseña..."></textarea>
+            </div>
+
+            <button class="boton-ver" id="btn-publicar">
+                <i class="fas fa-paper-plane"></i> Publicar reseña
+            </button>
+        </div>
+
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
+        <div class="tarjeta-acordeon tarjeta-lista-reseñas">
             <h2><i class="fas fa-comments"></i> Reseñas</h2>
+<<<<<<< HEAD
 
             <!-- ⭐ MEDIA VISUAL -->
             <div class="media-global">
@@ -151,12 +198,28 @@
 
                 </div>
 
-            </div>
+=======
+            <div class="contenedor-reseñas" id="lista-reseñas">
+                <div class="reseña">
+                    <div class="reseña-header">
+                        <span class="usuario">Carlos</span>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p>Muy buen desarrollador, trabajé con él en varios proyectos.</p>
+                </div>
 
+                <div class="reseña">
+                    <div class="reseña-header">
+                        <span class="usuario">Laura</span>
+                        <span class="rating">⭐⭐⭐⭐</span>
+                    </div>
+                    <p>Buen código y buena comunicación.</p>
+                </div>
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
+            </div>
         </div>
 
     </section>
-
 </main>
 
 <div id="footer-placeholder"></div>
@@ -165,6 +228,7 @@
      JS SOLO UI (ESTRELLAS)
 ========================== -->
 <script>
+<<<<<<< HEAD
 let ratingSeleccionado = 0;
 const estrellas = document.querySelectorAll("#estrellas i");
 const inputRating = document.getElementById("rating");
@@ -184,16 +248,75 @@ estrellas.forEach(estrella => {
             estrellas[i].classList.remove("far");
             estrellas[i].classList.add("fas", "activa");
         }
+=======
+    // ⭐ Lógica de Estrellas
+    let ratingSeleccionado = 0;
+    const estrellas = document.querySelectorAll("#estrellas i");
+
+    estrellas.forEach(estrella => {
+        estrella.addEventListener("click", () => {
+            ratingSeleccionado = estrella.getAttribute("data-value");
+            estrellas.forEach(e => {
+                e.classList.remove("fas", "activa");
+                e.classList.add("far");
+            });
+            for (let i = 0; i < ratingSeleccionado; i++) {
+                estrellas[i].classList.remove("far");
+                estrellas[i].classList.add("fas", "activa");
+            }
+        });
+    });
+
+    function generarEstrellasHTML(valor) {
+        return "⭐".repeat(valor);
+    }
+
+    // 🚀 Publicar Reseña
+    document.getElementById("btn-publicar").addEventListener("click", () => {
+        const comentario = document.getElementById("comentario").value.trim();
+        const lista = document.getElementById("lista-reseñas");
+
+        if (comentario === "" || ratingSeleccionado === 0) {
+            alert("Añade comentario y valoración");
+            return;
+        }
+
+        const nuevaReseña = document.createElement("div");
+        nuevaReseña.classList.add("reseña");
+        nuevaReseña.innerHTML = `
+            <div class="reseña-header">
+                <span class="usuario">Tú</span>
+                <span class="rating">${generarEstrellasHTML(ratingSeleccionado)}</span>
+            </div>
+            <p>${comentario}</p>
+        `;
+
+        lista.prepend(nuevaReseña);
+        document.getElementById("comentario").value = "";
+        ratingSeleccionado = 0;
+        estrellas.forEach(e => { e.classList.remove("fas", "activa"); e.classList.add("far"); });
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
     });
 });
 </script>
 
+<<<<<<< HEAD
 <script>
     const headerPath = "../../includes/header.html";
         const footerPath = "../../includes/footer.html";
 
         fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
         fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+=======
+    // Cargar Header y Footer
+    fetch("../../includes/header.html")
+        .then(res => res.text())
+        .then(html => document.getElementById("header-placeholder").innerHTML = html);
+
+    fetch("../../includes/footer.html")
+        .then(res => res.text())
+        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+>>>>>>> ac78607f36b7aba77bd5cffbf967179339270cf0
 </script>
 
 </body>

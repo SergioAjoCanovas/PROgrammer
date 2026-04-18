@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +13,22 @@
     <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="fondo-oscuro-neon">
 
 <div id="header-placeholder"></div>
 
 <main class="contenedor-principal">
-
     <aside class="columna-perfil">
+
         <div class="tarjeta-perfil">
+
             <div class="perfil-superior">
                 <div class="foto-perfil-contenedor">
                     <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                    <div class="icono-corazon">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
                 <h2 class="nombre-usuario">Nombre del usuario</h2>
             </div>
@@ -34,11 +39,18 @@
                     <li><i class="fab fa-twitter"></i> Twitter</li>
                     <li><i class="fas fa-phone"></i> Tel</li>
                 </ul>
-                <button class="boton-curriculum">CURRICULUM</button>
+
+                <button class="boton-curriculum">
+                    CURRICULUM
+                </button>
             </div>
+
         </div>
     </aside>
 
+    <section class="zona-reseñas">
+
+        <div class="tarjeta-acordeon tarjeta-crear-reseña">
     <section class="zona-reseñas">
 
         <div class="tarjeta-acordeon tarjeta-crear-reseña">
@@ -70,6 +82,8 @@
 
         <div class="tarjeta-acordeon tarjeta-lista-reseñas">
             <h2><i class="fas fa-comments"></i> Reseñas</h2>
+        <div class="tarjeta-acordeon tarjeta-lista-reseñas">
+            <h2><i class="fas fa-comments"></i> Reseñas</h2>
             <div class="contenedor-reseñas" id="lista-reseñas">
                 <div class="reseña">
                     <div class="reseña-header">
@@ -94,6 +108,9 @@
 
 <div id="footer-placeholder"></div>
 
+<!-- =========================
+     JS SOLO UI (ESTRELLAS)
+========================== -->
 <script>
     // ⭐ Lógica de Estrellas
     let ratingSeleccionado = 0;
@@ -142,6 +159,8 @@
         ratingSeleccionado = 0;
         estrellas.forEach(e => { e.classList.remove("fas", "activa"); e.classList.add("far"); });
     });
+});
+</script>
 
     // Cargar Header y Footer
     fetch("../../includes/header.html")

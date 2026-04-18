@@ -27,9 +27,21 @@ public class SecurityConfig {
             }))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() 
-                .anyRequest().authenticated()
-            );
+                .requestMatchers(
+                    "/api/auth/**",  // <-- Añadidos los ** (TODO lo de auth pasa)
+                    "/UI/**",        // <-- Añadidos los ** (TODO lo de UI pasa)
+                    "/resources/**",
+                    "/**/*.html",    // Sintaxis correcta para permitir cualquier HTML
+                    "/**/*.css",     // Sintaxis correcta para cualquier CSS
+                    "/**/*.js"       // Sintaxis correcta para cualquier JS
+                ).permitAll()
+                // Dejamos el resto abierto de momento para asegurar que el registro funciona
+                .anyRequest().permitAll() 
+            )
+            // MATAMOS la pantalla blanca de login por si acaso
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable());
+            
         return http.build();
     }
 

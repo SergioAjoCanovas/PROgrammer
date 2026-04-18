@@ -1,0 +1,49 @@
+package com.programmer.backend.domain;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import java.util.List;
+
+@Entity
+@Table(name = "proyecto")
+@Data
+public class Proyecto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // =========================
+    // AUTOR
+    // =========================
+    @ManyToOne
+    @JoinColumn(name = "autor_id")
+    private Usuario autor;
+
+    // =========================
+    // CATEGORÍA (SIN ENTIDAD)
+    // =========================
+    @Column(name = "categoria_id")
+    private Long categoriaId;
+
+    // =========================
+    // INFO
+    // =========================
+    @Column(name = "titulo", nullable = false)
+    private String titulo;
+
+    @Column(name = "descripcion", columnDefinition = "TEXT")
+    private String descripcion;
+
+    @Column(name = "repo_url")
+    private String repoUrl;
+
+    @Column(name = "esta_validado")
+    private Boolean estaValidado;
+
+    // =========================
+    // REVIEWS
+    // =========================
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+    private List<ProjectReview> reviews;
+}

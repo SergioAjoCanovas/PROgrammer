@@ -7,6 +7,11 @@ import com.programmer.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -40,7 +45,7 @@ public class AuthController {
         
         // Si las contraseñas no coinciden o el usuario ya existe, lo devolvemos al formulario de registro en el Live Server
         if (!password.equals(confirmPassword) || usuarioRepository.existsByUsername(username)) {
-            response.sendRedirect("http://127.0.0.1:5500/frontend/UI/signUpPage/signUpPage.html?error=true");
+            response.sendRedirect("http://127.0.0.1:5500/UI/signUpPage/signUpPage.html?error=true");
             return;
         }
 
@@ -60,7 +65,7 @@ public class AuthController {
 
         // ¡ÉXITO! Lo mandamos a la página principal de tu Live Server
         // OJO: Asegúrate de que esta ruta es la correcta para tu index.html principal
-        response.sendRedirect("http://127.0.0.1:5500/frontend/UI/main.html");
+        response.sendRedirect("http://127.0.0.1:5500/backend/src/main/resources/templates/UI/main.html");
     }
 
     // --- 2. LOGIN TRADICIONAL ---
@@ -79,16 +84,17 @@ public class AuthController {
 
         // Si los datos están mal, lo devolvemos a la página de login de tu Live Server
         if (usuarioOpcional.isEmpty() || !passwordEncoder.matches(password, usuarioOpcional.get().getPassword())) {
-            response.sendRedirect("http://127.0.0.1:5500/frontend/UI/loginPage/loginPage.html?error=auth"); 
+            response.sendRedirect("http://127.0.0.1:5500/UI/loginPage/loginPage.html?error=auth"); 
             return;
         }
 
         // ¡LOGIN CORRECTO! Creamos la sesión
         Usuario usuario = usuarioOpcional.get();
+        
         session.setAttribute("usuarioLogueado", usuario.getUsername());
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
         // ¡ÉXITO! Lo mandamos a la página principal de tu Live Server
-        response.sendRedirect("http://127.0.0.1:5500/frontend/UI/main.html"); 
+        response.sendRedirect("http://127.0.0.1:5500/backend/src/main/resources/templates/UI/main.html"); 
     }
 }

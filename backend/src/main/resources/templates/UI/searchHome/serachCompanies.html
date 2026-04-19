@@ -87,11 +87,40 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        // CARGA DE HEADER/FOOTER
-        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
+        function cargarComponentes() {
+            // Cargar Header
+            fetch("../../includes/header.html")
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("header-placeholder").innerHTML = html;
+                    actualizarMiUsuarioEnHeader();
+                });
 
-        // LÓGICA AUTOMÁTICA DEL CARRUSEL
+            // Cargar Footer
+            fetch("../../includes/footer.html")
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("footer-placeholder").innerHTML = html;
+                });
+        }
+
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 2. LÓGICA AUTOMÁTICA DEL CARRUSEL ---
         const track = document.querySelector('.carrusel-track');
         const nextBtn = document.querySelector('.next');
         const prevBtn = document.querySelector('.prev');
@@ -106,7 +135,6 @@
         }
 
         function siguiente() {
-            // Se ajusta según el número de tarjetas visibles (ej: 3)
             if (index < tarjetas.length - 3) {
                 index++;
             } else {
@@ -137,7 +165,12 @@
         prevBtn.addEventListener('click', () => { anterior(); resetAutoPlay(); });
 
         window.addEventListener('resize', moverCarrusel);
-        iniciarAutoPlay();
+        
+        // Ejecución inicial
+        window.onload = () => {
+            cargarComponentes();
+            iniciarAutoPlay();
+        };
     </script>
 </body>
 </html>

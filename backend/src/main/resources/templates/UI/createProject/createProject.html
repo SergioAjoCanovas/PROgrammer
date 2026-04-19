@@ -117,6 +117,40 @@
     <div id="footer-placeholder"></div>
 
     <script>
+        // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
+        async function cargarInterfaz() {
+            try {
+                // Cargar Header
+                const resHeader = await fetch("../../includes/header.html");
+                const htmlHeader = await resHeader.text();
+                document.getElementById("header-placeholder").innerHTML = htmlHeader;
+                actualizarMiUsuarioEnHeader();
+
+                // Cargar Footer
+                const resFooter = await fetch("../../includes/footer.html");
+                const htmlFooter = await resFooter.text();
+                document.getElementById("footer-placeholder").innerHTML = htmlFooter;
+            } catch (error) {
+                console.error("Error al cargar componentes:", error);
+            }
+        }
+
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 2. LÓGICA DEL FORMULARIO (Preview de imagen) ---
         const headerPath = "../../includes/header.html";
         const footerPath = "../../includes/footer.html";
 
@@ -136,7 +170,11 @@
                 reader.readAsDataURL(file);
             }
         });
-    </script>
 
+        // Inicialización
+        window.onload = cargarInterfaz;
+        //adadad
+    </script>
+    
 </body>
 </html>

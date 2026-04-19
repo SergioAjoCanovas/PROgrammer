@@ -174,5 +174,108 @@ fetch("../../includes/footer.html")
     .then(h => document.getElementById("footer-placeholder").innerHTML = h);
 </script>
 
+    <div id="modal-imagen" class="modal">
+        <span class="cerrar-modal">&times;</span>
+        <div class="contenedor-modal-neon">
+            <img class="contenido-modal" id="img-ampliada">
+            <div id="caption-modal"></div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // --- 1. CARGA DE COMPONENTES ---
+        fetch("../../includes/header.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("header-placeholder").innerHTML = html;
+                actualizarMiUsuarioEnHeader(); 
+            });
+
+        fetch("../../includes/footer.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("footer-placeholder").innerHTML = html;
+            });
+
+        // --- 2. ACTUALIZAR SOLO EL HEADER (IDENTIDAD DEL VISITANTE) ---
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
+            // NO se modifica el nombre de la tarjeta lateral aquí.
+        }
+
+        // --- 3. LÓGICA DEL MODAL ---
+        $(document).ready(function() {
+            $(".img-disparador").on("click", function() {
+                $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
+                $("#img-ampliada").attr("src", $(this).attr("src"));
+                $("#caption-modal").text($(this).attr("alt"));
+                $("body").css("overflow", "hidden");
+            });
+
+            $(".cerrar-modal, #modal-imagen").on("click", function(e) {
+                if(e.target !== document.getElementById("img-ampliada")) {
+                    $("#modal-imagen").fadeOut(300, function() {
+                        $("body").css("overflow", "auto");
+                    });
+                }
+            });
+        });
+
+        // --- 4. GESTIÓN DE RESEÑAS ---
+        const reseñas = [
+            { usuario: "Carlos_Dev", arquitectura: 4, limpieza: 5, documentacion: 3, comentario: "La lógica del backend es impecable, aunque faltan comentarios." },
+            { usuario: "Laura_UX", arquitectura: 3, limpieza: 4, documentacion: 5, comentario: "Código muy limpio y fácil de seguir. Documentación excelente." },
+            { usuario: "Mike_Tech", arquitectura: 5, limpieza: 4, documentacion: 4, comentario: "Un ejemplo a seguir en patrones de diseño." }
+        ];
+
+        function generarEstrellas(rating) {
+            let html = "";
+            for(let i=1; i<=5; i++) html += `<i class="${i <= rating ? 'fas' : 'far'} fa-star"></i>`;
+            return html;
+        }
+
+        $(document).ready(() => {
+            const contenedor = $(".contenedor-reseñas");
+            reseñas.forEach(r => {
+                contenedor.append(`
+                    <div class="reseña-item">
+                        <div class="reseña-user"><i class="fas fa-user-circle"></i> ${r.usuario}</div>
+                        <div class="reseña-scores">
+                            <div class="score-line">Arq: <span>${generarEstrellas(r.arquitectura)}</span></div>
+                            <div class="score-line">Lim: <span>${generarEstrellas(r.limpieza)}</span></div>
+                            <div class="score-line">Doc: <span>${generarEstrellas(r.documentacion)}</span></div>
+                        </div>
+                        <p class="reseña-texto">"${r.comentario}"</p>
+                    </div>
+                `);
+            });
+            
+            const n = reseñas.length;
+            if(n > 0) {
+                const m = {
+                    arquitectura: Math.round(reseñas.reduce((a,b)=>a+b.arquitectura,0)/n),
+                    limpieza: Math.round(reseñas.reduce((a,b)=>a+b.limpieza,0)/n),
+                    documentacion: Math.round(reseñas.reduce((a,b)=>a+b.documentacion,0)/n),
+                    total: Math.round(reseñas.reduce((a,b)=>a+(b.arquitectura+b.limpieza+b.documentacion)/3,0)/n)
+                };
+                Object.keys(m).forEach(t => $(`.estrellas-media[data-tipo="${t}"]`).html(generarEstrellas(m[t])));
+            }
+        });
+        //adadadad
+    </script>
 </body>
 </html>

@@ -106,13 +106,43 @@
         const headerPath = "../../includes/header.html";
         const footerPath = "../../includes/footer.html";
 
+        // 1. Cargar Header y ejecutar lógica de usuario
         fetch(headerPath)
             .then(res => res.text())
-            .then(html => document.getElementById("header-placeholder").innerHTML = html);
+            .then(html => {
+                document.getElementById("header-placeholder").innerHTML = html;
+                
+                // Llamamos a la función para pintar el nombre una vez el header existe
+                mostrarUsuarioEnHeader();
+            });
 
+        // 2. Cargar Footer
         fetch(footerPath)
             .then(res => res.text())
-            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+            .then(html => {
+                document.getElementById("footer-placeholder").innerHTML = html;
+            });
+
+        // 3. Función para inyectar datos del LocalStorage
+        function mostrarUsuarioEnHeader() {
+            const username = localStorage.getItem('usuarioLogueado');
+            const rol = localStorage.getItem('rolUsuario');
+            const contenedor = document.getElementById('info-usuario');
+
+            if (username && contenedor) {
+                contenedor.style.border = "none"; // Por si tenías el borde rojo de prueba
+                contenedor.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right;  justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${username}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${rol}</span>
+                    </div>
+                `;
+            }
+        }
+
+        if (username && nombrePerfilLateral) {
+            nombrePerfilLateral.innerText = username;
+        }
     </script>
 </body>
 </html>

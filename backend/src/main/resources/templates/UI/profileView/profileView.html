@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Panel</title>
     
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -40,7 +40,7 @@
             <div class="tarjeta-resenas-izq">
                 <h3>RESEÑAS</h3>
                 <textarea class="input-resena" placeholder="Escribe aquí..."></textarea>
-                <button class="boton-anadir" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+                <button class="boton-anadir" onclick="window.location.href='/newreview'">Añadir reseña</button>
             </div>
         </aside>
 
@@ -49,10 +49,10 @@
                 <div class="tarjeta-proyectos-contenedor">
                     <div class="cabecera-proyectos">
                         <h2>
-                            <a href="../projectlist/projectlist.html" class="enlace-titulo-proyectos">
+                            <a href="/projectlist" class="enlace-titulo-proyectos">
                                 PROYECTOS 
                             </a>
-                            <a href="../projectlist/projectlist.html" class="enlace-grid-proyectos" title="Ver todos los proyectos">
+                            <a href="/projectlist" class="enlace-grid-proyectos" title="Ver todos los proyectos">
                                 <i class="fas fa-th"></i>
                             </a>
                         </h2>
@@ -62,17 +62,17 @@
                         <div class="tarjeta-mini-proyecto">
                             <h3>Nombre del proyecto</h3>
                             <p>Descripcion breve del proyecto</p>
-                            <button class="boton-ver" onclick="window.location.href='../projectview/projectview.html'">VER PROYECTO</button>
+                            <button class="boton-ver" onclick="window.location.href='/projectview'">VER PROYECTO</button>
                         </div>
                         <div class="tarjeta-mini-proyecto">
                             <h3>Nombre del proyecto</h3>
                             <p>Descripcion breve del proyecto</p>
-                            <button class="boton-ver" onclick="window.location.href='../projectview/projectview.html'">VER PROYECTO</button>
+                            <button class="boton-ver" onclick="window.location.href='/projectview'">VER PROYECTO</button>
                         </div>
                         <div class="tarjeta-mini-proyecto">
                             <h3>Nombre del proyecto</h3>
                             <p>Descripcion breve del proyecto</p>
-                            <button class="boton-ver" onclick="window.location.href='../projectview/projectview.html'">VER PROYECTO</button>
+                            <button class="boton-ver" onclick="window.location.href='/projectview'">VER PROYECTO</button>
                         </div>
                     </div>
                 </div>
@@ -100,11 +100,11 @@
         </div> 
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
-        const headerPath = "../../includes/header.html";
-        const footerPath = "../../includes/footer.html";
+        const headerPath = "localhost:8080/includes/header.html";
+        const footerPath = "localhost:8080/includes/footer.html";
 
         // 1. Cargar Header y ejecutar lógica de usuario
         fetch(headerPath)

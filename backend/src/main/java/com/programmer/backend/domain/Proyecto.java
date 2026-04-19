@@ -2,10 +2,11 @@ package com.programmer.backend.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.List;
 
 @Entity
-@Table(name = "proyecto")
+@Table(name = "proyectos")
 @Data
 public class Proyecto {
 
@@ -13,22 +14,16 @@ public class Proyecto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // =========================
     // AUTOR
-    // =========================
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Usuario autor;
 
-    // =========================
-    // CATEGORÍA (SIN ENTIDAD)
-    // =========================
+    // CATEGORÍA (sin entidad)
     @Column(name = "categoria_id")
     private Long categoriaId;
 
-    // =========================
     // INFO
-    // =========================
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
@@ -41,9 +36,7 @@ public class Proyecto {
     @Column(name = "esta_validado")
     private Boolean estaValidado;
 
-    // =========================
     // REVIEWS
-    // =========================
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
     private List<ProjectReview> reviews;
 }

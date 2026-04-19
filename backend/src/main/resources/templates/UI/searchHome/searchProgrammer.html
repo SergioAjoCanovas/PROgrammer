@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Buscar Perfiles</title>
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/homePage_styles/searchProgrammer.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/homePage_styles/searchProgrammer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="body-layout fondo-oscuro-neon">
     
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-busqueda">
         <section class="seccion-buscador-central">
@@ -41,7 +41,7 @@
                             <h3>David Alcázar</h3>
                             <p>Full Stack Developer</p>
                             <div class="tags"><span>Java</span><span>Python</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='../profileView/profileView.html'">Ver Perfil</button>
+                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
                         </div>
 
                         <div class="tarjeta-perfil-neon">
@@ -49,7 +49,7 @@
                             <h3>Cristian Escobar</h3>
                             <p>UI/UX Designer</p>
                             <div class="tags"><span>Figma</span><span>CSS3</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='../profileView/profileView.html'">Ver Perfil</button>
+                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
                         </div>
 
                         <div class="tarjeta-perfil-neon">
@@ -57,7 +57,7 @@
                             <h3>Sergio Ajo</h3>
                             <p>Backend Engineer</p>
                             <div class="tags"><span>Node.js</span><span>SQL</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='../profileView/profileView.html'">Ver Perfil</button>
+                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
                         </div>
 
                         <div class="tarjeta-perfil-neon">
@@ -65,7 +65,7 @@
                             <h3>Elena Rivas</h3>
                             <p>Data Scientist</p>
                             <div class="tags"><span>Python</span><span>R</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='../profileView/profileView.html'">Ver Perfil</button>
+                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
                         </div>
 
                         <div class="tarjeta-perfil-neon">
@@ -73,7 +73,7 @@
                             <h3>Laura Torres</h3>
                             <p>Mobile Dev</p>
                             <div class="tags"><span>Swift</span><span>Kotlin</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='../profileView/profileView.html'">Ver Perfil</button>
+                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
                         </div>
 
                         <div class="tarjeta-perfil-neon">
@@ -81,7 +81,7 @@
                             <h3>Marc Soler</h3>
                             <p>DevOps Engineer</p>
                             <div class="tags"><span>Docker</span><span>AWS</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='../profileView/profileView.html'">Ver Perfil</button>
+                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
                         </div>
 
                     </div>
@@ -94,13 +94,13 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
     // Carga de componentes y resaltado de página activa
     function cargarComponentes() {
         // Cargar Header
-        fetch("../../includes/header.html")
+        fetch("localhost:8080/includes/header.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("header-placeholder").innerHTML = html;
@@ -111,7 +111,7 @@
             });
 
         // Cargar Footer
-        fetch("../../includes/footer.html")
+        fetch("localhost:8080/includes/footer.html")
             .then(res => res.text())
             .then(html => document.getElementById("footer-placeholder").innerHTML = html);
     }

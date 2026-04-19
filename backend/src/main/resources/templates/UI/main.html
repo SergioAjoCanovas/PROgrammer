@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Conecta</title>
-    <link rel="stylesheet" href="../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../static/Style/homePage_styles/selector.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/homePage_styles/selector.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .activo, .activo i, .activo span {
@@ -27,17 +27,17 @@
         }
     </script>
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-selector">
         <section class="contenido-central">
             <h1 class="titulo-selector">CONECTA CON:</h1>
             <div class="contenedor-botones-gigantes">
-                <a href="../UI/searchHome/serachCompanies.html" class="btn-seleccion-neon">
+                <a href="/serachCompanies" class="btn-seleccion-neon">
                     <i class="fas fa-building"></i>
                     <span>EMPRESAS</span>
                 </a>
-                <a href="../UI/searchHome/searchProgrammer.html" class="btn-seleccion-neon">
+                <a href="/searchProgrammer" class="btn-seleccion-neon">
                     <i class="fas fa-code"></i>
                     <span>PROGRAMADORES</span>
                 </a>
@@ -45,12 +45,12 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         function cargarComponentes() {
-            const headerPath = "../includes/header.html";
-            const footerPath = "../includes/footer.html";
+            const headerPath = "localhost:8080/includes/header.html";
+            const footerPath = "localhost:8080/includes/footer.html";
 
             // Cargar Header
             fetch(headerPath)

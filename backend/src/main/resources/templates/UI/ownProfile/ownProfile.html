@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Panel - PROgrammer</title>
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/ownProfile_styles/ownProfile.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon"> 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -58,15 +58,15 @@
                         <i class="fas fa-plus-circle"></i>
                         <h3>Nuevo Proyecto</h3>
                         <p>Sube tu código y muéstralo al mundo.</p>
-                        <button onclick="window.location.href='../createProject/createProject.html'" class="boton-amarillo-solido">CREAR AHORA</button>
+                        <button onclick="window.location.href='/createProject'" class="boton-amarillo-solido">CREAR AHORA</button>
                     </div>
 
                     <div class="tarjeta-mini-proyecto">
                         <h3>Gestor de Tareas</h3>
                         <p>App con React y Node.js</p>
                         <div class="acciones-proyecto">
-                            <button onclick="window.location.href='../editProject/editProject.html'" class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
-                            <button onclick="window.location.href='../projectview/projectview.html'" class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
+                            <button onclick="window.location.href='/editProject'" class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
+                            <button onclick="window.location.href='/projectview'" class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
                         </div>
                     </div>
 
@@ -74,8 +74,8 @@
                         <h3>API REST Ventas</h3>
                         <p>Backend en Spring Boot</p>
                         <div class="acciones-proyecto">
-                            <button onclick="window.location.href='../editProject/editProject.html'" class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
-                            <button onclick="window.location.href='../projectview/projectview.html'" class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
+                            <button onclick="window.location.href='/editProject'" class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
+                            <button onclick="window.location.href='/projectview'" class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
                         </div>
                     </div>
                 </div>
@@ -100,13 +100,13 @@
         </div> 
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
     async function cargarInterfaz() {
         try {
             // 1. Cargar Header
-            const resHeader = await fetch("../../includes/header.html");
+            const resHeader = await fetch("localhost:8080/includes/header.html");
             const htmlHeader = await resHeader.text();
             document.getElementById("header-placeholder").innerHTML = htmlHeader;
             
@@ -115,7 +115,7 @@
             marcarPaginaActual();
 
             // 3. Cargar Footer
-            const resFooter = await fetch("../../includes/footer.html");
+            const resFooter = await fetch("localhost:8080/includes/footer.html");
             const htmlFooter = await resFooter.text();
             document.getElementById("footer-placeholder").innerHTML = htmlFooter;
         } catch (error) {

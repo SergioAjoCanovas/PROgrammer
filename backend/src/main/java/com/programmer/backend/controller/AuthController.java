@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -29,7 +27,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // --- 1. REGISTRO ---
+    // =========================
+    // REGISTRO
+    // =========================
     @PostMapping("/signup")
     public void registrar(
             @RequestParam("username") String username,
@@ -40,8 +40,11 @@ public class AuthController {
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
-        
-        if (!password.equals(confirmPassword) || usuarioRepository.existsByUsername(username)) {
+
+        if (!password.equals(confirmPassword)
+                || usuarioRepository.existsByUsername(username)
+                || usuarioRepository.existsByEmail(email)) {
+
             response.sendRedirect("http://127.0.0.1:5500/UI/signUpPage/signUpPage.html?error=true");
             return;
         }
@@ -54,23 +57,19 @@ public class AuthController {
         nuevoUsuario.setEmail(email);
         nuevoUsuario.setPassword(passwordEncoder.encode(password));
         nuevoUsuario.setRol(rolElegido);
+
         usuarioRepository.save(nuevoUsuario);
 
-        // Lógica para mostrar "User" en lugar de "ADMIN"
-        String nombreRolAMostrar = rolElegido.getNombre();
-        if ("ADMIN".equalsIgnoreCase(nombreRolAMostrar)) {
-            nombreRolAMostrar = "User";
-        }
+        // 🔥 SESIÓN IMPORTANTE
+        session.setAttribute("usuarioLogueado", nuevoUsuario);
+        session.setAttribute("rolUsuario", rolElegido.getNombre());
 
-        String redirectUrl = String.format(
-            "http://127.0.0.1:5500/backend/src/main/resources/templates/UI/main.html?user=%s&rol=%s",
-            nuevoUsuario.getUsername(), 
-            nombreRolAMostrar
-        );
-        response.sendRedirect(redirectUrl);
+        response.sendRedirect("http://localhost:8080/ownProfile");
     }
 
-    // --- 2. LOGIN ---
+    // =========================
+    // LOGIN
+    // =========================
     @PostMapping("/login")
     public void iniciarSesion(
             @RequestParam("username") String usuarioOEmail,
@@ -78,46 +77,26 @@ public class AuthController {
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
-        
-        var usuarioOpcional = usuarioRepository.findByUsername(usuarioOEmail);
-        if (usuarioOpcional.isEmpty()) {
-            usuarioOpcional = usuarioRepository.findByEmail(usuarioOEmail);
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(usuarioOEmail);
+
+        if (usuarioOpt.isEmpty()) {
+            usuarioOpt = usuarioRepository.findByEmail(usuarioOEmail);
         }
 
-        if (usuarioOpcional.isEmpty() || !passwordEncoder.matches(password, usuarioOpcional.get().getPassword())) {
-            response.sendRedirect("http://127.0.0.1:5500/UI/loginPage/loginPage.html?error=auth"); 
+        if (usuarioOpt.isEmpty()
+                || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
+
+            response.sendRedirect("http://127.0.0.1:5500/UI/loginPage/loginPage.html?error=auth");
             return;
         }
 
-        Usuario usuario = usuarioOpcional.get();
-        
-        // Lógica para mostrar "User" en lugar de "ADMIN"
-        String nombreRolAMostrar = usuario.getRol().getNombre();
-        if ("ADMIN".equalsIgnoreCase(nombreRolAMostrar)) {
-            nombreRolAMostrar = "User";
-        }
+        Usuario usuario = usuarioOpt.get();
 
-        String redirectUrl = String.format(
-            "http://127.0.0.1:5500/backend/src/main/resources/templates/UI/main.html?user=%s&rol=%s",
-            usuario.getUsername(), 
-            nombreRolAMostrar
-        );
-        response.sendRedirect(redirectUrl);
-    }
+        // 🔥 SESIÓN REAL
+        session.setAttribute("usuarioLogueado", usuario);
+        session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-    @GetMapping("/session")
-    public Map<String, String> getSession(HttpSession session) {
-        String username = (String) session.getAttribute("usuarioLogueado");
-        String rol = (String) session.getAttribute("rolUsuario");
-        
-        if (username == null) {
-            return Collections.singletonMap("auth", "false");
-        }
-        
-        Map<String, String> data = new HashMap<>();
-        data.put("auth", "true");
-        data.put("username", username);
-        data.put("rol", rol);
-        return data;
+        response.sendRedirect("http://localhost:8080/ownProfile");
     }
 }

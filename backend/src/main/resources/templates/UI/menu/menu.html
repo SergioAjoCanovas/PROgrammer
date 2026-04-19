@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Menú de Herramientas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/menu_styles/menu_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/menu_styles/menu_styles.css">
 </head>
 <body class="fondo-oscuro-neon"> 
     
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal-menu">
         <section class="tarjeta-menu-completo">
@@ -74,12 +74,12 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         function cargarComponentes() {
-            const headerPath = "../../includes/header.html"; 
-            const footerPath = "../../includes/footer.html";
+            const headerPath = "localhost:8080/includes/header.html"; 
+            const footerPath = "localhost:8080/includes/footer.html";
 
             // Cargar Header, activar link e inyectar usuario
             fetch(headerPath)

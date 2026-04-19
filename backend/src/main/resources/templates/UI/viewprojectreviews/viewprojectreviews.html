@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Reseñas de Proyecto</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/viewprojectreviews/viewprojectreviews.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/viewprojectreviews/viewprojectreviews.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="fondo-oscuro-neon">
 
-<div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
 <main class="contenedor-principal">
 
@@ -51,7 +51,7 @@
 
             <div class="cabecera-proyecto">
                 <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
-                <a href="../projectview/projectview.html" class="boton-volver-circular">
+                <a href="/projectview" class="boton-volver-circular">
                     <i class="fas fa-undo"></i>
                 </a>
             </div>
@@ -89,16 +89,16 @@
             <!-- (GALERÍA SE QUEDA IGUAL) -->
             <div class="galeria-capturas">
                 <div class="marco-captura">
-                    <img src="../../../static/Img/stock/ejemplo1.jpg" class="img-disparador">
+                    <img src="/Img/stock/ejemplo1.jpg" class="img-disparador">
                 </div>
                 <div class="marco-captura">
-                    <img src="../../../static/Img/stock/ejemplo2.jpg" class="img-disparador">
+                    <img src="/Img/stock/ejemplo2.jpg" class="img-disparador">
                 </div>
                 <div class="marco-captura">
-                    <img src="../../../static/Img/stock/ejemplo3.jpg" class="img-disparador">
+                    <img src="/Img/stock/ejemplo3.jpg" class="img-disparador">
                 </div>
                 <div class="marco-captura">
-                    <img src="../../../static/Img/stock/ejemplo4.jpg" class="img-disparador">
+                    <img src="/Img/stock/ejemplo4.jpg" class="img-disparador">
                 </div>
             </div>
 
@@ -162,14 +162,14 @@
 
 </main>
 
-<div id="footer-placeholder"></div>
+<div th:replace="includes/footer :: footer"></div>
 
 <script>
-fetch("../../includes/header.html")
+fetch("localhost:8080/includes/header.html")
     .then(r => r.text())
     .then(h => document.getElementById("header-placeholder").innerHTML = h);
 
-fetch("../../includes/footer.html")
+fetch("localhost:8080/includes/footer.html")
     .then(r => r.text())
     .then(h => document.getElementById("footer-placeholder").innerHTML = h);
 </script>
@@ -187,14 +187,14 @@ fetch("../../includes/footer.html")
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // --- 1. CARGA DE COMPONENTES ---
-        fetch("../../includes/header.html")
+        fetch("localhost:8080/includes/header.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("header-placeholder").innerHTML = html;
                 actualizarMiUsuarioEnHeader(); 
             });
 
-        fetch("../../includes/footer.html")
+        fetch("localhost:8080/includes/footer.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("footer-placeholder").innerHTML = html;

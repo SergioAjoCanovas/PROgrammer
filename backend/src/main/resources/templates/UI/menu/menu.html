@@ -81,12 +81,13 @@
             const headerPath = "../../includes/header.html"; 
             const footerPath = "../../includes/footer.html";
 
-            // Cargar Header y activar link
+            // Cargar Header, activar link e inyectar usuario
             fetch(headerPath)
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById("header-placeholder").innerHTML = html;
                     marcarLinkActivo();
+                    actualizarMiUsuarioEnHeader(); // <--- Inyectamos tu identidad aquí
                 });
 
             // Cargar Footer
@@ -95,6 +96,22 @@
                 .then(html => {
                     document.getElementById("footer-placeholder").innerHTML = html;
                 });
+        }
+
+        // Función para mostrar tus datos (visitante logueado) en la cabecera
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
         }
 
         function marcarLinkActivo() {

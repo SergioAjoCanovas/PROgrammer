@@ -108,6 +108,7 @@
     <div id="footer-placeholder"></div>
 
     <script>
+        // --- 1. GESTIÓN DE SELECCIÓN DE PROYECTOS ---
         document.addEventListener("DOMContentLoaded", () => {
             const proyectos = document.querySelectorAll(".seleccionable");
             proyectos.forEach(p => {
@@ -117,19 +118,41 @@
                 });
             });
         });
-    </script>
 
-    <script>
+        // --- 2. CARGA DE COMPONENTES E IDENTIDAD ---
         const headerPath = "../../includes/header.html";
         const footerPath = "../../includes/footer.html";
 
+        // Cargar Header
         fetch(headerPath)
             .then(res => res.text())
-            .then(html => document.getElementById("header-placeholder").innerHTML = html);
+            .then(html => {
+                document.getElementById("header-placeholder").innerHTML = html;
+                actualizarMiUsuarioEnHeader(); // Llamamos a la función de identidad
+            });
 
+        // Cargar Footer
         fetch(footerPath)
             .then(res => res.text())
-            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+            .then(html => {
+                document.getElementById("footer-placeholder").innerHTML = html;
+            });
+
+        // Función para mostrar tus datos en el Header
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
+        }
     </script>
 
 </body>

@@ -113,14 +113,43 @@
 <div id="footer-placeholder"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // 1. CARGA DINÁMICA DE HEADER Y FOOTER
     $(function(){
-        $("#header-placeholder").load("../../includes/header.html");
+        // Usamos el callback de .load() para ejecutar nuestra función de usuario
+        // justo cuando el header termina de cargarse en el DOM.
+        $("#header-placeholder").load("../../includes/header.html", function() {
+            mostrarUsuarioEnHeader();
+        });
+        
         $("#footer-placeholder").load("../../includes/footer.html");
     });
 
-    // 2. LÓGICA DE LAS ESTRELLAS
+    // --- FUNCIÓN DE IDENTIDAD (HEADER Y PERFIL LATERAL) ---
+    function mostrarUsuarioEnHeader() {
+        const username = localStorage.getItem('usuarioLogueado');
+        const rol = localStorage.getItem('rolUsuario');
+        
+        // Inyectar en el Header
+        const contenedorHeader = document.getElementById('info-usuario');
+        if (username && contenedorHeader) {
+            contenedorHeader.innerHTML = `
+                <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                    <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${username}</span>
+                    <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${rol}</span>
+                </div>
+            `;
+        }
+
+        // Inyectar en la tarjeta lateral izquierda
+        const nombreLateral = document.querySelector('.nombre-usuario');
+        if (username && nombreLateral) {
+            nombreLateral.innerText = username;
+        }
+    }
+
+    // 2. LÓGICA DE LAS ESTRELLAS (Se mantiene igual)
     document.querySelectorAll(".estrellas").forEach(container => {
         for (let i = 1; i <= 5; i++) {
             const estrella = document.createElement("i");
@@ -138,7 +167,7 @@
         }
     });
 
-    // 3. LÓGICA DEL MODAL (CIERRE POR FONDO)
+    // 3. LÓGICA DEL MODAL (Se mantiene igual)
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");
@@ -148,15 +177,14 @@
             modal.style.display = "block";
             modalImg.src = this.src;
             captionText.innerHTML = this.alt;
-            document.body.style.overflow = "hidden"; // Evita scroll
+            document.body.style.overflow = "hidden"; 
         }
     });
 
-    // Cerrar al clicar en el fondo oscuro
     window.onclick = function(event) {
         if (event.target == modal) { 
             modal.style.display = "none"; 
-            document.body.style.overflow = "auto"; // Devuelve scroll
+            document.body.style.overflow = "auto"; 
         }
     }
 </script>

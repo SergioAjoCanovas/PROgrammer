@@ -93,6 +93,7 @@
         </nav>
 
         <div class="seccion-derecha">
+            <div id="info-usuario" style="display: flex; flex-direction: column; text-align: right; justify-content: center; "></div>
             <a href="/backend/src/main/resources/templates/UI/loginPage/loginPage.html" class="item-derecha">
                 <div class="avatar-usuario">
                     <i class="fas fa-user"></i>
@@ -106,6 +107,21 @@
             </button>
         </div>
     </header>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const username = localStorage.getItem('usuarioLogueado');
+            const rol = localStorage.getItem('rolUsuario');
+
+            if (username) {
+                const contenedor = document.getElementById('info-usuario');
+                contenedor.innerHTML = `
+                    <span style="color: white; font-weight: bold; font-size: 0.9em; display: block;">${username}</span>
+                    <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; display: block;">${rol}</span>
+                `;
+            }
+        });
+    </script>
 
 </body>
 </html>

@@ -83,17 +83,50 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
     <script>
-        $( function() {
+        // Inicialización del Acordeón (jQuery UI)
+        $(function() {
             $("#acordeon-proyectos").accordion({
                 collapsible: true,
                 heightStyle: "content",
                 active: 0,
-                animate: 400 // Velocidad equilibrada
+                animate: 400 
             });
         });
 
-        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        const headerPath = "../../includes/header.html";
+        const footerPath = "../../includes/footer.html";
+
+        // Cargar Header
+        fetch(headerPath)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("header-placeholder").innerHTML = html;
+                actualizarMiIdentidadEnHeader(); // Solo actualiza el Header con tus datos
+            });
+
+        // Cargar Footer
+        fetch(footerPath)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("footer-placeholder").innerHTML = html;
+            });
+
+        // Función para mostrar TUS datos en la cabecera
+        function actualizarMiIdentidadEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
+            
+        }
     </script>
 </body>
 </html>

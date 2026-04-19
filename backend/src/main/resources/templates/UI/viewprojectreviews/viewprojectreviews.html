@@ -122,11 +122,38 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Carga de componentes
-        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        // --- 1. CARGA DE COMPONENTES ---
+        fetch("../../includes/header.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("header-placeholder").innerHTML = html;
+                actualizarMiUsuarioEnHeader(); 
+            });
 
-        // Lógica del Modal
+        fetch("../../includes/footer.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("footer-placeholder").innerHTML = html;
+            });
+
+        // --- 2. ACTUALIZAR SOLO EL HEADER (IDENTIDAD DEL VISITANTE) ---
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario');
+            
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    </div>
+                `;
+            }
+            // NO se modifica el nombre de la tarjeta lateral aquí.
+        }
+
+        // --- 3. LÓGICA DEL MODAL ---
         $(document).ready(function() {
             $(".img-disparador").on("click", function() {
                 $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
@@ -144,7 +171,7 @@
             });
         });
 
-        // Datos de Reseñas
+        // --- 4. GESTIÓN DE RESEÑAS ---
         const reseñas = [
             { usuario: "Carlos_Dev", arquitectura: 4, limpieza: 5, documentacion: 3, comentario: "La lógica del backend es impecable, aunque faltan comentarios." },
             { usuario: "Laura_UX", arquitectura: 3, limpieza: 4, documentacion: 5, comentario: "Código muy limpio y fácil de seguir. Documentación excelente." },
@@ -173,15 +200,16 @@
                 `);
             });
             
-            // Medias
             const n = reseñas.length;
-            const m = {
-                arquitectura: Math.round(reseñas.reduce((a,b)=>a+b.arquitectura,0)/n),
-                limpieza: Math.round(reseñas.reduce((a,b)=>a+b.limpieza,0)/n),
-                documentacion: Math.round(reseñas.reduce((a,b)=>a+b.documentacion,0)/n),
-                total: Math.round(reseñas.reduce((a,b)=>a+(b.arquitectura+b.limpieza+b.documentacion)/3,0)/n)
-            };
-            Object.keys(m).forEach(t => $(`.estrellas-media[data-tipo="${t}"]`).html(generarEstrellas(m[t])));
+            if(n > 0) {
+                const m = {
+                    arquitectura: Math.round(reseñas.reduce((a,b)=>a+b.arquitectura,0)/n),
+                    limpieza: Math.round(reseñas.reduce((a,b)=>a+b.limpieza,0)/n),
+                    documentacion: Math.round(reseñas.reduce((a,b)=>a+b.documentacion,0)/n),
+                    total: Math.round(reseñas.reduce((a,b)=>a+(b.arquitectura+b.limpieza+b.documentacion)/3,0)/n)
+                };
+                Object.keys(m).forEach(t => $(`.estrellas-media[data-tipo="${t}"]`).html(generarEstrellas(m[t])));
+            }
         });
     </script>
 </body>

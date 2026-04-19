@@ -20,7 +20,7 @@
                     <div class="circulo-foto">
                         <i class="fas fa-camera icono-camera"></i>
                     </div>
-                    <h2 class="nombre-usuario">MI USUARIO <i class="fas fa-edit icono-editar-texto"></i></h2>
+                    <h2 class="nombre-usuario" id="nombre-perfil-display">CARGANDO... <i class="fas fa-edit icono-editar-texto"></i></h2>
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
@@ -110,10 +110,9 @@
             const htmlHeader = await resHeader.text();
             document.getElementById("header-placeholder").innerHTML = htmlHeader;
             
-            // 2. Esperar un momento para asegurar que el DOM se ha insertado
-            setTimeout(() => {
-                marcarPaginaActual();
-            }, 50);
+            // 2. Gestionar Identidad y Estado Activo
+            actualizarMiUsuario();
+            marcarPaginaActual();
 
             // 3. Cargar Footer
             const resFooter = await fetch("../../includes/footer.html");
@@ -124,20 +123,35 @@
         }
     }
 
-    function marcarPaginaActual() {
-        // Seleccionamos todos los enlaces y botones cargados en el header
-        const elementosHeader = document.querySelectorAll('#header-placeholder a, #header-placeholder button');
+    function actualizarMiUsuario() {
+        const miNombre = localStorage.getItem('usuarioLogueado');
+        const miRol = localStorage.getItem('rolUsuario');
         
+        // Actualizar Header
+        const contenedorHeader = document.getElementById('info-usuario');
+        if (miNombre && contenedorHeader) {
+            contenedorHeader.innerHTML = `
+                <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
+                    <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
+                    <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                </div>
+            `;
+        }
+
+        // Actualizar el nombre en la tarjeta lateral del perfil
+        const displayNombrePerfil = document.getElementById('nombre-perfil-display');
+        if (miNombre && displayNombrePerfil) {
+            // Inyectamos el nombre en mayúsculas y mantenemos el icono de edición
+            displayNombrePerfil.innerHTML = `${miNombre.toUpperCase()} <i class="fas fa-edit icono-editar-texto"></i>`;
+        }
+    }
+
+    function marcarPaginaActual() {
+        const elementosHeader = document.querySelectorAll('#header-placeholder a, #header-placeholder button');
         elementosHeader.forEach(elemento => {
-            // Obtenemos la ruta del atributo href o del onclick (donde guardas la ruta en los botones)
             const ruta = elemento.getAttribute('href') || elemento.getAttribute('onclick') || "";
-            
-            // Si el elemento lleva a ownProfile, activamos el estado neón
             if (ruta.includes('ownProfile')) {
-                // Usamos la clase unificada para el estado activo
                 elemento.classList.add('activo-btn');
-                
-                // Aseguramos que el icono interno también reciba la clase
                 const icono = elemento.querySelector('i');
                 if (icono) icono.classList.add('activo-btn');
             }

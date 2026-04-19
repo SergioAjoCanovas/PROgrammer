@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Reseñas</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/newreview_styles/newreview.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/newreview_styles/newreview.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="fondo-oscuro-neon">
 
-<div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
 <main class="contenedor-principal">
 
@@ -148,7 +148,7 @@
 
 </main>
 
-<div id="footer-placeholder"></div>
+<div th:replace="includes/footer :: footer"></div>
 
 <!-- =========================
      ESTRELLAS JS (SOLO UI)
@@ -180,11 +180,11 @@ estrellas.forEach(e => {
 
 <!-- HEADER / FOOTER -->
 <script>
-fetch("/includes/header.html")
+fetch("localhost:8080/includes/header.html")
     .then(r => r.text())
     .then(html => document.getElementById("header-placeholder").innerHTML = html);
 
-fetch("/includes/footer.html")
+fetch("localhost:8080/includes/footer.html")
     .then(r => r.text())
     .then(html => document.getElementById("footer-placeholder").innerHTML = html);
 </script>

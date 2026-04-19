@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Chats</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/chats_styles/chats_styles.css"> 
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/chats_styles/chats_styles.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal-chats">
         <section class="tarjeta-chats border-neon">
@@ -32,7 +32,7 @@
                 <div class="lista-conversaciones">
                     <div class="item-chat activo">
                         <div class="avatar-chat">
-                            <img src="../../../static/Img/stock/empresa1.png" alt="Avatar">
+                            <img src="/Img/stock/empresa1.png" alt="Avatar">
                             <span class="estado en-linea"></span>
                         </div>
                         <div class="info-chat">
@@ -64,7 +64,7 @@
             <section class="panel-conversacion">
                 <div class="cabecera-chat-activo">
                     <div class="info-usuario-activo">
-                        <img src="../../../static/Img/stock/empresa1.png" alt="Avatar" class="avatar-pequeno">
+                        <img src="/Img/stock/empresa1.png" alt="Avatar" class="avatar-pequeno">
                         <div>
                             <h3>Tech Solutions SL</h3>
                             <span class="subtitulo-estado">Escribiendo...</span>
@@ -102,13 +102,13 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         // Función para cargar componentes y gestionar el estado activo
         function cargarComponentes() {
-            const headerPath = "../../includes/header.html";
-            const footerPath = "../../includes/footer.html";
+            const headerPath = "localhost:8080/includes/header.html";
+            const footerPath = "localhost:8080/includes/footer.html";
 
             // Carga Header
             fetch(headerPath)

@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Buscar Empresas</title>
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/homePage_styles/searchCompanies.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/homePage_styles/searchCompanies.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-busqueda">
         
@@ -84,13 +84,13 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
         function cargarComponentes() {
             // Cargar Header
-            fetch("../../includes/header.html")
+            fetch("localhost:8080/includes/header.html")
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById("header-placeholder").innerHTML = html;
@@ -98,7 +98,7 @@
                 });
 
             // Cargar Footer
-            fetch("../../includes/footer.html")
+            fetch("localhost:8080/includes/footer.html")
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById("footer-placeholder").innerHTML = html;

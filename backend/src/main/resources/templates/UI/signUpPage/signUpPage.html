@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/loginPage_styles/loginPage.css">
-    <link rel="stylesheet" href="../../../static/Style/signUpPage_styles/signUpPage.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/loginPage_styles/loginPage.css">
+    <link rel="stylesheet" href="/Style/signUpPage_styles/signUpPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <title>Registro - PROgrammer</title>
@@ -14,7 +14,7 @@
 <body>
     <main class="contenedor-login">
         <div class="login-card tarjeta-acordeon">
-            <img src="../../../static/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotipo PROgrammer" class="login-logo"/>
+            <img src="/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotipo PROgrammer" class="login-logo"/>
             
             <h2>Crear cuenta</h2>
             
@@ -61,14 +61,14 @@
                 <button type="submit" class="boton-ver" style="margin-top: 10px;">Registrarme</button>
                 
                 <div class="registro-link">
-                    <p>¿Ya tienes cuenta? <a href="../loginPage/loginPage.html">Inicia sesión aquí</a></p>
+                    <p>¿Ya tienes cuenta? <a href="/loginPage">Inicia sesión aquí</a></p>
                 </div>
 
             </form>
         </div>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         const togglePasswords = document.querySelectorAll('.toggle-password');
@@ -90,8 +90,8 @@
     <!-- JS para cargar header y footer -->
 <script>
     // Ajusta las rutas según la ubicación del HTML
-    const headerPath = "../../includes/header.html";
-    const footerPath = "../../includes/footer.html";
+    const headerPath = "localhost:8080/includes/header.html";
+    const footerPath = "localhost:8080/includes/footer.html";
 
     fetch(headerPath)
         .then(res => res.text())

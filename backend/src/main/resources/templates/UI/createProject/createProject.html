@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Crear Proyecto</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/createProject_styles/createProject_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/createProject_styles/createProject_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
@@ -19,7 +19,7 @@
         <div class="bola"></div>
     </div>
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal-edicion">
         <section class="tarjeta-edicion">
@@ -31,7 +31,7 @@
             </div>
 
             <!-- FORM CONECTADO A SPRING -->
-            <form action="/proyectos/crear" method="post">
+            <form action="http://localhost:8080/proyectos/crear" method="post">
 
                 <div class="campo">
                     <label>Imagen de portada</label>
@@ -114,20 +114,20 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
         async function cargarInterfaz() {
             try {
                 // Cargar Header
-                const resHeader = await fetch("../../includes/header.html");
+                const resHeader = await fetch("localhost:8080/includes/header.html");
                 const htmlHeader = await resHeader.text();
                 document.getElementById("header-placeholder").innerHTML = htmlHeader;
                 actualizarMiUsuarioEnHeader();
 
                 // Cargar Footer
-                const resFooter = await fetch("../../includes/footer.html");
+                const resFooter = await fetch("localhost:8080/includes/footer.html");
                 const htmlFooter = await resFooter.text();
                 document.getElementById("footer-placeholder").innerHTML = htmlFooter;
             } catch (error) {
@@ -151,8 +151,8 @@
         }
 
         // --- 2. LÓGICA DEL FORMULARIO (Preview de imagen) ---
-        const headerPath = "../../includes/header.html";
-        const footerPath = "../../includes/footer.html";
+        const headerPath = "localhost:8080/includes/header.html";
+        const footerPath = "localhost:8080/includes/footer.html";
 
         fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
         fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);

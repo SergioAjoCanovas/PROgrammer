@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Ofertas de Trabajo</title>
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/jobsearching_styles/jobsearching_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal-ofertas">
 
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
-                <img src="../../../static/Img/stock/empresa1.png" alt="Logo Empresa 1">
+                <img src="/Img/stock/empresa1.png" alt="Logo Empresa 1">
             </div>
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Monstruos S.A.</h3>
@@ -29,13 +29,13 @@
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
-                <button class="boton-postular" onclick="window.location.href='../jobview/jobview.html'">POSTULAR</button>
+                <button class="boton-postular" onclick="window.location.href='/jobview'">POSTULAR</button>
             </div>
         </div>
     
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
-                <img src="../../../static/Img/stock/empresa2.png" alt="Logo Empresa 2">
+                <img src="/Img/stock/empresa2.png" alt="Logo Empresa 2">
             </div>
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Skynet</h3>
@@ -52,7 +52,7 @@
     
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
-                <img src="../../../static/Img/stock/empresa3.png" alt="Logo Empresa 3">
+                <img src="/Img/stock/empresa3.png" alt="Logo Empresa 3">
             </div>
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Los Pollos Hermanos</h3>
@@ -69,7 +69,7 @@
     
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
-                <img src="../../../static/Img/stock/empresa4.png" alt="Logo Empresa 4">
+                <img src="/Img/stock/empresa4.png" alt="Logo Empresa 4">
             </div>
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Umbrella Corporation</h3>
@@ -80,19 +80,19 @@
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
-                <button class="boton-postular" onclick="window.location.href='/UI/jobview/jobview.html'">POSTULAR</button>
+                <button class="boton-postular" onclick="window.location.href='/jobview'">POSTULAR</button>
             </div>
         </div>
     
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         // Función para cargar componentes y gestionar el estado activo
         function cargarComponentes() {
-            const headerPath = "../../includes/header.html";
-            const footerPath = "../../includes/footer.html";
+            const headerPath = "localhost:8080/includes/header.html";
+            const footerPath = "localhost:8080/includes/footer.html";
 
             // Carga Header
             fetch(headerPath)

@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Editar Proyecto</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/createProject_styles/createProject_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/createProject_styles/createProject_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
@@ -19,7 +19,7 @@
         <div class="bola"></div>
     </div>
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal-edicion">
         <section class="tarjeta-edicion">
@@ -34,7 +34,7 @@
                 <div class="campo">
                     <label>Imagen de portada</label>
                     <div class="portada-contenedor">
-                        <img src="../../../static/Img/stock/ejemplo2.jpg" id="preview-img" alt="Vista previa">
+                        <img src="/Img/stock/ejemplo2.jpg" id="preview-img" alt="Vista previa">
                         <div class="overlay-subir-portada">
                             <label for="file-upload"><i class="fas fa-camera"></i></label>
                             <input type="file" id="file-upload" accept="image/*" hidden>
@@ -110,20 +110,20 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
         async function cargarInterfaz() {
             try {
                 // Cargar Header
-                const resHeader = await fetch("../../includes/header.html");
+                const resHeader = await fetch("localhost:8080/includes/header.html");
                 const htmlHeader = await resHeader.text();
                 document.getElementById("header-placeholder").innerHTML = htmlHeader;
                 actualizarMiUsuarioEnHeader();
 
                 // Cargar Footer
-                const resFooter = await fetch("../../includes/footer.html");
+                const resFooter = await fetch("localhost:8080/includes/footer.html");
                 const htmlFooter = await resFooter.text();
                 document.getElementById("footer-placeholder").innerHTML = htmlFooter;
             } catch (error) {

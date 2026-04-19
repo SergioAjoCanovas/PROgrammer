@@ -1,12 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 🔥 FRAGMENTO -->
+<div th:fragment="footer">
+
 <footer class="footer-principal">
+
     <div class="footer-contenido">
-        
+
         <!-- IZQUIERDA -->
         <div class="footer-seccion">
-            <img src="/backend/src/main/resources/static/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotipo" class="footer-logo">
+            <img th:src="@{/Img/logo_sin_silla_de_ruedas-removebg-preview.png}"
+                 alt="Logotipo"
+                 class="footer-logo">
+
             <div class="footer-texto">
-            <p>2026 ProGrammer</p>
-            <p>Sergio Ajo, Cristian Escobar, David Alcázar</p>
+                <p>2026 ProGrammer</p>
+                <p>Sergio Ajo, Cristian Escobar, David Alcázar</p>
             </div>
         </div>
 
@@ -26,4 +36,9 @@
         </div>
 
     </div>
+
 </footer>
+
+</div>
+
+</html>

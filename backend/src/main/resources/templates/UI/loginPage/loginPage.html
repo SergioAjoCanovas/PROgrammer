@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/loginPage_styles/loginPage.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/loginPage_styles/loginPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Login - PROgrammer</title>
 </head>
 <body>
     <main class="contenedor-login">
         <div class="login-card tarjeta-acordeon">
-            <img src="../../../static/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotimo PROgrammer" class="login-logo"/>
+            <img src="/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotimo PROgrammer" class="login-logo"/>
             <h2>Iniciar sesión</h2>
             <form action="http://localhost:8080/api/auth/login" method="POST" class="login-form">
 
@@ -39,13 +39,13 @@
                 <button type="submit" class="boton-ver">Entrar</button>
 
                 <div class="registro-link">
-                    <p>¿No tienes cuenta? <a href="../signUpPage/signUpPage.html">Registrarme aquí</a></p>
+                    <p>¿No tienes cuenta? <a href="/signUp">Registrarme aquí</a></p>
                 </div>
             </form>
         </div>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         const togglePassword = document.querySelector('#togglePassword');
@@ -65,8 +65,8 @@
     <!-- JS para cargar header y footer -->
     <script>
         // Ajusta las rutas según la ubicación del HTML
-        const headerPath = "../../includes/header.html";
-        const footerPath = "../../includes/footer.html";
+        const headerPath = "localhost:8080/includes/header.html";
+        const footerPath = "localhost:8080/includes/footer.html";
 
         fetch(headerPath)
             .then(res => res.text())

@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Proyectos</title>
     
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/projectlist_styles/proyectlist.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/projectlist_styles/proyectlist.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -41,7 +41,7 @@
             <div class="tarjeta-resenas-izq">
                 <h3>RESEÑAS</h3>
                 <textarea class="input-resena" placeholder="Escribe aquí..."></textarea>
-                <button class="boton-anadir" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+                <button class="boton-anadir" onclick="window.location.href='/newreview'">Añadir reseña</button>
             </div>
         </aside>
 
@@ -49,7 +49,7 @@
             <div class="tarjeta-acordeon-contenedor">
                 <div class="cabecera-acordeon">
                     <h2>PROYECTOS</h2>
-                    <a href="../profileView/profileView.html" class="boton-volver-circular" title="Volver">
+                    <a href="/profileView" class="boton-volver-circular" title="Volver">
                         <i class="fas fa-undo"></i>
                     </a>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="contenido-desplegable">
                         <div class="inner-content">
                             <p>Descripción del proyecto 1 detallada aquí.</p>
-                            <button class="boton-ver-proyecto" onclick="window.location.href='../projectview/projectview.html'">
+                            <button class="boton-ver-proyecto" onclick="window.location.href='/projectview'">
                                 VER PROYECTO
                             </button>
                         </div>
@@ -77,7 +77,7 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
@@ -93,8 +93,8 @@
             });
         });
 
-        const headerPath = "../../includes/header.html";
-        const footerPath = "../../includes/footer.html";
+        const headerPath = "localhost:8080/includes/header.html";
+        const footerPath = "localhost:8080/includes/footer.html";
 
         // Cargar Header
         fetch(headerPath)

@@ -3,85 +3,43 @@ package com.programmer.backend.controller;
 import com.programmer.backend.domain.Proyecto;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.ProyectoRepository;
-import com.programmer.backend.repository.UsuarioRepository;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/proyectos")
 public class ProyectoController {
 
     private final ProyectoRepository proyectoRepository;
-    private final UsuarioRepository usuarioRepository;
 
-    public ProyectoController(ProyectoRepository proyectoRepository,
-                              UsuarioRepository usuarioRepository) {
+    public ProyectoController(ProyectoRepository proyectoRepository) {
         this.proyectoRepository = proyectoRepository;
-        this.usuarioRepository = usuarioRepository;
     }
 
-    // =========================
-    // VER FORMULARIO CREAR
-    // =========================
-    @GetMapping("/crear")
-    public String verFormulario(Model model) {
-
-        model.addAttribute("proyecto", new Proyecto());
-
-        return "UI/createProject";
-    }
-
-    // =========================
-    // CREAR PROYECTO
-    // =========================
     @PostMapping("/crear")
     public String crearProyecto(@ModelAttribute Proyecto proyecto,
-                                Principal principal) {
+                                HttpSession session) {
 
-        // Usuario logeado
-        if (principal == null) {
+        System.out.println("ENTRA AL CONTROLLER");
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            System.out.println("NO HAY USUARIO");
             return "redirect:/login";
         }
 
-        Usuario autor = usuarioRepository.findByUsername(principal.getName())
-                .orElseThrow();
+        System.out.println("USUARIO LOGUEADO: " + usuario.getUsername());
 
-        // Seteos obligatorios
-        proyecto.setAutor(autor);
-        proyecto.setEstaValidado(false);
+        // 🔥 IMPORTANTE: campo correcto es autor
+        proyecto.setAutor(usuario);
 
-        // Guardar
         proyectoRepository.save(proyecto);
 
-        return "redirect:/proyectos";
-    }
+        System.out.println("PROYECTO GUARDADO");
 
-    // =========================
-    // LISTAR PROYECTOS
-    // =========================
-    @GetMapping
-    public String listarProyectos(Model model) {
-
-        model.addAttribute("proyectos", proyectoRepository.findAll());
-
-        return "UI/projectlist";
-    }
-
-    // =========================
-    // VER DETALLE PROYECTO
-    // =========================
-    @GetMapping("/{id}")
-    public String verProyecto(@PathVariable Long id, Model model) {
-
-        Proyecto proyecto = proyectoRepository.findById(id)
-                .orElseThrow();
-
-        model.addAttribute("proyecto", proyecto);
-
-        return "UI/projectview";
+        return "redirect:/ownProfile";
     }
 }

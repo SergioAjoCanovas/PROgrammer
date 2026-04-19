@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Postular</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/jobview_styles/jobview.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/jobview_styles/jobview.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="includes/header :: header"></div>
 
     <main class="contenedor-principal">
         <section class="seccion-derecha-dinamica">
@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="info-superior">
-                        <img src="../../../static/Img/stock/empresa1.png" class="logo-empresa" alt="Logo Empresa Alpha">
+                        <img src="/Img/stock/empresa1.png" class="logo-empresa" alt="Logo Empresa Alpha">
                         <p><strong>Empresa:</strong> Empresa Alpha</p>
                     </div>
 
@@ -62,7 +62,7 @@
                 <div class="tarjeta-proyecto-detalle tarjeta-formulario">
                     <div class="cabecera-proyecto">
                         <h2>Tu candidatura</h2>
-                        <a href="../jobsearching/jobsearching.html" class="boton-volver-curvo" title="Volver">
+                        <a href="/jobsearching" class="boton-volver-curvo" title="Volver">
                             <i class="fas fa-undo"></i>
                         </a>
                     </div>
@@ -105,7 +105,7 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="includes/footer :: footer"></div>
 
     <script>
         // --- 1. GESTIÓN DE SELECCIÓN DE PROYECTOS ---
@@ -120,8 +120,8 @@
         });
 
         // --- 2. CARGA DE COMPONENTES E IDENTIDAD ---
-        const headerPath = "../../includes/header.html";
-        const footerPath = "../../includes/footer.html";
+        const headerPath = "localhost:8080/includes/header.html";
+        const footerPath = "localhost:8080/includes/footer.html";
 
         // Cargar Header
         fetch(headerPath)

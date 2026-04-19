@@ -30,7 +30,9 @@
                 </button>
             </div>
 
-            <form id="form-crear">
+            <!-- FORM CONECTADO A SPRING -->
+            <form action="/proyectos/crear" method="post">
+
                 <div class="campo">
                     <label>Imagen de portada</label>
                     <div class="portada-contenedor">
@@ -42,49 +44,51 @@
                     </div>
                 </div>
 
+                <!-- IMPORTANTE: name -->
                 <div class="campo">
                     <label>Título del Proyecto</label>
-                    <input type="text" placeholder="Ej. Sistema de Gestión de Inventarios" required>
+                    <input type="text" name="titulo" placeholder="Ej. Sistema de Gestión de Inventarios" required>
                 </div>
 
                 <div class="campo">
                     <label>Descripción del Proyecto</label>
-                    <textarea placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" required></textarea>
+                    <textarea name="descripcion" placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" required></textarea>
                 </div>
 
+                <!-- DE MOMENTO NO SE USA EN BACK -->
                 <div class="campo">
                     <label>Tecnologías Utilizadas</label>
                     <div class="contenedor-checkboxes">
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="html">
+                            <input type="checkbox">
                             <span class="custom-check"></span> HTML5
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="css">
+                            <input type="checkbox">
                             <span class="custom-check"></span> CSS3
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="js">
+                            <input type="checkbox">
                             <span class="custom-check"></span> JavaScript
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="react">
+                            <input type="checkbox">
                             <span class="custom-check"></span> React
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="node">
+                            <input type="checkbox">
                             <span class="custom-check"></span> Node.js
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="python">
+                            <input type="checkbox">
                             <span class="custom-check"></span> Python
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="java">
+                            <input type="checkbox">
                             <span class="custom-check"></span> Java
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="sql">
+                            <input type="checkbox">
                             <span class="custom-check"></span> SQL
                         </label>
                     </div>
@@ -93,7 +97,7 @@
                 <div class="fila-doble">
                     <div class="campo">
                         <label><i class="fab fa-github"></i> Enlace al Repositorio</label>
-                        <input type="url" placeholder="https://github.com/tu-usuario/repo">
+                        <input type="url" name="repoUrl" placeholder="https://github.com/tu-usuario/repo">
                     </div>
                     <div class="campo">
                         <label><i class="fas fa-globe"></i> Enlace a la Demo</label>
@@ -147,6 +151,12 @@
         }
 
         // --- 2. LÓGICA DEL FORMULARIO (Preview de imagen) ---
+        const headerPath = "../../includes/header.html";
+        const footerPath = "../../includes/footer.html";
+
+        fetch(headerPath).then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
+        fetch(footerPath).then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+
         const fileInput = document.getElementById('file-upload');
         const previewImg = document.getElementById('preview-img');
 

@@ -81,25 +81,43 @@
     <aside class="zona-derecha">
         <div class="tarjeta-formulario">
             <h2><i class="fas fa-star"></i> Valorar proyecto</h2>
-            <div class="campo">
-                <label>Arquitectura</label>
-                <div class="estrellas" data-tipo="arquitectura"></div>
-            </div>
-            <div class="campo">
-                <label>Limpieza de código</label>
-                <div class="estrellas" data-tipo="limpieza"></div>
-            </div>
-            <div class="campo">
-                <label>Documentación</label>
-                <div class="estrellas" data-tipo="documentacion"></div>
-            </div>
-            <div class="campo">
-                <label>Comentario</label>
-                <textarea id="comentario" placeholder="Escribe tu reseña..."></textarea>
-            </div>
-            <button class="boton-ver" id="btn-publicar">
-                <i class="fas fa-paper-plane"></i> Publicar reseña
-            </button>
+    
+            <form action="/project-reviews/crear" method="post">
+
+                <input type="hidden" name="proyectoId" th:value="${proyecto.id}">
+            
+                <!-- ARQUITECTURA -->
+                <div class="campo">
+                    <label>Arquitectura</label>
+                    <div class="estrellas" data-tipo="arquitectura"></div>
+                    <input type="hidden" name="arquitectura" id="input-arquitectura">
+                </div>
+            
+                <!-- LIMPIEZA -->
+                <div class="campo">
+                    <label>Limpieza de código</label>
+                    <div class="estrellas" data-tipo="limpieza"></div>
+                    <input type="hidden" name="limpieza" id="input-limpieza">
+                </div>
+            
+                <!-- DOCUMENTACIÓN -->
+                <div class="campo">
+                    <label>Documentación</label>
+                    <div class="estrellas" data-tipo="documentacion"></div>
+                    <input type="hidden" name="documentacion" id="input-documentacion">
+                </div>
+            
+                <!-- COMENTARIO -->
+                <div class="campo">
+                    <label>Comentario</label>
+                    <textarea name="comentario" placeholder="Escribe tu reseña..." required></textarea>
+                </div>
+            
+                <button type="submit" class="boton-ver">
+                    <i class="fas fa-paper-plane"></i> Publicar reseña
+                </button>
+            
+            </form>
         </div>
     </aside>
 
@@ -151,23 +169,41 @@
 
     // 2. LÓGICA DE LAS ESTRELLAS (Se mantiene igual)
     document.querySelectorAll(".estrellas").forEach(container => {
+        const tipo = container.dataset.tipo;
+        const input = document.getElementById("input-" + tipo);
+
         for (let i = 1; i <= 5; i++) {
             const estrella = document.createElement("i");
             estrella.classList.add("far", "fa-star");
             container.appendChild(estrella);
+
             estrella.addEventListener("click", function() {
-                const siblings = container.querySelectorAll("i");
-                const val = Array.from(siblings).indexOf(this);
-                siblings.forEach((s, index) => {
-                    s.classList.toggle("fas", index <= val);
-                    s.classList.toggle("far", index > val);
-                    s.classList.toggle("activa", index <= val);
+                input.value = i;
+
+                const estrellas = container.querySelectorAll("i");
+                estrellas.forEach((s, index) => {
+                    s.classList.toggle("fas", index < i);
+                    s.classList.toggle("far", index >= i);
+                    s.classList.toggle("activa", index < i);
                 });
             });
         }
     });
 
     // 3. LÓGICA DEL MODAL (Se mantiene igual)
+    document.querySelector("form").addEventListener("submit", function(e) {
+
+        const arq = document.getElementById("input-arquitectura").value;
+        const lim = document.getElementById("input-limpieza").value;
+        const doc = document.getElementById("input-documentacion").value;
+
+        if (!arq || !lim || !doc) {
+            e.preventDefault();
+            alert("Completa todas las valoraciones");
+        }
+    });
+
+    // 3. LÓGICA DEL MODAL (CIERRE POR FONDO)
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");

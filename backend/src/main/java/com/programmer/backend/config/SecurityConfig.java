@@ -18,13 +18,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-
             .sessionManagement(session -> session
                 .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.ALWAYS)
             )
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOriginPatterns(List.of("http://127.0.0.1:5500", "http://localhost:5500")); // Origen específico
+                // Permitimos ambos formatos de Live Server
+                config.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500"));
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
                 config.setAllowCredentials(true); 
@@ -33,17 +33,14 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/api/auth/**",  // <-- Añadidos los ** (TODO lo de auth pasa)
-                    "/UI/**",        // <-- Añadidos los ** (TODO lo de UI pasa)
-                    "/resources/**",
-                    "/**/*.html",    // Sintaxis correcta para permitir cualquier HTML
-                    "/**/*.css",     // Sintaxis correcta para cualquier CSS
-                    "/**/*.js"       // Sintaxis correcta para cualquier JS
+                    "/api/auth/**",
+                    "/static/**",   // Permitir carpeta de estilos e imágenes
+                    "/**/*.html", 
+                    "/**/*.css", 
+                    "/**/*.js"
                 ).permitAll()
-                // Dejamos el resto abierto de momento para asegurar que el registro funciona
                 .anyRequest().permitAll() 
             )
-            // MATAMOS la pantalla blanca de login por si acaso
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
             

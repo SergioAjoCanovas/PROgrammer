@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +12,9 @@
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-busqueda">
-        
         <section class="seccion-buscador-central">
             <h1 class="titulo-neon">CONECTA CON <span class="resaltado">EMPRESAS</span></h1>
             <div class="caja-busqueda-neon">
@@ -28,10 +27,8 @@
 
         <section class="seccion-carrusel">
             <h2 class="subtitulo-neon">Empresas Destacadas</h2>
-            
             <div class="carrusel-wrapper">
                 <button class="btn-nav prev"><i class="fas fa-chevron-left"></i></button>
-                
                 <div class="carrusel-contenedor">
                     <div class="carrusel-track">
                         <div class="tarjeta-perfil-neon">
@@ -78,49 +75,33 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="btn-nav next"><i class="fas fa-chevron-right"></i></button>
             </div>
         </section>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
-        function cargarComponentes() {
-            // Cargar Header
-            fetch("localhost:8080/includes/header.html")
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("header-placeholder").innerHTML = html;
-                    actualizarMiUsuarioEnHeader();
-                });
+        // --- 1. LÓGICA DE IDENTIDAD (IGUAL A LAS OTRAS PÁGINAS) ---
+        function mostrarInfoUsuarioMain() {
+            const username = localStorage.getItem('usuarioLogueado');
+            let rol = localStorage.getItem('rolUsuario');
+            const contenedor = document.getElementById('info-usuario');
 
-            // Cargar Footer
-            fetch("localhost:8080/includes/footer.html")
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("footer-placeholder").innerHTML = html;
-                });
-        }
+            if (!rol) rol = 'USER';
 
-        function actualizarMiUsuarioEnHeader() {
-            const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
-            
-            const contenedorHeader = document.getElementById('info-usuario');
-            if (miNombre && contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+            if (username && contenedor) {
+                contenedor.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
                     </div>
                 `;
             }
         }
 
-        // --- 2. LÓGICA AUTOMÁTICA DEL CARRUSEL ---
+        // --- 2. LÓGICA DEL CARRUSEL ---
         const track = document.querySelector('.carrusel-track');
         const nextBtn = document.querySelector('.next');
         const prevBtn = document.querySelector('.prev');
@@ -163,14 +144,13 @@
 
         nextBtn.addEventListener('click', () => { siguiente(); resetAutoPlay(); });
         prevBtn.addEventListener('click', () => { anterior(); resetAutoPlay(); });
-
         window.addEventListener('resize', moverCarrusel);
         
-        // Ejecución inicial
-        window.onload = () => {
-            cargarComponentes();
+        // --- EJECUCIÓN AL CARGAR ---
+        window.addEventListener('load', () => {
+            setTimeout(mostrarInfoUsuarioMain, 100); 
             iniciarAutoPlay();
-        };
+        });
     </script>
 </body>
 </html>

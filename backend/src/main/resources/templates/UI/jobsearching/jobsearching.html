@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,22 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Estilo para que el icono de la sección actual brille */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal-ofertas">
-
         <div class="tarjeta-oferta">
             <div class="logo-empresa">
                 <img src="/Img/stock/empresa1.png" alt="Logo Empresa 1">
@@ -23,9 +32,7 @@
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Monstruos S.A.</h3>
                 <h4 class="titulo-puesto">Desarrollador Frontend</h4>
-                <p class="descripcion-puesto">
-                    Buscamos un desarrollador con experiencia en HTML, CSS, JS y React.
-                </p>
+                <p class="descripcion-puesto">Buscamos un desarrollador con experiencia en HTML, CSS, JS y React.</p>
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
@@ -40,9 +47,7 @@
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Skynet</h3>
                 <h4 class="titulo-puesto">Backend Developer</h4>
-                <p class="descripcion-puesto">
-                    Experiencia en Java, Spring Boot y bases de datos relacionales.
-                </p>
+                <p class="descripcion-puesto">Java, Spring Boot y bases de datos relacionales.</p>
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta inactivo"><i class="fas fa-times-circle"></i> Inactiva</span>
@@ -57,9 +62,7 @@
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Los Pollos Hermanos</h3>
                 <h4 class="titulo-puesto">Backend Developer</h4>
-                <p class="descripcion-puesto">
-                    Experiencia en Java, Spring Boot y bases de datos relacionales.
-                </p>
+                <p class="descripcion-puesto">Experiencia en Java y Spring Boot.</p>
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta inactivo"><i class="fas fa-times-circle"></i> Inactiva</span>
@@ -74,73 +77,53 @@
             <div class="info-oferta">
                 <h3 class="nombre-empresa">Umbrella Corporation</h3>
                 <h4 class="titulo-puesto">Desarrollador Frontend</h4>
-                <p class="descripcion-puesto">
-                    Buscamos un desarrollador con experiencia en HTML, CSS, JS y React.
-                </p>
+                <p class="descripcion-puesto">HTML, CSS, JS y React.</p>
             </div>
             <div class="acciones-oferta">
                 <span class="estado-oferta activo"><i class="fas fa-check-circle"></i> Activa</span>
                 <button class="boton-postular" onclick="window.location.href='/jobview'">POSTULAR</button>
             </div>
         </div>
-    
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        // Función para cargar componentes y gestionar el estado activo
-        function cargarComponentes() {
-            const headerPath = "localhost:8080/includes/header.html";
-            const footerPath = "localhost:8080/includes/footer.html";
-
-            // Carga Header
-            fetch(headerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("header-placeholder").innerHTML = html;
-                    marcarEnlaceActivo(); 
-                    actualizarMiUsuarioEnHeader(); // Inyectar nombre y rol del usuario
-                });
-
-            // Carga Footer
-            fetch(footerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("footer-placeholder").innerHTML = html;
-                });
-        }
-
-        // Función para mostrar tus datos en la cabecera
-        function actualizarMiUsuarioEnHeader() {
+        function inicializarInterfazHeader() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
-            
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
+            const navTrabajo = document.getElementById('nav-trabajo'); // ID para el icono de maleta
+
+            // 1. Inyectar datos de usuario
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
                     </div>
                 `;
             }
+
+            // 2. Iluminar icono de Trabajos
+            if (navTrabajo) {
+                navTrabajo.classList.add('activo');
+            } else {
+                // Alternativa: buscar por enlace si no existe el ID
+                const links = document.querySelectorAll('header a');
+                links.forEach(l => {
+                    if (l.getAttribute('href')?.includes('jobsearching')) {
+                        l.classList.add('activo');
+                    }
+                });
+            }
         }
 
-        function marcarEnlaceActivo() {
-            const pathActual = window.location.pathname;
-            const links = document.querySelectorAll('#header-placeholder a');
-            
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && pathActual.includes(href)) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        // Ejecutar al cargar la página
-        window.onload = cargarComponentes;
+        window.addEventListener('load', () => {
+            // Reintentos para asegurar que Thymeleaf haya cargado el DOM
+            setTimeout(inicializarInterfazHeader, 50);
+            setTimeout(inicializarInterfazHeader, 300);
+        });
     </script>
 
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
 <main class="contenedor-principal">
 
@@ -28,7 +28,7 @@
                     <div class="circulo-foto"></div>
                     <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                 </div>
-                <h2 class="nombre-usuario">Nombre del usuario</h2>
+                <h2 class="nombre-usuario" id="nombre-mi-perfil">Cargando...</h2>
             </div>
 
             <div class="perfil-inferior">
@@ -83,31 +83,26 @@
             <h2><i class="fas fa-star"></i> Valorar proyecto</h2>
     
             <form action="/project-reviews/crear" method="post">
-
                 <input type="hidden" name="proyectoId" th:value="${proyecto.id}">
             
-                <!-- ARQUITECTURA -->
                 <div class="campo">
                     <label>Arquitectura</label>
                     <div class="estrellas" data-tipo="arquitectura"></div>
                     <input type="hidden" name="arquitectura" id="input-arquitectura">
                 </div>
             
-                <!-- LIMPIEZA -->
                 <div class="campo">
                     <label>Limpieza de código</label>
                     <div class="estrellas" data-tipo="limpieza"></div>
                     <input type="hidden" name="limpieza" id="input-limpieza">
                 </div>
             
-                <!-- DOCUMENTACIÓN -->
                 <div class="campo">
                     <label>Documentación</label>
                     <div class="estrellas" data-tipo="documentacion"></div>
                     <input type="hidden" name="documentacion" id="input-documentacion">
                 </div>
             
-                <!-- COMENTARIO -->
                 <div class="campo">
                     <label>Comentario</label>
                     <textarea name="comentario" placeholder="Escribe tu reseña..." required></textarea>
@@ -116,7 +111,6 @@
                 <button type="submit" class="boton-ver">
                     <i class="fas fa-paper-plane"></i> Publicar reseña
                 </button>
-            
             </form>
         </div>
     </aside>
@@ -128,82 +122,59 @@
     <div id="caption-modal"></div>
 </div>
 
-<div th:replace="includes/footer :: footer"></div>
+<div th:replace="~{includes/footer :: footer}"></div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // 1. CARGA DINÁMICA DE HEADER Y FOOTER
-    $(function(){
-        // Usamos el callback de .load() para ejecutar nuestra función de usuario
-        // justo cuando el header termina de cargarse en el DOM.
-        $("#header-placeholder").load("localhost:8080/includes/header.html", function() {
-            mostrarUsuarioEnHeader();
-        });
-        
-        $("#footer-placeholder").load("localhost:8080/includes/footer.html");
+    $(document).ready(function() {
+        inicializarIdentidadYEventos();
     });
 
-    // --- FUNCIÓN DE IDENTIDAD (HEADER Y PERFIL LATERAL) ---
-    function mostrarUsuarioEnHeader() {
+    function inicializarIdentidadYEventos() {
         const username = localStorage.getItem('usuarioLogueado');
-        const rol = localStorage.getItem('rolUsuario');
+        const rol = localStorage.getItem('rolUsuario') || 'USER';
         
-        // Inyectar en el Header
+        // 1. Inyectar en el Header
         const contenedorHeader = document.getElementById('info-usuario');
         if (username && contenedorHeader) {
             contenedorHeader.innerHTML = `
-                <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                    <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${username}</span>
-                    <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${rol}</span>
+                <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                    <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
+                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
                 </div>
             `;
         }
 
-        // Inyectar en la tarjeta lateral izquierda
-        const nombreLateral = document.querySelector('.nombre-usuario');
+        // 2. Inyectar en la tarjeta lateral (porque eres TÚ quien escribe la reseña)
+        const nombreLateral = document.getElementById('nombre-mi-perfil');
         if (username && nombreLateral) {
             nombreLateral.innerText = username;
         }
+
+        // 3. Lógica de Estrellas
+        document.querySelectorAll(".estrellas").forEach(container => {
+            const tipo = container.dataset.tipo;
+            const input = document.getElementById("input-" + tipo);
+
+            for (let i = 1; i <= 5; i++) {
+                const estrella = document.createElement("i");
+                estrella.classList.add("far", "fa-star");
+                container.appendChild(estrella);
+
+                estrella.addEventListener("click", function() {
+                    input.value = i;
+                    const estrellas = container.querySelectorAll("i");
+                    estrellas.forEach((s, index) => {
+                        s.classList.toggle("fas", index < i);
+                        s.classList.toggle("far", index >= i);
+                        s.classList.toggle("activa", index < i);
+                    });
+                });
+            }
+        });
     }
 
-    // 2. LÓGICA DE LAS ESTRELLAS (Se mantiene igual)
-    document.querySelectorAll(".estrellas").forEach(container => {
-        const tipo = container.dataset.tipo;
-        const input = document.getElementById("input-" + tipo);
-
-        for (let i = 1; i <= 5; i++) {
-            const estrella = document.createElement("i");
-            estrella.classList.add("far", "fa-star");
-            container.appendChild(estrella);
-
-            estrella.addEventListener("click", function() {
-                input.value = i;
-
-                const estrellas = container.querySelectorAll("i");
-                estrellas.forEach((s, index) => {
-                    s.classList.toggle("fas", index < i);
-                    s.classList.toggle("far", index >= i);
-                    s.classList.toggle("activa", index < i);
-                });
-            });
-        }
-    });
-
-    // 3. LÓGICA DEL MODAL (Se mantiene igual)
-    document.querySelector("form").addEventListener("submit", function(e) {
-
-        const arq = document.getElementById("input-arquitectura").value;
-        const lim = document.getElementById("input-limpieza").value;
-        const doc = document.getElementById("input-documentacion").value;
-
-        if (!arq || !lim || !doc) {
-            e.preventDefault();
-            alert("Completa todas las valoraciones");
-        }
-    });
-
-    // 3. LÓGICA DEL MODAL (CIERRE POR FONDO)
+    // Lógica del Modal de imágenes
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");
@@ -223,7 +194,6 @@
             document.body.style.overflow = "auto"; 
         }
     }
-    //adadad
 </script>
 </body>
 </html>

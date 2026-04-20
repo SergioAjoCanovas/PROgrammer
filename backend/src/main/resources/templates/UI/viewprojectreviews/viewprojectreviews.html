@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,165 +14,108 @@
 
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
-<main class="contenedor-principal">
+    <main class="contenedor-principal">
 
-    <!-- ================= PERFIL ================= -->
-    <aside class="columna-perfil">
-        <div class="tarjeta-perfil">
-            <div class="cabecera-tarjeta">
-                <div class="foto-perfil-contenedor">
-                    <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        <aside class="columna-perfil">
+            <div class="tarjeta-perfil">
+                <div class="cabecera-tarjeta">
+                    <div class="foto-perfil-contenedor">
+                        <div class="circulo-foto"></div>
+                        <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                    </div>
+                    <h2 class="nombre-usuario" th:text="${proyecto.autor.username}">Autor</h2>
                 </div>
 
-                <h2 class="nombre-usuario"
-                    th:text="${proyecto.autor.username}">
-                    Autor
-                </h2>
-            </div>
-
-            <div class="cuerpo-tarjeta">
-                <ul class="redes-sociales">
-                    <li><i class="fab fa-instagram"></i> Instagram</li>
-                    <li><i class="fab fa-twitter"></i> Twitter</li>
-                    <li><i class="fas fa-phone"></i> Teléfono</li>
-                </ul>
-                <button class="boton-curriculum">CURRICULUM</button>
-            </div>
-        </div>
-    </aside>
-
-    <!-- ================= CENTRO ================= -->
-    <section class="seccion-central">
-
-        <div class="tarjeta-proyecto-detalle">
-
-            <div class="cabecera-proyecto">
-                <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
-                <a href="/projectview" class="boton-volver-circular">
-                    <i class="fas fa-undo"></i>
-                </a>
-            </div>
-
-            <p class="autor-texto">
-                <strong>Autor:</strong>
-                <span th:text="${proyecto.autor.username}"></span>
-            </p>
-
-            <!-- ================= MEDIA ================= -->
-            <div class="medias-reseñas-ver">
-
-                <div class="media-stat">
-                    <span>Arquitectura:</span>
-                    <span th:text="${#numbers.formatDecimal(mediaArq,1,1)}"></span>
-                </div>
-
-                <div class="media-stat">
-                    <span>Limpieza:</span>
-                    <span th:text="${#numbers.formatDecimal(mediaLim,1,1)}"></span>
-                </div>
-
-                <div class="media-stat">
-                    <span>Documentación:</span>
-                    <span th:text="${#numbers.formatDecimal(mediaDoc,1,1)}"></span>
-                </div>
-
-                <div class="media-total">
-                    <span>Total:</span>
-                    <span th:text="${#numbers.formatDecimal(mediaTotal,1,1)}"></span>
-                </div>
-
-            </div>
-
-            <!-- (GALERÍA SE QUEDA IGUAL) -->
-            <div class="galeria-capturas">
-                <div class="marco-captura">
-                    <img src="/Img/stock/ejemplo1.jpg" class="img-disparador">
-                </div>
-                <div class="marco-captura">
-                    <img src="/Img/stock/ejemplo2.jpg" class="img-disparador">
-                </div>
-                <div class="marco-captura">
-                    <img src="/Img/stock/ejemplo3.jpg" class="img-disparador">
-                </div>
-                <div class="marco-captura">
-                    <img src="/Img/stock/ejemplo4.jpg" class="img-disparador">
+                <div class="cuerpo-tarjeta">
+                    <ul class="redes-sociales">
+                        <li><i class="fab fa-instagram"></i> Instagram</li>
+                        <li><i class="fab fa-twitter"></i> Twitter</li>
+                        <li><i class="fas fa-phone"></i> Contacto</li>
+                    </ul>
+                    <button class="boton-curriculum">VER CV</button>
                 </div>
             </div>
+        </aside>
 
-            <div class="bloque-texto-informativo">
-                <h3 class="titulo-seccion">Descripción</h3>
-                <p class="texto-parrafo"
-                   th:text="${proyecto.descripcion}">
-                    Descripción del proyecto
+        <section class="seccion-central">
+            <div class="tarjeta-proyecto-detalle">
+                <div class="cabecera-proyecto">
+                    <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
+                    <a th:href="@{/projects/view/{id}(id=${proyecto.id})}" class="boton-volver-circular">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
+
+                <p class="autor-texto">
+                    <strong>Desarrollado por:</strong>
+                    <span th:text="${proyecto.autor.username}"></span>
                 </p>
-            </div>
 
-        </div>
-
-    </section>
-
-    <!-- ================= REVIEWS ================= -->
-    <aside class="zona-derecha">
-
-        <div class="tarjeta-reseñas-ver">
-
-            <div class="cabecera-tarjeta">
-                <h3><i class="fas fa-comments"></i> FEEDBACK</h3>
-            </div>
-
-            <div class="contenedor-reseñas">
-
-                <!-- 🔥 AQUÍ ESTÁ EL CAMBIO REAL -->
-                <div class="reseña-item" th:each="r : ${reviews}">
-
-                    <div class="reseña-user">
-                        <i class="fas fa-user-circle"></i>
-                        <span th:text="${r.autor.username}"></span>
+                <div class="medias-reseñas-ver">
+                    <div class="media-stat">
+                        <span>Arquitectura:</span>
+                        <span class="score-num" th:text="${#numbers.formatDecimal(mediaArq,1,1)}">0.0</span>
                     </div>
-
-                    <div class="reseña-scores">
-                        <div>
-                            Arq:
-                            <span th:text="${'⭐'.repeat(r.arquitectura)}"></span>
-                        </div>
-                        <div>
-                            Lim:
-                            <span th:text="${'⭐'.repeat(r.limpieza)}"></span>
-                        </div>
-                        <div>
-                            Doc:
-                            <span th:text="${'⭐'.repeat(r.documentacion)}"></span>
-                        </div>
+                    <div class="media-stat">
+                        <span>Limpieza:</span>
+                        <span class="score-num" th:text="${#numbers.formatDecimal(mediaLim,1,1)}">0.0</span>
                     </div>
-
-                    <p class="reseña-texto"
-                       th:text="${r.comentario}">
-                    </p>
-
+                    <div class="media-stat">
+                        <span>Documentación:</span>
+                        <span class="score-num" th:text="${#numbers.formatDecimal(mediaDoc,1,1)}">0.0</span>
+                    </div>
+                    <div class="media-total">
+                        <span>TOTAL:</span>
+                        <span class="score-num-total" th:text="${#numbers.formatDecimal(mediaTotal,1,1)}">0.0</span>
+                    </div>
                 </div>
 
+                <div class="galeria-capturas">
+                    <div class="marco-captura" th:each="img : ${proyecto.imagenes}">
+                        <img th:src="${img.url}" class="img-disparador" th:alt="${proyecto.titulo}">
+                    </div>
+                    <div class="marco-captura" th:if="${#lists.isEmpty(proyecto.imagenes)}">
+                        <img src="/Img/stock/ejemplo1.jpg" class="img-disparador">
+                    </div>
+                </div>
+
+                <div class="bloque-texto-informativo">
+                    <h3 class="titulo-seccion">Descripción técnica</h3>
+                    <p class="texto-parrafo" th:text="${proyecto.descripcion}">Descripción del proyecto...</p>
+                </div>
             </div>
+        </section>
 
-        </div>
+        <aside class="zona-derecha">
+            <div class="tarjeta-reseñas-ver">
+                <div class="cabecera-tarjeta">
+                    <h3><i class="fas fa-comments"></i> FEEDBACK</h3>
+                </div>
 
-    </aside>
+                <div class="contenedor-reseñas">
+                    <div class="reseña-item" th:each="r : ${reviews}">
+                        <div class="reseña-user">
+                            <i class="fas fa-user-circle"></i>
+                            <span th:text="${r.autor.username}">Usuario</span>
+                        </div>
 
-</main>
+                        <div class="reseña-scores">
+                            <div class="score-line">Arq: <span th:text="${'⭐'.repeat(r.arquitectura)}"></span></div>
+                            <div class="score-line">Lim: <span th:text="${'⭐'.repeat(r.limpieza)}"></span></div>
+                            <div class="score-line">Doc: <span th:text="${'⭐'.repeat(r.documentacion)}"></span></div>
+                        </div>
 
-<div th:replace="includes/footer :: footer"></div>
+                        <p class="reseña-texto" th:text="${r.comentario}">Comentario...</p>
+                    </div>
 
-<script>
-fetch("localhost:8080/includes/header.html")
-    .then(r => r.text())
-    .then(h => document.getElementById("header-placeholder").innerHTML = h);
+                    <p th:if="${#lists.isEmpty(reviews)}" class="texto-parrafo">Este proyecto aún no ha recibido feedback técnico.</p>
+                </div>
+            </div>
+        </aside>
 
-fetch("localhost:8080/includes/footer.html")
-    .then(r => r.text())
-    .then(h => document.getElementById("footer-placeholder").innerHTML = h);
-</script>
+    </main>
 
     <div id="modal-imagen" class="modal">
         <span class="cerrar-modal">&times;</span>
@@ -182,43 +125,33 @@ fetch("localhost:8080/includes/footer.html")
         </div>
     </div>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // --- 1. CARGA DE COMPONENTES ---
-        fetch("localhost:8080/includes/header.html")
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("header-placeholder").innerHTML = html;
-                actualizarMiUsuarioEnHeader(); 
-            });
+        $(document).ready(function() {
+            actualizarMiUsuarioEnHeader();
+            inicializarModal();
+        });
 
-        fetch("localhost:8080/includes/footer.html")
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("footer-placeholder").innerHTML = html;
-            });
-
-        // --- 2. ACTUALIZAR SOLO EL HEADER (IDENTIDAD DEL VISITANTE) ---
+        // --- 1. IDENTIDAD EN EL HEADER ---
         function actualizarMiUsuarioEnHeader() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
-            
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
+
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
                     </div>
                 `;
             }
-            // NO se modifica el nombre de la tarjeta lateral aquí.
         }
 
-        // --- 3. LÓGICA DEL MODAL ---
-        $(document).ready(function() {
+        // --- 2. LÓGICA DEL MODAL ---
+        function inicializarModal() {
             $(".img-disparador").on("click", function() {
                 $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
                 $("#img-ampliada").attr("src", $(this).attr("src"));
@@ -233,49 +166,7 @@ fetch("localhost:8080/includes/footer.html")
                     });
                 }
             });
-        });
-
-        // --- 4. GESTIÓN DE RESEÑAS ---
-        const reseñas = [
-            { usuario: "Carlos_Dev", arquitectura: 4, limpieza: 5, documentacion: 3, comentario: "La lógica del backend es impecable, aunque faltan comentarios." },
-            { usuario: "Laura_UX", arquitectura: 3, limpieza: 4, documentacion: 5, comentario: "Código muy limpio y fácil de seguir. Documentación excelente." },
-            { usuario: "Mike_Tech", arquitectura: 5, limpieza: 4, documentacion: 4, comentario: "Un ejemplo a seguir en patrones de diseño." }
-        ];
-
-        function generarEstrellas(rating) {
-            let html = "";
-            for(let i=1; i<=5; i++) html += `<i class="${i <= rating ? 'fas' : 'far'} fa-star"></i>`;
-            return html;
         }
-
-        $(document).ready(() => {
-            const contenedor = $(".contenedor-reseñas");
-            reseñas.forEach(r => {
-                contenedor.append(`
-                    <div class="reseña-item">
-                        <div class="reseña-user"><i class="fas fa-user-circle"></i> ${r.usuario}</div>
-                        <div class="reseña-scores">
-                            <div class="score-line">Arq: <span>${generarEstrellas(r.arquitectura)}</span></div>
-                            <div class="score-line">Lim: <span>${generarEstrellas(r.limpieza)}</span></div>
-                            <div class="score-line">Doc: <span>${generarEstrellas(r.documentacion)}</span></div>
-                        </div>
-                        <p class="reseña-texto">"${r.comentario}"</p>
-                    </div>
-                `);
-            });
-            
-            const n = reseñas.length;
-            if(n > 0) {
-                const m = {
-                    arquitectura: Math.round(reseñas.reduce((a,b)=>a+b.arquitectura,0)/n),
-                    limpieza: Math.round(reseñas.reduce((a,b)=>a+b.limpieza,0)/n),
-                    documentacion: Math.round(reseñas.reduce((a,b)=>a+b.documentacion,0)/n),
-                    total: Math.round(reseñas.reduce((a,b)=>a+(b.arquitectura+b.limpieza+b.documentacion)/3,0)/n)
-                };
-                Object.keys(m).forEach(t => $(`.estrellas-media[data-tipo="${t}"]`).html(generarEstrellas(m[t])));
-            }
-        });
-        //adadadad
     </script>
 </body>
 </html>

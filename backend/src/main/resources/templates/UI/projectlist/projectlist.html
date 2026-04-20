@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +12,20 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <style>
+        /* Brillo neón para la sección activa (Perfil) */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -77,55 +87,53 @@
         </section>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
     <script>
-        // Inicialización del Acordeón (jQuery UI)
         $(function() {
+            // Inicialización del Acordeón
             $("#acordeon-proyectos").accordion({
                 collapsible: true,
                 heightStyle: "content",
                 active: 0,
                 animate: 400 
             });
+
+            // Lógica de identidad y navegación
+            inicializarHeaderProyectos();
         });
 
-        const headerPath = "localhost:8080/includes/header.html";
-        const footerPath = "localhost:8080/includes/footer.html";
-
-        // Cargar Header
-        fetch(headerPath)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("header-placeholder").innerHTML = html;
-                actualizarMiIdentidadEnHeader(); // Solo actualiza el Header con tus datos
-            });
-
-        // Cargar Footer
-        fetch(footerPath)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("footer-placeholder").innerHTML = html;
-            });
-
-        // Función para mostrar TUS datos en la cabecera
-        function actualizarMiIdentidadEnHeader() {
+        function inicializarHeaderProyectos() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
-            
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
+            const navPerfil = document.getElementById('nav-perfil');
+
+            // 1. Inyectar TUS datos en el Header
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
                     </div>
                 `;
             }
-            
+
+            // 2. Iluminar icono de Perfil (ya que estamos en una subsección de perfil)
+            if (navPerfil) {
+                navPerfil.classList.add('activo');
+            } else {
+                // Fallback si no hay ID
+                const links = document.querySelectorAll('header a');
+                links.forEach(l => {
+                    if (l.getAttribute('href')?.includes('profileView') || l.getAttribute('href')?.includes('projectlist')) {
+                        l.classList.add('activo');
+                    }
+                });
+            }
         }
     </script>
 </body>

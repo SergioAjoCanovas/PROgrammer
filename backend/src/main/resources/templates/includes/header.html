@@ -3,15 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProGrammer</title>
+    <title>ProGrammer Header</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .activo-btn {
+        /* ESTILO NEÓN ACTIVO */
+        .activo-btn, .activo-btn i, .activo-btn span {
             color: #FFCC00 !important;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
         }
-        .activo-btn i {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00;
+
+        /* CONTENEDOR DE AVISOS Y PANEL */
+        .contenedor-avisos {
+            position: relative;
+            display: inline-block;
+        }
+
+        .panel-notificaciones {
+            display: none; /* Oculto por defecto */
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 280px;
+            background: #1a1a1a;
+            border: 1px solid #FFCC00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+            border-radius: 8px;
+            margin-top: 10px;
+            z-index: 1000;
+            padding: 10px;
+        }
+
+        .panel-notificaciones.mostrar {
+            display: block; /* Se muestra con la clase 'mostrar' */
+        }
+
+        .notificacion-item {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            color: white;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notificacion-item:last-child {
+            border-bottom: none;
+        }
+
+        .notificacion-item i {
+            color: #00f2ff;
+        }
+
+        .titulo-panel {
+            color: #FFCC00;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #FFCC00;
+            display: block;
+        }
+
+        /* Estilos generales de alineación */
+        .seccion-derecha {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #btn-ajustes-header {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
         }
     </style>
 </head>
@@ -28,8 +93,7 @@
     </div>
 
     <nav class="navegacion-central">
-
-        <a href="/main" class="icono-nav">
+        <a href="/main" class="icono-nav" id="nav-inicio">
             <i class="fas fa-home"></i>
             <span class="texto-icono">Inicio</span>
         </a>
@@ -49,90 +113,96 @@
             <span class="texto-icono">Chats</span>
         </a>
 
-        <div class="contenedor-avisos" id="contenedor-avisos"
-             onmouseleave="document.getElementById('panel-notificaciones').classList.remove('activo');
-             document.getElementById('link-avisos').classList.remove('activo-btn');">
-
-            <a href="#" class="icono-nav" id="link-avisos"
-               onclick="event.preventDefault();
-               document.getElementById('panel-notificaciones').classList.toggle('activo');
-               this.classList.toggle('activo-btn');">
-
+        <div class="contenedor-avisos" id="contenedor-avisos" onmouseleave="cerrarPanel()">
+            <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
                 <span class="texto-icono">Avisos</span>
                 <span class="globo-notificacion">2</span>
             </a>
 
-            <div class="panel-notificaciones" id="panel-notificaciones">
-                <div class="cabecera-notificaciones">
-                    <h4>Avisos</h4>
-                    <a href="#" class="marcar-leido"><i class="fas fa-check-double"></i> Leídos</a>
+            <div id="panel-notificaciones" class="panel-notificaciones">
+                <span class="titulo-panel">Notificaciones recientes</span>
+                <div class="notificacion-item">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Nueva oferta de TechSolutions</span>
                 </div>
-
-                <div class="lista-notificaciones">
-                    <div class="item-notificacion no-leido">
-                        <div class="icono-noti empresa"><i class="fas fa-briefcase"></i></div>
-                        <div class="texto-noti">
-                            <p><strong>Tech Corp</strong> ha visto tu perfil.</p>
-                        </div>
-                    </div>
-
-                    <div class="item-notificacion no-leido">
-                        <div class="icono-noti chat"><i class="fas fa-comment"></i></div>
-                        <div class="texto-noti">
-                            <p>Nuevo mensaje de <strong>Carlos Dev</strong>.</p>
-                        </div>
-                    </div>
-
-                    <div class="item-notificacion">
-                        <div class="icono-noti sistema"><i class="fas fa-cog"></i></div>
-                        <div class="texto-noti">
-                            <p>Proyecto publicado correctamente.</p>
-                        </div>
-                    </div>
+                <div class="notificacion-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Juan ha visto tu perfil</span>
                 </div>
             </div>
-
         </div>
 
         <a href="/menu" class="icono-nav">
             <i class="fas fa-th"></i>
             <span class="texto-icono">Menú</span>
         </a>
-
     </nav>
 
     <div class="seccion-derecha">
-
-        <div id="info-usuario" style="display: flex; flex-direction: column; text-align: right; justify-content: center;"></div>
-
-        <a href="/login" class="item-derecha">
+        <div id="info-usuario" class="info-texto-usuario"></div>
+        <a href="/loginPage" class="item-derecha" id="link-perfil" style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
             <div class="avatar-usuario">
                 <i class="fas fa-user"></i>
             </div>
             <span class="texto-icono">Perfil</span>
         </a>
-
-        <button class="item-derecha"
-                onclick="window.location.href='/ownProfile'">
+        <button class="item-derecha" onclick="window.location.href='/ownProfile'" id="btn-ajustes-header">
             <i class="fas fa-cog icono-engranaje"></i>
             <span class="texto-icono">Ajustes</span>
         </button>
-
     </div>
 
 </header>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const username = localStorage.getItem('usuarioLogueado');
-        const rol = localStorage.getItem('rolUsuario');
+    // --- LÓGICA DEL DESPLEGABLE Y LA ILUMINACIÓN ---
+    function toggleAvisos(event) {
+        event.preventDefault();
+        const link = document.getElementById('link-avisos');
+        const panel = document.getElementById('panel-notificaciones');
+        
+        // Alternar el panel y el color neón
+        panel.classList.toggle('mostrar');
+        link.classList.toggle('activo-btn');
+    }
 
-        if (username) {
-            document.getElementById('info-usuario').innerHTML = `
-                <span style="color: white; font-weight: bold; font-size: 0.9em;">${username}</span>
-                <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase;">${rol}</span>
+    function cerrarPanel() {
+        const link = document.getElementById('link-avisos');
+        const panel = document.getElementById('panel-notificaciones');
+        
+        // Se cierra y apaga al sacar el ratón del contenedor
+        panel.classList.remove('mostrar');
+        link.classList.remove('activo-btn');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Recuperar datos de usuario
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get('user') || localStorage.getItem('usuarioLogueado');
+        const rol = params.get('rol') || localStorage.getItem('rolUsuario');
+
+        if (params.get('user')) {
+            localStorage.setItem('usuarioLogueado', params.get('user'));
+            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
+        }
+
+        const contenedorInfo = document.getElementById('info-usuario');
+        if (username && contenedorInfo) {
+            contenedorInfo.innerHTML = `
+                <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                    <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
+                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol}</span>
+                </div>
             `;
+        }
+
+        // Marcar activo según la URL
+        const path = window.location.pathname;
+        if (path === '/main') document.getElementById('nav-inicio')?.classList.add('activo-btn');
+        if (path.includes('ownProfile')) {
+            document.getElementById('link-perfil')?.classList.add('activo-btn');
+            document.getElementById('btn-ajustes-header')?.classList.add('activo-btn');
         }
     });
 </script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,34 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobview_styles/jobview.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Estilos para el estado seleccionado en los proyectos */
+        .seleccionable {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+        }
+        .seleccionable.seleccionado {
+            border-color: #FFCC00;
+            background: rgba(255, 204, 0, 0.1);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+        /* Iluminación del icono activo en el header */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <section class="seccion-derecha-dinamica">
@@ -105,55 +129,41 @@
         </section>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // --- 1. GESTIÓN DE SELECCIÓN DE PROYECTOS ---
-        document.addEventListener("DOMContentLoaded", () => {
-            const proyectos = document.querySelectorAll(".seleccionable");
-            proyectos.forEach(p => {
-                p.addEventListener("click", () => {
-                    proyectos.forEach(x => x.classList.remove("seleccionado"));
-                    p.classList.add("seleccionado");
-                });
+        $(document).ready(function() {
+            inicializarHeaderYPostulacion();
+            
+            // Selección de proyectos
+            $(".seleccionable").on("click", function() {
+                $(".seleccionable").removeClass("seleccionado");
+                $(this).addClass("seleccionado");
             });
         });
 
-        // --- 2. CARGA DE COMPONENTES E IDENTIDAD ---
-        const headerPath = "localhost:8080/includes/header.html";
-        const footerPath = "localhost:8080/includes/footer.html";
-
-        // Cargar Header
-        fetch(headerPath)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("header-placeholder").innerHTML = html;
-                actualizarMiUsuarioEnHeader(); // Llamamos a la función de identidad
-            });
-
-        // Cargar Footer
-        fetch(footerPath)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("footer-placeholder").innerHTML = html;
-            });
-
-        // Función para mostrar tus datos en el Header
-        function actualizarMiUsuarioEnHeader() {
+        function inicializarHeaderYPostulacion() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
-            
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
+            const navEmpleos = document.getElementById('nav-empleos');
+
+            // Inyectar identidad en el Header
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
                     </div>
                 `;
             }
+
+            // Activar brillo neón en el icono de Empleos
+            if (navEmpleos) {
+                navEmpleos.classList.add('activo');
+            }
         }
     </script>
-
 </body>
 </html>

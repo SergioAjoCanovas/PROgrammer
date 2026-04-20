@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
         <div class="bola"></div>
     </div>
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal-edicion">
         <section class="tarjeta-edicion">
@@ -30,7 +30,8 @@
                 </button>
             </div>
 
-            <form id="form-editar">
+            <form id="form-editar" action="/proyectos/actualizar" method="post">
+                
                 <div class="campo">
                     <label>Imagen de portada</label>
                     <div class="portada-contenedor">
@@ -44,12 +45,12 @@
 
                 <div class="campo">
                     <label>Título del Proyecto</label>
-                    <input type="text" placeholder="Ej. Sistema de Gestión de Inventarios" value="API REST Ventas" required>
+                    <input type="text" name="titulo" placeholder="Ej. Sistema de Gestión de Inventarios" value="API REST Ventas" required>
                 </div>
 
                 <div class="campo">
                     <label>Descripción del Proyecto</label>
-                    <textarea placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" required>Backend desarrollado en Spring Boot para la gestión integral de ventas y facturación.</textarea>
+                    <textarea name="descripcion" placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" required>Backend desarrollado en Spring Boot para la gestión integral de ventas y facturación.</textarea>
                 </div>
 
                 <div class="campo">
@@ -76,10 +77,6 @@
                             <span class="custom-check"></span> Node.js
                         </label>
                         <label class="item-check">
-                            <input type="checkbox" name="tech" value="python">
-                            <span class="custom-check"></span> Python
-                        </label>
-                        <label class="item-check">
                             <input type="checkbox" name="tech" value="java" checked>
                             <span class="custom-check"></span> Java
                         </label>
@@ -93,11 +90,11 @@
                 <div class="fila-doble">
                     <div class="campo">
                         <label><i class="fab fa-github"></i> Enlace al Repositorio</label>
-                        <input type="url" placeholder="https://github.com/tu-usuario/repo" value="https://github.com/usuario/api-ventas">
+                        <input type="url" name="repoUrl" placeholder="https://github.com/tu-usuario/repo" value="https://github.com/usuario/api-ventas">
                     </div>
                     <div class="campo">
                         <label><i class="fas fa-globe"></i> Enlace a la Demo</label>
-                        <input type="url" placeholder="https://tu-proyecto.vercel.app">
+                        <input type="url" name="demoUrl" placeholder="https://tu-proyecto.vercel.app">
                     </div>
                 </div>
 
@@ -110,60 +107,49 @@
         </section>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // --- 1. CARGA DE COMPONENTES E IDENTIDAD ---
-        async function cargarInterfaz() {
-            try {
-                // Cargar Header
-                const resHeader = await fetch("localhost:8080/includes/header.html");
-                const htmlHeader = await resHeader.text();
-                document.getElementById("header-placeholder").innerHTML = htmlHeader;
-                actualizarMiUsuarioEnHeader();
+        $(document).ready(function() {
+            actualizarMiUsuarioEnHeader();
+            inicializarPreviewImagen();
+        });
 
-                // Cargar Footer
-                const resFooter = await fetch("localhost:8080/includes/footer.html");
-                const htmlFooter = await resFooter.text();
-                document.getElementById("footer-placeholder").innerHTML = htmlFooter;
-            } catch (error) {
-                console.error("Error al cargar componentes:", error);
-            }
-        }
-
+        // --- 1. IDENTIDAD EN EL HEADER ---
         function actualizarMiUsuarioEnHeader() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             
             const contenedorHeader = document.getElementById('info-usuario');
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
                     </div>
                 `;
             }
         }
 
         // --- 2. PREVIEW DE IMAGEN ---
-        const fileInput = document.getElementById('file-upload');
-        const previewImg = document.getElementById('preview-img');
+        function inicializarPreviewImagen() {
+            const fileInput = document.getElementById('file-upload');
+            const previewImg = document.getElementById('preview-img');
 
-        fileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImg.setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(file);
+            if (fileInput && previewImg) {
+                fileInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImg.setAttribute('src', e.target.result);
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
             }
-        });
-
-        // Inicialización
-        window.onload = cargarInterfaz;
+        }
     </script>
-
 </body>
 </html>

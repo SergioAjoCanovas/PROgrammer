@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Publicar Oferta</title>
     
-    <link rel="stylesheet" href="Style/general_styles/header.css">
-    <link rel="stylesheet" href="Style/general_styles/footer.css">
-    <link rel="stylesheet" href="Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="Style/company_styles/publishOffer.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/company_styles/publishOffer.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -17,11 +17,21 @@
         .activo, .activo i, .activo span {
             color: #FFCC00 !important;
         }
+        .seccion-categoria {
+            margin-bottom: 20px;
+        }
+        .titulo-categoria-form {
+            color: #00f2ff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            border-left: 3px solid #FFCC00;
+            padding-left: 10px;
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal-oferta">
         <section class="tarjeta-publicacion">
@@ -30,7 +40,7 @@
                 <p>Publica los detalles para atraer a los mejores programadores</p>
             </div>
 
-            <form action="http://localhost:8080/api/ofertas/crear" method="POST" class="formulario-oferta">
+            <form th:action="@{/api/ofertas/crear}" method="POST" class="formulario-oferta">
                 
                 <div class="grupo-input">
                     <label for="titulo"><i class="fas fa-signature"></i> Título del Puesto</label>
@@ -46,13 +56,13 @@
 
                 <div class="grupo-input">
                     <label><i class="fas fa-layer-group"></i> Tags de Tecnologías</label>
-                    <div class="grid-tecnologias" id="contenedor-tecnologias">
+                    <div id="contenedor-tecnologias">
                         <span style="color: #666; font-size: 0.9rem;">Cargando tecnologías...</span>
                     </div>
                 </div>
 
                 <div class="acciones-formulario">
-                    <a href="/main" class="btn-cancelar">Descartar</a>
+                    <a th:href="@{/main}" class="btn-cancelar">Descartar</a>
                     <button type="submit" class="btn-publicar-neon">
                         <i class="fas fa-check-circle"></i> Lanzar Oferta
                     </button>
@@ -61,94 +71,84 @@
         </section>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // 1. CARGA DE COMPONENTES (HEADER/FOOTER)
-        function cargarComponentes() {
-            const headerPath = "localhost:8080/includes/header.html";
-            const footerPath = "localhost:8080/includes/footer.html";
+        $(document).ready(function() {
+            actualizarMiUsuarioEnHeader();
+            cargarTecnologiasDesdeBD();
+            marcarLinkActivo();
+        });
 
-            fetch(headerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("header-placeholder").innerHTML = html;
-                    marcarLinkActivo(); 
-                })
-                .catch(err => console.error("Error al cargar header:", err));
+        // 1. IDENTIDAD EN EL HEADER (Visitante logueado)
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'EMPRESA';
+            const contenedorHeader = document.getElementById('info-usuario');
 
-            fetch(footerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("footer-placeholder").innerHTML = html;
-                })
-                .catch(err => console.error("Error al cargar footer:", err));
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
         }
 
         // 2. RESALTADO DE RUTA ACTUAL
         function marcarLinkActivo() {
             const currentPath = window.location.pathname;
-            const enlaces = document.querySelectorAll('#header-placeholder a');
+            const enlaces = document.querySelectorAll('header a');
             enlaces.forEach(enlace => {
                 const href = enlace.getAttribute('href');
-                if (href && currentPath.includes(href)) {
+                if (href && currentPath === href) {
                     enlace.classList.add('activo');
                 }
             });
         }
 
-        // 3. CARGA DINÁMICA DE TECNOLOGÍAS DESDE LA BBDD
+        // 3. CARGA DINÁMICA DE CATEGORÍAS Y TECNOLOGÍAS
         function cargarTecnologiasDesdeBD() {
-    // Llamamos al nuevo endpoint de CATEGORÍAS
-    fetch('http://localhost:8080/api/categorias/todas')
-        .then(res => res.json())
-        .then(categorias => {
-            const contenedor = document.getElementById('contenedor-tecnologias');
-            contenedor.innerHTML = ''; // Limpiamos el cargando
+            fetch('/api/categorias/todas') // Ruta relativa preferible
+                .then(res => res.json())
+                .then(categorias => {
+                    const contenedor = document.getElementById('contenedor-tecnologias');
+                    contenedor.innerHTML = ''; 
 
-            categorias.forEach(cat => {
-                // 1. Creamos el contenedor de la categoría
-                const divCategoria = document.createElement('div');
-                divCategoria.className = 'seccion-categoria';
+                    categorias.forEach(cat => {
+                        const divCategoria = document.createElement('div');
+                        divCategoria.className = 'seccion-categoria';
 
-                // 2. Añadimos el título (Frontend, Backend, etc.)
-                const titulo = document.createElement('h3');
-                titulo.className = 'titulo-categoria-form';
-                titulo.innerText = cat.nombre;
-                divCategoria.appendChild(titulo);
+                        const titulo = document.createElement('h3');
+                        titulo.className = 'titulo-categoria-form';
+                        titulo.innerText = cat.nombre;
+                        divCategoria.appendChild(titulo);
 
-                // 3. Creamos el contenedor para los botones (grid)
-                const grid = document.createElement('div');
-                grid.className = 'grid-tecnologias';
+                        const grid = document.createElement('div');
+                        grid.className = 'grid-tecnologias';
 
-                // 4. Recorremos las tecnologías de ESTA categoría
-                cat.tecnologias.forEach(tech => {
-                    const label = document.createElement('label');
-                    label.className = 'check-tech'; // Tu estilo de CSS
-                    label.innerHTML = `
-                        <input type="checkbox" name="tecnologias_ids" value="${tech.id}">
-                        <span>${tech.nombre}</span>
-                    `;
-                    grid.appendChild(label);
+                        cat.tecnologias.forEach(tech => {
+                            const label = document.createElement('label');
+                            label.className = 'check-tech'; 
+                            label.innerHTML = `
+                                <input type="checkbox" name="tecnologias_ids" value="${tech.id}">
+                                <span>${tech.nombre}</span>
+                            `;
+                            grid.appendChild(label);
+                        });
+
+                        divCategoria.appendChild(grid);
+                        contenedor.appendChild(divCategoria);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    document.getElementById('contenedor-tecnologias').innerHTML = 
+                        '<span style="color: #ff4444;">Error al conectar con el servidor de categorías</span>';
                 });
-
-                divCategoria.appendChild(grid);
-                contenedor.appendChild(divCategoria);
-            });
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            document.getElementById('contenedor-tecnologias').innerHTML = 
-                '<span style="color: red;">Error al cargar las categorías</span>';
-        });
-}
-
-        // Ejecución al iniciar la página
-        window.onload = function() {
-            cargarComponentes();
-            cargarTecnologiasDesdeBD();
-        };
+        }
     </script>
-
 </body>
 </html>

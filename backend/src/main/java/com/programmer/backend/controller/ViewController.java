@@ -124,4 +124,10 @@ public class ViewController {
     public String publishOffer() {
         return "UI/company/publishOffer";
     }
+
+    @GetMapping("/loginPage")
+    public String loginPage() {
+        return "UI/loginPage/loginPage";
+    }
+
 }

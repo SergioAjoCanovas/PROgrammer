@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,20 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/chats_styles/chats_styles.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Estilo para que el icono de la sección de CHATS brille */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal-chats">
         <section class="tarjeta-chats border-neon">
@@ -102,60 +112,43 @@
         </section>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        // Función para cargar componentes y gestionar el estado activo
-        function cargarComponentes() {
-            const headerPath = "localhost:8080/includes/header.html";
-            const footerPath = "localhost:8080/includes/footer.html";
-
-            // Carga Header
-            fetch(headerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("header-placeholder").innerHTML = html;
-                    marcarEnlaceActivo(); 
-                    actualizarMiUsuarioEnHeader(); // Inyectar nombre y rol del usuario logueado
-                });
-
-            // Carga Footer
-            fetch(footerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("footer-placeholder").innerHTML = html;
-                });
-        }
-
-        // Función para mostrar tus datos en la cabecera
-        function actualizarMiUsuarioEnHeader() {
+        function inicializarInterfazChat() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario');
-            
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
+            const navChats = document.getElementById('nav-chats'); // Asegúrate que el link en header.html tenga este id
+
+            // 1. Mostrar nombre y rol en el header
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
                     </div>
                 `;
             }
+
+            // 2. Iluminar icono de Mensajes/Chats
+            if (navChats) {
+                navChats.classList.add('activo');
+            } else {
+                // Alternativa por URL
+                const links = document.querySelectorAll('header a');
+                links.forEach(l => {
+                    if (l.getAttribute('href')?.includes('chats')) {
+                        l.classList.add('activo');
+                    }
+                });
+            }
         }
 
-        function marcarEnlaceActivo() {
-            const pathActual = window.location.pathname;
-            const links = document.querySelectorAll('#header-placeholder a');
-            
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && pathActual.includes(href)) {
-                    link.classList.add('activo');
-                }
-            });
-        }
-
-        window.onload = cargarComponentes;
+        // Ejecutar al cargar
+        window.addEventListener('load', () => {
+            setTimeout(inicializarInterfazChat, 100);
+        });
     </script>
 </body>
 </html>

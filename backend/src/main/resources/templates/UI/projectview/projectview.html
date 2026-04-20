@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +9,21 @@
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/projectview_styles/projectview.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Resaltado neón para la navegación activa */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
-    <div th:replace="includes/header :: header"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -43,7 +52,7 @@
                 </div>
                 <div class="cuerpo-tarjeta">
                     <textarea class="input-resena" placeholder="Escribe tu reseña aquí..."></textarea>
-                    <button class="btn-accion-neon" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+                    <button class="btn-accion-neon" onclick="window.location.href='/newreview'">Añadir reseña</button>
                 </div>
             </div>
         </aside>
@@ -65,11 +74,11 @@
                             <i class="fas fa-check-circle"></i> Validado
                         </span>
                         
-                        <button class="btn-accion-neon" onclick="window.location.href='../newprojectreview/newprojectreview.html'">
+                        <button class="btn-accion-neon" onclick="window.location.href='/newprojectreview'">
                             <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
                         </button>
                         
-                        <button class="btn-accion-neon" onclick="window.location.href='../viewprojectreviews/viewprojectreviews.html'">
+                        <button class="btn-accion-neon" onclick="window.location.href='/viewprojectreviews'">
                             <i class="fas fa-comments"></i> VER RESEÑAS
                         </button>
                         
@@ -103,43 +112,15 @@
         <div id="caption-modal"></div>
     </div>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // --- CARGA DE COMPONENTES ---
-        fetch("localhost:8080/includes/header.html")
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("header-placeholder").innerHTML = html;
-                actualizarMiIdentidadEnHeader(); // Solo actualiza el Header
-            });
-
-        fetch("localhost:8080/includes/footer.html")
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("footer-placeholder").innerHTML = html;
-            });
-
-        // --- FUNCIÓN DE IDENTIDAD (SOLO HEADER) ---
-        function actualizarMiIdentidadEnHeader() {
-            const username = localStorage.getItem('usuarioLogueado');
-            const rol = localStorage.getItem('rolUsuario');
-            
-            const contenedorHeader = document.getElementById('info-usuario');
-            if (username && contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                        <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${username}</span>
-                        <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${rol}</span>
-                    </div>
-                `;
-            }
-            // Importante: No tocamos .nombre-usuario para que siga diciendo "David Alcázar" (el autor)
-        }
-
-        // --- LÓGICA MODAL (JQUERY) ---
         $(document).ready(function() {
+            // Inicializar datos del usuario logueado en el header
+            inicializarHeader();
+
+            // Lógica del Modal para las capturas del proyecto
             $(".marco-captura img").on("click", function() {
                 $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
                 $("#img-ampliada").attr("src", $(this).attr("src"));
@@ -155,6 +136,28 @@
                 }
             });
         });
+
+        function inicializarHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
+            const contenedorHeader = document.getElementById('info-usuario');
+            const navPerfil = document.getElementById('nav-perfil');
+
+            // Actualizar la identidad del que navega en la esquina superior
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
+
+            // Iluminar el icono de perfil (indicando que estamos en la rama de navegación del usuario)
+            if (navPerfil) {
+                navPerfil.classList.add('activo');
+            }
+        }
     </script>
 </body>
 </html>

@@ -28,7 +28,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     // =========================
-    // REGISTRO
+    // REGISTRO (CORREGIDO)
     // =========================
     @PostMapping("/signup")
     public void registrar(
@@ -41,11 +41,13 @@ public class AuthController {
             HttpServletResponse response
     ) throws IOException {
 
+        // 1. Validaciones: Si falla, redirigimos a la ruta de Spring "/signUp"
         if (!password.equals(confirmPassword)
                 || usuarioRepository.existsByUsername(username)
                 || usuarioRepository.existsByEmail(email)) {
 
-            response.sendRedirect("http://127.0.0.1:5500/UI/signUpPage/signUpPage.html?error=true");
+            // CORRECCIÓN: Usar la ruta del ViewController, no la de Live Server
+            response.sendRedirect("/signUp?error=true");
             return;
         }
 
@@ -60,15 +62,17 @@ public class AuthController {
 
         usuarioRepository.save(nuevoUsuario);
 
-        // 🔥 SESIÓN IMPORTANTE
-        session.setAttribute("usuarioLogueado", nuevoUsuario);
+        // 2. Guardamos en sesión de servidor
+        session.setAttribute("usuarioLogueado", nuevoUsuario.getUsername());
         session.setAttribute("rolUsuario", rolElegido.getNombre());
 
-        response.sendRedirect("http://localhost:8080/ownProfile");
+        // 3. Redirección con parámetros para que el JS guarde en LocalStorage
+        // CORRECCIÓN: Redirigir a "/ownProfile" (ruta relativa)
+        response.sendRedirect("/ownProfile?user=" + username + "&rol=" + rolElegido.getNombre());
     }
 
     // =========================
-    // LOGIN
+    // LOGIN (ESTABA BIEN, SÓLO REPASO)
     // =========================
     @PostMapping("/login")
     public void iniciarSesion(
@@ -79,24 +83,22 @@ public class AuthController {
     ) throws IOException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(usuarioOEmail);
-
         if (usuarioOpt.isEmpty()) {
             usuarioOpt = usuarioRepository.findByEmail(usuarioOEmail);
         }
 
-        if (usuarioOpt.isEmpty()
-                || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
-
-            response.sendRedirect("http://127.0.0.1:5500/UI/loginPage/loginPage.html?error=auth");
+        if (usuarioOpt.isEmpty() || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
+            // CORRECCIÓN: Ruta relativa al ViewController
+            response.sendRedirect("/login?error=auth");
             return;
         }
 
         Usuario usuario = usuarioOpt.get();
-
-        // 🔥 SESIÓN REAL
-        session.setAttribute("usuarioLogueado", usuario);
+        
+        session.setAttribute("usuarioLogueado", usuario.getUsername());
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-        response.sendRedirect("http://localhost:8080/ownProfile");
+        // Redirección con parámetros
+        response.sendRedirect("/ownProfile?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +9,31 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .activo-neon, .activo-neon i {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+        /* Clase para iluminar el botón de ajustes específicamente */
+        .activo-btn, .activo-btn i, .activo-btn span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
+        }
+    </style>
 </head>
-<body class="fondo-oscuro-neon"> 
-    <div th:replace="includes/header :: header"></div>
+<body class="fondo-oscuro-neon">
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('user')) {
+            localStorage.setItem('usuarioLogueado', params.get('user'));
+            // Forzamos que si el rol no viene o es diferente, se guarde como USER si así lo prefieres, 
+            // o simplemente tomamos el valor y lo validamos abajo.
+            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -20,7 +42,7 @@
                     <div class="circulo-foto">
                         <i class="fas fa-camera icono-camera"></i>
                     </div>
-                    <h2 class="nombre-usuario" id="nombre-perfil-display">CARGANDO... <i class="fas fa-edit icono-editar-texto"></i></h2>
+                    <h2 class="nombre-usuario" id="nombre-perfil-display">CARGANDO...</h2>
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
@@ -100,65 +122,54 @@
         </div> 
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-    async function cargarInterfaz() {
-        try {
-            // 1. Cargar Header
-            const resHeader = await fetch("localhost:8080/includes/header.html");
-            const htmlHeader = await resHeader.text();
-            document.getElementById("header-placeholder").innerHTML = htmlHeader;
-            
-            // 2. Gestionar Identidad y Estado Activo
-            actualizarMiUsuario();
-            marcarPaginaActual();
+    function renderizarDatosUsuario() {
+        const nombre = localStorage.getItem('usuarioLogueado');
+        let rol = localStorage.getItem('rolUsuario');
 
-            // 3. Cargar Footer
-            const resFooter = await fetch("localhost:8080/includes/footer.html");
-            const htmlFooter = await resFooter.text();
-            document.getElementById("footer-placeholder").innerHTML = htmlFooter;
-        } catch (error) {
-            console.error("Error cargando componentes:", error);
-        }
-    }
-
-    function actualizarMiUsuario() {
-        const miNombre = localStorage.getItem('usuarioLogueado');
-        const miRol = localStorage.getItem('rolUsuario');
-        
-        // Actualizar Header
-        const contenedorHeader = document.getElementById('info-usuario');
-        if (miNombre && contenedorHeader) {
-            contenedorHeader.innerHTML = `
-                <div style="display: flex; flex-direction: column; text-align: right; justify-content: center;">
-                    <span style="color: white; font-weight: bold; font-size: 0.9em; line-height: 1.2;">${miNombre}</span>
-                    <span style="color: #FFCC00; font-size: 0.7em; text-transform: uppercase; margin-top: 2px;">${miRol}</span>
-                </div>
-            `;
+        // Si no hay rol guardado, ponemos USER por defecto, 
+        // pero si es ADMIN, se queda como ADMIN.
+        if (!rol) {
+            rol = 'USER'; 
         }
 
-        // Actualizar el nombre en la tarjeta lateral del perfil
-        const displayNombrePerfil = document.getElementById('nombre-perfil-display');
-        if (miNombre && displayNombrePerfil) {
-            // Inyectamos el nombre en mayúsculas y mantenemos el icono de edición
-            displayNombrePerfil.innerHTML = `${miNombre.toUpperCase()} <i class="fas fa-edit icono-editar-texto"></i>`;
-        }
-    }
-
-    function marcarPaginaActual() {
-        const elementosHeader = document.querySelectorAll('#header-placeholder a, #header-placeholder button');
-        elementosHeader.forEach(elemento => {
-            const ruta = elemento.getAttribute('href') || elemento.getAttribute('onclick') || "";
-            if (ruta.includes('ownProfile')) {
-                elemento.classList.add('activo-btn');
-                const icono = elemento.querySelector('i');
-                if (icono) icono.classList.add('activo-btn');
+        if (nombre) {
+            // 1. Pintar en el Header (ID: info-usuario)
+            const contenedorHeader = document.getElementById('info-usuario');
+            if (contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${nombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
+                    </div>
+                `;
             }
-        });
+
+            // 2. Pintar en la tarjeta lateral del Perfil
+            const displayPerfil = document.getElementById('nombre-perfil-display');
+            if (displayPerfil) {
+                displayPerfil.innerHTML = `${nombre.toUpperCase()} <i class="fas fa-edit icono-editar-texto" style="font-size: 0.6em; cursor: pointer;"></i>`;
+            }
+        }
     }
 
-    window.onload = cargarInterfaz;
+    window.addEventListener('load', () => {
+        renderizarDatosUsuario();
+        
+        // SOLO ILUMINAR AJUSTES
+        const btnAjustes = document.getElementById('btn-ajustes-header');
+        if (btnAjustes) {
+            btnAjustes.classList.add('activo-btn');
+        }
+
+        // Aseguramos que el botón de Perfil NO tenga la clase activa
+        const btnPerfil = document.getElementById('link-perfil');
+        if (btnPerfil) {
+            btnPerfil.classList.remove('activo-btn');
+        }
+    });
     </script>
 </body>
 </html>

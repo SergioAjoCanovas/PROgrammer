@@ -67,7 +67,7 @@ public class ViewController {
     public String projectview() {
         return "UI/projectview/projectview";
     }
-
+    
     @GetMapping("/newprojectreview")
     public String newprojectreview() {
         return "UI/newprojectreview/newprojectreview";

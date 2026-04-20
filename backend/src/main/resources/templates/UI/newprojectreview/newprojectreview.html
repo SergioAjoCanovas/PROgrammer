@@ -83,7 +83,9 @@
             <h2><i class="fas fa-star"></i> Valorar proyecto</h2>
     
             <form action="/project-reviews/crear" method="post">
-                <input type="hidden" name="proyectoId" th:value="${proyecto.id}">
+
+                <!-- HARDCODE TEMPORAL -->
+                <input type="hidden" name="proyectoId" value="1">
             
                 <div class="campo">
                     <label>Arquitectura</label>

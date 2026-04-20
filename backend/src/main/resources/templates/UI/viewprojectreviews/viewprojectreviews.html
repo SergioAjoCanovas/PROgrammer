@@ -14,159 +14,102 @@
 
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="~{includes/header :: header}"></div>
+<div th:replace="~{includes/header :: header}"></div>
 
-    <main class="contenedor-principal">
+<main class="contenedor-principal">
 
-        <aside class="columna-perfil">
-            <div class="tarjeta-perfil">
-                <div class="cabecera-tarjeta">
-                    <div class="foto-perfil-contenedor">
-                        <div class="circulo-foto"></div>
-                        <div class="icono-corazon"><i class="fas fa-heart"></i></div>
-                    </div>
-                    <h2 class="nombre-usuario" th:text="${proyecto.autor.username}">Autor</h2>
+    <aside class="columna-perfil">
+        <div class="tarjeta-perfil">
+            <div class="cabecera-tarjeta">
+                <div class="foto-perfil-contenedor">
+                    <div class="circulo-foto"></div>
+                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                 </div>
-
-                <div class="cuerpo-tarjeta">
-                    <ul class="redes-sociales">
-                        <li><i class="fab fa-instagram"></i> Instagram</li>
-                        <li><i class="fab fa-twitter"></i> Twitter</li>
-                        <li><i class="fas fa-phone"></i> Contacto</li>
-                    </ul>
-                    <button class="boton-curriculum">VER CV</button>
-                </div>
+                <h2 class="nombre-usuario">Autor</h2>
             </div>
-        </aside>
 
-        <section class="seccion-central">
-            <div class="tarjeta-proyecto-detalle">
-                <div class="cabecera-proyecto">
-                    <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
-                    <a th:href="@{/projects/view/{id}(id=${proyecto.id})}" class="boton-volver-circular">
-                        <i class="fas fa-undo"></i>
-                    </a>
-                </div>
-
-                <p class="autor-texto">
-                    <strong>Desarrollado por:</strong>
-                    <span th:text="${proyecto.autor.username}"></span>
-                </p>
-
-                <div class="medias-reseñas-ver">
-                    <div class="media-stat">
-                        <span>Arquitectura:</span>
-                        <span class="score-num" th:text="${#numbers.formatDecimal(mediaArq,1,1)}">0.0</span>
-                    </div>
-                    <div class="media-stat">
-                        <span>Limpieza:</span>
-                        <span class="score-num" th:text="${#numbers.formatDecimal(mediaLim,1,1)}">0.0</span>
-                    </div>
-                    <div class="media-stat">
-                        <span>Documentación:</span>
-                        <span class="score-num" th:text="${#numbers.formatDecimal(mediaDoc,1,1)}">0.0</span>
-                    </div>
-                    <div class="media-total">
-                        <span>TOTAL:</span>
-                        <span class="score-num-total" th:text="${#numbers.formatDecimal(mediaTotal,1,1)}">0.0</span>
-                    </div>
-                </div>
-
-                <div class="galeria-capturas">
-                    <div class="marco-captura" th:each="img : ${proyecto.imagenes}">
-                        <img th:src="${img.url}" class="img-disparador" th:alt="${proyecto.titulo}">
-                    </div>
-                    <div class="marco-captura" th:if="${#lists.isEmpty(proyecto.imagenes)}">
-                        <img src="/Img/stock/ejemplo1.jpg" class="img-disparador">
-                    </div>
-                </div>
-
-                <div class="bloque-texto-informativo">
-                    <h3 class="titulo-seccion">Descripción técnica</h3>
-                    <p class="texto-parrafo" th:text="${proyecto.descripcion}">Descripción del proyecto...</p>
-                </div>
+            <div class="cuerpo-tarjeta">
+                <ul class="redes-sociales">
+                    <li><i class="fab fa-instagram"></i> Instagram</li>
+                    <li><i class="fab fa-twitter"></i> Twitter</li>
+                    <li><i class="fas fa-phone"></i> Contacto</li>
+                </ul>
+                <button class="boton-curriculum">VER CV</button>
             </div>
-        </section>
-
-        <aside class="zona-derecha">
-            <div class="tarjeta-reseñas-ver">
-                <div class="cabecera-tarjeta">
-                    <h3><i class="fas fa-comments"></i> FEEDBACK</h3>
-                </div>
-
-                <div class="contenedor-reseñas">
-                    <div class="reseña-item" th:each="r : ${reviews}">
-                        <div class="reseña-user">
-                            <i class="fas fa-user-circle"></i>
-                            <span th:text="${r.autor.username}">Usuario</span>
-                        </div>
-
-                        <div class="reseña-scores">
-                            <div class="score-line">Arq: <span th:text="${'⭐'.repeat(r.arquitectura)}"></span></div>
-                            <div class="score-line">Lim: <span th:text="${'⭐'.repeat(r.limpieza)}"></span></div>
-                            <div class="score-line">Doc: <span th:text="${'⭐'.repeat(r.documentacion)}"></span></div>
-                        </div>
-
-                        <p class="reseña-texto" th:text="${r.comentario}">Comentario...</p>
-                    </div>
-
-                    <p th:if="${#lists.isEmpty(reviews)}" class="texto-parrafo">Este proyecto aún no ha recibido feedback técnico.</p>
-                </div>
-            </div>
-        </aside>
-
-    </main>
-
-    <div id="modal-imagen" class="modal">
-        <span class="cerrar-modal">&times;</span>
-        <div class="contenedor-modal-neon">
-            <img class="contenido-modal" id="img-ampliada">
-            <div id="caption-modal"></div>
         </div>
-    </div>
+    </aside>
 
-    <div th:replace="~{includes/footer :: footer}"></div>
+    <section class="seccion-central">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            actualizarMiUsuarioEnHeader();
-            inicializarModal();
-        });
+        <div class="tarjeta-proyecto-detalle">
 
-        // --- 1. IDENTIDAD EN EL HEADER ---
-        function actualizarMiUsuarioEnHeader() {
-            const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario') || 'USER';
-            const contenedorHeader = document.getElementById('info-usuario');
+            <div class="cabecera-proyecto">
+                <h2>Nombre del Proyecto</h2>
+                <a href="/projectview" class="boton-volver-circular">
+                    <i class="fas fa-undo"></i>
+                </a>
+            </div>
 
-            if (miNombre && contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+            <p class="autor-texto">
+                <strong>Desarrollado por:</strong> David Alcázar
+            </p>
+
+            <div class="medias-reseñas-ver">
+                <div class="media-stat"><span>Arquitectura:</span><span>4.5</span></div>
+                <div class="media-stat"><span>Limpieza:</span><span>4.0</span></div>
+                <div class="media-stat"><span>Documentación:</span><span>5.0</span></div>
+                <div class="media-total"><span>TOTAL:</span><span>4.5</span></div>
+            </div>
+
+            <div class="galeria-capturas">
+                <div class="marco-captura">
+                    <img src="/Img/stock/ejemplo1.jpg">
+                </div>
+            </div>
+
+            <div class="bloque-texto-informativo">
+                <h3>Descripción técnica</h3>
+                <p>Descripción del proyecto...</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <aside class="zona-derecha">
+
+        <div class="tarjeta-reseñas-ver">
+
+            <div class="cabecera-tarjeta">
+                <h3>FEEDBACK</h3>
+            </div>
+
+            <div class="contenedor-reseñas">
+
+                <div class="reseña-item">
+                    <div class="reseña-user">
+                        <i class="fas fa-user-circle"></i>
+                        Usuario1
                     </div>
-                `;
-            }
-        }
 
-        // --- 2. LÓGICA DEL MODAL ---
-        function inicializarModal() {
-            $(".img-disparador").on("click", function() {
-                $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
-                $("#img-ampliada").attr("src", $(this).attr("src"));
-                $("#caption-modal").text($(this).attr("alt"));
-                $("body").css("overflow", "hidden");
-            });
+                    <div class="reseña-scores">
+                        <div>Arq: ⭐⭐⭐⭐</div>
+                        <div>Lim: ⭐⭐⭐⭐</div>
+                        <div>Doc: ⭐⭐⭐⭐⭐</div>
+                    </div>
 
-            $(".cerrar-modal, #modal-imagen").on("click", function(e) {
-                if(e.target !== document.getElementById("img-ampliada")) {
-                    $("#modal-imagen").fadeOut(300, function() {
-                        $("body").css("overflow", "auto");
-                    });
-                }
-            });
-        }
-    </script>
+                    <p>Muy buen proyecto</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+</main>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
 </body>
 </html>

@@ -28,7 +28,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     // =========================
-    // REGISTRO (CORREGIDO)
+    // REGISTRO
     // =========================
     @PostMapping("/signup")
     public void registrar(
@@ -41,13 +41,12 @@ public class AuthController {
             HttpServletResponse response
     ) throws IOException {
 
-        // 1. Validaciones: Si falla, redirigimos a la ruta de Spring "/signUp"
+        // Validaciones
         if (!password.equals(confirmPassword)
                 || usuarioRepository.existsByUsername(username)
                 || usuarioRepository.existsByEmail(email)) {
 
-            // CORRECCIÓN: Usar la ruta del ViewController, no la de Live Server
-            response.sendRedirect("/signUp?error=true");
+            response.sendRedirect("/signup?error=true");
             return;
         }
 
@@ -62,17 +61,15 @@ public class AuthController {
 
         usuarioRepository.save(nuevoUsuario);
 
-        // 2. Guardamos en sesión de servidor
-        session.setAttribute("usuarioLogueado", nuevoUsuario.getUsername());
+        // 🔥 CORRECCIÓN CLAVE: guardar el objeto completo
+        session.setAttribute("usuarioLogueado", nuevoUsuario);
         session.setAttribute("rolUsuario", rolElegido.getNombre());
 
-        // 3. Redirección con parámetros para que el JS guarde en LocalStorage
-        // CORRECCIÓN: Redirigir a "/ownProfile" (ruta relativa)
         response.sendRedirect("/ownProfile?user=" + username + "&rol=" + rolElegido.getNombre());
     }
 
     // =========================
-    // LOGIN (ESTABA BIEN, SÓLO REPASO)
+    // LOGIN
     // =========================
     @PostMapping("/login")
     public void iniciarSesion(
@@ -83,22 +80,24 @@ public class AuthController {
     ) throws IOException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(usuarioOEmail);
+
         if (usuarioOpt.isEmpty()) {
             usuarioOpt = usuarioRepository.findByEmail(usuarioOEmail);
         }
 
-        if (usuarioOpt.isEmpty() || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
-            // CORRECCIÓN: Ruta relativa al ViewController
+        if (usuarioOpt.isEmpty()
+                || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
+
             response.sendRedirect("/login?error=auth");
             return;
         }
 
         Usuario usuario = usuarioOpt.get();
-        
-        session.setAttribute("usuarioLogueado", usuario.getUsername());
+
+        // 🔥 CORRECCIÓN CLAVE: guardar el objeto completo
+        session.setAttribute("usuarioLogueado", usuario);
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-        // Redirección con parámetros
         response.sendRedirect("/ownProfile?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
     }
 }

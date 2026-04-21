@@ -50,23 +50,6 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function mostrarInfoUsuarioMain() {
-            const username = localStorage.getItem('usuarioLogueado');
-            let rol = localStorage.getItem('rolUsuario');
-            const contenedor = document.getElementById('info-usuario');
-
-            if (!rol) rol = 'USER';
-
-            if (username && contenedor) {
-                // Aplicamos el mismo estilo visual que en la página de Ajustes/Perfil
-                contenedor.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
-                    </div>
-                `;
-            }
-        }
 
         window.addEventListener('load', () => {
             // Un pequeño delay para asegurar que el DOM del header esté listo

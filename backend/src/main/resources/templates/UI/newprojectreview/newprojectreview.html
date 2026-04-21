@@ -136,17 +136,6 @@
         const username = localStorage.getItem('usuarioLogueado');
         const rol = localStorage.getItem('rolUsuario') || 'USER';
         
-        // 1. Inyectar en el Header
-        const contenedorHeader = document.getElementById('info-usuario');
-        if (username && contenedorHeader) {
-            contenedorHeader.innerHTML = `
-                <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                    <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
-                </div>
-            `;
-        }
-
         // 2. Inyectar en la tarjeta lateral (porque eres TÚ quien escribe la reseña)
         const nombreLateral = document.getElementById('nombre-mi-perfil');
         if (username && nombreLateral) {

@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer Header</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        /* ESTILO NEÓN ACTIVO */
         .activo-btn, .activo-btn i, .activo-btn span {
             color: #FFCC00 !important;
             text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
         }
 
-        /* CONTENEDOR DE AVISOS Y PANEL */
         .contenedor-avisos {
             position: relative;
             display: inline-block;
         }
 
         .panel-notificaciones {
-            display: none; /* Oculto por defecto */
+            display: none;
             position: absolute;
             top: 100%;
             right: 0;
@@ -34,7 +35,7 @@
         }
 
         .panel-notificaciones.mostrar {
-            display: block; /* Se muestra con la clase 'mostrar' */
+            display: block;
         }
 
         .notificacion-item {
@@ -65,21 +66,49 @@
             display: block;
         }
 
-        /* Estilos generales de alineación */
         .seccion-derecha {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            margin-left: auto;
         }
 
-        #btn-ajustes-header {
+        .item-derecha {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
             background: none;
             border: none;
-            cursor: pointer;
-            padding: 0;
         }
+
+        /* 🔥 FIX AVATAR */
+        .avatar-usuario {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #DDD;
+        }
+
+        .avatar-usuario img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-usuario i {
+            font-size: 1.2rem;
+            color: #4f4f4f;
+        }
+
     </style>
 </head>
+
 <body>
 
 <header class="encabezado-principal">
@@ -87,12 +116,13 @@
     <div class="seccion-izquierda">
         <div class="contenedor-logotipo">
             <a href="/main">
-                <img src="/Img/SILLARUEDASFONDOGRIS.png" alt="Logotipo ProGrammer" class="imagen-logotipo">
+                <img src="/Img/SILLARUEDASFONDOGRIS.png" class="imagen-logotipo">
             </a>
         </div>
     </div>
 
     <nav class="navegacion-central">
+
         <a href="/main" class="icono-nav" id="nav-inicio">
             <i class="fas fa-home"></i>
             <span class="texto-icono">Inicio</span>
@@ -113,7 +143,7 @@
             <span class="texto-icono">Chats</span>
         </a>
 
-        <div class="contenedor-avisos" id="contenedor-avisos" onmouseleave="cerrarPanel()">
+        <div class="contenedor-avisos" onmouseleave="cerrarPanel()">
             <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
                 <span class="texto-icono">Avisos</span>
@@ -122,10 +152,12 @@
 
             <div id="panel-notificaciones" class="panel-notificaciones">
                 <span class="titulo-panel">Notificaciones recientes</span>
+
                 <div class="notificacion-item">
                     <i class="fas fa-briefcase"></i>
                     <span>Nueva oferta de TechSolutions</span>
                 </div>
+
                 <div class="notificacion-item">
                     <i class="fas fa-user-plus"></i>
                     <span>Juan ha visto tu perfil</span>
@@ -137,74 +169,61 @@
             <i class="fas fa-th"></i>
             <span class="texto-icono">Menú</span>
         </a>
+
     </nav>
 
     <div class="seccion-derecha">
-        <div id="info-usuario" class="info-texto-usuario"></div>
-        <a href="/loginPage" class="item-derecha" id="link-perfil" style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
-            <div class="avatar-usuario">
-                <i class="fas fa-user"></i>
+
+        <div th:if="${usuarioHeader != null}" class="info-texto-usuario">
+            <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
+                <span style="color:white;font-weight:bold;font-size:0.85em;"
+                      th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
+
+                <span style="color:#FFCC00;font-size:0.65em;font-weight:600;"
+                      th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
             </div>
+        </div>
+
+        <!-- PERFIL CON FOTO -->
+        <a href="/ownProfile" class="item-derecha">
+
+            <div class="avatar-usuario">
+
+                <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}"
+                     th:src="@{${usuarioHeader.fotoPerfil}}"/>
+
+                <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}"
+                   class="fas fa-user"></i>
+
+            </div>
+
             <span class="texto-icono">Perfil</span>
+
         </a>
-        <button class="item-derecha" onclick="window.location.href='/ownProfile'" id="btn-ajustes-header">
-            <i class="fas fa-cog icono-engranaje"></i>
-            <span class="texto-icono">Ajustes</span>
-        </button>
+
     </div>
 
 </header>
 
 <script>
-    // --- LÓGICA DEL DESPLEGABLE Y LA ILUMINACIÓN ---
-    function toggleAvisos(event) {
-        event.preventDefault();
-        const link = document.getElementById('link-avisos');
-        const panel = document.getElementById('panel-notificaciones');
-        
-        // Alternar el panel y el color neón
-        panel.classList.toggle('mostrar');
-        link.classList.toggle('activo-btn');
+function toggleAvisos(event) {
+    event.preventDefault();
+    document.getElementById('panel-notificaciones').classList.toggle('mostrar');
+    document.getElementById('link-avisos').classList.toggle('activo-btn');
+}
+
+function cerrarPanel() {
+    document.getElementById('panel-notificaciones').classList.remove('mostrar');
+    document.getElementById('link-avisos').classList.remove('activo-btn');
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const path = window.location.pathname;
+
+    if (path === '/main') {
+        document.getElementById('nav-inicio')?.classList.add('activo-btn');
     }
-
-    function cerrarPanel() {
-        const link = document.getElementById('link-avisos');
-        const panel = document.getElementById('panel-notificaciones');
-        
-        // Se cierra y apaga al sacar el ratón del contenedor
-        panel.classList.remove('mostrar');
-        link.classList.remove('activo-btn');
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        // Recuperar datos de usuario
-        const params = new URLSearchParams(window.location.search);
-        const username = params.get('user') || localStorage.getItem('usuarioLogueado');
-        const rol = params.get('rol') || localStorage.getItem('rolUsuario');
-
-        if (params.get('user')) {
-            localStorage.setItem('usuarioLogueado', params.get('user'));
-            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
-        }
-
-        const contenedorInfo = document.getElementById('info-usuario');
-        if (username && contenedorInfo) {
-            contenedorInfo.innerHTML = `
-                <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                    <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol}</span>
-                </div>
-            `;
-        }
-
-        // Marcar activo según la URL
-        const path = window.location.pathname;
-        if (path === '/main') document.getElementById('nav-inicio')?.classList.add('activo-btn');
-        if (path.includes('ownProfile')) {
-            document.getElementById('link-perfil')?.classList.add('activo-btn');
-            document.getElementById('btn-ajustes-header')?.classList.add('activo-btn');
-        }
-    });
+});
 </script>
 
 </body>

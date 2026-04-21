@@ -83,7 +83,6 @@
             border: none;
         }
 
-        /* AVATAR PERFECTO */
         .avatar-usuario {
             width: 42px;
             height: 42px;
@@ -110,7 +109,7 @@
 
 <body>
 
-<header class="encabezado-principal">
+<header th:fragment="header" class="encabezado-principal">
 
     <!-- IZQUIERDA -->
     <div class="seccion-izquierda">
@@ -139,10 +138,11 @@
             <span class="texto-icono">Empleos</span>
         </a>
 
-        <!-- 🔥 BOTÓN EMPRESA (AHORA BIEN HECHO) -->
+        <!-- BOTÓN EMPRESA -->
         <a href="/publishOffer"
            class="icono-nav"
-           th:if="${usuarioHeader != null and usuarioHeader.rol.nombre == 'COMPANY'}">
+           th:if="${usuarioHeader != null and usuarioHeader.rol.nombre == 'COMPANY'}"
+           id="nav-publicar-oferta">
             <i class="fas fa-plus-circle"></i>
             <span class="texto-icono">Publicar</span>
         </a>
@@ -152,6 +152,7 @@
             <span class="texto-icono">Chats</span>
         </a>
 
+        <!-- AVISOS -->
         <div class="contenedor-avisos" onmouseleave="cerrarPanel()">
             <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
@@ -184,6 +185,7 @@
     <!-- DERECHA -->
     <div class="seccion-derecha">
 
+        <!-- INFO USUARIO -->
         <div th:if="${usuarioHeader != null}" class="info-texto-usuario">
             <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
                 <span style="color:white;font-weight:bold;font-size:0.85em;"
@@ -194,7 +196,7 @@
             </div>
         </div>
 
-        <!-- PERFIL CON FOTO -->
+        <!-- PERFIL -->
         <a href="/ownProfile" class="item-derecha">
 
             <div class="avatar-usuario">

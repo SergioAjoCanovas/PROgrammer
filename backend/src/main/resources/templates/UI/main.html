@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Conecta</title>
+
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/homePage_styles/selector.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         .activo, .activo i, .activo span {
             color: #FFCC00 !important;
@@ -16,49 +19,48 @@
         }
     </style>
 </head>
+
 <body class="fondo-oscuro-neon">
 
-    <script>
-        // 1. CAPTURAR DATOS DE LA URL
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('user')) {
-            localStorage.setItem('usuarioLogueado', params.get('user'));
-            // Guardamos el rol tal cual viene (ADMIN, USER, etc.)
-            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    </script>
+<!-- SOLO PARA DEBUG OPCIONAL -->
+<script>
+    const params = new URLSearchParams(window.location.search);
 
-    <div th:replace="~{includes/header :: header}"></div>
+    if (params.has('user')) {
+        localStorage.setItem('usuarioLogueado', params.get('user'));
+        localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+</script>
 
-    <main class="contenedor-selector">
-        <section class="contenido-central">
-            <h1 class="titulo-selector">CONECTA CON:</h1>
-            <div class="contenedor-botones-gigantes">
-                <a href="/serachCompanies" class="btn-seleccion-neon">
-                    <i class="fas fa-building"></i>
-                    <span>EMPRESAS</span>
-                </a>
-                <a href="/searchProgrammer" class="btn-seleccion-neon">
-                    <i class="fas fa-code"></i>
-                    <span>PROGRAMADORES</span>
-                </a>
-            </div>
-        </section>
-    </main>
+<div th:replace="~{includes/header :: header}"></div>
 
-    <div th:replace="~{includes/footer :: footer}"></div>
+<main class="contenedor-selector">
+    <section class="contenido-central">
+        <h1 class="titulo-selector">CONECTA CON:</h1>
 
-    <script>
+        <div class="contenedor-botones-gigantes">
+            <a href="/serachCompanies" class="btn-seleccion-neon">
+                <i class="fas fa-building"></i>
+                <span>EMPRESAS</span>
+            </a>
 
-        window.addEventListener('load', () => {
-            // Un pequeño delay para asegurar que el DOM del header esté listo
-            setTimeout(mostrarInfoUsuarioMain, 100); 
-            
-            // Marcar icono de Inicio como activo
-            const navInicio = document.getElementById('nav-inicio');
-            if (navInicio) navInicio.classList.add('activo');
-        });
-    </script>
+            <a href="/searchProgrammer" class="btn-seleccion-neon">
+                <i class="fas fa-code"></i>
+                <span>PROGRAMADORES</span>
+            </a>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
+<script>
+window.addEventListener('load', () => {
+    const navInicio = document.getElementById('nav-inicio');
+    if (navInicio) navInicio.classList.add('activo');
+});
+</script>
+
 </body>
 </html>

@@ -21,155 +21,185 @@ html, body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px; /* Menos espacio entre tarjetas para que parezca una lista */
     padding: 40px 25px;
-    max-width: 1400px;
+    max-width: 1000px; /* Un poco más estrecho para mantener la lectura fácil */
     margin: 0 auto;
     width: 100%;
 }
 
 /* =========================================================
-   2. TARJETAS CON ILUMINACIÓN NEÓN AJUSTADA
+   2. TARJETAS MÁS FINAS Y ALARGADAS
    ========================================================= */
 .tarjeta-oferta {
     display: flex;
     align-items: center;
     gap: 20px;
-    background-color: #1a1a1a;
-    border: 2px solid #FFCC00;
-    border-radius: 25px;
-    padding: 20px 40px;
-    flex-wrap: wrap;
-    box-shadow: 0 0 18px rgba(255, 204, 0, 0.35), 
-                inset 0 0 8px rgba(255, 204, 0, 0.15); 
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(145deg, #121212 0%, #1a1a1a 100%);
+    border: 1px solid #333;
+    border-left: 4px solid #FFCC00;
+    border-radius: 12px; /* Bordes un poco menos redondeados, más profesionales */
+    padding: 15px 25px; /* Cajita mucho más fina verticalmente */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+    transition: all 0.2s ease-in-out;
 }
 
 .tarjeta-oferta:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px rgba(255, 204, 0, 0.75), 
-                inset 0 0 12px rgba(255, 204, 0, 0.25);
+    transform: translateX(5px); /* En lugar de saltar, se desliza un poco a la derecha */
+    border-color: #FFCC00;
+    box-shadow: -5px 5px 15px rgba(255, 204, 0, 0.15);
+}
+
+/* =========================================================
+   3. LOGO DE LA EMPRESA (CÍRCULO PERFECTO BLINDADO)
+   ========================================================= */
+.logo-empresa {
+    flex-shrink: 0; /* ¡ESTO EVITA QUE EL LOGO SE APLASTE COMO UN HUEVO! */
+    width: 65px;
+    height: 65px;
 }
 
 .logo-empresa img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 12px;
-    background-color: #333;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; 
+    border: 2px solid #444;
+    background-color: #111;
+    padding: 2px;
 }
 
+/* =========================================================
+   4. INFORMACIÓN DEL PUESTO
+   ========================================================= */
 .info-oferta {
-    flex: 1;
-    min-width: 250px;
+    flex: 1; /* Ocupa todo el centro estirando la tarjeta */
+    min-width: 0; /* Evita que el texto rompa el diseño */
 }
 
 .nombre-empresa {
-    color: white;
-    font-size: 1.3rem;
-    margin-bottom: 5px;
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .titulo-puesto {
-    color: #FFCC00;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.25rem;
+    margin-bottom: 4px;
     font-weight: bold;
 }
 
 .descripcion-puesto {
-    color: #ccc;
-    font-size: 0.95rem;
+    color: #aaa;
+    font-size: 0.9rem;
     line-height: 1.4;
+    margin-bottom: 10px;
+    /* MAGIA: Limita la descripción a 2 líneas y pone "..." si es más larga */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* =========================================================
-   3. ACCIONES Y ESTADOS
+   5. TECNOLOGÍAS (PÍLDORAS COMPACTAS)
+   ========================================================= */
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tech-tags span {
+    background: rgba(0, 242, 255, 0.05);
+    color: #00f2ff;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem; /* Más pequeñitas para que quepan más */
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   6. ACCIONES Y ESTADOS (A LA DERECHA)
    ========================================================= */
 .acciones-oferta {
+    flex-shrink: 0; /* Evita que los botones se encojan */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
     gap: 12px;
+    border-left: 1px solid #333; /* Separador sutil */
+    padding-left: 20px;
 }
 
 .estado-oferta {
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 0.85rem;
-    padding: 4px 12px;
-    border-radius: 20px;
-    background-color: rgba(0, 0, 0, 0.3);
+    gap: 6px;
+    font-size: 0.8rem;
 }
 
 .estado-oferta.activo {
-    color: #4CAF50;
-    border: 1px solid rgba(76, 175, 80, 0.5);
+    color: #39FF14;
 }
 
 .estado-oferta.inactivo {
-    color: #f44336;
-    border: 1px solid rgba(244, 67, 54, 0.5);
+    color: #ff4444;
 }
 
 /* =========================================================
-   4. BOTÓN POSTULAR
+   7. BOTÓN POSTULAR
    ========================================================= */
 .boton-postular {
-    background-color: #050505 !important;
+    background-color: transparent !important;
     color: #FFCC00 !important;
-    border: 2px solid #FFCC00 !important;
-    border-radius: 12px;
-    padding: 12px 25px;
-    font-weight: bold;
-    font-size: 0.95rem;
+    border: 1px solid #FFCC00 !important;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-weight: 800;
+    font-size: 0.85rem;
     text-transform: uppercase;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
 }
 
 .boton-postular:hover:not(:disabled) {
     background-color: #FFCC00 !important;
     color: #000 !important;
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5) !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4) !important;
 }
 
 .boton-postular:disabled {
-    background: #222 !important;
     border-color: #444 !important;
     color: #666 !important;
     cursor: not-allowed;
 }
 
 /* =========================================================
-   5. RESPONSIVE
+   8. RESPONSIVE
    ========================================================= */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .tarjeta-oferta {
         flex-direction: column;
-        text-align: center;
-        padding: 25px;
+        align-items: flex-start;
+        padding: 20px;
     }
     .acciones-oferta {
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
+        border-left: none;
+        border-top: 1px solid #333;
+        padding-left: 0;
+        padding-top: 15px;
+        margin-top: 5px;
+        flex-direction: row;
+        justify-content: space-between;
     }
-}
-
-/* =========================================================
-   6. ESTILO ENLACE ACTIVO (HEADER)
-   ========================================================= */
-#header-placeholder a.active, 
-#header-placeholder a.active i, 
-#header-placeholder a.active span {
-    color: #FFCC00 !important;
-    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
 }

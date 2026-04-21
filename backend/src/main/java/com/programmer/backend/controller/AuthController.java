@@ -81,7 +81,7 @@ public class AuthController {
         session.setAttribute("usuarioLogueado", nuevoUsuario);
         session.setAttribute("rolUsuario", rolElegido.getNombre());
 
-        response.sendRedirect("/ownProfile?user=" + username + "&rol=" + rolElegido.getNombre());
+        response.sendRedirect("/main?user=" + username + "&rol=" + rolElegido.getNombre());
     }
 
     // =========================
@@ -113,6 +113,6 @@ public class AuthController {
         session.setAttribute("usuarioLogueado", usuario);
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-        response.sendRedirect("/ownProfile?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
+        response.sendRedirect("/main?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
     }
 }

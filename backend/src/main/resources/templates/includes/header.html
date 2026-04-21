@@ -105,7 +105,11 @@
             <span class="texto-icono">Empleos</span>
         </a>
 
-        <a href="/publishOffer" class="icono-nav" id="nav-publicar-oferta" style="display: none;">
+        <!-- BOTÓN EMPRESA -->
+        <a href="/publishOffer"
+           class="icono-nav"
+           th:if="${usuarioHeader != null and usuarioHeader.rol.nombre == 'COMPANY'}"
+           id="nav-publicar-oferta">
             <i class="fas fa-plus-circle"></i>
             <span class="texto-icono">Publicar</span>
         </a>
@@ -115,6 +119,7 @@
             <span class="texto-icono">Chats</span>
         </a>
 
+        <!-- AVISOS -->
         <div class="contenedor-avisos" onmouseleave="cerrarPanel()">
             <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
@@ -146,8 +151,21 @@
 
     <!-- DERECHA -->
     <div class="seccion-derecha">
-        <div id="info-usuario" class="info-texto-usuario"></div>
-        <a href="/ownProfile" class="item-derecha" id="link-perfil" style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
+
+        <!-- INFO USUARIO -->
+        <div th:if="${usuarioHeader != null}" class="info-texto-usuario">
+            <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
+                <span style="color:white;font-weight:bold;font-size:0.85em;"
+                      th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
+
+                <span style="color:#FFCC00;font-size:0.65em;font-weight:600;"
+                      th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
+            </div>
+        </div>
+
+        <!-- PERFIL -->
+        <a href="/ownProfile" class="item-derecha">
+
             <div class="avatar-usuario">
 
                 <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}"

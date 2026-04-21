@@ -1,14 +1,6 @@
 package com.programmer.backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -19,16 +11,25 @@ public class OfertaEmpleo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Aquí iría el empresa_id. De momento lo dejamos preparado.
-    // private Long empresa_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "empresa_id")
+    private Usuario empresa;
 
     private String titulo;
-    
     private String descripcion;
     
+    // --- NUEVOS CAMPOS ---
+    @Column(columnDefinition = "TEXT")
+    private String requisitos;
+
+    @Column(columnDefinition = "TEXT")
+    private String ofrecemos;
+
+    @Column(name = "rango_salarial")
+    private String rangoSalarial;
+
     private Boolean activa = true;
 
-    // ¡MAGIA! Esta etiqueta rellena tu tabla intermedia 'oferta_tecnologia'
     @ManyToMany
     @JoinTable(
         name = "oferta_tecnologia",
@@ -41,11 +42,23 @@ public class OfertaEmpleo {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
+    public Usuario getEmpresa() { return empresa; }
+    public void setEmpresa(Usuario empresa) { this.empresa = empresa; }
+
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public String getRequisitos() { return requisitos; }
+    public void setRequisitos(String requisitos) { this.requisitos = requisitos; }
+
+    public String getOfrecemos() { return ofrecemos; }
+    public void setOfrecemos(String ofrecemos) { this.ofrecemos = ofrecemos; }
+
+    public String getRangoSalarial() { return rangoSalarial; }
+    public void setRangoSalarial(String rangoSalarial) { this.rangoSalarial = rangoSalarial; }
 
     public Boolean getActiva() { return activa; }
     public void setActiva(Boolean activa) { this.activa = activa; }

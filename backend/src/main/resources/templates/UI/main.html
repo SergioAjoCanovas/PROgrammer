@@ -19,12 +19,12 @@
 <body class="fondo-oscuro-neon">
 
     <script>
-        // 1. CAPTURAR DATOS DE LA URL
+        // 1. CAPTURAR DATOS DE LA URL NADA MÁS ARRANCAR LA PÁGINA
         const params = new URLSearchParams(window.location.search);
         if (params.has('user')) {
             localStorage.setItem('usuarioLogueado', params.get('user'));
-            // Guardamos el rol tal cual viene (ADMIN, USER, etc.)
-            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
+            // Guardamos el rol (si no hay, por defecto ponemos 2 que es Developer)
+            localStorage.setItem('rolUsuario', params.get('rol') || '2'); 
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     </script>
@@ -50,31 +50,45 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function mostrarInfoUsuarioMain() {
+        function inicializarPagina() {
             const username = localStorage.getItem('usuarioLogueado');
             let rol = localStorage.getItem('rolUsuario');
+            
+            // --- 1. PINTAR LA INFO DEL USUARIO EN EL HEADER ---
             const contenedor = document.getElementById('info-usuario');
-
-            if (!rol) rol = 'USER';
-
             if (username && contenedor) {
-                // Aplicamos el mismo estilo visual que en la página de Ajustes/Perfil
+                let nombreRol = rol;
+                // Traducimos los IDs de tu base de datos a texto para que se vea bonito
+                if (rol == '1') nombreRol = 'ADMIN';
+                if (rol == '2') nombreRol = 'DEVELOPER';
+                if (rol == '3') nombreRol = 'COMPANY';
+
                 contenedor.innerHTML = `
                     <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
                         <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
                     </div>
                 `;
             }
-        }
 
-        window.addEventListener('load', () => {
-            // Un pequeño delay para asegurar que el DOM del header esté listo
-            setTimeout(mostrarInfoUsuarioMain, 100); 
-            
-            // Marcar icono de Inicio como activo
+            // --- 2. LA MAGIA: ENCENDER EL BOTÓN DE PUBLICAR SI ES EMPRESA ---
+            const btnPublicar = document.getElementById('nav-publicar-oferta');
+            if (btnPublicar && rol) {
+                const rolComprobacion = String(rol).trim().toUpperCase();
+                // Si el rol guardado es "COMPANY" o el ID "3" de tu tabla -> Lo mostramos
+                if (rolComprobacion === 'COMPANY' || rolComprobacion === '3') {
+                    btnPublicar.style.display = 'flex'; 
+                }
+            }
+
+            // --- 3. MARCAR ICONO ACTIVO ---
             const navInicio = document.getElementById('nav-inicio');
             if (navInicio) navInicio.classList.add('activo');
+        }
+
+        // Ejecutamos cuando todo el HTML (incluido el header de Thymeleaf) esté cargado
+        window.addEventListener('load', () => {
+            setTimeout(inicializarPagina, 50); 
         });
     </script>
 </body>

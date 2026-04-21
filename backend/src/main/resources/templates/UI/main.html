@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Conecta</title>
+
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/homePage_styles/selector.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         .activo, .activo i, .activo span {
             color: #FFCC00 !important;
@@ -16,21 +19,20 @@
         }
     </style>
 </head>
+
 <body class="fondo-oscuro-neon">
 
     <script>
-        // 1. CAPTURAR DATOS DE LA URL
+        // 1. CAPTURAR DATOS DE LA URL NADA MÁS ARRANCAR LA PÁGINA
         const params = new URLSearchParams(window.location.search);
         if (params.has('user')) {
             localStorage.setItem('usuarioLogueado', params.get('user'));
-            // Guardamos el rol tal cual viene (ADMIN, USER, etc.)
-            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
+            // Guardamos el rol (si no hay, por defecto ponemos 2 que es Developer)
+            localStorage.setItem('rolUsuario', params.get('rol') || '2'); 
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     </script>
-
     <div th:replace="~{includes/header :: header}"></div>
-
     <main class="contenedor-selector">
         <section class="contenido-central">
             <h1 class="titulo-selector">CONECTA CON:</h1>
@@ -47,17 +49,32 @@
         </section>
     </main>
 
-    <div th:replace="~{includes/footer :: footer}"></div>
+<div th:replace="~{includes/footer :: footer}"></div>
 
+<script>
+window.addEventListener('load', () => {
+    const navInicio = document.getElementById('nav-inicio');
+    if (navInicio) navInicio.classList.add('activo');
+});
+</script>
     <script>
 
-        window.addEventListener('load', () => {
-            // Un pequeño delay para asegurar que el DOM del header esté listo
-            setTimeout(mostrarInfoUsuarioMain, 100); 
-            
-            // Marcar icono de Inicio como activo
+            // --- 2. LA MAGIA: ENCENDER EL BOTÓN DE PUBLICAR SI ES EMPRESA ---
+            const btnPublicar = document.getElementById('nav-publicar-oferta');
+            if (btnPublicar && rol) {
+                const rolComprobacion = String(rol).trim().toUpperCase();
+                // Si el rol guardado es "COMPANY" o el ID "3" de tu tabla -> Lo mostramos
+                if (rolComprobacion === 'COMPANY' || rolComprobacion === '3') {
+                    btnPublicar.style.display = 'flex'; 
+                }
+            }
+
+            // --- 3. MARCAR ICONO ACTIVO ---
             const navInicio = document.getElementById('nav-inicio');
             if (navInicio) navInicio.classList.add('activo');
+        // Ejecutamos cuando todo el HTML (incluido el header de Thymeleaf) esté cargado
+        window.addEventListener('load', () => {
+            setTimeout(inicializarPagina, 50); 
         });
     </script>
 </body>

@@ -94,10 +94,6 @@ public class ViewController {
     // =========================
     // EMPLEO
     // =========================
-    @GetMapping("/jobsearching")
-    public String jobsearching() {
-        return "UI/jobsearching/jobsearching";
-    }
 
     @GetMapping("/jobview")
     public String jobview() {

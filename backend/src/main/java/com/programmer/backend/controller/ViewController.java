@@ -11,7 +11,7 @@ public class ViewController {
     // =========================
     @GetMapping("/")
     public String root() {
-        return "redirect:/main";
+        return "redirect:/login";
     }
 
     @GetMapping("/main")

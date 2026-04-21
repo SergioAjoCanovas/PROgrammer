@@ -44,6 +44,6 @@ public class OfertaController {
         ofertaRepository.save(nuevaOferta);
 
         // 4. Redirigimos a la página principal tras el éxito
-        return "redirect:http://127.0.0.1:5500/backend/src/main/resources/templates/UI/jobsearching/jobsearching.html"; 
+        return "redirect:/jobsearching"; 
     }
 }

@@ -107,20 +107,8 @@
         });
 
         function inicializarHeaderProyectos() {
-            const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
             const navPerfil = document.getElementById('nav-perfil');
-
-            // 1. Inyectar TUS datos en el Header
-            if (miNombre && contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
-                    </div>
-                `;
-            }
 
             // 2. Iluminar icono de Perfil (ya que estamos en una subsección de perfil)
             if (navPerfil) {

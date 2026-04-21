@@ -39,10 +39,36 @@
         <aside class="columna-perfil">
             <div class="tarjeta-acordeon profile-main-card">
                 <div class="perfil-superior">
-                    <div class="circulo-foto">
-                        <i class="fas fa-camera icono-camera"></i>
-                    </div>
-                    <h2 class="nombre-usuario" id="nombre-perfil-display">CARGANDO...</h2>
+                    <!-- FORMULARIO OCULTO PARA SUBIR FOTO -->
+                        <form id="formFoto"
+                        action="/usuario/uploadFoto"
+                        method="post"
+                        enctype="multipart/form-data"
+                        style="display:none;">
+
+                        <input type="file"
+                            id="inputFoto"
+                            name="foto"
+                            accept="image/*"
+                            onchange="document.getElementById('formFoto').submit();">
+                        </form>
+
+                        <!-- CÍRCULO DE FOTO (CLICKABLE) -->
+                        <div class="circulo-foto" onclick="document.getElementById('inputFoto').click()">
+
+                            <img th:if="${usuarioHeader.fotoPerfil != null}"
+                                 th:src="${usuarioHeader.fotoPerfil}"
+                                 alt="foto perfil"
+                                 style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                        
+                            <i th:if="${usuarioHeader.fotoPerfil == null}"
+                               class="fas fa-camera icono-camera"></i>
+                        
+                        </div>
+                    <h2 class="nombre-usuario" id="nombre-perfil-display"
+                        th:text="${usuarioHeader.username}">
+                        CARGANDO...
+                    </h2>
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
@@ -125,36 +151,6 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-    function renderizarDatosUsuario() {
-        const nombre = localStorage.getItem('usuarioLogueado');
-        let rol = localStorage.getItem('rolUsuario');
-
-        // Si no hay rol guardado, ponemos USER por defecto, 
-        // pero si es ADMIN, se queda como ADMIN.
-        if (!rol) {
-            rol = 'USER'; 
-        }
-
-        if (nombre) {
-            // 1. Pintar en el Header (ID: info-usuario)
-            const contenedorHeader = document.getElementById('info-usuario');
-            if (contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${nombre.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
-                    </div>
-                `;
-            }
-
-            // 2. Pintar en la tarjeta lateral del Perfil
-            const displayPerfil = document.getElementById('nombre-perfil-display');
-            if (displayPerfil) {
-                displayPerfil.innerHTML = `${nombre.toUpperCase()} <i class="fas fa-edit icono-editar-texto" style="font-size: 0.6em; cursor: pointer;"></i>`;
-            }
-        }
-    }
-
     window.addEventListener('load', () => {
         renderizarDatosUsuario();
         

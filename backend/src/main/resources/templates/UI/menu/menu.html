@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Menú de Herramientas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/menu_styles/menu_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/menu_styles/menu_styles.css">
+
+    <style>
+        /* Estilo para que el icono del MENÚ brille en amarillo neón */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon"> 
     
-    <div id="header-placeholder"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal-menu">
         <section class="tarjeta-menu-completo">
@@ -74,42 +84,43 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function cargarComponentes() {
-            const headerPath = "../../includes/header.html"; 
-            const footerPath = "../../includes/footer.html";
+        function inicializarInterfazMenu() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
+            const contenedorHeader = document.getElementById('info-usuario');
+            const navMenu = document.getElementById('nav-menu'); // Asegúrate que el link en el header tenga este ID
 
-            // Cargar Header y activar link
-            fetch(headerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("header-placeholder").innerHTML = html;
-                    marcarLinkActivo();
-                });
+            // 1. Mostrar identidad del usuario
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
 
-            // Cargar Footer
-            fetch(footerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("footer-placeholder").innerHTML = html;
+            // 2. Iluminar icono de Menú
+            if (navMenu) {
+                navMenu.classList.add('activo');
+            } else {
+                // Alternativa por URL si el ID no está presente
+                const links = document.querySelectorAll('header a');
+                links.forEach(l => {
+                    if (l.getAttribute('href')?.includes('menu')) {
+                        l.classList.add('activo');
+                    }
                 });
+            }
         }
 
-        function marcarLinkActivo() {
-            const currentPath = window.location.pathname;
-            const enlaces = document.querySelectorAll('#header-placeholder a');
-
-            enlaces.forEach(enlace => {
-                const href = enlace.getAttribute('href');
-                if (href && currentPath.includes(href)) {
-                    enlace.classList.add('activo');
-                }
-            });
-        }
-
-        window.onload = cargarComponentes;
+        // Ejecutar cuando el DOM esté listo
+        window.addEventListener('load', () => {
+            setTimeout(inicializarInterfazMenu, 100);
+        });
     </script>
 </body>
 </html>

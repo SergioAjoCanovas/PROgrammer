@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,7 +27,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // --- 1. REGISTRO + LOGIN AUTOMÁTICO ---
+    // =========================
+    // REGISTRO
+    // =========================
     @PostMapping("/signup")
     public void registrar(
             @RequestParam("username") String username,
@@ -37,10 +40,13 @@ public class AuthController {
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
-        
-        // Si las contraseñas no coinciden o el usuario ya existe, lo devolvemos al formulario de registro en el Live Server
-        if (!password.equals(confirmPassword) || usuarioRepository.existsByUsername(username)) {
-            response.sendRedirect("http://127.0.0.1:5500/frontend/UI/signUpPage/signUpPage.html?error=true");
+
+        // Validaciones
+        if (!password.equals(confirmPassword)
+                || usuarioRepository.existsByUsername(username)
+                || usuarioRepository.existsByEmail(email)) {
+
+            response.sendRedirect("/signup?error=true");
             return;
         }
 
@@ -52,18 +58,19 @@ public class AuthController {
         nuevoUsuario.setEmail(email);
         nuevoUsuario.setPassword(passwordEncoder.encode(password));
         nuevoUsuario.setRol(rolElegido);
+
         usuarioRepository.save(nuevoUsuario);
 
-        // Creamos la sesión
-        session.setAttribute("usuarioLogueado", username);
+        // 🔥 CORRECCIÓN CLAVE: guardar el objeto completo
+        session.setAttribute("usuarioLogueado", nuevoUsuario);
         session.setAttribute("rolUsuario", rolElegido.getNombre());
 
-        // ¡ÉXITO! Lo mandamos a la página principal de tu Live Server
-        // OJO: Asegúrate de que esta ruta es la correcta para tu index.html principal
-        response.sendRedirect("http://127.0.0.1:5500/frontend/UI/main.html");
+        response.sendRedirect("/ownProfile?user=" + username + "&rol=" + rolElegido.getNombre());
     }
 
-    // --- 2. LOGIN TRADICIONAL ---
+    // =========================
+    // LOGIN
+    // =========================
     @PostMapping("/login")
     public void iniciarSesion(
             @RequestParam("username") String usuarioOEmail,
@@ -71,24 +78,26 @@ public class AuthController {
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
-        
-        var usuarioOpcional = usuarioRepository.findByUsername(usuarioOEmail);
-        if (usuarioOpcional.isEmpty()) {
-            usuarioOpcional = usuarioRepository.findByEmail(usuarioOEmail);
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(usuarioOEmail);
+
+        if (usuarioOpt.isEmpty()) {
+            usuarioOpt = usuarioRepository.findByEmail(usuarioOEmail);
         }
 
-        // Si los datos están mal, lo devolvemos a la página de login de tu Live Server
-        if (usuarioOpcional.isEmpty() || !passwordEncoder.matches(password, usuarioOpcional.get().getPassword())) {
-            response.sendRedirect("http://127.0.0.1:5500/frontend/UI/loginPage/loginPage.html?error=auth"); 
+        if (usuarioOpt.isEmpty()
+                || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
+
+            response.sendRedirect("/login?error=auth");
             return;
         }
 
-        // ¡LOGIN CORRECTO! Creamos la sesión
-        Usuario usuario = usuarioOpcional.get();
-        session.setAttribute("usuarioLogueado", usuario.getUsername());
+        Usuario usuario = usuarioOpt.get();
+
+        // 🔥 CORRECCIÓN CLAVE: guardar el objeto completo
+        session.setAttribute("usuarioLogueado", usuario);
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-        // ¡ÉXITO! Lo mandamos a la página principal de tu Live Server
-        response.sendRedirect("http://127.0.0.1:5500/frontend/UI/main.html"); 
+        response.sendRedirect("/ownProfile?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
     }
 }

@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Conecta</title>
-    <link rel="stylesheet" href="../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../static/Style/homePage_styles/selector.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/homePage_styles/selector.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilo para el estado seleccionado en el header */
-        /* Lo pongo aquí por si no está en header.css */
         .activo, .activo i, .activo span {
-            color: #FFCC00 !important; /* Amarillo Neón */
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00;
         }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <script>
+        // 1. CAPTURAR DATOS DE LA URL
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('user')) {
+            localStorage.setItem('usuarioLogueado', params.get('user'));
+            // Guardamos el rol tal cual viene (ADMIN, USER, etc.)
+            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-selector">
         <section class="contenido-central">
             <h1 class="titulo-selector">CONECTA CON:</h1>
-            
             <div class="contenedor-botones-gigantes">
-                <a href="../UI/searchHome/serachCompanies.html" class="btn-seleccion-neon">
+                <a href="/serachCompanies" class="btn-seleccion-neon">
                     <i class="fas fa-building"></i>
                     <span>EMPRESAS</span>
                 </a>
-
-                <a href="../UI/searchHome/searchProgrammer.html" class="btn-seleccion-neon">
+                <a href="/searchProgrammer" class="btn-seleccion-neon">
                     <i class="fas fa-code"></i>
                     <span>PROGRAMADORES</span>
                 </a>
@@ -39,45 +47,35 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function cargarComponentes() {
-            const headerPath = "../includes/header.html";
-            const footerPath = "../includes/footer.html";
+        function mostrarInfoUsuarioMain() {
+            const username = localStorage.getItem('usuarioLogueado');
+            let rol = localStorage.getItem('rolUsuario');
+            const contenedor = document.getElementById('info-usuario');
 
-            // Cargar Header y resaltar
-            fetch(headerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("header-placeholder").innerHTML = html;
-                    marcarLinkActivo(); 
-                });
+            if (!rol) rol = 'USER';
 
-            // Cargar Footer
-            fetch(footerPath)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("footer-placeholder").innerHTML = html;
-                });
+            if (username && contenedor) {
+                // Aplicamos el mismo estilo visual que en la página de Ajustes/Perfil
+                contenedor.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
         }
 
-        function marcarLinkActivo() {
-            const currentPath = window.location.pathname;
-            const enlaces = document.querySelectorAll('#header-placeholder a');
-
-            enlaces.forEach(enlace => {
-                const href = enlace.getAttribute('href');
-                // Si el href del enlace coincide con la ruta actual de la web
-                if (href && currentPath.includes(href)) {
-                    enlace.classList.add('activo');
-                }
-            });
-        }
-
-        // Ejecutar al cargar la ventana
-        window.onload = cargarComponentes;
+        window.addEventListener('load', () => {
+            // Un pequeño delay para asegurar que el DOM del header esté listo
+            setTimeout(mostrarInfoUsuarioMain, 100); 
+            
+            // Marcar icono de Inicio como activo
+            const navInicio = document.getElementById('nav-inicio');
+            if (navInicio) navInicio.classList.add('activo');
+        });
     </script>
-
 </body>
 </html>

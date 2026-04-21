@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Publicar Oferta</title>
+    
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/company_styles/publishOffer.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Estilo para resaltar el link activo en el header */
+        .activo, .activo i, .activo span {
+            color: #FFCC00 !important;
+        }
+        .seccion-categoria {
+            margin-bottom: 20px;
+        }
+        .titulo-categoria-form {
+            color: #00f2ff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            border-left: 3px solid #FFCC00;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body class="fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-principal-oferta">
+        <section class="tarjeta-publicacion">
+            <div class="cabecera-tarjeta">
+                <h2><i class="fas fa-bullhorn"></i> Nueva Oferta de Empleo</h2>
+                <p>Publica los detalles para atraer a los mejores programadores</p>
+            </div>
+
+            <form th:action="@{/api/ofertas/crear}" method="POST" class="formulario-oferta">
+                
+                <div class="grupo-input">
+                    <label for="titulo"><i class="fas fa-signature"></i> Título del Puesto</label>
+                    <input type="text" id="titulo" name="titulo" class="input-neon" 
+                           placeholder="Ej: Desarrollador Fullstack Junior" required>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción Detallada</label>
+                    <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta" 
+                              placeholder="Indica las tareas, el stack tecnológico y los beneficios..." required></textarea>
+                </div>
+
+                <div class="grupo-input">
+                    <label><i class="fas fa-layer-group"></i> Tags de Tecnologías</label>
+                    <div id="contenedor-tecnologias">
+                        <span style="color: #666; font-size: 0.9rem;">Cargando tecnologías...</span>
+                    </div>
+                </div>
+
+                <div class="acciones-formulario">
+                    <a th:href="@{/main}" class="btn-cancelar">Descartar</a>
+                    <button type="submit" class="btn-publicar-neon">
+                        <i class="fas fa-check-circle"></i> Lanzar Oferta
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            actualizarMiUsuarioEnHeader();
+            cargarTecnologiasDesdeBD();
+            marcarLinkActivo();
+        });
+
+        // 1. IDENTIDAD EN EL HEADER (Visitante logueado)
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'EMPRESA';
+            const contenedorHeader = document.getElementById('info-usuario');
+
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
+        }
+
+        // 2. RESALTADO DE RUTA ACTUAL
+        function marcarLinkActivo() {
+            const currentPath = window.location.pathname;
+            const enlaces = document.querySelectorAll('header a');
+            enlaces.forEach(enlace => {
+                const href = enlace.getAttribute('href');
+                if (href && currentPath === href) {
+                    enlace.classList.add('activo');
+                }
+            });
+        }
+
+        // 3. CARGA DINÁMICA DE CATEGORÍAS Y TECNOLOGÍAS
+        function cargarTecnologiasDesdeBD() {
+            fetch('/api/categorias/todas') // Ruta relativa preferible
+                .then(res => res.json())
+                .then(categorias => {
+                    const contenedor = document.getElementById('contenedor-tecnologias');
+                    contenedor.innerHTML = ''; 
+
+                    categorias.forEach(cat => {
+                        const divCategoria = document.createElement('div');
+                        divCategoria.className = 'seccion-categoria';
+
+                        const titulo = document.createElement('h3');
+                        titulo.className = 'titulo-categoria-form';
+                        titulo.innerText = cat.nombre;
+                        divCategoria.appendChild(titulo);
+
+                        const grid = document.createElement('div');
+                        grid.className = 'grid-tecnologias';
+
+                        cat.tecnologias.forEach(tech => {
+                            const label = document.createElement('label');
+                            label.className = 'check-tech'; 
+                            label.innerHTML = `
+                                <input type="checkbox" name="tecnologias_ids" value="${tech.id}">
+                                <span>${tech.nombre}</span>
+                            `;
+                            grid.appendChild(label);
+                        });
+
+                        divCategoria.appendChild(grid);
+                        contenedor.appendChild(divCategoria);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    document.getElementById('contenedor-tecnologias').innerHTML = 
+                        '<span style="color: #ff4444;">Error al conectar con el servidor de categorías</span>';
+                });
+        }
+    </script>
+</body>
+</html>

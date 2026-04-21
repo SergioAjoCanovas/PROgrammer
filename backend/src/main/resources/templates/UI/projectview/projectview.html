@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Vista de Proyecto</title>
     
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/projectview_styles/projectview.css">
-    
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/projectview.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Resaltado neón para la navegación activa */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -43,7 +52,7 @@
                 </div>
                 <div class="cuerpo-tarjeta">
                     <textarea class="input-resena" placeholder="Escribe tu reseña aquí..."></textarea>
-                    <button class="btn-accion-neon" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+                    <button class="btn-accion-neon" onclick="window.location.href='/newreview'">Añadir reseña</button>
                 </div>
             </div>
         </aside>
@@ -52,7 +61,7 @@
             <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
                 <div class="cabecera-proyecto">
                     <h2>Nombre del Proyecto</h2>
-                    <a href="../profileView/profileView.html" class="boton-volver-circular" title="Volver al Perfil">
+                    <a href="/profileView" class="boton-volver-circular" title="Volver al Perfil">
                         <i class="fas fa-undo"></i>
                     </a>
                 </div>
@@ -64,24 +73,24 @@
                         <span class="badge-validado">
                             <i class="fas fa-check-circle"></i> Validado
                         </span>
-                        
-                        <button class="btn-accion-neon" onclick="window.location.href='../newprojectreview/newprojectreview.html'">
+                    
+                        <a href="/newprojectreview" class="btn-accion-neon">
                             <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
-                        </button>
-                        
-                        <button class="btn-accion-neon" onclick="window.location.href='../viewprojectreviews/viewprojectreviews.html'">
+                        </a>
+                    
+                        <a href="/viewprojectreviews" class="btn-accion-neon">
                             <i class="fas fa-comments"></i> VER RESEÑAS
-                        </button>
-                        
+                        </a>
+                    
                         <button class="btn-accion-neon btn-brillante">
                             <i class="fas fa-download"></i> DESCARGAR
                         </button>
                     </div>
 
                     <div class="galeria-capturas">
-                        <div class="marco-captura"><img src="../../../static/Img/stock/ejemplo1.jpg" alt="Captura 1"></div>
-                        <div class="marco-captura"><img src="../../../static/Img/stock/ejemplo2.jpg" alt="Captura 2"></div>
-                        <div class="marco-captura"><img src="../../../static/Img/stock/ejemplo3.jpg" alt="Captura 3"></div>
+                        <div class="marco-captura"><img src="/Img/stock/ejemplo1.jpg" alt="Captura 1"></div>
+                        <div class="marco-captura"><img src="/Img/stock/ejemplo2.jpg" alt="Captura 2"></div>
+                        <div class="marco-captura"><img src="/Img/stock/ejemplo3.jpg" alt="Captura 3"></div>
                     </div>
                     
                     <div class="bloque-texto-informativo">
@@ -103,15 +112,15 @@
         <div id="caption-modal"></div>
     </div>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
-
         $(document).ready(function() {
-            // ABRIR MODAL
+            // Inicializar datos del usuario logueado en el header
+            inicializarHeader();
+
+            // Lógica del Modal para las capturas del proyecto
             $(".marco-captura img").on("click", function() {
                 $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
                 $("#img-ampliada").attr("src", $(this).attr("src"));
@@ -119,7 +128,6 @@
                 $("body").css("overflow", "hidden"); 
             });
 
-            // CERRAR MODAL
             $("#modal-imagen").on("click", function(e) {
                 if(e.target !== document.getElementById("img-ampliada")) {
                     $(this).fadeOut(300, function() {
@@ -128,6 +136,28 @@
                 }
             });
         });
+
+        function inicializarHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
+            const contenedorHeader = document.getElementById('info-usuario');
+            const navPerfil = document.getElementById('nav-perfil');
+
+            // Actualizar la identidad del que navega en la esquina superior
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
+
+            // Iluminar el icono de perfil (indicando que estamos en la rama de navegación del usuario)
+            if (navPerfil) {
+                navPerfil.classList.add('activo');
+            }
+        }
     </script>
 </body>
 </html>

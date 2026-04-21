@@ -1,21 +1,31 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Proyectos</title>
     
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/projectlist_styles/proyectlist.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/projectlist_styles/proyectlist.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <style>
+        /* Brillo neón para la sección activa (Perfil) */
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
-    <div id="header-placeholder"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -41,7 +51,7 @@
             <div class="tarjeta-resenas-izq">
                 <h3>RESEÑAS</h3>
                 <textarea class="input-resena" placeholder="Escribe aquí..."></textarea>
-                <button class="boton-anadir" onclick="window.location.href='../newreview/newreview.html'">Añadir reseña</button>
+                <button class="boton-anadir" onclick="window.location.href='/newreview'">Añadir reseña</button>
             </div>
         </aside>
 
@@ -49,7 +59,7 @@
             <div class="tarjeta-acordeon-contenedor">
                 <div class="cabecera-acordeon">
                     <h2>PROYECTOS</h2>
-                    <a href="../profileView/profileView.html" class="boton-volver-circular" title="Volver">
+                    <a href="/profileView" class="boton-volver-circular" title="Volver">
                         <i class="fas fa-undo"></i>
                     </a>
                 </div>
@@ -59,7 +69,7 @@
                     <div class="contenido-desplegable">
                         <div class="inner-content">
                             <p>Descripción del proyecto 1 detallada aquí.</p>
-                            <button class="boton-ver-proyecto" onclick="window.location.href='../projectview/projectview.html'">
+                            <button class="boton-ver-proyecto" onclick="window.location.href='/projectview'">
                                 VER PROYECTO
                             </button>
                         </div>
@@ -77,23 +87,54 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
     <script>
-        $( function() {
+        $(function() {
+            // Inicialización del Acordeón
             $("#acordeon-proyectos").accordion({
                 collapsible: true,
                 heightStyle: "content",
                 active: 0,
-                animate: 400 // Velocidad equilibrada
+                animate: 400 
             });
+
+            // Lógica de identidad y navegación
+            inicializarHeaderProyectos();
         });
 
-        fetch("../../includes/header.html").then(res => res.text()).then(html => document.getElementById("header-placeholder").innerHTML = html);
-        fetch("../../includes/footer.html").then(res => res.text()).then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        function inicializarHeaderProyectos() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
+            const contenedorHeader = document.getElementById('info-usuario');
+            const navPerfil = document.getElementById('nav-perfil');
+
+            // 1. Inyectar TUS datos en el Header
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
+
+            // 2. Iluminar icono de Perfil (ya que estamos en una subsección de perfil)
+            if (navPerfil) {
+                navPerfil.classList.add('activo');
+            } else {
+                // Fallback si no hay ID
+                const links = document.querySelectorAll('header a');
+                links.forEach(l => {
+                    if (l.getAttribute('href')?.includes('profileView') || l.getAttribute('href')?.includes('projectlist')) {
+                        l.classList.add('activo');
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>

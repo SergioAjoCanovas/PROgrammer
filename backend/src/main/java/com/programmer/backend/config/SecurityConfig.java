@@ -18,18 +18,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.ALWAYS)
+            )
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("*"));
-                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                // Permitimos ambos formatos de Live Server
+                config.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500"));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
+                config.setAllowCredentials(true); 
                 return config;
             }))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() 
-                .anyRequest().authenticated()
-            );
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/static/**",   // Permitir carpeta de estilos e imágenes
+                    "/**/*.html", 
+                    "/**/*.css", 
+                    "/**/*.js"
+                ).permitAll()
+                .anyRequest().permitAll() 
+            )
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable());
+            
         return http.build();
     }
 

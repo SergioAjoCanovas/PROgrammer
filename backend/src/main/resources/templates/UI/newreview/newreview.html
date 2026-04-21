@@ -1,157 +1,163 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Reseñas</title>
 
-    <link rel="stylesheet" href="../../../static/Style/general_styles/header.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="../../../static/Style/newreview_styles/newreview.css">
-    <link rel="stylesheet" href="../../../static/Style/general_styles/general_styles.css">  
-    <link rel="stylesheet" href="../../../static/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/newreview_styles/newreview.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="fondo-oscuro-neon">
 
-<div id="header-placeholder"></div>
+    <div th:replace="~{includes/header :: header}"></div>
 
-<main class="contenedor-principal">
+    <main class="contenedor-principal">
 
-    <aside class="columna-perfil">
-        <div class="tarjeta-perfil">
-            <div class="perfil-superior">
-                <div class="foto-perfil-contenedor">
-                    <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
-                </div>
-                <h2 class="nombre-usuario">Nombre del usuario</h2>
-            </div>
-
-            <div class="perfil-inferior">
-                <ul class="redes-sociales">
-                    <li><i class="fab fa-instagram"></i> Insta</li>
-                    <li><i class="fab fa-twitter"></i> Twitter</li>
-                    <li><i class="fas fa-phone"></i> Tel</li>
-                </ul>
-                <button class="boton-curriculum">CURRICULUM</button>
-            </div>
-        </div>
-    </aside>
-
-    <section class="zona-reseñas">
-
-        <div class="tarjeta-acordeon tarjeta-crear-reseña">
-            <h2><i class="fas fa-pen"></i> Añadir reseña </h2>
-            <a href="../profileView/profileView.html" class="boton-volver-circular" title="Volver">
-                <i class="fas fa-undo"></i>
-            </a>
-            
-            <div class="campo">
-                <label>Valoración</label>
-                <div class="estrellas" id="estrellas">
-                    <i class="far fa-star" data-value="1"></i>
-                    <i class="far fa-star" data-value="2"></i>
-                    <i class="far fa-star" data-value="3"></i>
-                    <i class="far fa-star" data-value="4"></i>
-                    <i class="far fa-star" data-value="5"></i>
-                </div>
-            </div>
-
-            <div class="campo">
-                <label>Comentario</label>
-                <textarea id="comentario" placeholder="Escribe tu reseña..."></textarea>
-            </div>
-
-            <button class="boton-ver" id="btn-publicar">
-                <i class="fas fa-paper-plane"></i> Publicar reseña
-            </button>
-        </div>
-
-        <div class="tarjeta-acordeon tarjeta-lista-reseñas">
-            <h2><i class="fas fa-comments"></i> Reseñas</h2>
-            <div class="contenedor-reseñas" id="lista-reseñas">
-                <div class="reseña">
-                    <div class="reseña-header">
-                        <span class="usuario">Carlos</span>
-                        <span class="rating">⭐⭐⭐⭐⭐</span>
+        <aside class="columna-perfil">
+            <div class="tarjeta-perfil">
+                <div class="perfil-superior">
+                    <div class="foto-perfil-contenedor">
+                        <div class="circulo-foto"></div>
+                        <div class="icono-corazon">
+                            <i class="fas fa-heart"></i>
+                        </div>
                     </div>
-                    <p>Muy buen desarrollador, trabajé con él en varios proyectos.</p>
+                    <h2 class="nombre-usuario" th:text="${usuario.username}">Usuario</h2>
                 </div>
 
-                <div class="reseña">
-                    <div class="reseña-header">
-                        <span class="usuario">Laura</span>
-                        <span class="rating">⭐⭐⭐⭐</span>
-                    </div>
-                    <p>Buen código y buena comunicación.</p>
+                <div class="perfil-inferior">
+                    <ul class="redes-sociales">
+                        <li><i class="fab fa-instagram"></i> Instagram</li>
+                        <li><i class="fab fa-twitter"></i> Twitter</li>
+                        <li><i class="fas fa-phone"></i> Contacto</li>
+                    </ul>
+                    <button class="boton-curriculum">CURRICULUM</button>
                 </div>
             </div>
-        </div>
+        </aside>
 
-    </section>
-</main>
+        <section class="zona-reseñas">
 
-<div id="footer-placeholder"></div>
+            <div class="tarjeta-acordeon tarjeta-crear-reseña">
+                <div class="cabecera-formulario">
+                    <h2><i class="fas fa-pen"></i> Añadir reseña</h2>
+                    <a th:href="@{/perfil/{id}(id=${usuario.id})}" class="boton-volver-circular" title="Volver al perfil">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
 
-<script>
-    // ⭐ Lógica de Estrellas
-    let ratingSeleccionado = 0;
-    const estrellas = document.querySelectorAll("#estrellas i");
+                <form th:action="@{/reviews/crear}" method="post">
+                    <input type="hidden" name="receptorId" th:value="${usuario.id}">
+                    <input type="hidden" name="rating" id="rating" value="0" required>
 
-    estrellas.forEach(estrella => {
-        estrella.addEventListener("click", () => {
-            ratingSeleccionado = estrella.getAttribute("data-value");
-            estrellas.forEach(e => {
-                e.classList.remove("fas", "activa");
-                e.classList.add("far");
-            });
-            for (let i = 0; i < ratingSeleccionado; i++) {
-                estrellas[i].classList.remove("far");
-                estrellas[i].classList.add("fas", "activa");
-            }
+                    <div class="campo">
+                        <label>Tu valoración</label>
+                        <div class="estrellas" id="estrellas">
+                            <i class="far fa-star" data-value="1"></i>
+                            <i class="far fa-star" data-value="2"></i>
+                            <i class="far fa-star" data-value="3"></i>
+                            <i class="far fa-star" data-value="4"></i>
+                            <i class="far fa-star" data-value="5"></i>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label>Comentario</label>
+                        <textarea name="comentario" placeholder="Cuéntanos tu experiencia con este profesional..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="boton-ver">
+                        <i class="fas fa-paper-plane"></i> PUBLICAR RESEÑA
+                    </button>
+                </form>
+            </div>
+
+            <div class="tarjeta-acordeon tarjeta-lista-reseñas">
+                <div class="cabecera-reseñas">
+                    <h2><i class="fas fa-comments"></i> Reseñas de la comunidad</h2>
+                </div>
+
+                <div class="media-global" th:if="${not #lists.isEmpty(reviews)}">
+                    <h3>Puntuación media</h3>
+                    <div class="media-estrellas">
+                        <i class="fas fa-star" th:each="i : ${#numbers.sequence(1,5)}"
+                           th:classappend="${i <= media} ? ' activa' : ''"></i>
+                        <span class="numero-media" th:text="${#numbers.formatDecimal(media,1,1)}">0.0</span>
+                    </div>
+                </div>
+
+                <div class="contenedor-reseñas">
+                    <p th:if="${#lists.isEmpty(reviews)}" class="sin-reseñas">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+                    
+                    <div class="reseña" th:each="r : ${reviews}">
+                        <div class="reseña-header">
+                            <span class="usuario-autor">
+                                <i class="fas fa-user-circle"></i> [[${r.autor.username}]]
+                            </span>
+                            <span class="rating-visual" th:text="${#strings.repeat('⭐', r.rating)}"></span>
+                        </div>
+                        <p class="texto-comentario" th:text="${r.comentario}"></p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            actualizarMiUsuarioEnHeader();
+            inicializarSistemaEstrellas();
         });
-    });
 
-    function generarEstrellasHTML(valor) {
-        return "⭐".repeat(valor);
-    }
+        // --- 1. LÓGICA DE SELECCIÓN DE ESTRELLAS ---
+        function inicializarSistemaEstrellas() {
+            const estrellas = document.querySelectorAll("#estrellas i");
+            const inputRating = document.getElementById("rating");
 
-    // 🚀 Publicar Reseña
-    document.getElementById("btn-publicar").addEventListener("click", () => {
-        const comentario = document.getElementById("comentario").value.trim();
-        const lista = document.getElementById("lista-reseñas");
+            estrellas.forEach(e => {
+                e.addEventListener("click", () => {
+                    const val = e.dataset.value;
+                    inputRating.value = val;
 
-        if (comentario === "" || ratingSeleccionado === 0) {
-            alert("Añade comentario y valoración");
-            return;
+                    // Resetear y pintar
+                    estrellas.forEach((s, index) => {
+                        if (index < val) {
+                            s.classList.remove("far");
+                            s.classList.add("fas", "activa");
+                        } else {
+                            s.classList.remove("fas", "activa");
+                            s.classList.add("far");
+                        }
+                    });
+                });
+            });
         }
 
-        const nuevaReseña = document.createElement("div");
-        nuevaReseña.classList.add("reseña");
-        nuevaReseña.innerHTML = `
-            <div class="reseña-header">
-                <span class="usuario">Tú</span>
-                <span class="rating">${generarEstrellasHTML(ratingSeleccionado)}</span>
-            </div>
-            <p>${comentario}</p>
-        `;
+        // --- 2. IDENTIDAD EN EL HEADER ---
+        function actualizarMiUsuarioEnHeader() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            const miRol = localStorage.getItem('rolUsuario') || 'USER';
+            const contenedorHeader = document.getElementById('info-usuario');
 
-        lista.prepend(nuevaReseña);
-        document.getElementById("comentario").value = "";
-        ratingSeleccionado = 0;
-        estrellas.forEach(e => { e.classList.remove("fas", "activa"); e.classList.add("far"); });
-    });
-
-    // Cargar Header y Footer
-    fetch("../../includes/header.html")
-        .then(res => res.text())
-        .then(html => document.getElementById("header-placeholder").innerHTML = html);
-
-    fetch("../../includes/footer.html")
-        .then(res => res.text())
-        .then(html => document.getElementById("footer-placeholder").innerHTML = html);
-</script>
-
+            if (miNombre && contenedorHeader) {
+                contenedorHeader.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
+                    </div>
+                `;
+            }
+        }
+    </script>
 </body>
 </html>

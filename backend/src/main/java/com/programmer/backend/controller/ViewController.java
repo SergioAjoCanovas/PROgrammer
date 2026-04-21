@@ -3,6 +3,10 @@ package com.programmer.backend.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.programmer.backend.domain.Usuario;
+import org.springframework.ui.Model;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class ViewController {
 
@@ -36,7 +40,16 @@ public class ViewController {
     // PERFIL
     // =========================
     @GetMapping("/ownProfile")
-    public String ownProfile() {
+    public String ownProfile(HttpSession session, Model model) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("usuarioHeader", usuario);
+
         return "UI/ownProfile/ownProfile";
     }
 

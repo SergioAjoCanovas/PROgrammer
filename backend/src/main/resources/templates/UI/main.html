@@ -50,26 +50,6 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function inicializarPagina() {
-            const username = localStorage.getItem('usuarioLogueado');
-            let rol = localStorage.getItem('rolUsuario');
-            
-            // --- 1. PINTAR LA INFO DEL USUARIO EN EL HEADER ---
-            const contenedor = document.getElementById('info-usuario');
-            if (username && contenedor) {
-                let nombreRol = rol;
-                // Traducimos los IDs de tu base de datos a texto para que se vea bonito
-                if (rol == '1') nombreRol = 'ADMIN';
-                if (rol == '2') nombreRol = 'DEVELOPER';
-                if (rol == '3') nombreRol = 'COMPANY';
-
-                contenedor.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
-                    </div>
-                `;
-            }
 
             // --- 2. LA MAGIA: ENCENDER EL BOTÓN DE PUBLICAR SI ES EMPRESA ---
             const btnPublicar = document.getElementById('nav-publicar-oferta');

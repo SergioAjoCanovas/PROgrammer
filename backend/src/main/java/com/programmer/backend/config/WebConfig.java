@@ -4,12 +4,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.nio.file.Paths;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Esto mapea la URL /Img/perfiles/** a la carpeta real de tu proyecto
-        registry.addResourceHandler("/Img/perfiles/**")
-                .addResourceLocations("file:src/main/resources/static/Img/perfiles/");
+
+        String uploadPath = Paths.get(System.getProperty("user.dir"), "uploads")
+                .toAbsolutePath()
+                .toString();
+
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + uploadPath + "/");
     }
 }

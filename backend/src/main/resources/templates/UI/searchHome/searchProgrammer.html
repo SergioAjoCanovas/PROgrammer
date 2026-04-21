@@ -81,19 +81,7 @@
 
     <script>
     function inicializarHeader() {
-        const username = localStorage.getItem('usuarioLogueado');
-        const rol = localStorage.getItem('rolUsuario') || 'USER';
         const contenedor = document.getElementById('info-usuario');
-
-        // 1. Mostrar nombre y rol
-        if (username && contenedor) {
-            contenedor.innerHTML = `
-                <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                    <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
-                </div>
-            `;
-        }
 
         // 2. ILUMINAR ICONO (DOBLE COMPROBACIÓN)
         // Intento A: Por ID

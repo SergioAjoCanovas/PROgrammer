@@ -4,9 +4,11 @@ import com.programmer.backend.domain.Rol;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.RolRepository;
 import com.programmer.backend.repository.UsuarioRepository;
+import com.programmer.backend.service.RegistroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,8 +29,11 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RegistroService registroService;
+
     // =========================
-    // REGISTRO
+    // REGISTRO (Fusionado y Único)
     // =========================
     @PostMapping("/signup")
     public void registrar(
@@ -37,11 +42,12 @@ public class AuthController {
             @RequestParam("password") String password,
             @RequestParam("confirm_password") String confirmPassword,
             @RequestParam("id_rol") long idRol,
+            @RequestParam(value = "foto", required = false) MultipartFile foto, // Foto opcional
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
 
-        // Validaciones
+        // Validaciones previas
         if (!password.equals(confirmPassword)
                 || usuarioRepository.existsByUsername(username)
                 || usuarioRepository.existsByEmail(email)) {
@@ -50,18 +56,28 @@ public class AuthController {
             return;
         }
 
+        // Buscar el rol
         Rol rolElegido = rolRepository.findById(idRol)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
+        // Lógica de la foto
+        String rutaFoto = null;
+        if (foto != null && !foto.isEmpty()) {
+            rutaFoto = registroService.guardarFoto(foto);
+        }
+
+        // Crear el usuario y rellenarlo
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setUsername(username);
         nuevoUsuario.setEmail(email);
         nuevoUsuario.setPassword(passwordEncoder.encode(password));
         nuevoUsuario.setRol(rolElegido);
+        nuevoUsuario.setFotoPerfil(rutaFoto);
 
+        // Guardar el usuario en BD
         usuarioRepository.save(nuevoUsuario);
 
-        // 🔥 CORRECCIÓN CLAVE: guardar el objeto completo
+        // Guardar en sesión
         session.setAttribute("usuarioLogueado", nuevoUsuario);
         session.setAttribute("rolUsuario", rolElegido.getNombre());
 
@@ -94,7 +110,6 @@ public class AuthController {
 
         Usuario usuario = usuarioOpt.get();
 
-        // 🔥 CORRECCIÓN CLAVE: guardar el objeto completo
         session.setAttribute("usuarioLogueado", usuario);
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 

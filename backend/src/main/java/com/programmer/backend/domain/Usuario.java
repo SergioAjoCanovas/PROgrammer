@@ -26,6 +26,9 @@ public class Usuario {
     @Column(name = "fecha_registro", updatable = false)
     private LocalDateTime fechaRegistro;
 
+    @Column(name = "foto_perfil")
+    private String fotoPerfil;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol")
     private Rol rol;

@@ -20,7 +20,7 @@
             
             <h2>Crear cuenta</h2>
             
-            <form th:action="@{/api/auth/signup}" method="POST" class="login-form">
+            <form th:action="@{/api/auth/signup}" method="POST" class="login-form" enctype="multipart/form-data">
                 
                 <div class="input-group">
                     <label for="username">Nombre de usuario</label>
@@ -33,11 +33,16 @@
                 </div>
 
                 <div class="input-group">
+                    <label for="foto">Foto de Perfil (Opcional)</label>
+                    <input type="file" id="foto" name="foto" accept="image/*" />
+                </div>
+
+                <div class="input-group">
                     <label for="id_rol">¿Qué tipo de perfil buscas?</label>
                     <div class="select-wrapper">
                         <select id="id_rol" name="id_rol" required>
                             <option value="" disabled selected>Selecciona tu perfil...</option>
-                            <option value="1">Usuario normal (Explorar)</option>
+                            <option value="4">Usuario normal (Explorar)</option>
                             <option value="2">Desarrollador (Busco proyectos)</option>
                             <option value="3">Empresa (Busco talento)</option>
                         </select>

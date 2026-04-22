@@ -1,5 +1,5 @@
 /* =========================================================
-   1. ESTRUCTURA PARA PEGAR EL FOOTER ABAJO
+   1. ESTRUCTURA BASE Y LAYOUT
    ========================================================= */
 html, body {
     height: 100%;
@@ -13,23 +13,89 @@ html, body {
     background-color: #000;
 }
 
-#header-placeholder, #footer-placeholder {
-    flex-shrink: 0;
-}
-
 .contenedor-principal-ofertas {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Menos espacio entre tarjetas para que parezca una lista */
+    gap: 15px;
     padding: 40px 25px;
-    max-width: 1000px; /* Un poco más estrecho para mantener la lectura fácil */
+    max-width: 1000px;
     margin: 0 auto;
     width: 100%;
 }
 
 /* =========================================================
-   2. TARJETAS MÁS FINAS Y ALARGADAS
+   2. CABECERA SUPERIOR (FILTROS + GESTIÓN EMPRESA)
+   ========================================================= */
+.cabecera-filtros {
+    display: flex;
+    justify-content: space-between; /* Filtros a la izquierda, botón a la derecha */
+    align-items: center;           /* Alineación vertical perfecta */
+    margin-bottom: 35px;
+    width: 100%;
+    padding: 0 5px;
+}
+
+.filtro-contenedor {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-filtro {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ccc;
+    border: 1px solid #444;
+    padding: 9px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-filtro:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #666;
+}
+
+.btn-filtro.filtro-seleccionado {
+    background: #FFCC00;
+    color: #000;
+    border-color: #FFCC00;
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
+}
+
+.acciones-superiores {
+    display: flex;
+    align-items: center;
+}
+
+.boton-ofertas-propias {
+    background-color: transparent;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.boton-ofertas-propias:hover {
+    background-color: #FFCC00;
+    color: #1a1a1a;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   3. TARJETAS DE OFERTA
    ========================================================= */
 .tarjeta-oferta {
     display: flex;
@@ -38,23 +104,19 @@ html, body {
     background: linear-gradient(145deg, #121212 0%, #1a1a1a 100%);
     border: 1px solid #333;
     border-left: 4px solid #FFCC00;
-    border-radius: 12px; /* Bordes un poco menos redondeados, más profesionales */
-    padding: 15px 25px; /* Cajita mucho más fina verticalmente */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+    border-radius: 12px;
+    padding: 15px 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     transition: all 0.2s ease-in-out;
 }
 
 .tarjeta-oferta:hover {
-    transform: translateX(5px); /* En lugar de saltar, se desliza un poco a la derecha */
+    transform: translateX(5px);
     border-color: #FFCC00;
-    box-shadow: -5px 5px 15px rgba(255, 204, 0, 0.15);
 }
 
-/* =========================================================
-   3. LOGO DE LA EMPRESA (CÍRCULO PERFECTO BLINDADO)
-   ========================================================= */
 .logo-empresa {
-    flex-shrink: 0; /* ¡ESTO EVITA QUE EL LOGO SE APLASTE COMO UN HUEVO! */
+    flex-shrink: 0;
     width: 65px;
     height: 65px;
 }
@@ -63,18 +125,13 @@ html, body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%; 
+    border-radius: 50%;
     border: 2px solid #444;
-    background-color: #111;
-    padding: 2px;
 }
 
-/* =========================================================
-   4. INFORMACIÓN DEL PUESTO
-   ========================================================= */
 .info-oferta {
-    flex: 1; /* Ocupa todo el centro estirando la tarjeta */
-    min-width: 0; /* Evita que el texto rompa el diseño */
+    flex: 1;
+    min-width: 0;
 }
 
 .nombre-empresa {
@@ -82,7 +139,6 @@ html, body {
     font-size: 0.85rem;
     margin-bottom: 2px;
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 .titulo-puesto {
@@ -95,18 +151,12 @@ html, body {
 .descripcion-puesto {
     color: #aaa;
     font-size: 0.9rem;
-    line-height: 1.4;
-    margin-bottom: 10px;
-    /* MAGIA: Limita la descripción a 2 líneas y pone "..." si es más larga */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* =========================================================
-   5. TECNOLOGÍAS (PÍLDORAS COMPACTAS)
-   ========================================================= */
 .tech-tags {
     display: flex;
     flex-wrap: wrap;
@@ -119,22 +169,19 @@ html, body {
     border: 1px solid rgba(0, 242, 255, 0.3);
     padding: 3px 10px;
     border-radius: 15px;
-    font-size: 0.75rem; /* Más pequeñitas para que quepan más */
-    font-weight: 600;
-    white-space: nowrap;
+    font-size: 0.75rem;
 }
 
 /* =========================================================
-   6. ACCIONES Y ESTADOS (A LA DERECHA)
+   4. ACCIONES DE LA TARJETA (ESTADO Y BOTÓN)
    ========================================================= */
 .acciones-oferta {
-    flex-shrink: 0; /* Evita que los botones se encojan */
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    justify-content: center;
     gap: 12px;
-    border-left: 1px solid #333; /* Separador sutil */
+    border-left: 1px solid #333;
     padding-left: 20px;
 }
 
@@ -146,17 +193,9 @@ html, body {
     font-size: 0.8rem;
 }
 
-.estado-oferta.activo {
-    color: #39FF14;
-}
+.estado-oferta.activo { color: #39FF14; }
+.estado-oferta.inactivo { color: #ff4444; }
 
-.estado-oferta.inactivo {
-    color: #ff4444;
-}
-
-/* =========================================================
-   7. BOTÓN POSTULAR
-   ========================================================= */
 .boton-postular {
     background-color: transparent !important;
     color: #FFCC00 !important;
@@ -164,7 +203,6 @@ html, body {
     border-radius: 6px;
     padding: 8px 20px;
     font-weight: 800;
-    font-size: 0.85rem;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -173,33 +211,45 @@ html, body {
 .boton-postular:hover:not(:disabled) {
     background-color: #FFCC00 !important;
     color: #000 !important;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4) !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
+/* ESTILO GRISÁCEO PARA BOTÓN DESHABILITADO (OFERTA CERRADA) */
 .boton-postular:disabled {
-    border-color: #444 !important;
-    color: #666 !important;
-    cursor: not-allowed;
+    background-color: #2a2a2a !important; /* Gris oscuro mate */
+    color: #666 !important;               /* Texto gris apagado */
+    border: 1px solid #444 !important;    /* Borde sutil */
+    cursor: not-allowed;                  /* Cursor de bloqueo */
+    opacity: 0.5;                         /* Opacidad baja */
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 /* =========================================================
-   8. RESPONSIVE
+   5. RESPONSIVE Y ESTADO ACTIVO HEADER
    ========================================================= */
 @media (max-width: 768px) {
+    .cabecera-filtros {
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
     .tarjeta-oferta {
         flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
     }
     .acciones-oferta {
-        align-items: flex-start;
         width: 100%;
         border-left: none;
         border-top: 1px solid #333;
-        padding-left: 0;
         padding-top: 15px;
-        margin-top: 5px;
         flex-direction: row;
         justify-content: space-between;
     }
+}
+
+.activo, 
+header a.activo i, 
+header a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+    opacity: 1 !important;
 }

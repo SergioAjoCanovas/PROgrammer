@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Mis Ofertas</title>
+    
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
+    <link rel="stylesheet" href="/Style/misofertas_styles/misofertas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Estilos para los botones de creación */
+        .boton-crear-oferta {
+            background: transparent;
+            color: #FFCC00;
+            border: 1px solid #FFCC00;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .boton-crear-oferta:hover {
+            background: #FFCC00;
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+        }
+
+        .boton-crear-primera {
+            margin-top: 25px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-width: 2px;
+        }
+    </style>
+</head>
+<body class="body-layout fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-principal-ofertas">
+        
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <a href="/jobsearching" style="color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;" onmouseover="this.style.color='#FFCC00'" onmouseout="this.style.color='#888'">
+                    <i class="fas fa-arrow-left"></i> Volver a todos los empleos
+                </a>
+                
+                <a th:if="${!#lists.isEmpty(ofertas)}" href="/publishOffer" class="boton-crear-oferta">
+                    <i class="fas fa-plus-circle"></i> CREAR OTRA OFERTA
+                </a>
+            </div>
+            
+            <div style="text-align: center; color: #FFCC00; margin-top: 10px;">
+                <h2 style="margin: 0;"><i class="fas fa-briefcase"></i> Ofertas publicadas por ti</h2>
+                <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;">Revisa quién se ha interesado en tus proyectos y gestiona tus ofertas.</p>
+            </div>
+        </div>
+
+        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
+            <div class="logo-empresa">
+                <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
+                     alt="Logo Empresa">
+            </div>
+            
+            <div class="info-oferta">
+                <h3 class="nombre-empresa" th:text="${oferta.empresa?.username ?: 'Mi Empresa'}">Nombre de la Empresa</h3>
+                <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
+                <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
+                
+                <div class="tech-tags">
+                    <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">
+                        Tecnología
+                    </span>
+                </div>
+            </div>
+            
+            <div class="acciones-oferta">
+                <div class="estado-contenedor">
+                    <button class="btn-borrar" title="Eliminar oferta permanentemente" th:onclick="'abrirModalBorrado(' + ${oferta.id} + ')'">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                    <label class="switch">
+                        <input type="checkbox" th:checked="${oferta.activa}" th:onchange="'cambiarEstado(' + ${oferta.id} + ', this)'">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="texto-estado" th:id="'texto-estado-' + ${oferta.id}" 
+                          th:text="${oferta.activa} ? 'Activa' : 'Cerrada'" 
+                          th:style="${oferta.activa} ? 'color: #00f2ff;' : 'color: #ff4444;'">
+                    </span>
+                </div>
+                
+                <button class="boton-postular" 
+                        style="border-color: #FFCC00 !important; color: #FFCC00 !important; font-size: 0.75rem;" 
+                        th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">
+                    VER POSTULACIONES
+                </button>
+            </div>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(ofertas)}" style="text-align: center; color: white; margin-top: 70px;">
+            <i class="fas fa-folder-open fa-4x" style="color: #333; margin-bottom: 20px;"></i>
+            <h2>Aún no has publicado ninguna oferta.</h2>
+            <p style="color: #888;">Empieza ahora para encontrar al desarrollador ideal para tu proyecto.</p>
+            <a href="/publishOffer" class="boton-crear-oferta boton-crear-primera">
+                <i class="fas fa-magic"></i> CREAR MI PRIMERA OFERTA
+            </a>
+        </div>
+
+    </main>
+
+    <div id="modal-confirmacion" class="modal-overlay">
+        <div class="modal-box">
+            <i class="fas fa-exclamation-triangle icono-peligro"></i>
+            <h3>¿Borrar oferta definitivamente?</h3>
+            <p>Se eliminará esta oferta de empleo y <b>todas las postulaciones</b> asociadas a ella. Esta acción no se puede deshacer.</p>
+            
+            <div class="modal-botones">
+                <button class="btn-modal-cancelar" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn-modal-borrar" onclick="ejecutarBorrado()">Sí, eliminar oferta</button>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script>
+        // Lógica de cambio de estado (Active/Closed)
+        function cambiarEstado(ofertaId, checkbox) {
+            const estadoVisual = checkbox.checked;
+            const textoSpan = document.getElementById('texto-estado-' + ofertaId);
+
+            fetch('/api/ofertas/' + ofertaId + '/toggle-status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.activa) {
+                        textoSpan.innerText = 'Activa';
+                        textoSpan.style.color = '#00f2ff'; 
+                    } else {
+                        textoSpan.innerText = 'Cerrada';
+                        textoSpan.style.color = '#ff4444'; 
+                    }
+                } else {
+                    alert("No se pudo actualizar el estado.");
+                    checkbox.checked = !estadoVisual; 
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                checkbox.checked = !estadoVisual;
+            });
+        }
+
+        // Lógica del modal de borrado
+        let ofertaIdPendiente = null;
+
+        function abrirModalBorrado(ofertaId) {
+            ofertaIdPendiente = ofertaId;
+            document.getElementById('modal-confirmacion').classList.add('mostrar-modal');
+        }
+
+        function cerrarModal() {
+            ofertaIdPendiente = null;
+            document.getElementById('modal-confirmacion').classList.remove('mostrar-modal');
+        }
+
+        function ejecutarBorrado() {
+            if (ofertaIdPendiente) {
+                const btnBorrar = document.querySelector('.btn-modal-borrar');
+                btnBorrar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Borrando...';
+                btnBorrar.disabled = true;
+
+                fetch('/api/ofertas/' + ofertaIdPendiente + '/delete', {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload(); 
+                    } else {
+                        alert("Error al intentar borrar la oferta.");
+                        cerrarModal();
+                        btnBorrar.innerHTML = 'Sí, eliminar oferta';
+                        btnBorrar.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    cerrarModal();
+                });
+            }
+        }
+    </script>
+</body>
+</html>

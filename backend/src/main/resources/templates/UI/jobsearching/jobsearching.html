@@ -10,6 +10,17 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* IMPORTANTE: Usamos selectores más específicos para ganarle a otros estilos */
+        .activo, 
+        header .navegacion-central a.activo i, 
+        header .navegacion-central a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
@@ -18,7 +29,6 @@
     <main class="contenedor-principal-ofertas">
         
         <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
-            
             <div class="logo-empresa">
                 <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
                      alt="Logo Empresa">
@@ -26,7 +36,6 @@
             
             <div class="info-oferta">
                 <h3 class="nombre-empresa" th:text="${oferta.empresa?.username ?: 'Empresa ProGrammer'}">Nombre de la Empresa</h3>
-                
                 <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
                 <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
                 
@@ -42,7 +51,6 @@
                     <i th:class="${oferta.activa} ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> 
                     <span th:text="${oferta.activa} ? 'Activa' : 'Cerrada'"></span>
                 </span>
-                
                 <button class="boton-postular" th:disabled="${!oferta.activa}" onclick="window.location.href='/jobview'">POSTULAR</button>
             </div>
         </div>
@@ -54,6 +62,31 @@
     </main>
 
     <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script>
+    function inicializarHeader() {
+        // Buscamos el icono de empleos por su ID
+        const navEmpleos = document.getElementById('nav-empleos'); 
+        
+        if (navEmpleos) {
+            navEmpleos.classList.add('activo');
+        } else {
+            // Si el ID falla, buscamos por el enlace
+            const todosLosLinks = document.querySelectorAll('header a');
+            todosLosLinks.forEach(link => {
+                if (link.getAttribute('href') === '/jobsearching' || link.getAttribute('href')?.includes('jobsearching')) {
+                    link.classList.add('activo');
+                }
+            });
+        }
+    }
+
+    window.addEventListener('load', () => {
+        // Ejecutamos con pequeños retardos para asegurar que el header esté cargado
+        setTimeout(inicializarHeader, 50);
+        setTimeout(inicializarHeader, 300);
+    });
+    </script>
 
 </body>
 </html>

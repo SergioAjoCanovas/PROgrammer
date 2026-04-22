@@ -78,7 +78,6 @@
 
 <header th:fragment="header" class="encabezado-principal">
 
-    <!-- IZQUIERDA -->
     <div class="seccion-izquierda">
         <div class="contenedor-logotipo">
             <a href="/main">
@@ -87,7 +86,6 @@
         </div>
     </div>
 
-    <!-- CENTRO -->
     <nav class="navegacion-central">
 
         <a href="/main" class="icono-nav" id="nav-inicio">
@@ -105,7 +103,6 @@
             <span class="texto-icono">Empleos</span>
         </a>
 
-        <!-- BOTÓN EMPRESA -->
         <a href="/publishOffer"
            class="icono-nav"
            th:if="${usuarioHeader != null and usuarioHeader.rol.nombre == 'COMPANY'}"
@@ -119,7 +116,6 @@
             <span class="texto-icono">Chats</span>
         </a>
 
-        <!-- AVISOS -->
         <div class="contenedor-avisos" onmouseleave="cerrarPanel()">
             <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
@@ -149,10 +145,39 @@
 
     </nav>
 
-    <!-- DERECHA -->
     <div class="seccion-derecha">
 
-        <!-- INFO USUARIO -->
+        <a href="/login" class="btn-logout" onclick="cerrarSesionLocal(event)" 
+           style="text-decoration: none; display: flex; flex-direction: row; align-items: center; gap: 8px; margin-right: 30px;">
+            
+            <i class="fas fa-sign-out-alt btn-logout-icon"></i>
+            <span class="texto-icono btn-logout-texto">Cerrar Sesión</span>
+
+            <style>
+                .btn-logout-icon {
+                    color: #ffffff; 
+                    font-size: 1.2rem;
+                    transition: all 0.3s ease;
+                }
+                .btn-logout-texto {
+                    color: #ffffff; 
+                    transition: all 0.3s ease;
+                    white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
+                }
+
+                /* Hover: Icono y Texto cambian a rojo */
+                .btn-logout:hover .btn-logout-icon {
+                    color: #ff0000 !important;
+                    text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+                    transform: scale(1.1);
+                }
+                
+                .btn-logout:hover .btn-logout-texto {
+                    color: #ff0000 !important;
+                }
+            </style>
+        </a>
+
         <div th:if="${usuarioHeader != null}" class="info-texto-usuario">
             <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
                 <span style="color:white;font-weight:bold;font-size:0.85em;"
@@ -163,21 +188,15 @@
             </div>
         </div>
 
-        <!-- PERFIL -->
         <a href="/ownProfile" class="item-derecha">
-
             <div class="avatar-usuario">
-
                 <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}"
                      th:src="@{${usuarioHeader.fotoPerfil}}"/>
 
                 <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}"
                    class="fas fa-user"></i>
-
             </div>
-
             <span class="texto-icono">Perfil</span>
-
         </a>
 
     </div>
@@ -192,78 +211,58 @@ function toggleAvisos(event) {
 }
 
 function cerrarPanel() {
-    document.getElementById('panel-notificaciones').classList.remove('mostrar');
-    document.getElementById('link-avisos').classList.remove('activo-btn');
+    const panel = document.getElementById('panel-notificaciones');
+    const link = document.getElementById('link-avisos');
+    if(panel) panel.classList.remove('mostrar');
+    if(link) link.classList.remove('activo-btn');
+}
+
+function cerrarSesionLocal(event) {
+    event.preventDefault();
+    localStorage.removeItem('usuarioLogueado');
+    localStorage.removeItem('rolUsuario');
+    window.location.href = "/login";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
-
     if (path === '/main') {
         document.getElementById('nav-inicio')?.classList.add('activo-btn');
     }
 });
+
+(function configurarHeader() {
+    const params = new URLSearchParams(window.location.search);
+    const username = params.get('user') || localStorage.getItem('usuarioLogueado');
+    const rol = params.get('rol') || localStorage.getItem('rolUsuario');
+
+    if (params.get('user')) {
+        localStorage.setItem('usuarioLogueado', params.get('user'));
+        localStorage.setItem('rolUsuario', params.get('rol') || '2'); 
+    }
+
+    const btnPublicar = document.getElementById('nav-publicar-oferta');
+    if (rol && btnPublicar) {
+        const r = String(rol).trim().toUpperCase();
+        btnPublicar.style.display = (r === 'COMPANY' || r === '3') ? 'flex' : 'none';
+    }
+
+    const contenedorInfo = document.getElementById('info-usuario');
+    if (username && contenedorInfo) {
+        let nombreRol = rol;
+        if (rol == '1') nombreRol = 'ADMIN';
+        if (rol == '2') nombreRol = 'DEVELOPER';
+        if (rol == '3') nombreRol = 'COMPANY';
+
+        contenedorInfo.innerHTML = `
+            <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
+                <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
+            </div>
+        `;
+    }
+})();
 </script>
-    </div>
-
-    <script>
-        (function configurarHeader() {
-            const params = new URLSearchParams(window.location.search);
-            const username = params.get('user') || localStorage.getItem('usuarioLogueado');
-            const rol = params.get('rol') || localStorage.getItem('rolUsuario');
-
-            if (params.get('user')) {
-                localStorage.setItem('usuarioLogueado', params.get('user'));
-                localStorage.setItem('rolUsuario', params.get('rol') || '2'); 
-            }
-
-            // MAGIA DEL BOTÓN DE EMPRESA
-            const btnPublicar = document.getElementById('nav-publicar-oferta');
-            if (rol && btnPublicar) {
-                const rolComprobacion = String(rol).trim().toUpperCase();
-                if (rolComprobacion === 'COMPANY' || rolComprobacion === '3') {
-                    btnPublicar.style.display = 'flex'; 
-                } else {
-                    btnPublicar.style.display = 'none'; 
-                }
-            }
-
-            // DATOS DEL USUARIO
-            const contenedorInfo = document.getElementById('info-usuario');
-            if (username && contenedorInfo) {
-                let nombreRol = rol;
-                if (rol == '1') nombreRol = 'ADMIN';
-                if (rol == '2') nombreRol = 'DEVELOPER';
-                if (rol == '3') nombreRol = 'COMPANY';
-
-                contenedorInfo.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
-                    </div>
-                `;
-            }
-
-            // MARCAR BOTÓN ACTIVO
-            const path = window.location.pathname;
-            if (path === '/main') document.getElementById('nav-inicio')?.classList.add('activo-btn');
-            if (path.includes('publishOffer')) document.getElementById('nav-publicar-oferta')?.classList.add('activo-btn');
-            if (path.includes('ownProfile')) document.getElementById('link-perfil')?.classList.add('activo-btn');
-        })();
-
-        // AVISOS
-        function toggleAvisos(event) {
-            event.preventDefault();
-            document.getElementById('panel-notificaciones').classList.toggle('mostrar');
-            document.getElementById('link-avisos').classList.toggle('activo-btn');
-        }
-
-        function cerrarPanel() {
-            document.getElementById('panel-notificaciones').classList.remove('mostrar');
-            document.getElementById('link-avisos').classList.remove('activo-btn');
-        }
-    </script>
-</header>
 
 </body>
 </html>

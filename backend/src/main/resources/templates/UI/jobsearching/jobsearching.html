@@ -10,17 +10,6 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        /* IMPORTANTE: Usamos selectores más específicos para ganarle a otros estilos */
-        .activo, 
-        header .navegacion-central a.activo i, 
-        header .navegacion-central a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-            opacity: 1 !important;
-        }
-    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
@@ -28,21 +17,32 @@
 
     <main class="contenedor-principal-ofertas">
         
+        <div class="cabecera-filtros">
+            <div class="filtro-contenedor">
+                <button class="btn-filtro filtro-seleccionado" onclick="aplicarFiltro('todas', this)">Todas</button>
+                <button class="btn-filtro" onclick="aplicarFiltro('activas', this)">Activas</button>
+                <button class="btn-filtro" onclick="aplicarFiltro('cerradas', this)">Cerradas</button>
+            </div>
+
+            <div class="acciones-superiores" id="contenedor-ofertas-propias" style="display: none;">
+                <button class="boton-ofertas-propias" onclick="irAMisOfertas()">
+                    <i class="fas fa-briefcase"></i> Ver mis ofertas publicadas
+                </button>
+            </div>
+        </div>
+
         <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
             <div class="logo-empresa">
-                <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
-                     alt="Logo Empresa">
+                <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" alt="Logo Empresa">
             </div>
             
             <div class="info-oferta">
-                <h3 class="nombre-empresa" th:text="${oferta.empresa?.username ?: 'Empresa ProGrammer'}">Nombre de la Empresa</h3>
-                <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
-                <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
+                <h3 class="nombre-empresa" th:text="${oferta.empresa?.username ?: 'Empresa ProGrammer'}">Empresa</h3>
+                <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título</h4>
+                <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción</p>
                 
                 <div class="tech-tags">
-                    <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">
-                        Tecnología
-                    </span>
+                    <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">Tech</span>
                 </div>
             </div>
             
@@ -51,12 +51,17 @@
                     <i th:class="${oferta.activa} ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> 
                     <span th:text="${oferta.activa} ? 'Activa' : 'Cerrada'"></span>
                 </span>
-                <button class="boton-postular" th:disabled="${!oferta.activa}" onclick="window.location.href='/jobview'">POSTULAR</button>
+                
+                <button class="boton-postular" 
+                        th:disabled="${!oferta.activa}" 
+                        th:text="${oferta.activa} ? 'POSTULAR' : 'CERRADA'"
+                        onclick="window.location.href='/jobview'">
+                </button>
             </div>
         </div>
-        
+
         <div th:if="${#lists.isEmpty(ofertas)}" style="text-align: center; color: white; margin-top: 50px;">
-            <h2><i class="fas fa-search"></i> No hay ofertas publicadas en este momento.</h2>
+            <h2><i class="fas fa-search"></i> No hay ofertas publicadas.</h2>
         </div>
 
     </main>
@@ -64,29 +69,57 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
+    // --- ILUMINAR EL HEADER (A PRUEBA DE FALLOS) ---
     function inicializarHeader() {
-        // Buscamos el icono de empleos por su ID
         const navEmpleos = document.getElementById('nav-empleos'); 
-        
         if (navEmpleos) {
             navEmpleos.classList.add('activo');
         } else {
-            // Si el ID falla, buscamos por el enlace
-            const todosLosLinks = document.querySelectorAll('header a');
-            todosLosLinks.forEach(link => {
-                if (link.getAttribute('href') === '/jobsearching' || link.getAttribute('href')?.includes('jobsearching')) {
+            const links = document.querySelectorAll('header a');
+            links.forEach(link => {
+                if (link.getAttribute('href')?.includes('jobsearching')) {
                     link.classList.add('activo');
                 }
             });
         }
     }
 
+    function aplicarFiltro(tipo, botonSeleccionado) {
+        if (botonSeleccionado) {
+            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('filtro-seleccionado'));
+            botonSeleccionado.classList.add('filtro-seleccionado');
+        }
+        const tarjetas = document.querySelectorAll('.tarjeta-oferta');
+        tarjetas.forEach(tarjeta => {
+            const estadoSpan = tarjeta.querySelector('.estado-oferta');
+            const estaActiva = estadoSpan && estadoSpan.classList.contains('activo');
+            if (tipo === 'todas') tarjeta.style.display = 'flex';
+            else if (tipo === 'activas' && estaActiva) tarjeta.style.display = 'flex';
+            else if (tipo === 'cerradas' && !estaActiva) tarjeta.style.display = 'flex';
+            else tarjeta.style.display = 'none';
+        });
+    }
+
+    function comprobarRolEmpresa() {
+        const rolGuardado = localStorage.getItem('rolUsuario');
+        const contenedorOfertas = document.getElementById('contenedor-ofertas-propias');
+        if (rolGuardado && contenedorOfertas) {
+            const rolString = String(rolGuardado).trim().toUpperCase();
+            if (rolString === 'COMPANY' || rolString === '3') {
+                contenedorOfertas.style.display = 'flex';
+            }
+        }
+    }
+
+    function irAMisOfertas() {
+        const usuario = localStorage.getItem('usuarioLogueado');
+        if (usuario) window.location.href = '/mis-ofertas?empresa=' + encodeURIComponent(usuario);
+    }
+
     window.addEventListener('load', () => {
-        // Ejecutamos con pequeños retardos para asegurar que el header esté cargado
-        setTimeout(inicializarHeader, 50);
-        setTimeout(inicializarHeader, 300);
+        inicializarHeader();
+        setTimeout(comprobarRolEmpresa, 50); 
     });
     </script>
-
 </body>
 </html>

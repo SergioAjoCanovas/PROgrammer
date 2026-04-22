@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos y Condiciones - PROgrammer</title>
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/terminos_styles/terminos_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fondo-oscuro-neon cuerpo-flexible">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-principal-terminos">
+        <div class="vidrio-contenedor-terminos">
+            
+            <div class="cabecera-terminos">
+                <h2><i class="fas fa-file-contract"></i> Términos y Condiciones</h2>
+                <a href="javascript:history.back()" class="boton-cerrar-terminos" title="Volver">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+
+            <div class="contenido-legal">
+                <section>
+                    <h3>1. Aceptación del Servicio y Comunidad</h3>
+                    <p>Al acceder y utilizar la plataforma PROgrammer, usted acepta quedar vinculado por estos términos. Este ecosistema ha sido diseñado exclusivamente para la interacción profesional entre desarrolladores. Queda prohibido cualquier comportamiento que degrade, acose o discrimine a otros miembros de la comunidad. El incumplimiento de estas normas básicas de convivencia resultará en la revocación inmediata del acceso a los servicios.</p>
+                </section>
+
+                <section>
+                    <h3>2. Propiedad Intelectual y Contribuciones</h3>
+                    <p>Usted conserva todos los derechos sobre el código fuente, snippets y documentación que publique en su perfil. Sin embargo, al compartirlos en esta plataforma, otorga a PROgrammer una licencia global, no exclusiva y gratuita para mostrar y distribuir dicho contenido a otros usuarios con fines educativos y de networking. Usted garantiza que posee los derechos necesarios para compartir dicho material y que no infringe patentes o derechos de autor de terceros.</p>
+                </section>
+
+                <section>
+                    <h3>3. Uso Ético y Seguridad del Sistema</h3>
+                    <p>La integridad de nuestra infraestructura es prioritaria. Queda estrictamente prohibido realizar ingeniería inversa, scraping masivo no autorizado, o el despliegue de scripts automatizados que puedan saturar nuestros servidores. Cualquier intento de inyección SQL, ataques XSS o distribución de malware a través de los perfiles de usuario será reportado a las autoridades competentes y resultará en una prohibición permanente de la dirección IP asociada.</p>
+                </section>
+
+                <section>
+                    <h3>4. Limitación de Responsabilidad Técnica</h3>
+                    <p>PROgrammer funciona como un escaparate de talento y una herramienta de red social técnica. No garantizamos que el código compartido por otros usuarios sea funcional, seguro o apto para entornos de producción. La descarga, compilación o ejecución de cualquier archivo o fragmento de código obtenido en esta web se realiza bajo la absoluta responsabilidad del usuario. No seremos responsables de daños en el hardware o pérdida de datos derivados del uso de software compartido en la comunidad.</p>
+                </section>
+
+                <section>
+                    <h3>5. Modificaciones del Servicio</h3>
+                    <p>Nos reservamos el derecho de actualizar, modificar o discontinuar cualquier aspecto de la plataforma en cualquier momento. El "stack tecnológico" de la web evoluciona constantemente, y estos términos se actualizarán para reflejar dichos cambios. Es responsabilidad del usuario revisar periódicamente esta sección para estar al tanto de las nuevas normativas de uso.</p>
+                </section>
+            </div>
+
+            <div class="contenedor-boton-aceptar">
+                <button onclick="history.back()" class="boton-amarillo-solido">ENTENDIDO Y ACEPTO</button>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+</body>
+</html>

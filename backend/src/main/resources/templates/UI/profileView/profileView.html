@@ -48,8 +48,23 @@
             
             <div class="tarjeta-resenas-izq">
                 <h3>RESEÑAS</h3>
-                <textarea class="input-resena" placeholder="Escribe aquí..."></textarea>
-                <button class="boton-anadir" onclick="window.location.href='/newreview'">Añadir reseña</button>
+                
+                <div class="campo">
+                    <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
+                    <div class="estrellas" id="estrellas-selector">
+                        <i class="far fa-star" data-value="1"></i>
+                        <i class="far fa-star" data-value="2"></i>
+                        <i class="far fa-star" data-value="3"></i>
+                        <i class="far fa-star" data-value="4"></i>
+                        <i class="far fa-star" data-value="5"></i>
+                    </div>
+                    <input type="hidden" id="rating-value" value="0">
+                </div>
+
+                <textarea class="input-resena" id="texto-resena" placeholder="Cuéntanos tu experiencia con este profesional..."></textarea>
+                <button class="boton-anadir" id="btn-publicar-local">
+                    <i class="fas fa-paper-plane"></i> Publicar reseña
+                </button>
             </div>
         </aside>
 
@@ -104,29 +119,85 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function gestionarNavegacionEIdentidad() {
-            
-            const contenedorHeader = document.getElementById('info-usuario');
-            const navPerfil = document.getElementById('nav-perfil');
+        document.addEventListener('DOMContentLoaded', () => {
+            const estrellas = document.querySelectorAll("#estrellas-selector i");
+            const inputRating = document.getElementById("rating-value");
+            const btnPublicar = document.getElementById("btn-publicar-local");
+            const contenedorResenas = document.querySelector(".tarjeta-inferior .contenido-inferior");
 
-            // 2. Iluminar icono de Perfil en el menú de navegación
-            if (navPerfil) {
-                navPerfil.classList.add('activo');
-            } else {
+            // 1. LÓGICA DE SELECCIÓN DE ESTRELLAS
+            estrellas.forEach(star => {
+                star.addEventListener("click", () => {
+                    const val = star.dataset.value;
+                    inputRating.value = val;
+
+                    estrellas.forEach((s, index) => {
+                        if (index < val) {
+                            s.classList.replace("far", "fas");
+                            s.classList.add("activa");
+                        } else {
+                            s.classList.replace("fas", "far");
+                            s.classList.remove("activa");
+                        }
+                    });
+                });
+            });
+
+            // 2. LÓGICA DE PUBLICAR RESEÑA EN EL DIV DERECHO
+            btnPublicar.addEventListener("click", () => {
+                const texto = document.getElementById("texto-resena").value;
+                const rating = inputRating.value;
+
+                if (rating == 0) {
+                    alert("Por favor, selecciona una puntuación.");
+                    return;
+                }
+                if (texto.trim() === "") {
+                    alert("Por favor, escribe un comentario.");
+                    return;
+                }
+
+                // Crear el elemento de la reseña
+                const estrellasHTML = '⭐'.repeat(rating);
+                const nuevaResenaHTML = `
+                    <div class="resena-reciente-item">
+                        <div class="resena-reciente-header">
+                            <span class="resena-reciente-usuario"><i class="fas fa-user-circle"></i> Tú</span>
+                            <span class="resena-reciente-estrellas">${estrellasHTML}</span>
+                        </div>
+                        <p class="resena-reciente-texto">${texto}</p>
+                    </div>
+                `;
+
+                // Limpiar el mensaje de "No hay reseñas" si es la primera
+                if (contenedorResenas.innerHTML.includes("No hay reseñas aún")) {
+                    contenedorResenas.innerHTML = "";
+                }
+
+                // Insertar al principio
+                contenedorResenas.insertAdjacentHTML('afterbegin', nuevaResenaHTML);
+
+                // Limpiar formulario
+                document.getElementById("texto-resena").value = "";
+                inputRating.value = 0;
+                estrellas.forEach(s => {
+                    s.classList.replace("fas", "far");
+                    s.classList.remove("activa");
+                });
+            });
+
+            // 3. IDENTIDAD DEL HEADER (Tu código original)
+            setTimeout(() => {
+                const navPerfil = document.getElementById('nav-perfil');
+                if (navPerfil) navPerfil.classList.add('activo');
+                
                 const links = document.querySelectorAll('header a');
                 links.forEach(l => {
                     if (l.getAttribute('href')?.includes('profileView')) {
                         l.classList.add('activo');
                     }
                 });
-            }
-            
-            // Nota: El h2 con clase "nombre-usuario" no se toca para que muestre 
-            // la información del perfil que estamos consultando.
-        }
-
-        window.addEventListener('load', () => {
-            setTimeout(gestionarNavegacionEIdentidad, 100);
+            }, 100);
         });
     </script>
 </body>

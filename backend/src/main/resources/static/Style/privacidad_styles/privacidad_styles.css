@@ -1,0 +1,148 @@
+/* ============================================================
+    1. ESTRUCTURA Y FONDO
+   ============================================================ */
+:root {
+    --amarillo-neon: #FFCC00;
+    --negro-tarjeta: #1a1a1a; 
+    --negro-fondo: #0c0c0c;
+    --gris-texto: #bbb;
+    --amarillo-pale: #FFFDDF;
+}
+
+.cuerpo-flexible {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--negro-fondo) !important;
+}
+
+.contenedor-principal-privacidad {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* ============================================================
+    2. TARJETA
+   ============================================================ */
+.vidrio-contenedor-privacidad {
+    background-color: var(--negro-tarjeta) !important;
+    border: 1px solid var(--amarillo-neon) !important; 
+    border-radius: 25px !important; 
+    padding: 40px !important;
+    box-shadow: 0 0 35px rgba(255, 204, 0, 0.15) !important;
+    max-width: 850px;
+    width: 100%;
+}
+
+.cabecera-privacidad {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+}
+
+.cabecera-privacidad h2 {
+    color: var(--amarillo-neon);
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.boton-cerrar-privacidad {
+    color: var(--amarillo-neon);
+    font-size: 1.8rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.boton-cerrar-privacidad:hover {
+    transform: scale(1.2) rotate(90deg);
+    text-shadow: 0 0 15px var(--amarillo-neon);
+}
+
+/* ============================================================
+    3. CONTENIDO Y SCROLL
+   ============================================================ */
+.contenido-legal {
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 20px;
+    margin-bottom: 30px;
+}
+
+/* --- ESTILO DE LA BARRA DE SCROLL --- */
+.contenido-legal::-webkit-scrollbar {
+    width: 12px; 
+}
+
+.contenido-legal::-webkit-scrollbar-track {
+    background: #050505; 
+    border-radius: 10px;
+}
+
+.contenido-legal::-webkit-scrollbar-thumb {
+    background: var(--amarillo-neon);
+    border-radius: 10px;
+    border: 3px solid #050505; 
+    cursor: pointer;
+}
+
+.contenido-legal::-webkit-scrollbar-thumb:hover {
+    background: #e6b800;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+.contenido-legal section {
+    margin-bottom: 30px;
+}
+
+.contenido-legal h3 {
+    color: var(--amarillo-pale);
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.contenido-legal p {
+    color: var(--gris-texto);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+/* ============================================================
+    4. BOTÓN
+   ============================================================ */
+.contenedor-boton-aceptar {
+    display: flex;
+    justify-content: center;
+}
+
+.boton-amarillo-solido {
+    background: #000;
+    color: var(--amarillo-neon);
+    border: 2px solid var(--amarillo-neon);
+    padding: 15px 45px;
+    border-radius: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.boton-amarillo-solido:hover {
+    background: var(--amarillo-neon);
+    color: #000;
+    box-shadow: 0 0 25px var(--amarillo-neon);
+}

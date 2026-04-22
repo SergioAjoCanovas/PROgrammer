@@ -139,4 +139,32 @@ public class ViewController {
         return "UI/loginPage/loginPage";
     }
 
+    // =========================
+    // TECNOLOGÍAS
+    // =========================
+    @GetMapping("/addTechnology")
+    public String addTechnology(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("usuarioHeader", usuario);
+        return "UI/addTechnology/addTechnology"; 
+    }
+
+
+
+    // =========================
+    // TERMINOS Y PRIVACIDAD
+    // =========================
+
+    @GetMapping("/terminos")
+    public String mostrarTerminos() {
+        return "UI/terminos/terminos"; 
+    }
+
+    @GetMapping("/privacidad")
+    public String mostrarPrivacidad() {
+        return "UI/privacidad/privacidad"; 
+    }
 }

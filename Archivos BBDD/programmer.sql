@@ -12,6 +12,10 @@ CREATE TABLE usuarios(
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     foto_perfil VARCHAR(255),
+    github VARCHAR(255),
+    linkedin VARCHAR(255),
+    curriculum VARCHAR (255),
+    biografia VARCHAR (255),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_rol BIGINT,
     FOREIGN KEY (id_rol) REFERENCES roles(id)

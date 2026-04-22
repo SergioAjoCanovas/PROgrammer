@@ -149,8 +149,22 @@ public class ViewController {
             return "redirect:/login";
         }
         model.addAttribute("usuarioHeader", usuario);
-        // Asegúrate de que la ruta coincida con la ubicación de tu archivo HTML
         return "UI/addTechnology/addTechnology"; 
     }
 
+
+
+    // =========================
+    // TERMINOS Y PRIVACIDAD
+    // =========================
+
+    @GetMapping("/terminos")
+    public String mostrarTerminos() {
+        return "UI/terminos/terminos"; 
+    }
+
+    @GetMapping("/privacidad")
+    public String mostrarPrivacidad() {
+        return "UI/privacidad/privacidad"; 
+    }
 }

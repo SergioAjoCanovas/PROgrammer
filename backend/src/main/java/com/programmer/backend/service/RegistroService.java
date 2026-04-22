@@ -44,7 +44,7 @@ public class RegistroService {
         
         // 2. Ruta RELATIVA (Quitamos el System.getProperty)
         // Java buscará esta ruta dentro de la carpeta donde se está ejecutando el proyecto
-        Path directorioPath = Paths.get("backend", "src", "main", "resources", "static", "Img", "perfiles");
+        Path directorioPath = Paths.get(System.getProperty("user.dir"), "uploads", "perfiles");
         
         // Creamos la carpeta si no existe (esto evita errores de "ruta no encontrada")
         if (!Files.exists(directorioPath)) {
@@ -58,6 +58,6 @@ public class RegistroService {
         Files.copy(archivo.getInputStream(), rutaFinal);
         
         // 4. Retornamos la ruta que se guardará en el String de la Base de Datos
-        return "/Img/perfiles/" + nombreArchivo;
+        return "/uploads/perfiles/" + nombreArchivo;
     }
 }

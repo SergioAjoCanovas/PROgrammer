@@ -116,20 +116,8 @@
 
     <script>
         function inicializarInterfazChat() {
-            const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario') || 'USER';
             const contenedorHeader = document.getElementById('info-usuario');
             const navChats = document.getElementById('nav-chats'); // Asegúrate que el link en header.html tenga este id
-
-            // 1. Mostrar nombre y rol en el header
-            if (miNombre && contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
-                    </div>
-                `;
-            }
 
             // 2. Iluminar icono de Mensajes/Chats
             if (navChats) {

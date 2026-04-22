@@ -83,24 +83,6 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        // --- 1. LÓGICA DE IDENTIDAD (IGUAL A LAS OTRAS PÁGINAS) ---
-        function mostrarInfoUsuarioMain() {
-            const username = localStorage.getItem('usuarioLogueado');
-            let rol = localStorage.getItem('rolUsuario');
-            const contenedor = document.getElementById('info-usuario');
-
-            if (!rol) rol = 'USER';
-
-            if (username && contenedor) {
-                contenedor.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${rol.toUpperCase()}</span>
-                    </div>
-                `;
-            }
-        }
-
         // --- 2. LÓGICA DEL CARRUSEL ---
         const track = document.querySelector('.carrusel-track');
         const nextBtn = document.querySelector('.next');

@@ -13,19 +13,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* Estilo para resaltar el link activo en el header */
-        .activo, .activo i, .activo span {
+        /* COPIADO DE RED/EMPLEOS PARA MANTENER LA CONSISTENCIA */
+        .activo, 
+        header .navegacion-central a.activo i, 
+        header .navegacion-central a.activo span {
             color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+            opacity: 1 !important;
         }
+        
         .seccion-categoria {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: rgba(25, 25, 25, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
         }
+        
         .titulo-categoria-form {
             color: #00f2ff;
             font-size: 1.1rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border-left: 3px solid #FFCC00;
             padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid-tecnologias {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .check-tech {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ddd;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .check-tech:hover {
+            background: rgba(0, 242, 255, 0.1);
+            color: white;
         }
     </style>
 </head>
@@ -37,34 +72,48 @@
         <section class="tarjeta-publicacion">
             <div class="cabecera-tarjeta">
                 <h2><i class="fas fa-bullhorn"></i> Nueva Oferta de Empleo</h2>
-                <p>Publica los detalles para atraer a los mejores programadores</p>
+                <p style="color: #aaa; margin-top: 5px;">Publica los detalles para atraer a los mejores programadores</p>
             </div>
 
             <form th:action="@{/api/ofertas/crear}" method="POST" class="formulario-oferta">
-                
+                <input type="hidden" id="username_empresa" name="username_empresa" value="">
+
                 <div class="grupo-input">
                     <label for="titulo"><i class="fas fa-signature"></i> Título del Puesto</label>
-                    <input type="text" id="titulo" name="titulo" class="input-neon" 
-                           placeholder="Ej: Desarrollador Fullstack Junior" required>
+                    <input type="text" id="titulo" name="titulo" class="input-neon" placeholder="Ej: Desarrollador Fullstack Junior" required>
                 </div>
 
                 <div class="grupo-input">
-                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción Detallada</label>
-                    <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta" 
-                              placeholder="Indica las tareas, el stack tecnológico y los beneficios..." required></textarea>
+                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción Breve</label>
+                    <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta" rows="3" required></textarea>
                 </div>
 
                 <div class="grupo-input">
-                    <label><i class="fas fa-layer-group"></i> Tags de Tecnologías</label>
+                    <label for="requisitos"><i class="fas fa-list-check"></i> Requisitos</label>
+                    <textarea id="requisitos" name="requisitos" class="input-neon textarea-oferta" rows="4"></textarea>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="ofrecemos"><i class="fas fa-gift"></i> ¿Qué ofrecemos?</label>
+                    <textarea id="ofrecemos" name="ofrecemos" class="input-neon textarea-oferta" rows="4"></textarea>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="rango_salarial"><i class="fas fa-money-bill-wave"></i> Rango Salarial</label>
+                    <input type="text" id="rango_salarial" name="rango_salarial" class="input-neon" placeholder="Ej: 30.000€ - 45.000€">
+                </div>
+
+                <div class="grupo-input">
+                    <label><i class="fas fa-layer-group"></i> Tecnologías Requeridas</label>
                     <div id="contenedor-tecnologias">
-                        <span style="color: #666; font-size: 0.9rem;">Cargando tecnologías...</span>
+                        <span style="color: #666; font-size: 0.9rem;"><i class="fas fa-spinner fa-spin"></i> Cargando tecnologías...</span>
                     </div>
                 </div>
 
-                <div class="acciones-formulario">
-                    <a th:href="@{/main}" class="btn-cancelar">Descartar</a>
-                    <button type="submit" class="btn-publicar-neon">
-                        <i class="fas fa-check-circle"></i> Lanzar Oferta
+                <div class="acciones-formulario" style="display: flex; gap: 15px; margin-top: 20px;">
+                    <a th:href="@{/main}" class="btn-cancelar" style="padding: 12px 20px; background: #333; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Descartar</a>
+                    <button type="submit" class="btn-publicar-neon" style="flex: 1;">
+                        <i class="fas fa-paper-plane"></i> Lanzar Oferta
                     </button>
                 </div>
             </form>
@@ -76,17 +125,21 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            const miNombre = localStorage.getItem('usuarioLogueado');
+            if (miNombre) {
+                document.getElementById('username_empresa').value = miNombre;
+            }
             actualizarMiUsuarioEnHeader();
             cargarTecnologiasDesdeBD();
-            marcarLinkActivo();
+            
+            // Lanzamos la iluminación con un pequeño delay para que el header cargue
+            setTimeout(marcarLinkActivo, 100);
         });
 
-        // 1. IDENTIDAD EN EL HEADER (Visitante logueado)
         function actualizarMiUsuarioEnHeader() {
             const miNombre = localStorage.getItem('usuarioLogueado');
             const miRol = localStorage.getItem('rolUsuario') || 'EMPRESA';
             const contenedorHeader = document.getElementById('info-usuario');
-
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
                     <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
@@ -97,56 +150,48 @@
             }
         }
 
-        // 2. RESALTADO DE RUTA ACTUAL
+        // FUNCIÓN MEJORADA PARA ILUMINAR EL BOTÓN DE PUBLICAR
         function marcarLinkActivo() {
-            const currentPath = window.location.pathname;
-            const enlaces = document.querySelectorAll('header a');
-            enlaces.forEach(enlace => {
-                const href = enlace.getAttribute('href');
-                if (href && currentPath === href) {
-                    enlace.classList.add('activo');
-                }
-            });
+            // Buscamos el botón por su ID
+            const btnPublicar = document.getElementById('nav-publicar-oferta');
+            if (btnPublicar) {
+                btnPublicar.classList.add('activo');
+            } else {
+                // Si no hay ID, buscamos por la URL
+                const path = window.location.pathname;
+                const enlaces = document.querySelectorAll('header a');
+                enlaces.forEach(enlace => {
+                    if (enlace.getAttribute('href')?.includes('publishOffer')) {
+                        enlace.classList.add('activo');
+                    }
+                });
+            }
         }
 
-        // 3. CARGA DINÁMICA DE CATEGORÍAS Y TECNOLOGÍAS
         function cargarTecnologiasDesdeBD() {
-            fetch('/api/categorias/todas') // Ruta relativa preferible
+            fetch('/api/categorias/todas') 
                 .then(res => res.json())
                 .then(categorias => {
                     const contenedor = document.getElementById('contenedor-tecnologias');
                     contenedor.innerHTML = ''; 
-
                     categorias.forEach(cat => {
                         const divCategoria = document.createElement('div');
                         divCategoria.className = 'seccion-categoria';
-
                         const titulo = document.createElement('h3');
                         titulo.className = 'titulo-categoria-form';
                         titulo.innerText = cat.nombre;
                         divCategoria.appendChild(titulo);
-
                         const grid = document.createElement('div');
                         grid.className = 'grid-tecnologias';
-
                         cat.tecnologias.forEach(tech => {
                             const label = document.createElement('label');
                             label.className = 'check-tech'; 
-                            label.innerHTML = `
-                                <input type="checkbox" name="tecnologias_ids" value="${tech.id}">
-                                <span>${tech.nombre}</span>
-                            `;
+                            label.innerHTML = `<input type="checkbox" name="tecnologias_ids" value="${tech.id}"><span>${tech.nombre}</span>`;
                             grid.appendChild(label);
                         });
-
                         divCategoria.appendChild(grid);
                         contenedor.appendChild(divCategoria);
                     });
-                })
-                .catch(err => {
-                    console.error("Error:", err);
-                    document.getElementById('contenedor-tecnologias').innerHTML = 
-                        '<span style="color: #ff4444;">Error al conectar con el servidor de categorías</span>';
                 });
         }
     </script>

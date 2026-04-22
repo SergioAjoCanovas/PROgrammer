@@ -298,3 +298,68 @@ body.fondo-oscuro-neon {
 .tarjeta-inferior {
     flex: 1; 
 }
+
+
+/* Estilos para el selector de estrellas */
+.estrellas {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    justify-content: center;
+}
+
+.estrellas i {
+    font-size: 1.5rem;
+    color: #444; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.estrellas i:hover {
+    transform: scale(1.2);
+    color: #FFF000;
+    text-shadow: 0 0 10px #FFCC00;
+}
+
+.estrellas i.activa {
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+}
+
+/* Estilo para la reseña recién creada en el panel derecho */
+.resena-reciente-item {
+    background: #000;
+    border: 1px solid rgba(255, 204, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    animation: fadeIn 0.5s ease;
+}
+
+.resena-reciente-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.resena-reciente-estrellas {
+    color: #FFCC00;
+    font-size: 0.9rem;
+}
+
+.resena-reciente-usuario {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: #fff;
+}
+
+.resena-reciente-texto {
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

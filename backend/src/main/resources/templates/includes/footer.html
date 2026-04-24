@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<!-- 🔥 FRAGMENTO -->
 <div th:fragment="footer">
 
-<footer class="footer-principal">
+    <footer class="footer-principal">
 
-    <div class="footer-contenido">
+        <div class="footer-contenido">
 
-        <!-- IZQUIERDA -->
-        <div class="footer-seccion">
-            <img th:src="@{/Img/logo_sin_silla_de_ruedas-removebg-preview.png}"
-                 alt="Logotipo"
-                 class="footer-logo">
+            <div class="footer-seccion">
+                <img th:src="@{/Img/logo_sin_silla_de_ruedas-removebg-preview.png}"
+                     alt="Logotipo"
+                     class="footer-logo">
 
-            <div class="footer-texto">
-                <p>2026 ProGrammer</p>
-                <p>Cristian Escobar, David Alcázar, Sergio Ajo</p>
+                <div class="footer-texto">
+                    <p>2026 ProGrammer</p>
+                    <p>Cristian Escobar, David Alcázar, Sergio Ajo</p>
+                </div>
             </div>
+
+            <div class="footer-seccion footer-links">
+                <a th:href="@{/nosotros}"> Sobre Nosotros</a>
+                <a th:href="@{/privacidad}">Políticas de Privacidad</a>
+                <a th:href="@{/terminos}">Términos y Condiciones</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=programmer.soporte@gmail.com&su=Soporte%20ProGrammer&body=Hola%20equipo%20de%20ProGrammer," 
+                   target="_blank">
+                    Contáctanos
+                </a>
+            </div>
+
+            <div class="footer-seccion footer-redes">
+                <a href="https://github.com/SergioAjoCanovas/PROgrammer.git" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+
         </div>
 
-        <!-- CENTRO -->
-        <div class="footer-seccion footer-links">
-            <a href="#">Sobre nosotros</a>
-            <a th:href="@{/privacidad}">Políticas de Privacidad</a>
-            <a th:href="@{/terminos}">Términos y Condiciones</a>
-            <a href="#">Contacto</a>
-        </div>
-
-        <!-- DERECHA -->
-        <div class="footer-seccion footer-redes">
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-        </div>
-
-    </div>
-
-</footer>
+    </footer>
 
 </div>
 

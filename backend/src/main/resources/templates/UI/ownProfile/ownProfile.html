@@ -65,10 +65,25 @@
                                class="fas fa-camera icono-camera"></i>
                         
                         </div>
-                    <h2 class="nombre-usuario" id="nombre-perfil-display"
-                        th:text="${usuarioHeader.username}">
-                        CARGANDO...
-                    </h2>
+                        <div class="contenedor-nombre-usuario">
+                            <div class="nombre-wrapper">
+                                <h2 class="nombre-usuario"
+                                    id="nombre-perfil-display"
+                                    th:text="${usuarioHeader.username}">
+                                </h2>
+                            
+                                <!-- INPUT SUPERPUESTO / INLINE -->
+                                <input type="text"
+                                       id="nombre-perfil-input"
+                                       class="input-nombre-perfil"
+                                       style="display:none;"
+                                       onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
+                            </div>
+                        
+                            <!-- ICONO LÁPIZ -->
+                            <i class="fas fa-pencil-alt icono-editar-nombre"
+                               onclick="activarEdicionNombre()"></i>
+                        </div>
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
@@ -148,9 +163,13 @@
         </div> 
     </main>
 
+    <div id="toast" class="toast"></div>
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
+        let editandoNombre = false;
+        let nombreOriginal = "";
+
     window.addEventListener('load', () => {
         renderizarDatosUsuario();
         
@@ -166,6 +185,110 @@
             btnPerfil.classList.remove('activo-btn');
         }
     });
+
+    function activarEdicionNombre() {
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        editandoNombre = true;
+        nombreOriginal = display.innerText;
+
+        input.value = nombreOriginal;
+        input.style.display = "block";
+        input.focus();
+    }
+
+    function guardarNombre() {
+        if (!editandoNombre) return;
+
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        const nuevoNombre = input.value.trim();
+
+        if (nuevoNombre === "") {
+            mostrarToast("El nombre no puede estar vacío");
+            return;
+        }
+
+        fetch("/usuario/updateUsername", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "username=" + encodeURIComponent(nuevoNombre)
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            if (data === "OK") {
+                display.innerText = nuevoNombre;
+
+                const headerUsername = document.querySelector(".info-texto-usuario span");
+                if (headerUsername) {
+                    headerUsername.innerText = nuevoNombre.toUpperCase();
+                }
+
+                mostrarToast("Nombre actualizado correctamente");
+            } else if (data === "EXISTS") {
+                mostrarToast("Ese nombre ya existe");
+            } else if (data === "EMPTY") {
+                mostrarToast("El nombre no puede estar vacío");
+            } else {
+                mostrarToast("Error al actualizar");
+            }
+        })
+        .finally(() => {
+            editandoNombre = false;
+            input.style.display = "none";
+            display.style.display = "block";
+        });
+    }
+
+    function cancelarEdicionNombre() {
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        editandoNombre = false;
+
+        input.value = nombreOriginal;
+
+        input.style.display = "none";
+        display.style.display = "block";
+
+        input.blur();
+    }
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && editandoNombre) {
+            cancelarEdicionNombre();
+        }
+    });
+
+    document.addEventListener("mousedown", function (event) {
+        if (!editandoNombre) return;
+
+        const wrapper = document.querySelector(".nombre-wrapper");
+        const input = document.getElementById("nombre-perfil-input");
+
+        const clickDentro =
+            wrapper.contains(event.target) ||
+            input.contains(event.target);
+
+        if (!clickDentro) {
+            cancelarEdicionNombre();
+        }
+    });
+
+    function mostrarToast(msg) {
+        const toast = document.getElementById("toast");
+        toast.innerText = msg;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4000);
+    }
     </script>
 </body>
 </html>

@@ -154,9 +154,9 @@ public class ViewController {
 
 
 
-    // =========================
-    // TERMINOS Y PRIVACIDAD
-    // =========================
+    // =======================================
+    // TERMINOS,PRIVACIDAD,SOBRE NOSOTROS
+    // =======================================
 
     @GetMapping("/terminos")
     public String mostrarTerminos() {
@@ -166,5 +166,12 @@ public class ViewController {
     @GetMapping("/privacidad")
     public String mostrarPrivacidad() {
         return "UI/privacidad/privacidad"; 
+    }
+
+    @GetMapping("/nosotros")
+    public String mostrarNosotros(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        model.addAttribute("usuarioLogueado", usuario);
+        return "UI/nosotros/nosotros"; 
     }
 }

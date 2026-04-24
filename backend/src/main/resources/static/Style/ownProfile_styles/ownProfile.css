@@ -155,11 +155,10 @@ body.fondo-oscuro-neon {
         text-shadow: 0 0 10px var(--amarillo-neon);
     }
 
-    /* INPUT (debajo del nombre) */
     .input-nombre-perfil {
         width: 80%;
         margin: 10px auto 0;
-        display: none; /* importante: oculto por defecto */
+        display: none;
 
         background-color: var(--negro-input);
         border: 2px solid var(--amarillo-neon);
@@ -179,8 +178,71 @@ body.fondo-oscuro-neon {
     .input-nombre-perfil:focus {
         box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
     }
-    
 
+/* ============================================================
+    EDITAR REDES SOCIALES
+    ============================================================ */
+
+    .campo-red {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .valor-red {
+        cursor: pointer;
+        display: inline-block;
+    }
+    
+    /* INPUT SUPERPUESTO */
+    .campo-red {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .acciones-red {
+        display: flex;
+        gap: 6px; /* iconos juntos */
+        margin-left: auto;
+    }
+    
+    .icono-rojo {
+        color: #ff3b3b !important;
+        cursor: pointer;
+    }
+    
+    /* input encima del texto */
+    .input-red {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 10;
+    }
+    
+    .icono-borrar-texto {
+        color: #ff3b3b;
+        cursor: pointer;
+    }
+    
+    .icono-editar-texto {
+        cursor: pointer;
+    }
+
+    .clicable-red {
+        cursor: pointer;
+        border-bottom: 1px dotted rgba(255, 204, 0, 0.8);
+        display: inline-block;
+    }
+    
+    .clicable-red:hover {
+        border-bottom: 1px dotted #FFCC00;
+        text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+    }
+    
 /* ============================================================
     5. REJILLA DE PROYECTOS (DERECHA)
    ============================================================ */

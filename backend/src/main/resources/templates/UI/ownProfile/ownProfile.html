@@ -87,9 +87,51 @@
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
-                        <li><span>Instagram</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
-                        <li><span>GitHub</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
-                        <li><span>LinkedIn</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
+                        <li class="campo-red" data-type="github">
+                    
+                            <span class="valor-red"
+                                id="github-display"
+                                th:classappend="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github)} ? ' clicable-red' : ''"
+                                th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}"
+                                th:attr="data-url=${usuarioHeader.github}">
+                            </span>
+                                                
+                            <div class="acciones-red">
+                                <i class="fas fa-pencil-alt icono-editar-texto"
+                                   onclick="activarEdicionRed('github')"></i>
+                    
+                                <i class="fas fa-trash icono-borrar-texto icono-rojo"
+                                   onclick="eliminarRed('github')"></i>
+                            </div>
+                    
+                            <input type="text"
+                                   id="github-input"
+                                   class="input-nombre-perfil input-red"
+                                   style="display:none; position:absolute;">
+                        </li>
+                    
+                        <li class="campo-red" data-type="linkedin">
+                    
+                            <span class="valor-red"
+                                    id="linkedin-display"
+                                    th:classappend="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin)} ? ' clicable-red' : ''"
+                                    th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}"
+                                    th:attr="data-url=${usuarioHeader.linkedin}">
+                            </span>
+                    
+                            <div class="acciones-red">
+                                <i class="fas fa-pencil-alt icono-editar-texto"
+                                   onclick="activarEdicionRed('linkedin')"></i>
+                    
+                                <i class="fas fa-trash icono-borrar-texto icono-rojo"
+                                   onclick="eliminarRed('linkedin')"></i>
+                            </div>
+                    
+                            <input type="text"
+                                   id="linkedin-input"
+                                   class="input-nombre-perfil input-red"
+                                   style="display:none; position:absolute;">
+                        </li>
                     </ul>
                     <button class="boton-amarillo-solido">ACTUALIZAR CURRÍCULUM</button>
                 </div>
@@ -169,6 +211,8 @@
     <script>
         let editandoNombre = false;
         let nombreOriginal = "";
+        let editandoRed = null;
+        let valorOriginalRed = "";
 
     window.addEventListener('load', () => {
         renderizarDatosUsuario();
@@ -259,6 +303,143 @@
         input.blur();
     }
 
+    function activarEdicionRed(tipo) {
+        const display = document.getElementById(tipo + "-display");
+        const input = document.getElementById(tipo + "-input");
+
+        editandoRed = tipo;
+        valorOriginalRed = display.getAttribute("data-url") || "";
+
+        input.value = valorOriginalRed;
+
+        input.style.display = "block";
+        input.focus();
+    }
+
+    function normalizarURL(tipo, valor) {
+        if (!valor) return null;
+
+        valor = valor.trim().replace(/\s/g, "");
+
+        if (valor.startsWith("http://") || valor.startsWith("https://")) {
+            return valor;
+        }
+
+        if (valor.startsWith("www.")) {
+            return "https://" + valor;
+        }
+
+        if (valor.startsWith("github.com/")) {
+            return "https://" + valor;
+        }
+
+        if (valor.startsWith("linkedin.com/")) {
+            return "https://" + valor;
+        }
+
+        if (tipo === "github") {
+            return "https://github.com/" + valor;
+        }
+
+        if (tipo === "linkedin") {
+            return "https://www.linkedin.com/in/" + valor;
+        }
+
+        return valor;
+    }
+
+    function guardarRed(tipo) {
+        const input = document.getElementById(tipo + "-input");
+        const display = document.getElementById(tipo + "-display");
+
+        const valor = input.value.trim();
+
+        let urlFinal = normalizarURL(tipo, valor);
+
+        if (valor === "") {
+            urlFinal = null;
+        }
+
+        fetch("/usuario/updateRed", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "tipo=" + tipo + "&valor=" + encodeURIComponent(urlFinal || "")
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            if (data === "OK") {
+
+                if (urlFinal) {
+                    display.innerText = tipo === "github" ? "Mi GitHub" : "Mi LinkedIn";
+                    display.setAttribute("data-url", urlFinal);
+                    display.classList.add("clicable-red");
+                } else {
+                    display.innerText = "Introduce tu red social";
+                    display.removeAttribute("data-url");
+                    display.classList.remove("clicable-red");
+                }
+
+                mostrarToast(tipo + " actualizado correctamente");
+
+            } else if (data === "NOT_LOGGED") {
+                mostrarToast("Usuario no logueado");
+            } else {
+                mostrarToast("Error al actualizar " + tipo);
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión");
+        })
+        .finally(() => {
+            input.style.display = "none";
+            editandoRed = null;
+        });
+    }
+
+    function eliminarRed(tipo) {
+        fetch("/usuario/updateRed", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "tipo=" + tipo + "&valor="
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            const display = document.getElementById(tipo + "-display");
+
+            if (data === "OK") {
+                const nombreBonito = tipo === "github" ? "GitHub" : "LinkedIn";
+                display.innerText = "Añadir " + nombreBonito;
+                display.removeAttribute("data-url");
+                display.classList.remove("clicable-red");
+                mostrarToast(tipo + " eliminado correctamente");
+            } else {
+                mostrarToast("Error al eliminar " + tipo);
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión");
+        });
+    }
+
+    function cancelarEdicionRed() {
+        if (!editandoRed) return;
+
+        const input = document.getElementById(editandoRed + "-input");
+
+        input.value = valorOriginalRed;
+        input.style.display = "none";
+
+        editandoRed = null;
+    }
+
+    //-----EVENTS LISTENER PARA EL NOMBRE
+
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape" && editandoNombre) {
             cancelarEdicionNombre();
@@ -279,6 +460,43 @@
             cancelarEdicionNombre();
         }
     });
+
+    //-----EVENTS LISTENER PARA LAS REDES SOCIALES
+
+    document.addEventListener("keypress", function (e) {
+        if (e.key === "Enter" && editandoRed) {
+            guardarRed(editandoRed);
+        }
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            cancelarEdicionRed();
+        }
+    });
+
+    document.addEventListener("mousedown", function (e) {
+        if (!editandoRed) return;
+
+        const input = document.getElementById(editandoRed + "-input");
+        const wrapper = input.parentElement;
+
+        if (!wrapper.contains(e.target)) {
+            cancelarEdicionRed();
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        const el = e.target.closest(".valor-red");
+        if (!el) return;
+
+        const url = el.dataset.url;
+        if (url) {
+            window.open(url, "_blank");
+        }
+    });
+
+    //TOAST DE AVISO
 
     function mostrarToast(msg) {
         const toast = document.getElementById("toast");

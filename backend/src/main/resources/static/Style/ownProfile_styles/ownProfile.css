@@ -133,6 +133,55 @@ body.fondo-oscuro-neon {
 }
 
 /* ============================================================
+   EDITAR NOMBRE DE USUARIO
+   ============================================================ */
+
+   .contenedor-nombre-usuario {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .icono-editar-nombre {
+        color: var(--amarillo-neon);
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .icono-editar-nombre:hover {
+        transform: scale(1.2);
+        text-shadow: 0 0 10px var(--amarillo-neon);
+    }
+
+    /* INPUT (debajo del nombre) */
+    .input-nombre-perfil {
+        width: 80%;
+        margin: 10px auto 0;
+        display: none; /* importante: oculto por defecto */
+
+        background-color: var(--negro-input);
+        border: 2px solid var(--amarillo-neon);
+        border-radius: 10px;
+
+        color: var(--amarillo-neon);
+        font-weight: bold;
+        text-align: center;
+
+        padding: 10px;
+        outline: none;
+
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .input-nombre-perfil:focus {
+        box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+    }
+    
+
+/* ============================================================
     5. REJILLA DE PROYECTOS (DERECHA)
    ============================================================ */
 .rejilla-proyectos {
@@ -302,3 +351,28 @@ body.fondo-oscuro-neon {
 .activo-btn .fa-cog {
     animation: none !important;
 }
+
+/* ============================================================
+    10. TOAST DE AVISO
+   ============================================================ */
+   .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: #1a1a1a;
+        color: #FFCC00;
+        border: 1px solid #FFCC00;
+        padding: 12px 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(255,204,0,0.4);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        font-weight: bold;
+        z-index: 9999;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }

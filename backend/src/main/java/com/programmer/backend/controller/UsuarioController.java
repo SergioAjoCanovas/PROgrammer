@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -50,5 +51,36 @@ public class UsuarioController {
         session.setAttribute("usuarioLogueado", usuario);
 
         return "redirect:/ownProfile";
+    }
+
+    // =========================
+    // CAMBIAR NOMBRE DE USUARIO
+    // =========================
+
+    @PostMapping("/usuario/updateUsername")
+    @ResponseBody
+    public String updateUsername(@RequestParam("username") String username,
+                                HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            return "NOT_LOGGED";
+        }
+
+        if (username == null || username.trim().isEmpty()) {
+            return "EMPTY";
+        }
+
+        if (usuarioRepository.existsByUsername(username)) {
+            return "EXISTS";
+        }
+
+        usuario.setUsername(username);
+        usuarioRepository.save(usuario);
+
+        session.setAttribute("usuarioLogueado", usuario);
+
+        return "OK";
     }
 }

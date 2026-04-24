@@ -83,4 +83,33 @@ public class UsuarioController {
 
         return "OK";
     }
+
+    // =========================
+    // MODIFICAR REDES
+    // =========================
+    @PostMapping("/usuario/updateRed")
+    @ResponseBody
+    public String updateRed(@RequestParam String tipo,
+                            @RequestParam String valor,
+                            HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) return "NOT_LOGGED";
+
+        String finalValue = (valor == null || valor.isEmpty()) ? null : valor;
+
+        if (tipo.equals("github")) {
+            usuario.setGithub(finalValue);
+        }
+
+        if (tipo.equals("linkedin")) {
+            usuario.setLinkedin(finalValue);
+        }
+
+        usuarioRepository.save(usuario);
+        session.setAttribute("usuarioLogueado", usuario);
+
+        return "OK";
+    }
 }

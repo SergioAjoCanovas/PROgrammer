@@ -153,9 +153,10 @@
                     <i class="fas fa-laptop-code"></i>
                 </div>
                 <div class="tags-tecnologias">
-                    <span class="tag-tech">Java</span>
-                    <span class="tag-tech">Spring Boot</span>
-                    <span class="tag-tech">MySQL</span>
+                    <span class="tag-tech"
+                          th:each="tech : ${tecnologiasUsuario}"
+                          th:text="${tech.nombre}">
+                    </span>
                 </div>
                 <button onclick="window.location.href='/stack'" class="boton-amarillo-solido">AÑADIR TECNOLOGÍA</button>
             </div>

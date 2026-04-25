@@ -35,17 +35,36 @@ INSERT INTO categorias_tecnologias (nombre) VALUES
 CREATE TABLE tecnologias(
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE,
+    icono VARCHAR(50),
     categoria_id BIGINT,
     FOREIGN KEY (categoria_id) REFERENCES categorias_tecnologias(id)
 );
 
-INSERT INTO tecnologias (nombre, categoria_id) VALUES
-('HTML5', 1), ('CSS3', 1), ('JavaScript', 1), ('TypeScript', 1), ('React', 1), ('Angular', 1), ('Vue.js', 1), ('Tailwind CSS', 1), ('Bootstrap', 1),
-('Java', 2), ('Spring Boot', 2), ('Python', 2), ('Node.js', 2), ('C#', 2), ('.NET', 2), ('PHP', 2), ('Laravel', 2), ('Go', 2), ('C++', 2),
-('MySQL', 3), ('PostgreSQL', 3), ('MongoDB', 3), ('Redis', 3), ('Oracle DB', 3), ('Firebase', 3),
-('Docker', 4), ('Kubernetes', 4), ('Git', 4), ('GitHub', 4), ('AWS', 4), ('Google Cloud', 4), ('Linux', 4), ('CI/CD', 4),
-('React Native', 5), ('Flutter', 5), ('Android SDK', 5), ('iOS SDK', 5),
-('TensorFlow', 6), ('PyTorch', 6), ('Pandas', 6), ('Jupyter', 6);
+INSERT INTO tecnologias (nombre, icono, categoria_id) VALUES
+('HTML5', 'fab fa-html5', 1),
+('CSS3', 'fab fa-css3-alt', 1),
+('JavaScript', 'fab fa-js', 1),
+('TypeScript', 'fas fa-code', 1),
+('React', 'fab fa-react', 1),
+('Angular', 'fab fa-angular', 1),
+('Vue.js', 'fab fa-vuejs', 1),
+
+('Java', 'fab fa-java', 2),
+('Spring Boot', 'fas fa-leaf', 2),
+('Python', 'fab fa-python', 2),
+('Node.js', 'fab fa-node-js', 2),
+('C#', 'fas fa-hashtag', 2),
+('PHP', 'fab fa-php', 2),
+('Go', 'fas fa-terminal', 2),
+
+('MySQL', 'fas fa-database', 3),
+('PostgreSQL', 'fas fa-database', 3),
+('MongoDB', 'fas fa-leaf', 3),
+
+('Docker', 'fab fa-docker', 4),
+
+('React Native', 'fab fa-react', 5),
+('Flutter', 'fas fa-rocket', 5);
 
 -- Tabla de desarrolladores
 CREATE TABLE perfiles_desarrollador (

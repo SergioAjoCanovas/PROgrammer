@@ -3,12 +3,14 @@ package com.programmer.backend.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
 @Data
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,12 +24,25 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "foto_perfil")
+    private String fotoPerfil;
+
+    @Column(name = "github")
+    private String github;
+
+    @Column(name = "linkedin")
+    private String linkedin;
+
+    @Column(name = "curriculum")
+    private String curriculum;
+
+    @Lob
+    @Column(name = "biografia", columnDefinition = "TEXT")
+    private String biografia;
+
     @CreationTimestamp
     @Column(name = "fecha_registro", updatable = false)
     private LocalDateTime fechaRegistro;
-
-    @Column(name = "foto_perfil")
-    private String fotoPerfil;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol")

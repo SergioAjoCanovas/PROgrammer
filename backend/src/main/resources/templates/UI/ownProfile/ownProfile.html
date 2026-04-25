@@ -65,18 +65,85 @@
                                class="fas fa-camera icono-camera"></i>
                         
                         </div>
-                    <h2 class="nombre-usuario" id="nombre-perfil-display"
-                        th:text="${usuarioHeader.username}">
-                        CARGANDO...
-                    </h2>
+                        <div class="contenedor-nombre-usuario">
+                            <div class="nombre-wrapper">
+                                <h2 class="nombre-usuario"
+                                    id="nombre-perfil-display"
+                                    th:text="${usuarioHeader.username}">
+                                </h2>
+                            
+                                <!-- INPUT SUPERPUESTO / INLINE -->
+                                <input type="text"
+                                       id="nombre-perfil-input"
+                                       class="input-nombre-perfil"
+                                       style="display:none;"
+                                       onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
+                            </div>
+                        
+                            <!-- ICONO LÁPIZ -->
+                            <i class="fas fa-pencil-alt icono-editar-nombre"
+                               onclick="activarEdicionNombre()"></i>
+                        </div>
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
-                        <li><span>Instagram</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
-                        <li><span>GitHub</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
-                        <li><span>LinkedIn</span> <i class="fas fa-pencil-alt icono-editar-texto"></i></li>
+                        <li class="campo-red" data-type="github">
+                    
+                            <span class="valor-red"
+                                id="github-display"
+                                th:classappend="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github)} ? ' clicable-red' : ''"
+                                th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}"
+                                th:attr="data-url=${usuarioHeader.github}">
+                            </span>
+                                                
+                            <div class="acciones-red">
+                                <i class="fas fa-pencil-alt icono-editar-texto"
+                                   onclick="activarEdicionRed('github')"></i>
+                    
+                                <i class="fas fa-trash icono-borrar-texto icono-rojo"
+                                   onclick="eliminarRed('github')"></i>
+                            </div>
+                    
+                            <input type="text"
+                                   id="github-input"
+                                   class="input-nombre-perfil input-red"
+                                   style="display:none; position:absolute;">
+                        </li>
+                    
+                        <li class="campo-red" data-type="linkedin">
+                    
+                            <span class="valor-red"
+                                    id="linkedin-display"
+                                    th:classappend="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin)} ? ' clicable-red' : ''"
+                                    th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}"
+                                    th:attr="data-url=${usuarioHeader.linkedin}">
+                            </span>
+                    
+                            <div class="acciones-red">
+                                <i class="fas fa-pencil-alt icono-editar-texto"
+                                   onclick="activarEdicionRed('linkedin')"></i>
+                    
+                                <i class="fas fa-trash icono-borrar-texto icono-rojo"
+                                   onclick="eliminarRed('linkedin')"></i>
+                            </div>
+                    
+                            <input type="text"
+                                   id="linkedin-input"
+                                   class="input-nombre-perfil input-red"
+                                   style="display:none; position:absolute;">
+                        </li>
                     </ul>
-                    <button class="boton-amarillo-solido">ACTUALIZAR CURRÍCULUM</button>
+                    <button class="boton-amarillo-solido" onclick="document.getElementById('inputCV').click()">
+                        ACTUALIZAR CURRÍCULUM
+                    </button>
+                    
+                    <input type="file"
+                           id="inputCV"
+                           accept="application/pdf"
+                           style="display:none;"
+                           onchange="subirCV(event)">
+                    
+                    <div id="cv-container" class="cv-container"></div>
                 </div>
             </div>
 
@@ -133,9 +200,31 @@
                 <div class="tarjeta-acordeon info-half-card">
                     <div class="cabecera-tarjeta">
                         <h3>SOBRE MÍ</h3>
-                        <i class="fas fa-edit icono-editar-texto"></i>
+                        <i class="fas fa-edit icono-editar-texto" onclick="activarEdicionBio()"></i>
                     </div>
-                    <p>Desarrollador Full Stack apasionado por el código limpio y la arquitectura de software.</p>
+                    
+                    <div id="bio-view">
+                        <p id="bio-texto"
+                           th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) 
+                           ? usuarioHeader.biografia 
+                           : 'Cuéntale al mundo más acerca de ti'}">
+                        </p>
+                    </div>
+                    
+                    <div id="bio-edit" style="display:none;">
+                        <textarea id="bio-textarea"
+                            maxlength="500"
+                            data-maxlength="500"
+                            oninput="actualizarContadorBio()"></textarea>
+                    
+                        <div class="bio-footer">
+                            <span id="bio-counter"></span>
+                    
+                            <button class="boton-amarillo-solido" onclick="guardarBio()">
+                                GUARDAR
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tarjeta-acordeon info-half-card">
@@ -148,9 +237,15 @@
         </div> 
     </main>
 
+    <div id="toast" class="toast"></div>
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
+        let editandoNombre = false;
+        let nombreOriginal = "";
+        let editandoRed = null;
+        let valorOriginalRed = "";
+
     window.addEventListener('load', () => {
         renderizarDatosUsuario();
         
@@ -166,6 +261,439 @@
             btnPerfil.classList.remove('activo-btn');
         }
     });
+
+    function activarEdicionNombre() {
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        editandoNombre = true;
+        nombreOriginal = display.innerText;
+
+        input.value = nombreOriginal;
+        input.style.display = "block";
+        input.focus();
+    }
+
+    function guardarNombre() {
+        if (!editandoNombre) return;
+
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        const nuevoNombre = input.value.trim();
+
+        if (nuevoNombre === "") {
+            mostrarToast("El nombre no puede estar vacío", "error");
+            return;
+        }
+
+        fetch("/usuario/updateUsername", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "username=" + encodeURIComponent(nuevoNombre)
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            if (data === "OK") {
+                display.innerText = nuevoNombre;
+
+                const headerUsername = document.querySelector(".info-texto-usuario span");
+                if (headerUsername) {
+                    headerUsername.innerText = nuevoNombre.toUpperCase();
+                }
+
+                mostrarToast("Nombre actualizado correctamente", "success");
+            } else if (data === "EXISTS") {
+                mostrarToast("Ese nombre ya existe", "error");
+            } else if (data === "EMPTY") {
+                mostrarToast("El nombre no puede estar vacío", "error");
+            } else {
+                mostrarToast("Error al actualizar", "error");
+            }
+        })
+        .finally(() => {
+            editandoNombre = false;
+            input.style.display = "none";
+            display.style.display = "block";
+        });
+    }
+
+    function cancelarEdicionNombre() {
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        editandoNombre = false;
+
+        input.value = nombreOriginal;
+
+        input.style.display = "none";
+        display.style.display = "block";
+
+        input.blur();
+    }
+
+    function activarEdicionRed(tipo) {
+        const display = document.getElementById(tipo + "-display");
+        const input = document.getElementById(tipo + "-input");
+
+        editandoRed = tipo;
+        valorOriginalRed = display.getAttribute("data-url") || "";
+
+        input.value = valorOriginalRed;
+
+        input.style.display = "block";
+        input.focus();
+    }
+
+    function normalizarURL(tipo, valor) {
+        if (!valor) return null;
+
+        valor = valor.trim().replace(/\s/g, "");
+
+        if (valor.startsWith("http://") || valor.startsWith("https://")) {
+            return valor;
+        }
+
+        if (valor.startsWith("www.")) {
+            return "https://" + valor;
+        }
+
+        if (valor.startsWith("github.com/")) {
+            return "https://" + valor;
+        }
+
+        if (valor.startsWith("linkedin.com/")) {
+            return "https://" + valor;
+        }
+
+        if (tipo === "github") {
+            return "https://github.com/" + valor;
+        }
+
+        if (tipo === "linkedin") {
+            return "https://www.linkedin.com/in/" + valor;
+        }
+
+        return valor;
+    }
+
+    function guardarRed(tipo) {
+        const input = document.getElementById(tipo + "-input");
+        const display = document.getElementById(tipo + "-display");
+
+        const valor = input.value.trim();
+
+        let urlFinal = normalizarURL(tipo, valor);
+
+        if (valor === "") {
+            urlFinal = null;
+        }
+
+        fetch("/usuario/updateRed", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "tipo=" + tipo + "&valor=" + encodeURIComponent(urlFinal || "")
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            if (data === "OK") {
+
+                if (urlFinal) {
+                    display.innerText = tipo === "github" ? "Mi GitHub" : "Mi LinkedIn";
+                    display.setAttribute("data-url", urlFinal);
+                    display.classList.add("clicable-red");
+                } else {
+                    display.innerText = "Introduce tu red social";
+                    display.removeAttribute("data-url");
+                    display.classList.remove("clicable-red");
+                }
+
+                mostrarToast(tipo + " actualizado correctamente", "success");
+
+            } else if (data === "NOT_LOGGED") {
+                mostrarToast("Usuario no logueado", "error");
+            } else {
+                mostrarToast("Error al actualizar " + tipo, "success");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        })
+        .finally(() => {
+            input.style.display = "none";
+            editandoRed = null;
+        });
+    }
+
+    function eliminarRed(tipo) {
+        fetch("/usuario/updateRed", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "tipo=" + tipo + "&valor="
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            const display = document.getElementById(tipo + "-display");
+
+            if (data === "OK") {
+                const nombreBonito = tipo === "github" ? "GitHub" : "LinkedIn";
+                display.innerText = "Añadir " + nombreBonito;
+                display.removeAttribute("data-url");
+                display.classList.remove("clicable-red");
+                mostrarToast(tipo + " eliminado correctamente", "success");
+            } else {
+                mostrarToast("Error al eliminar " + tipo, "success");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        });
+    }
+
+    function cancelarEdicionRed() {
+        if (!editandoRed) return;
+
+        const input = document.getElementById(editandoRed + "-input");
+
+        input.value = valorOriginalRed;
+        input.style.display = "none";
+
+        editandoRed = null;
+    }
+
+    //---- FUNCIONES PARA EL CV
+    function subirCV(event) {
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        if (file.type !== "application/pdf") {
+            mostrarToast("Solo se permiten archivos PDF", "error");
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            mostrarToast("El archivo supera los 2MB", "error");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("cv", file);
+
+        fetch("/usuario/uploadCV", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(data => {
+            if (data.startsWith("OK")) {
+
+                const url = data.split("|")[1]; // backend devuelve: OK|url
+
+                renderizarCV(file.name, url);
+
+                mostrarToast("CV subido correctamente", "success");
+            } else {
+                mostrarToast("Error al subir el CV", "error");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        });
+    }
+
+    function renderizarCV(nombre, url) {
+        const container = document.getElementById("cv-container");
+
+        container.innerHTML = `
+            <span class="cv-link" onclick="window.open('${url}', '_blank')">
+                ${nombre}
+            </span>
+            <i class="fas fa-trash icono-rojo" onclick="eliminarCV()"></i>
+        `;
+    }
+
+    function eliminarCV() {
+        fetch("/usuario/deleteCV", {
+            method: "POST"
+        })
+        .then(res => res.text())
+        .then(data => {
+            if (data === "OK") {
+                document.getElementById("cv-container").innerHTML = "";
+                mostrarToast("CV eliminado correctamente", "success");
+            } else {
+                mostrarToast("Error al eliminar el CV", "error");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        });
+    }
+
+    //-----EVENTS LISTENER PARA EL NOMBRE
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && editandoNombre) {
+            cancelarEdicionNombre();
+        }
+    });
+
+    document.addEventListener("mousedown", function (event) {
+        if (!editandoNombre) return;
+
+        const wrapper = document.querySelector(".nombre-wrapper");
+        const input = document.getElementById("nombre-perfil-input");
+
+        const clickDentro =
+            wrapper.contains(event.target) ||
+            input.contains(event.target);
+
+        if (!clickDentro) {
+            cancelarEdicionNombre();
+        }
+    });
+
+    //-----EVENTS LISTENER PARA LAS REDES SOCIALES
+
+    document.addEventListener("keypress", function (e) {
+        if (e.key === "Enter" && editandoRed) {
+            guardarRed(editandoRed);
+        }
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            cancelarEdicionRed();
+        }
+    });
+
+    document.addEventListener("mousedown", function (e) {
+        if (!editandoRed) return;
+
+        const input = document.getElementById(editandoRed + "-input");
+        const wrapper = input.parentElement;
+
+        if (!wrapper.contains(e.target)) {
+            cancelarEdicionRed();
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        const el = e.target.closest(".valor-red");
+        if (!el) return;
+
+        const url = el.dataset.url;
+        if (url) {
+            window.open(url, "_blank");
+        }
+    });
+
+    //TOAST DE AVISO
+
+    function mostrarToast(msg, tipo = "success") {
+        const toast = document.getElementById("toast");
+
+        toast.className = "toast"; 
+
+        if (tipo === "error") {
+            toast.classList.add("toast-error");
+        } else {
+            toast.classList.add("toast-success");
+        }
+
+        toast.innerText = msg;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4000);
+    }
+
+    let bioOriginal = "";
+
+    function activarEdicionBio() {
+        const texto = document.getElementById("bio-texto").innerText;
+
+        bioOriginal = texto === "Cuéntale al mundo más acerca de ti" ? "" : texto;
+
+        const textarea = document.getElementById("bio-textarea");
+        textarea.value = bioOriginal;
+
+        document.getElementById("bio-view").style.display = "none";
+        document.getElementById("bio-edit").style.display = "block";
+
+        const max = 500;
+        document.getElementById("bio-counter").innerText = `${max - textarea.value.length}/${max}`;
+
+        actualizarContadorBio();
+    }
+
+    function actualizarContadorBio() {
+        const textarea = document.getElementById("bio-textarea");
+        const counter = document.getElementById("bio-counter");
+
+        const max = 500;
+
+        let valor = textarea.value;
+
+        if (valor.length > max) {
+            textarea.value = valor.substring(0, max);
+        }
+
+        counter.innerText = `${max - textarea.value.length}/${max}`;
+    }
+
+function guardarBio() {
+    const textarea = document.getElementById("bio-textarea");
+    const texto = textarea.value.trim();
+    const max = 500;
+
+    if (texto.length > max) {
+        mostrarToast("La biografía no puede superar 500 caracteres", "error");
+        return;
+    }
+
+    fetch("/usuario/updateBio", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "biografia=" + encodeURIComponent(texto)
+    })
+    .then(res => res.text())
+    .then(data => {
+
+        if (data === "OK") {
+
+            const bioView = document.getElementById("bio-texto");
+
+            if (texto === "") {
+                bioView.innerText = "Cuéntale al mundo más acerca de ti";
+            } else {
+                bioView.innerText = texto;
+            }
+
+            mostrarToast("Biografía actualizada correctamente");
+
+        } else {
+            mostrarToast("Error al actualizar biografía", "error");
+        }
+    })
+    .finally(() => {
+        document.getElementById("bio-view").style.display = "block";
+        document.getElementById("bio-edit").style.display = "none";
+    });
+}
     </script>
 </body>
 </html>

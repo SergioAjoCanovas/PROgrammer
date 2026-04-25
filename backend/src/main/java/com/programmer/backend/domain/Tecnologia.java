@@ -1,6 +1,8 @@
-package com.programmer.backend.domain; // Mantengo tu paquete actual
+package com.programmer.backend.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore; // <-- Evita bucles al enviar el JSON al HTML
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +23,7 @@ public class Tecnologia {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    @JsonIgnore // ¡Muy importante para que funcione el fetch en JavaScript!
+    @JsonIgnore
     private CategoriaTecnologia categoria;
 
     // --- GETTERS Y SETTERS ---
@@ -47,5 +49,16 @@ public class Tecnologia {
 
     public void setCategoria(CategoriaTecnologia categoria) {
         this.categoria = categoria;
+    }
+
+    @Column(name = "icono")
+    private String icono;
+
+    public String getIcono() {
+        return icono;
+    }
+
+    public void setIcono(String icono) {
+        this.icono = icono;
     }
 }

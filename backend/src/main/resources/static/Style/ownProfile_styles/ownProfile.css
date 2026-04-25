@@ -242,7 +242,116 @@ body.fondo-oscuro-neon {
         border-bottom: 1px dotted #FFCC00;
         text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
     }
+
+/* ============================================================
+APARTADO DE CURRICULUM
+============================================================ */
+
+.cv-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cv-link {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: pointer;
+}
+
+.icono-rojo {
+    color: #ff4d4d;
+    cursor: pointer;
+}
+
+/* ============================================================
+    APARTADO DE BIOGRAFIA
+    ============================================================ */
+
+    #bio-edit textarea {
+        width: 100%;
+        min-height: 120px;
     
+        background: #1a1a1a;
+        color: #ffffff;
+    
+        border: 1px solid #FFCC00;
+        border-radius: 10px;
+    
+        padding: 10px;
+    
+        resize: none;
+        outline: none;
+    
+        font-family: inherit;
+    }
+    
+    .bio-footer {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-end; 
+    
+        margin-top: 8px;
+        font-size: 12px;
+        color: #FFCC00;
+        gap: 6px;
+    }
+
+    #bio-counter {
+        opacity: 0.8;
+    }
+
+    #bio-texto {
+        max-width: 100%;
+        width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: pre-wrap; /* IMPORTANTE */
+    }
+
+    #bio-edit textarea {
+        overflow-y: auto;
+    }
+
+    #bio-edit textarea::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    #bio-edit textarea::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 10px;
+    }
+    
+    #bio-edit textarea::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #FFCC00, #b38f00);
+        border-radius: 10px;
+        border: 2px solid #1a1a1a;
+    }
+    
+    #bio-edit textarea::-webkit-scrollbar-thumb:hover {
+        background: #FFCC00;
+    }
+
+    #bio-edit textarea {
+        scrollbar-gutter: stable;
+    }
+
+    .info-half-card,
+    .tarjeta-acordeon,
+    .tarjeta-mini-proyecto,
+    .columna-derecha {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    p, span, div, h1, h2, h3, h4 {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        max-width: 100%;
+    }
+        
 /* ============================================================
     5. REJILLA DE PROYECTOS (DERECHA)
    ============================================================ */
@@ -421,17 +530,39 @@ body.fondo-oscuro-neon {
         position: fixed;
         bottom: 30px;
         right: 30px;
-        background: #1a1a1a;
-        color: #FFCC00;
-        border: 1px solid #FFCC00;
+
         padding: 12px 20px;
         border-radius: 10px;
-        box-shadow: 0 0 15px rgba(255,204,0,0.4);
+
+        font-weight: bold;
+        z-index: 9999;
+
         opacity: 0;
         transform: translateY(20px);
         transition: all 0.3s ease;
-        font-weight: bold;
-        z-index: 9999;
+
+        /* base neutra */
+        background: #1a1a1a;
+        color: #ffffff;
+        border: 1px solid transparent;
+
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .toast-error {
+        background: #ff4d4d;
+        color: #fff;
+    
+        border: 1px solid #ff4d4d;
+        box-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
+    }
+
+    .toast-success {
+        background: #00e676;
+        color: #000; 
+    
+        border: 1px solid #00e676;
+        box-shadow: 0 0 15px rgba(0, 230, 118, 0.6);
     }
 
     .toast.show {

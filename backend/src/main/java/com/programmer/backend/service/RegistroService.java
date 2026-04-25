@@ -5,7 +5,7 @@ import com.programmer.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,5 +59,27 @@ public class RegistroService {
         
         // 4. Retornamos la ruta que se guardará en el String de la Base de Datos
         return "/uploads/perfiles/" + nombreArchivo;
+    }
+
+    // --------------------------------------------------------
+    // MÉTODO 3: GUARDAR CV
+    // --------------------------------------------------------
+    public String guardarCV(MultipartFile file) throws IOException {
+
+        String carpeta = "uploads/cv/";
+    
+        File directorio = new File(carpeta);
+        if (!directorio.exists()) {
+            directorio.mkdirs();
+        }
+    
+        String nombreArchivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+    
+        Path ruta = Paths.get(carpeta + nombreArchivo);
+    
+        Files.write(ruta, file.getBytes());
+    
+        // Esto es lo que usarás en el frontend
+        return "/" + carpeta + nombreArchivo;
     }
 }

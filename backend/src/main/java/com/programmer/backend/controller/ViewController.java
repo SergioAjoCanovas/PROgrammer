@@ -3,12 +3,21 @@ package com.programmer.backend.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.programmer.backend.domain.PerfilDesarrollador;
 import com.programmer.backend.domain.Usuario;
+import com.programmer.backend.service.SearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class ViewController {
+
+    @Autowired
+    private SearchService searchService;
 
     // =========================
     // HOME
@@ -104,7 +113,17 @@ public class ViewController {
     // RED / BÚSQUEDA
     // =========================
     @GetMapping("/searchProgrammer")
-    public String searchProgrammer() {
+    public String searchProgrammer(Model model) {
+        model.addAttribute("developers", searchService.getFeaturedDevelopers());
+        return "UI/searchHome/searchProgrammer";
+    }
+
+    @GetMapping("/searchProgrammer/search")
+    public String searchProgrammer(@RequestParam("query") String query, Model model) {
+        List<PerfilDesarrollador> results = searchService.searchDevelopersByUsernameStartingWith(query);
+        model.addAttribute("developers", results);
+        model.addAttribute("searchQuery", query);
+        model.addAttribute("resultCount", results.size());
         return "UI/searchHome/searchProgrammer";
     }
 

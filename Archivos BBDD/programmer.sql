@@ -41,6 +41,9 @@ CREATE TABLE tecnologias(
 );
 
 INSERT INTO tecnologias (nombre, icono, categoria_id) VALUES
+-- =========================
+-- FRONTEND & WEB (1)
+-- =========================
 ('HTML5', 'fab fa-html5', 1),
 ('CSS3', 'fab fa-css3-alt', 1),
 ('JavaScript', 'fab fa-js', 1),
@@ -48,7 +51,15 @@ INSERT INTO tecnologias (nombre, icono, categoria_id) VALUES
 ('React', 'fab fa-react', 1),
 ('Angular', 'fab fa-angular', 1),
 ('Vue.js', 'fab fa-vuejs', 1),
+('Svelte', 'fas fa-fire', 1),
+('Next.js', 'fas fa-forward', 1),
+('Nuxt.js', 'fas fa-layer-group', 1),
+('Tailwind CSS', 'fas fa-wind', 1),
+('Bootstrap', 'fab fa-bootstrap', 1),
 
+-- =========================
+-- BACKEND & CORE (2)
+-- =========================
 ('Java', 'fab fa-java', 2),
 ('Spring Boot', 'fas fa-leaf', 2),
 ('Python', 'fab fa-python', 2),
@@ -56,15 +67,56 @@ INSERT INTO tecnologias (nombre, icono, categoria_id) VALUES
 ('C#', 'fas fa-hashtag', 2),
 ('PHP', 'fab fa-php', 2),
 ('Go', 'fas fa-terminal', 2),
+('Rust', 'fas fa-cogs', 2),
+('Ruby', 'fas fa-gem', 2),
+('Ruby on Rails', 'fas fa-train', 2),
+('Kotlin', 'fas fa-code', 2),
+('Django', 'fas fa-leaf', 2),
+('Laravel', 'fab fa-laravel', 2),
+('.NET Core', 'fas fa-microchip', 2),
 
+-- =========================
+-- BASES DE DATOS (3)
+-- =========================
 ('MySQL', 'fas fa-database', 3),
 ('PostgreSQL', 'fas fa-database', 3),
 ('MongoDB', 'fas fa-leaf', 3),
+('Redis', 'fas fa-memory', 3),
+('SQLite', 'fas fa-database', 3),
+('Microsoft SQL Server', 'fas fa-server', 3),
+('MariaDB', 'fas fa-database', 3),
+('Cassandra', 'fas fa-project-diagram', 3),
 
+-- =========================
+-- DEVOPS & CLOUD (4)
+-- =========================
 ('Docker', 'fab fa-docker', 4),
+('Kubernetes', 'fas fa-dharmachakra', 4),
+('AWS', 'fab fa-aws', 4),
+('Azure', 'fab fa-microsoft', 4),
+('Google Cloud', 'fab fa-google', 4),
+('Jenkins', 'fas fa-tools', 4),
+('Terraform', 'fas fa-layer-group', 4),
 
+-- =========================
+-- MOBILE (5)
+-- =========================
 ('React Native', 'fab fa-react', 5),
-('Flutter', 'fas fa-rocket', 5);
+('Flutter', 'fas fa-rocket', 5),
+('Swift', 'fab fa-swift', 5),
+('Kotlin Mobile', 'fas fa-mobile-alt', 5),
+('Ionic', 'fas fa-bolt', 5),
+('.NET MAUI', 'fas fa-mobile', 5),
+
+-- =========================
+-- DATA & IA (6)
+-- =========================
+('TensorFlow', 'fas fa-brain', 6),
+('PyTorch', 'fas fa-fire', 6),
+('Pandas', 'fas fa-table', 6),
+('Scikit-learn', 'fas fa-robot', 6),
+('Apache Spark', 'fas fa-bolt', 6),
+('OpenCV', 'fas fa-eye', 6);
 
 -- Tabla de desarrolladores
 CREATE TABLE perfiles_desarrollador (

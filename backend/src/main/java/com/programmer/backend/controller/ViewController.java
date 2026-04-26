@@ -39,7 +39,7 @@ public class ViewController {
     // =========================
     // PERFIL
     // =========================
-    @GetMapping("/ownProfile")
+    /*@GetMapping("/ownProfile")
     public String ownProfile(HttpSession session, Model model) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
@@ -51,7 +51,7 @@ public class ViewController {
         model.addAttribute("usuarioHeader", usuario);
 
         return "UI/ownProfile/ownProfile";
-    }
+    }*/
 
     @GetMapping("/profileView")
     public String profileView() {
@@ -142,6 +142,7 @@ public class ViewController {
     // =========================
     // TECNOLOGÍAS
     // =========================
+    /* 
     @GetMapping("/addTechnology")
     public String addTechnology(HttpSession session, Model model) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
@@ -151,7 +152,7 @@ public class ViewController {
         model.addAttribute("usuarioHeader", usuario);
         return "UI/addTechnology/addTechnology"; 
     }
-
+    */
 
 
     // =======================================

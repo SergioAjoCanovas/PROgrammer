@@ -5,9 +5,7 @@ import com.programmer.backend.repository.UsuarioRepository;
 import com.programmer.backend.service.RegistroService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,56 +23,39 @@ public class UsuarioController {
     }
 
     // =========================
-    // SUBIR FOTO DE PERFIL
+    // FOTO PERFIL
     // =========================
     @PostMapping("/usuario/uploadFoto")
     public String subirFoto(@RequestParam("foto") MultipartFile foto,
                             HttpSession session) throws IOException {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) return "redirect:/login";
 
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-
-        // Guardar imagen en disco
         String rutaImagen = registroService.guardarFoto(foto);
 
-        // DEBUG IMPORTANTE
-        System.out.println("FOTO GUARDADA EN: " + rutaImagen);
-
-        // Actualizar usuario
         usuario.setFotoPerfil(rutaImagen);
         usuarioRepository.save(usuario);
 
-        // actualizar sesión
         session.setAttribute("usuarioLogueado", usuario);
 
         return "redirect:/ownProfile";
     }
 
     // =========================
-    // CAMBIAR NOMBRE DE USUARIO
+    // USERNAME
     // =========================
-
     @PostMapping("/usuario/updateUsername")
     @ResponseBody
     public String updateUsername(@RequestParam("username") String username,
-                                HttpSession session) {
+                                 HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
 
-        if (usuario == null) {
-            return "NOT_LOGGED";
-        }
+        if (usuario == null) return "NOT_LOGGED";
+        if (username == null || username.trim().isEmpty()) return "EMPTY";
 
-        if (username == null || username.trim().isEmpty()) {
-            return "EMPTY";
-        }
-
-        if (usuarioRepository.existsByUsername(username)) {
-            return "EXISTS";
-        }
+        if (usuarioRepository.existsByUsername(username)) return "EXISTS";
 
         usuario.setUsername(username);
         usuarioRepository.save(usuario);
@@ -85,7 +66,7 @@ public class UsuarioController {
     }
 
     // =========================
-    // MODIFICAR REDES
+    // REDES
     // =========================
     @PostMapping("/usuario/updateRed")
     @ResponseBody
@@ -94,16 +75,15 @@ public class UsuarioController {
                             HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
         if (usuario == null) return "NOT_LOGGED";
 
         String finalValue = (valor == null || valor.isEmpty()) ? null : valor;
 
-        if (tipo.equals("github")) {
+        if ("github".equals(tipo)) {
             usuario.setGithub(finalValue);
         }
 
-        if (tipo.equals("linkedin")) {
+        if ("linkedin".equals(tipo)) {
             usuario.setLinkedin(finalValue);
         }
 
@@ -114,31 +94,24 @@ public class UsuarioController {
     }
 
     // =========================
-    // MODIFICAR CV
+    // CV
     // =========================
-
     @PostMapping("/usuario/uploadCV")
     @ResponseBody
     public String subirCV(@RequestParam("cv") MultipartFile cv,
-                        HttpSession session) throws IOException {
+                          HttpSession session) throws IOException {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
-        if (usuario == null) {
-            return "NOT_LOGGED";
-        }
-
-        if (cv.isEmpty()) {
-            return "EMPTY";
-        }
+        if (usuario == null) return "NOT_LOGGED";
+        if (cv.isEmpty()) return "EMPTY";
 
         String contentType = cv.getContentType();
         String fileName = cv.getOriginalFilename();
-        
-        if (contentType == null 
-            || fileName == null
-            || !contentType.contains("pdf")
-            || !fileName.toLowerCase().endsWith(".pdf")) {
+
+        if (contentType == null ||
+            fileName == null ||
+            !contentType.contains("pdf") ||
+            !fileName.toLowerCase().endsWith(".pdf")) {
             return "INVALID_TYPE";
         }
 
@@ -156,15 +129,15 @@ public class UsuarioController {
         return "OK|" + rutaCV;
     }
 
+    // =========================
+    // BORRAR CV
+    // =========================
     @PostMapping("/usuario/deleteCV")
     @ResponseBody
     public String eliminarCV(HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
-        if (usuario == null) {
-            return "NOT_LOGGED";
-        }
+        if (usuario == null) return "NOT_LOGGED";
 
         usuario.setCurriculum(null);
         usuarioRepository.save(usuario);
@@ -174,19 +147,21 @@ public class UsuarioController {
         return "OK";
     }
 
+    // =========================
+    // BIO
+    // =========================
     @PostMapping("/usuario/updateBio")
     @ResponseBody
     public String updateBio(@RequestParam String biografia,
                             HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
         if (usuario == null) return "NOT_LOGGED";
 
         if (biografia != null) {
             biografia = biografia.trim();
         }
-        
+
         if (biografia != null && biografia.length() > 500) {
             return "TOO_LONG";
         }

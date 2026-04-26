@@ -38,6 +38,6 @@ public class StackController {
 
         model.addAttribute("tecnologiasPorCategoria", tecnologiasPorCategoria);
 
-        return "UI/addTechnology/addTechnology";
+        return "redirect:/addTechnology";
     }
 }

@@ -143,7 +143,9 @@
                            style="display:none;"
                            onchange="subirCV(event)">
                     
-                    <div id="cv-container" class="cv-container"></div>
+                           <div id="cv-container" class="cv-container"
+                                th:attr="data-url=${cvUrl}, data-nombre=${cvNombre}">
+                            </div>
                 </div>
             </div>
 
@@ -596,6 +598,26 @@
         const url = el.dataset.url;
         if (url) {
             window.open(url, "_blank");
+        }
+    });
+
+    window.addEventListener("load", () => {
+        const container = document.getElementById("cv-container");
+
+        const url = container.dataset.url;
+        const nombre = container.dataset.nombre;
+
+        if (url) {
+            container.innerHTML = `
+                <span class="cv-link" onclick="window.open('${url}', '_blank')">
+                    ${nombre}
+                </span>
+                <i class="fas fa-trash icono-rojo" onclick="eliminarCV()"></i>
+            `;
+        } else {
+            container.innerHTML = `
+                <span class="cv-link">No tienes CV subido</span>
+            `;
         }
     });
 

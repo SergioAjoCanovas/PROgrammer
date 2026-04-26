@@ -30,22 +30,21 @@ public class TechController {
     // =========================
     @GetMapping("/addTechnology")
     public String addTechnology(Model model, HttpSession session) {
-
+    
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
+    
         if (usuario == null) {
             return "redirect:/login";
         }
-
-        // 🔒 CONTROL ROL
+    
         String rol = usuario.getRol().getNombre();
-
+    
         if ("USUARIO".equals(rol)) {
             return "redirect:/ownProfile";
         }
-
+    
         List<Tecnologia> tecnologias = tecnologiaRepository.findAll();
-
+    
         Map<String, List<Tecnologia>> tecnologiasPorCategoria =
                 tecnologias.stream()
                         .filter(t -> t.getCategoria() != null)
@@ -54,9 +53,23 @@ public class TechController {
                                 LinkedHashMap::new,
                                 Collectors.toList()
                         ));
-
+    
         model.addAttribute("tecnologiasPorCategoria", tecnologiasPorCategoria);
-
+    
+        PerfilDesarrollador perfil = perfilRepo.findByUsuarioId(usuario.getId())
+                .orElse(null);
+    
+        Set<Long> techSeleccionadas = new HashSet<>();
+    
+        if (perfil != null && perfil.getTecnologias() != null) {
+            techSeleccionadas = perfil.getTecnologias()
+                    .stream()
+                    .map(Tecnologia::getId)
+                    .collect(Collectors.toSet());
+        }
+    
+        model.addAttribute("techSeleccionadas", techSeleccionadas);
+    
         return "UI/addTechnology/addTechnology";
     }
 

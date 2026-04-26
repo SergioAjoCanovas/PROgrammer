@@ -50,7 +50,8 @@
 
                         <input type="checkbox"
                         name="techIds"
-                        th:value="${tech.id}">
+                        th:value="${tech.id}"
+                        th:checked="${techSeleccionadas.contains(tech.id)}">
 
                         <div class="caja-diseno">
 

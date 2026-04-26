@@ -22,6 +22,7 @@
                 <button class="btn-filtro filtro-seleccionado" onclick="aplicarFiltro('todas', this)">Todas</button>
                 <button class="btn-filtro" onclick="aplicarFiltro('activas', this)">Activas</button>
                 <button class="btn-filtro" onclick="aplicarFiltro('cerradas', this)">Cerradas</button>
+                <button class="btn-filtro" id="btn-filtro-postulaciones" style="display: none;" onclick="aplicarFiltro('postulaciones', this)">Mis Postulaciones</button>
             </div>
 
             <div class="acciones-superiores" id="contenedor-ofertas-propias" style="display: none;">
@@ -31,7 +32,7 @@
             </div>
         </div>
 
-        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
+        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}" th:data-id="${oferta.id}">
             <div class="logo-empresa">
                 <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" alt="Logo Empresa">
             </div>
@@ -54,8 +55,9 @@
                 
                 <button class="boton-postular" 
                         th:disabled="${!oferta.activa}" 
+                        th:data-activa="${oferta.activa}"
                         th:text="${oferta.activa} ? 'POSTULAR' : 'CERRADA'"
-                        onclick="window.location.href='/jobview'">
+                        th:onclick="'irAJobView(' + ${oferta.id} + ')'">
                 </button>
             </div>
         </div>
@@ -64,12 +66,34 @@
             <h2><i class="fas fa-search"></i> No hay ofertas publicadas.</h2>
         </div>
 
+        <div id="mensaje-filtro-vacio" style="display: none; text-align: center; color: #888; margin-top: 50px;">
+            <h2><i class="fas fa-folder-open"></i> No hay resultados para este filtro.</h2>
+        </div>
+
     </main>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-    // --- ILUMINAR EL HEADER (A PRUEBA DE FALLOS) ---
+    // Variable global para guardar a qué ofertas se ha postulado el desarrollador
+    let misPostulacionesIds = [];
+
+    function irAJobView(ofertaId) {
+        const username = localStorage.getItem('usuarioLogueado') || '';
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/jobview/' + ofertaId; 
+
+        const inputUsername = document.createElement('input');
+        inputUsername.type = 'hidden';
+        inputUsername.name = 'username';
+        inputUsername.value = username;
+
+        form.appendChild(inputUsername);
+        document.body.appendChild(form);
+        form.submit();
+    }
+    
     function inicializarHeader() {
         const navEmpleos = document.getElementById('nav-empleos'); 
         if (navEmpleos) {
@@ -84,30 +108,62 @@
         }
     }
 
+    // FUNCIÓN MODIFICADA: Ahora gestiona las postulaciones y el cartel de "vacío"
     function aplicarFiltro(tipo, botonSeleccionado) {
         if (botonSeleccionado) {
             document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('filtro-seleccionado'));
             botonSeleccionado.classList.add('filtro-seleccionado');
         }
+        
         const tarjetas = document.querySelectorAll('.tarjeta-oferta');
+        let hayResultados = false;
+
         tarjetas.forEach(tarjeta => {
             const estadoSpan = tarjeta.querySelector('.estado-oferta');
             const estaActiva = estadoSpan && estadoSpan.classList.contains('activo');
-            if (tipo === 'todas') tarjeta.style.display = 'flex';
-            else if (tipo === 'activas' && estaActiva) tarjeta.style.display = 'flex';
-            else if (tipo === 'cerradas' && !estaActiva) tarjeta.style.display = 'flex';
-            else tarjeta.style.display = 'none';
+            const ofertaId = parseInt(tarjeta.getAttribute('data-id'));
+
+            let mostrar = false;
+            
+            if (tipo === 'todas') mostrar = true;
+            else if (tipo === 'activas' && estaActiva) mostrar = true;
+            else if (tipo === 'cerradas' && !estaActiva) mostrar = true;
+            else if (tipo === 'postulaciones' && misPostulacionesIds.includes(ofertaId)) mostrar = true;
+
+            tarjeta.style.display = mostrar ? 'flex' : 'none';
+            if (mostrar) hayResultados = true;
         });
+
+        // Mostramos el mensaje si el filtro no deja ninguna oferta en pantalla
+        const divVacio = document.getElementById('mensaje-filtro-vacio');
+        if (divVacio && tarjetas.length > 0) {
+            divVacio.style.display = hayResultados ? 'none' : 'block';
+        }
     }
 
-    function comprobarRolEmpresa() {
+    function comprobarRoles() {
         const rolGuardado = localStorage.getItem('rolUsuario');
+        const username = localStorage.getItem('usuarioLogueado');
+        const rolString = rolGuardado ? String(rolGuardado).trim().toUpperCase() : 'VISITOR';
+
+        // 1. Lógica para empresas
         const contenedorOfertas = document.getElementById('contenedor-ofertas-propias');
-        if (rolGuardado && contenedorOfertas) {
-            const rolString = String(rolGuardado).trim().toUpperCase();
-            if (rolString === 'COMPANY' || rolString === '3') {
-                contenedorOfertas.style.display = 'flex';
-            }
+        if ((rolString === 'COMPANY' || rolString === '3') && contenedorOfertas) {
+            contenedorOfertas.style.display = 'flex';
+        }
+
+        // 2. Lógica para desarrolladores (NUEVO)
+        if ((rolString === 'DEVELOPER' || rolString === '2') && username) {
+            // Activamos el botón de la pestaña
+            document.getElementById('btn-filtro-postulaciones').style.display = 'inline-block';
+            
+            // Le pedimos al backend los IDs de las ofertas
+            fetch('/api/postulaciones/mis-ofertas-ids?username=' + encodeURIComponent(username))
+                .then(res => res.json())
+                .then(data => {
+                    misPostulacionesIds = data;
+                })
+                .catch(err => console.error("Error al cargar mis postulaciones:", err));
         }
     }
 
@@ -116,9 +172,29 @@
         if (usuario) window.location.href = '/mis-ofertas?empresa=' + encodeURIComponent(usuario);
     }
 
+    function adaptarBotonesPorRol() {
+        const rolGuardado = localStorage.getItem('rolUsuario');
+        const rolString = rolGuardado ? String(rolGuardado).trim().toUpperCase() : 'VISITOR';
+        const botones = document.querySelectorAll('.boton-postular');
+        
+        botones.forEach(boton => {
+            const estaActiva = boton.getAttribute('data-activa') === 'true';
+            if (estaActiva) {
+                if (rolString === 'DEVELOPER' || rolString === '2') {
+                    boton.innerHTML = 'POSTULAR';
+                } else {
+                    boton.innerHTML = 'VER INFORMACIÓN';
+                }
+            } else {
+                boton.innerHTML = '<i class="fas fa-lock"></i> CERRADA';
+            }
+        });
+    }
+
     window.addEventListener('load', () => {
         inicializarHeader();
-        setTimeout(comprobarRolEmpresa, 50); 
+        setTimeout(comprobarRoles, 50); // Comprueba Empresas y carga datos de Desarrollador
+        setTimeout(adaptarBotonesPorRol, 50); 
     });
     </script>
 </body>

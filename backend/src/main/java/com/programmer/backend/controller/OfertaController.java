@@ -2,10 +2,12 @@ package com.programmer.backend.controller;
 
 import com.programmer.backend.domain.OfertaEmpleo;
 import com.programmer.backend.domain.Postulacion;
+import com.programmer.backend.domain.Proyecto;
 import com.programmer.backend.domain.Tecnologia;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.OfertaRepository;
 import com.programmer.backend.repository.PostulacionRepository;
+import com.programmer.backend.repository.ProyectoRepository;
 import com.programmer.backend.repository.TecnologiaRepository;
 import com.programmer.backend.repository.UsuarioRepository;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +42,9 @@ public class OfertaController {
     @Autowired
     private PostulacionRepository postulacionRepository;
 
-    // 1. VER TODAS LAS OFERTAS
+    @Autowired
+    private ProyectoRepository proyectoRepository; 
+
     @GetMapping("/jobsearching")
     public String verOfertas(Model model) {
         try {
@@ -52,7 +57,6 @@ public class OfertaController {
         }
     }
 
-    // 2. VER SOLO LAS OFERTAS DE UNA EMPRESA
     @GetMapping("/mis-ofertas")
     public String verMisOfertas(@RequestParam("empresa") String usernameEmpresa, Model model) {
         try {
@@ -69,7 +73,6 @@ public class OfertaController {
         }
     }
 
-    // 3. VER POSTULACIONES DE UNA OFERTA
     @GetMapping("/ver-postulaciones/{id}")
     public String verPostulaciones(@PathVariable("id") Long ofertaId, Model model) {
         try {
@@ -79,7 +82,6 @@ public class OfertaController {
                 List<Postulacion> postulaciones = postulacionRepository.findByOfertaId(ofertaId);
                 model.addAttribute("postulaciones", postulaciones);
                 
-                // NOTA: Recuerda que si tu carpeta no está dentro de UI, tienes que quitar el "UI/"
                 return "UI/ver_postulaciones/ver_postulaciones"; 
             }
             return "redirect:/jobsearching";
@@ -89,7 +91,6 @@ public class OfertaController {
         }
     }
 
-    // 4. CREAR UNA NUEVA OFERTA
     @PostMapping("/api/ofertas/crear")
     public String crearOferta(
             @RequestParam("titulo") String titulo,
@@ -122,7 +123,6 @@ public class OfertaController {
         return "redirect:/jobsearching"; 
     }
 
-    // 5. CAMBIAR ESTADO ACTIVA/CERRADA (TOGGLE)
     @PostMapping("/api/ofertas/{id}/toggle-status")
     @ResponseBody
     public ResponseEntity<?> toggleEstadoOferta(@PathVariable("id") Long id) {
@@ -141,20 +141,17 @@ public class OfertaController {
         }
     }
 
-    // 6. ELIMINAR OFERTA COMPLETAMENTE
     @DeleteMapping("/api/ofertas/{id}/delete")
     @ResponseBody
     public ResponseEntity<?> borrarOferta(@PathVariable("id") Long id) {
         try {
             Optional<OfertaEmpleo> ofertaOpt = ofertaRepository.findById(id);
             if (ofertaOpt.isPresent()) {
-                // Primero borramos las postulaciones de esa oferta para que la base de datos no dé error
                 List<Postulacion> postulaciones = postulacionRepository.findByOfertaId(id);
                 if (!postulaciones.isEmpty()) {
                     postulacionRepository.deleteAll(postulaciones);
                 }
                 
-                // Después borramos la oferta
                 ofertaRepository.deleteById(id);
                 
                 return ResponseEntity.ok().body("{\"success\": true}");
@@ -164,4 +161,99 @@ public class OfertaController {
             return ResponseEntity.status(500).body("{\"success\": false, \"error\": \"" + e.getMessage() + "\"}");
         }
     }
+
+    // 7. VER DETALLE DE UNA OFERTA (Añadido el usuario al modelo)
+    @PostMapping("/jobview/{id}") // <-- CAMBIO AQUÍ: Pasa de @GetMapping a @PostMapping
+    public String verDetalleOferta(
+            @PathVariable("id") Long id, 
+            @RequestParam(value = "username", required = false) String username, 
+            Model model) {
+        
+        try {
+            Optional<OfertaEmpleo> ofertaOpt = ofertaRepository.findById(id);
+            if (ofertaOpt.isPresent()) {
+                model.addAttribute("oferta", ofertaOpt.get());
+
+                List<Proyecto> misProyectos = new java.util.ArrayList<>();
+                
+                if (username != null && !username.isEmpty()) {
+                    Optional<Usuario> usuarioActual = usuarioRepository.findByUsername(username);
+                    if (usuarioActual.isPresent()) {
+                        Usuario usr = usuarioActual.get();
+                        model.addAttribute("usuarioLogueado", usr);
+                        misProyectos = proyectoRepository.findByAutorId(usr.getId());
+                    }
+                }
+                
+                model.addAttribute("proyectos", misProyectos);
+                
+                return "UI/jobview/jobview"; 
+            }
+            return "redirect:/jobsearching";
+        } catch (Exception e) {
+            System.out.println("Error al cargar la oferta en jobview: " + e.getMessage());
+            return "redirect:/jobsearching";
+        }
+    }
+
+// 8. ENVIAR LA POSTULACIÓN Y REDIRIGIR
+    @PostMapping("/api/postular")
+    public String enviarPostulacion(
+            @RequestParam("ofertaId") Long ofertaId,
+            @RequestParam("username") String username,
+            @RequestParam(value = "proyectoId", required = false) Long proyectoId,
+            @RequestParam(value = "mensaje", required = false) String mensaje
+            // @RequestParam(value = "archivo_cv", required = false) MultipartFile archivoCv 
+            // (El archivo viaja, pero lo ignoramos de momento hasta implementar un servicio de almacenamiento)
+    ) {
+        try {
+            // Buscamos la oferta y el usuario
+            Optional<OfertaEmpleo> ofertaOpt = ofertaRepository.findById(ofertaId);
+            Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
+
+            if (ofertaOpt.isPresent() && usuarioOpt.isPresent()) {
+                Postulacion nuevaPostulacion = new Postulacion();
+                nuevaPostulacion.setOferta(ofertaOpt.get());
+                nuevaPostulacion.setDesarrollador(usuarioOpt.get());
+                nuevaPostulacion.setMensajeAdjunto(mensaje);
+
+                // Si seleccionó un proyecto, lo vinculamos
+                if (proyectoId != null) {
+                    Optional<Proyecto> proyectoOpt = proyectoRepository.findById(proyectoId);
+                    proyectoOpt.ifPresent(nuevaPostulacion::setProyectoVinculado);
+                }
+
+                // Guardamos en la base de datos
+                postulacionRepository.save(nuevaPostulacion);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al guardar la postulación: " + e.getMessage());
+        }
+
+        // Redirigimos a la página principal de ofertas
+        return "redirect:/jobsearching";
+    }
+
+    // 9. OBTENER LAS OFERTAS A LAS QUE SE HA POSTULADO UN USUARIO
+        @GetMapping("/api/postulaciones/mis-ofertas-ids")
+        @ResponseBody
+        public ResponseEntity<List<Long>> obtenerMisOfertasPostuladas(@RequestParam("username") String username) {
+            try {
+                Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
+                if (usuarioOpt.isPresent()) {
+                    // Buscamos sus postulaciones
+                    List<Postulacion> postulaciones = postulacionRepository.findByDesarrolladorId(usuarioOpt.get().getId());
+                    
+                    // Extraemos solo los IDs de las ofertas
+                    List<Long> ofertaIds = postulaciones.stream()
+                            .map(p -> p.getOferta().getId())
+                            .collect(Collectors.toList());
+                            
+                    return ResponseEntity.ok(ofertaIds);
+                }
+                return ResponseEntity.ok(new java.util.ArrayList<>());
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body(new java.util.ArrayList<>());
+            }
+        }
 }

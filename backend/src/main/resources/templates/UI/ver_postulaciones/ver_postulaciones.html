@@ -13,37 +13,101 @@
     
     <style>
         .candidato-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(25, 25, 25, 0.8);
             border: 1px solid #333;
             border-radius: 10px;
             padding: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Alineado arriba para que las cajas encajen bien */
             gap: 20px;
+            transition: all 0.3s ease;
+        }
+        .candidato-card:hover {
+            border-color: rgba(255, 204, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);
         }
         .avatar-candidato {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             border: 2px solid #FFCC00;
             object-fit: cover;
         }
-        .mensaje-candidato {
-            color: #aaa;
+        
+        /* Estilos para la carta de presentación (Mensaje) */
+        .caja-mensaje {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #FFCC00;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border-radius: 0 5px 5px 0;
+            color: #ddd;
+            font-size: 0.95rem;
             font-style: italic;
-            margin: 10px 0;
-            font-size: 0.9rem;
+            line-height: 1.5;
         }
+        
+        /* Estilos para el proyecto vinculado */
+        .caja-proyecto {
+            margin-top: 10px;
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #aaa;
+            display: inline-block;
+        }
+        
+        /* Contenedor de los botones de la derecha */
+        .acciones-candidato {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+            min-width: 150px;
+        }
+
+        /* Botones Neón */
         .btn-ver-perfil {
             background: transparent;
-            color: #00f2ff;
-            border: 1px solid #00f2ff;
-            padding: 5px 15px;
+            color: #FFCC00;
+            border: 1px solid #FFCC00;
+            padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .btn-ver-perfil:hover {
+            background: #FFCC00;
+            color: #000;
+            box-shadow: 0 0 10px #FFCC00;
+        }
+
+        .btn-ver-cv {
+            background: rgba(0, 242, 255, 0.1);
+            color: #00f2ff;
+            border: 1px solid #00f2ff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .btn-ver-cv:hover {
+            background: #00f2ff;
+            color: #000;
+            box-shadow: 0 0 10px #00f2ff;
         }
     </style>
 </head>
@@ -54,9 +118,9 @@
     <main class="contenedor-principal-ofertas">
         
         <div style="margin-bottom: 30px; text-align: left; color: #FFCC00;">
-        <a th:href="@{/mis-ofertas(empresa=${oferta.empresa.username})}" style="color: #888; text-decoration: none; font-size: 0.9rem;">
-            <i class="fas fa-arrow-left"></i> Volver a mis ofertas
-        </a>
+            <a th:href="@{/mis-ofertas(empresa=${oferta.empresa.username})}" style="color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;" onmouseover="this.style.color='#FFCC00'" onmouseout="this.style.color='#888'">
+                <i class="fas fa-arrow-left"></i> Volver a mis ofertas
+            </a>
             <h2 style="margin-top: 15px;">Candidatos para: <span th:text="${oferta.titulo}" style="color: white;"></span></h2>
         </div>
 
@@ -64,25 +128,44 @@
             <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/default-avatar.png'}" class="avatar-candidato">
             
             <div style="flex: 1;">
-                <h3 th:text="${post.desarrollador.username}" style="color: white; margin: 0;"></h3>
-                <p class="mensaje-candidato" th:text="${post.mensajeAdjunto}"></p>
+                <h3 th:text="${post.desarrollador.username}" style="color: white; margin: 0 0 5px 0; font-size: 1.2rem;"></h3>
+                <span style="color: #666; font-size: 0.8rem;"><i class="fas fa-envelope"></i> <span th:text="${post.desarrollador.email}"></span></span>
                 
-                <div th:if="${post.proyectoVinculado != null}" style="font-size: 0.8rem; color: #888;">
-                    <i class="fas fa-link"></i> Proyecto vinculado: 
-                    <a th:href="'/proyecto/' + ${post.proyectoVinculado.id}" th:text="${post.proyectoVinculado.titulo}" style="color: #FFCC00; text-decoration: none;"></a>
+                <div th:if="${post.mensajeAdjunto != null && !post.mensajeAdjunto.isEmpty()}" class="caja-mensaje">
+                    <i class="fas fa-quote-left" style="color: #FFCC00; opacity: 0.5; margin-right: 8px;"></i>
+                    <span th:text="${post.mensajeAdjunto}"></span>
+                </div>
+                
+                <div th:if="${post.proyectoVinculado != null}" class="caja-proyecto">
+                    <i class="fas fa-code-branch" style="color: #00f2ff; margin-right: 5px;"></i> 
+                    <strong style="color: #ddd;">Proyecto destacado:</strong> 
+                    <a th:href="@{/proyecto/{id}(id=${post.proyectoVinculado.id})}" target="_blank" th:text="${post.proyectoVinculado.titulo}" style="color: #00f2ff; text-decoration: none; font-weight: bold; margin-left: 5px;"></a>
                 </div>
             </div>
             
-            <div style="text-align: right;">
-                <span style="display: block; color: #666; font-size: 0.7rem; margin-bottom: 10px;" 
-                      th:text="${#dates.format(post.fechaPostulacion, 'dd/MM/yyyy')}"></span>
-                <a th:href="'/profile/' + ${post.desarrollador.username}" class="btn-ver-perfil">VER PERFIL</a>
+            <div class="acciones-candidato">
+                <span style="color: #888; font-size: 0.75rem; margin-bottom: 5px;" 
+                      th:text="${#dates.format(post.fechaPostulacion, 'dd/MM/yyyy HH:mm')}"></span>
+                
+                <a th:href="@{/profileView/{username}(username=${post.desarrollador.username})}" class="btn-ver-perfil">
+                    <i class="fas fa-user-circle"></i> VER PERFIL
+                </a>
+
+                <a th:if="${post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty()}" 
+                   th:href="@{${post.desarrollador.curriculum}}" target="_blank" class="btn-ver-cv">
+                    <i class="fas fa-file-pdf"></i> CURRÍCULUM
+                </a>
+
+                <span th:unless="${post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty()}" 
+                      style="font-size: 0.8rem; color: #ff4444; margin-top: 5px; text-align: center; width: 100%;">
+                    <i class="fas fa-times-circle"></i> Sin CV
+                </span>
             </div>
         </div>
 
-        <div th:if="${#lists.isEmpty(postulaciones)}" style="text-align: center; color: #666; margin-top: 50px;">
-            <i class="fas fa-user-slash fa-3x"></i>
-            <p style="margin-top: 15px;">Aún no se ha postulado nadie a esta oferta.</p>
+        <div th:if="${#lists.isEmpty(postulaciones)}" style="text-align: center; color: #666; margin-top: 50px; background: rgba(25,25,25,0.6); padding: 40px; border-radius: 10px; border: 1px dashed #444;">
+            <i class="fas fa-user-slash fa-3x" style="color: #444;"></i>
+            <p style="margin-top: 15px; font-size: 1.1rem; color: #888;">Aún no se ha postulado nadie a esta oferta.</p>
         </div>
 
     </main>

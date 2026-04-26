@@ -10,30 +10,6 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobview_styles/jobview.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        /* Estilos para el estado seleccionado en los proyectos */
-        .seleccionable {
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            margin-bottom: 5px;
-            border-radius: 8px;
-        }
-        .seleccionable.seleccionado {
-            border-color: #FFCC00;
-            background: rgba(255, 204, 0, 0.1);
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-        }
-        /* Iluminación del icono activo en el header */
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
@@ -45,45 +21,38 @@
 
                 <div class="tarjeta-proyecto-detalle tarjeta-oferta">
                     <div class="cabecera-proyecto">
-                        <h2>Frontend Developer</h2>
-                        <span class="categoria">Frontend</span>
+                        <h2 th:text="${oferta.titulo}">Título del Puesto</h2>
+                        <span class="categoria" th:if="${!oferta.tecnologias.isEmpty()}" th:text="${oferta.tecnologias[0].nombre}">Tecnología</span>
                     </div>
 
                     <div class="info-superior">
-                        <img src="/Img/stock/empresa1.png" class="logo-empresa" alt="Logo Empresa Alpha">
-                        <p><strong>Empresa:</strong> Empresa Alpha</p>
+                        <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="logo-empresa" alt="Logo Empresa">
+                        <p><strong>Empresa:</strong> <span th:text="${oferta.empresa?.username ?: 'Empresa Confidencial'}">Nombre Empresa</span></p>
                     </div>
 
                     <div class="descripcion-proyecto">
                         <h3><i class="fas fa-info-circle"></i> Descripción del puesto</h3>
-                        <p>Buscamos desarrollador frontend con experiencia en React, diseño UI y buenas prácticas...</p>
+                        <p style="white-space: pre-line;" th:text="${oferta.descripcion}"></p>
                     </div>
 
                     <div class="descripcion-proyecto">
                         <h3><i class="fas fa-list-check"></i> Requisitos</h3>
-                        <ul>
-                            <li>Experiencia mínima 2 años en React</li>
-                            <li>Conocimiento de HTML, CSS y buenas prácticas UI/UX</li>
-                            <li>Trabajo en equipo y comunicación efectiva</li>
-                        </ul>
+                        <p style="white-space: pre-line;" th:text="${oferta.requisitos}"></p>
                     </div>
 
                     <div class="descripcion-proyecto">
                         <h3><i class="fas fa-gift"></i> Ofrecemos</h3>
-                        <ul>
-                            <li>Jornada completa y flexibilidad horaria</li>
-                            <li>Seguro médico privado</li>
-                            <li>Formación continua y oportunidades de crecimiento</li>
-                        </ul>
+                        <p style="white-space: pre-line;" th:text="${oferta.ofrecemos}"></p>
                     </div>
 
                     <div class="descripcion-proyecto">
                         <h3><i class="fas fa-euro-sign"></i> Rango salarial</h3>
-                        <p>25.000€ – 35.000€ anuales</p>
+                        <p th:text="${oferta.rangoSalarial}">Rango no especificado</p>
                     </div>
                 </div>
 
-                <div class="tarjeta-proyecto-detalle tarjeta-formulario">
+                <div class="tarjeta-proyecto-detalle tarjeta-formulario" id="seccion-candidatura" style="position: relative;">
+                    
                     <div class="cabecera-proyecto">
                         <h2>Tu candidatura</h2>
                         <a href="/jobsearching" class="boton-volver-curvo" title="Volver">
@@ -91,38 +60,87 @@
                         </a>
                     </div>
 
-                    <div class="bloque-postulacion">
-                        <div class="campo">
-                            <label>Subir CV</label>
-                            <input type="file" class="input-file-custom">
-                        </div>
+                    <div id="mensaje-no-dev" class="mensaje-bloqueo-rol" style="display: none;">
+                        <i class="fas fa-lock"></i>
+                        <h3 style="margin: 0 0 10px 0; font-size: 1.3rem;">Acceso Restringido</h3>
+                        <p style="font-size: 0.95rem; color: #ccc; margin: 0; line-height: 1.5;">
+                            Solo los perfiles registrados como <strong>Desarrollador</strong> pueden enviar postulaciones a las ofertas de empleo.
+                        </p>
+                    </div>
+
+                    <form th:action="@{/api/postular}" method="POST" enctype="multipart/form-data" class="bloque-postulacion" id="form-postulacion">
+                        
+                        <input type="hidden" name="ofertaId" th:value="${oferta.id}">
+                        <input type="hidden" name="username" id="input-username" value="">
+                        <input type="hidden" name="proyectoId" id="input-proyecto" value="">
 
                         <div class="campo">
-                            <label>Selecciona un proyecto de tu perfil</label>
-                            <div class="contenedor-proyectos-seleccion">
-                                <div class="seleccionable">
-                                    <p style="margin: 0;"><strong>Proyecto 1:</strong> E-commerce App</p>
+                            <label><i class="fas fa-file-pdf"></i> Currículum Vitae</label>
+                            <div class="opciones-cv">
+                                <div class="opcion-radio" th:if="${usuarioLogueado != null && usuarioLogueado.curriculum != null && !usuarioLogueado.curriculum.isEmpty()}">
+                                    <input type="radio" id="cv-perfil" name="opcion_cv" value="perfil" checked onchange="toggleCargaNuevoCV()">
+                                    <label for="cv-perfil">
+                                        Usar mi CV guardado en el perfil 
+                                        <span style="color: #00f2ff; font-size: 0.85em; margin-left: 5px;"><i class="fas fa-check-circle"></i> Disponible</span>
+                                    </label>
                                 </div>
-                                <div class="seleccionable">
-                                    <p style="margin: 0;"><strong>Proyecto 2:</strong> Portfolio Neón</p>
+
+                                <div class="opcion-radio" th:if="${usuarioLogueado == null || usuarioLogueado.curriculum == null || usuarioLogueado.curriculum.isEmpty()}">
+                                    <input type="radio" id="cv-perfil-disabled" name="opcion_cv" value="perfil" disabled>
+                                    <label for="cv-perfil-disabled" style="color: #666;">
+                                        Usar mi CV guardado en el perfil 
+                                        <span style="color: #ff4444; font-size: 0.85em; margin-left: 5px;">(No tienes ningún CV en tu perfil)</span>
+                                    </label>
                                 </div>
-                                <div class="seleccionable">
-                                    <p style="margin: 0;"><strong>Proyecto 3:</strong> App de Clima</p>
+
+                                <div class="opcion-radio">
+                                    <input type="radio" id="cv-nuevo" name="opcion_cv" value="nuevo" 
+                                           th:checked="${usuarioLogueado == null || usuarioLogueado.curriculum == null || usuarioLogueado.curriculum.isEmpty()}"
+                                           onchange="toggleCargaNuevoCV()">
+                                    <label for="cv-nuevo">
+                                        Subir un currículum específico para esta oferta
+                                    </label>
                                 </div>
+                            </div>
+
+                            <div id="contenedor-input-cv" class="input-archivo-animado" 
+                                 th:style="${usuarioLogueado != null && usuarioLogueado.curriculum != null && !usuarioLogueado.curriculum.isEmpty()} ? 'display: none;' : 'display: block;'">
+                                <input type="file" class="input-file-custom" name="archivo_cv" accept=".pdf,.doc,.docx">
                             </div>
                         </div>
 
                         <div class="campo">
-                            <label>Mensaje / Carta de presentación</label>
-                            <textarea placeholder="Cuéntales por qué eres el mejor candidato..."></textarea>
+                            <label><i class="fas fa-code"></i> Selecciona un proyecto de tu perfil para destacar</label>
+                            
+                            <div th:if="${!#lists.isEmpty(proyectos)}" class="contenedor-proyectos-seleccion">
+                                <div class="seleccionable" th:each="proyecto, iterStat : ${proyectos}" th:attr="data-id=${proyecto.id}">
+                                    <p style="margin: 0;">
+                                        <strong>Proyecto <span th:text="${iterStat.index + 1}"></span>:</strong> 
+                                        <span th:text="${proyecto.titulo}">Título del Proyecto</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div th:if="${#lists.isEmpty(proyectos)}" class="aviso-sin-proyectos">
+                                <i class="fas fa-exclamation-triangle" style="color: #ff4444; font-size: 1.5em; margin-bottom: 10px;"></i>
+                                <p>Aún no tienes ningún proyecto publicado en tu portfolio. Las empresas valoran mucho ver código real.</p>
+                                <a href="/createProject" class="btn-crear-proyecto">
+                                    <i class="fas fa-plus"></i> Crear mi primer proyecto
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="campo">
+                            <label><i class="fas fa-envelope-open-text"></i> Carta de presentación (Opcional)</label>
+                            <textarea name="mensaje" placeholder="Cuéntales por qué eres el mejor candidato y qué puedes aportar al equipo..."></textarea>
                         </div>
 
                         <div class="contenedor-boton-central">
-                            <button class="boton-postular-final">
+                            <button type="submit" class="boton-postular-final">
                                 <i class="fas fa-paper-plane"></i> ENVIAR POSTULACIÓN
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
 
             </div>
@@ -136,20 +154,38 @@
         $(document).ready(function() {
             inicializarHeaderYPostulacion();
             
-            // Selección de proyectos
             $(".seleccionable").on("click", function() {
                 $(".seleccionable").removeClass("seleccionado");
                 $(this).addClass("seleccionado");
+                
+                const idProyecto = $(this).data("id");
+                $("#input-proyecto").val(idProyecto);
             });
         });
 
         function inicializarHeaderYPostulacion() {
             const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario') || 'USER';
+            const miRol = localStorage.getItem('rolUsuario') ? String(localStorage.getItem('rolUsuario')).trim().toUpperCase() : 'VISITOR';
+            
             const contenedorHeader = document.getElementById('info-usuario');
             const navEmpleos = document.getElementById('nav-empleos');
+            
+            const formPostulacion = document.getElementById('form-postulacion');
+            const mensajeNoDev = document.getElementById('mensaje-no-dev');
 
-            // Inyectar identidad en el Header
+            // LÓGICA DE BLOQUEO VISUAL
+            if (miRol === 'DEVELOPER' || miRol === '2') {
+                if (formPostulacion) formPostulacion.classList.remove('candidatura-bloqueada');
+                if (mensajeNoDev) mensajeNoDev.style.display = 'none';
+            } else {
+                if (formPostulacion) formPostulacion.classList.add('candidatura-bloqueada');
+                if (mensajeNoDev) mensajeNoDev.style.display = 'block';
+            }
+
+            if (miNombre) {
+                document.getElementById('input-username').value = miNombre;
+            }
+
             if (miNombre && contenedorHeader) {
                 contenedorHeader.innerHTML = `
                     <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
@@ -159,9 +195,19 @@
                 `;
             }
 
-            // Activar brillo neón en el icono de Empleos
             if (navEmpleos) {
                 navEmpleos.classList.add('activo');
+            }
+        }
+
+        function toggleCargaNuevoCV() {
+            const radioNuevo = document.getElementById('cv-nuevo');
+            const contenedorInput = document.getElementById('contenedor-input-cv');
+            
+            if (radioNuevo && radioNuevo.checked) {
+                contenedorInput.style.display = 'block';
+            } else {
+                contenedorInput.style.display = 'none';
             }
         }
     </script>

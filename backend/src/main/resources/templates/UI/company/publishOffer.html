@@ -80,27 +80,35 @@
 
                 <div class="grupo-input">
                     <label for="titulo"><i class="fas fa-signature"></i> Título del Puesto</label>
-                    <input type="text" id="titulo" name="titulo" class="input-neon" placeholder="Ej: Desarrollador Fullstack Junior" required>
+                    <input type="text" id="titulo" name="titulo" class="input-neon" 
+                           placeholder="Ej: Desarrollador Backend Senior (Java/Spring Boot) - 100% Remoto" required>
                 </div>
 
                 <div class="grupo-input">
-                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción Breve</label>
-                    <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta" rows="3" required></textarea>
+                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción del Proyecto / Puesto</label>
+                    <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta" 
+                              placeholder="Ej: Buscamos un desarrollador apasionado para unirse a nuestro equipo core. Trabajarás en la creación y migración de nuevos microservicios para nuestra plataforma SaaS principal. Serás clave en la toma de decisiones arquitectónicas y colaborarás estrechamente con el equipo de Frontend y Producto..." 
+                              rows="4" required></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="requisitos"><i class="fas fa-list-check"></i> Requisitos</label>
-                    <textarea id="requisitos" name="requisitos" class="input-neon textarea-oferta" rows="4"></textarea>
+                    <textarea id="requisitos" name="requisitos" class="input-neon textarea-oferta" 
+                              placeholder="Ej:&#10;- Mínimo 3 años de experiencia trabajando con Java y Spring Boot.&#10;- Sólidos conocimientos en bases de datos relacionales (MySQL/PostgreSQL).&#10;- Experiencia creando y consumiendo APIs REST.&#10;- Buenas prácticas de código (Clean Code, principios SOLID).&#10;- Valorable experiencia con Docker y AWS." 
+                              rows="5"></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="ofrecemos"><i class="fas fa-gift"></i> ¿Qué ofrecemos?</label>
-                    <textarea id="ofrecemos" name="ofrecemos" class="input-neon textarea-oferta" rows="4"></textarea>
+                    <textarea id="ofrecemos" name="ofrecemos" class="input-neon textarea-oferta" 
+                              placeholder="Ej:&#10;- Contrato indefinido a jornada completa.&#10;- Flexibilidad horaria y modalidad 100% remota.&#10;- Presupuesto anual de 1.000€ para formación, cursos o eventos.&#10;- Seguro médico privado cubierto por la empresa.&#10;- Buen ambiente de trabajo y equipo dinámico." 
+                              rows="5"></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="rango_salarial"><i class="fas fa-money-bill-wave"></i> Rango Salarial</label>
-                    <input type="text" id="rango_salarial" name="rango_salarial" class="input-neon" placeholder="Ej: 30.000€ - 45.000€">
+                    <input type="text" id="rango_salarial" name="rango_salarial" class="input-neon" 
+                           placeholder="Ej: 30.000€ - 45.000€ Brutos/año (según valía del candidato)">
                 </div>
 
                 <div class="grupo-input">
@@ -186,7 +194,10 @@
                         cat.tecnologias.forEach(tech => {
                             const label = document.createElement('label');
                             label.className = 'check-tech'; 
-                            label.innerHTML = `<input type="checkbox" name="tecnologias_ids" value="${tech.id}"><span>${tech.nombre}</span>`;
+                            
+                            // ÚNICO CAMBIO: Se añade la etiqueta <i> con la clase tech.icono
+                            label.innerHTML = `<input type="checkbox" name="tecnologias_ids" value="${tech.id}"><span><i class="${tech.icono || 'fas fa-code'}"></i> ${tech.nombre}</span>`;
+                            
                             grid.appendChild(label);
                         });
                         divCategoria.appendChild(grid);

@@ -18,6 +18,66 @@
             text-shadow: 0 0 10px #FFCC00 !important;
             opacity: 1 !important;
         }
+
+        .no-resultados-container {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(0, 243, 255, 0.05);
+            margin: 20px 0;
+        }
+
+        .no-resultados-container i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #ff003c;
+            text-shadow: 0 0 10px #ff003c;
+        }
+
+        .no-resultados-container p {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .contador-resultados {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0 30px 0;
+            color: rgba(0, 243, 255, 0.8);
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .contador-resultados .linea-neon {
+            flex-grow: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.5), transparent);
+        }
+
+        .contador-resultados .texto-contador {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(0, 243, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 4px;
+            border-left: 3px solid #00f3ff;
+        }
+
+        .contador-resultados .numero {
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 5px #00f3ff;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -33,7 +93,7 @@
                     <button type="button" class="funnel-icon" id="funnelBtn">
                         <i class="fas fa-filter"></i>
                     </button>
-                    <input type="text" name="query" placeholder="Pincha aquí para buscar programadores Ej: Alicia Fernandez" th:value="${searchQuery}" autocomplete="off" spellcheck="false" required>
+                    <input type="text" name="query" placeholder="Pincha aquí para buscar programadores Ej: Alicia Fernandez" th:value="${searchQuery}" autocomplete="off" spellcheck="false">
                     <button type="submit" class="btn-buscar-neon">
                         <i class="fas fa-terminal"></i> BUSCAR
                     </button>
@@ -45,8 +105,8 @@
                         <button type="button" class="btn-control" id="deselectAll">Deseleccionar Todos</button>
                     </div>
                     <div class="grid-checkboxes">
-                        <label th:each="tech : ${allTechnologies}" class="item-tech">
-                            <input type="checkbox" name="tech" th:value="${tech.id}">
+                        <label th:each="tech : ${allTechnologies}" class="item-tech" th:classappend="${selectedTechIds != null and selectedTechIds.contains(tech.id)} ? 'selected' : ''">
+                            <input type="checkbox" name="tech" th:value="${tech.id}" th:checked="${selectedTechIds != null and selectedTechIds.contains(tech.id)}">
                             <span th:text="${tech.nombre}"></span>
                             <div class="tick-minimalista">
                                 <i class="fas fa-check"></i>
@@ -58,14 +118,32 @@
         </section>
 
         <section class="seccion-carrusel">
-            <h2 class="subtitulo-neon" th:text="${searchQuery != null} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'"></h2>
+            <h2 class="subtitulo-neon" 
+                th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'">
+            </h2>
             
-            <div th:class="${searchQuery == null} ? 'carrusel-wrapper' : 'grid-resultados'">
-                <button th:if="${searchQuery == null}" class="btn-nav prev" onclick="moverCarrusel(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div th:if="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())}" class="contador-resultados">
+                <div class="texto-contador">
+                    Perfiles encontrados: <span class="numero" th:text="${developers.size()}">0</span>
+                </div>
+                <div class="linea-neon"></div>
+            </div>
+
+            <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados'">
                 
-                <div th:class="${searchQuery == null} ? 'carrusel-contenedor' : ''">
-                    <div th:id="${searchQuery == null} ? 'track' : ''" th:class="${searchQuery == null} ? 'carrusel-track' : 'grid-resultados-inner'">
+                <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav prev" onclick="moverCarrusel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-contenedor' : ''">
+                    <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
+                         th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-resultados-inner'">
                         
+                        <div th:if="${developers.empty}" class="no-resultados-container">
+                            <i class="fas fa-user-slash"></i>
+                            <p>No se ha encontrado a nadie que coincida con tu búsqueda</p>
+                        </div>
+
                         <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
                              th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
                                       esLarga=${#strings.length(fullBio) > 60}">
@@ -108,7 +186,9 @@
                     </div>
                 </div>
                 
-                <button th:if="${searchQuery == null}" class="btn-nav next" onclick="moverCarrusel(1)"><i class="fas fa-chevron-right"></i></button>
+                <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav next" onclick="moverCarrusel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </section>
     </main>
@@ -137,14 +217,8 @@
         const total = document.querySelectorAll('.item-tech input').length;
         const seleccionados = document.querySelectorAll('.item-tech input:checked').length;
 
-        btnSelectAll.classList.remove('btn-active');
-        btnDeselectAll.classList.remove('btn-active');
-
-        if (seleccionados === total && total > 0) {
-            btnSelectAll.classList.add('btn-active');
-        } else if (seleccionados === 0) {
-            btnDeselectAll.classList.add('btn-active');
-        }
+        if (btnSelectAll) btnSelectAll.classList.toggle('btn-active', seleccionados === total && total > 0);
+        if (btnDeselectAll) btnDeselectAll.classList.toggle('btn-active', seleccionados === 0);
     }
 
     document.querySelectorAll('.item-tech').forEach(item => {
@@ -222,8 +296,7 @@
         inicializarHeader();
         actualizarCarrusel();
         startAutoPlay();
-        
-        btnSelectAll?.click();
+        actualizarEstadoBotonesGlobales();
     });
     </script>
 </body>

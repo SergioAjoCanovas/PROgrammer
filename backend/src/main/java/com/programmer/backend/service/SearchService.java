@@ -4,6 +4,7 @@ import com.programmer.backend.domain.PerfilDesarrollador;
 import com.programmer.backend.domain.Tecnologia;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.PerfilDesarrolladorRepository;
+import com.programmer.backend.repository.TecnologiaRepository;
 import com.programmer.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ public class SearchService {
 
     @Autowired
     private PerfilDesarrolladorRepository perfilDesarrolladorRepository;
+
+    @Autowired
+    private TecnologiaRepository tecnologiaRepository;
 
     public List<PerfilDesarrollador> getAllDevelopers() {
         List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
@@ -60,6 +64,38 @@ public class SearchService {
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .peek(this::sortTecnologiasByPriority)
+                .collect(Collectors.toList());
+    }
+
+    public List<Tecnologia> getAllTechnologies() {
+        return tecnologiaRepository.findAll();
+    }
+
+    public List<PerfilDesarrollador> searchDevelopers(String query, List<Long> techIds) {
+        List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
+        return developers.stream()
+                .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(perfil -> {
+                    // Filter by query if present
+                    if (query != null && !query.trim().isEmpty()) {
+                        if (!perfil.getUsuario().getUsername().toLowerCase().startsWith(query.toLowerCase().trim())) {
+                            return false;
+                        }
+                    }
+                    // Filter by technologies if provided
+                    if (techIds != null && !techIds.isEmpty()) {
+                        Set<Long> perfilTechIds = perfil.getTecnologias().stream()
+                                .map(Tecnologia::getId)
+                                .collect(Collectors.toSet());
+                        if (!perfilTechIds.stream().anyMatch(techIds::contains)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                })
                 .peek(this::sortTecnologiasByPriority)
                 .collect(Collectors.toList());
     }

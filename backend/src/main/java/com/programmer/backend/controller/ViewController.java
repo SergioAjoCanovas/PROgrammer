@@ -115,15 +115,20 @@ public class ViewController {
     @GetMapping("/searchProgrammer")
     public String searchProgrammer(Model model) {
         model.addAttribute("developers", searchService.getFeaturedDevelopers());
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies());
         return "UI/searchHome/searchProgrammer";
     }
 
     @GetMapping("/searchProgrammer/search")
-    public String searchProgrammer(@RequestParam("query") String query, Model model) {
-        List<PerfilDesarrollador> results = searchService.searchDevelopersByUsernameStartingWith(query);
+    public String searchProgrammer(@RequestParam(value = "query", required = false) String query, 
+                                   @RequestParam(value = "tech", required = false) List<Long> techIds, 
+                                   Model model) {
+        List<PerfilDesarrollador> results = searchService.searchDevelopers(query, techIds);
         model.addAttribute("developers", results);
         model.addAttribute("searchQuery", query);
         model.addAttribute("resultCount", results.size());
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies());
+        model.addAttribute("selectedTechIds", techIds != null ? techIds : searchService.getAllTechnologies().stream().map(t -> t.getId()).collect(java.util.stream.Collectors.toList()));
         return "UI/searchHome/searchProgrammer";
     }
 

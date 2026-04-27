@@ -46,9 +46,10 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    public List<PerfilDesarrollador> getFeaturedDevelopers() {
+        public List<PerfilDesarrollador> getFeaturedDevelopers(Long currentUserId) {
         List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
         return developers.stream()
+                .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .limit(10)
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
@@ -57,35 +58,22 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    public List<PerfilDesarrollador> searchDevelopersByUsernameStartingWith(String prefix) {
+    public List<PerfilDesarrollador> searchDevelopers(String query, List<Long> techIds, Long currentUserId) {
         List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
         return developers.stream()
-                .filter(user -> user.getUsername().toLowerCase().startsWith(prefix.toLowerCase()))
-                .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .peek(this::sortTecnologiasByPriority)
-                .collect(Collectors.toList());
-    }
-
-    public List<Tecnologia> getAllTechnologies() {
-        return tecnologiaRepository.findAll();
-    }
-
-    public List<PerfilDesarrollador> searchDevelopers(String query, List<Long> techIds) {
-        List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
-        return developers.stream()
+                .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(perfil -> {
-                    // Filter by query if present
+                    // Filtrar por nombre si existe query
                     if (query != null && !query.trim().isEmpty()) {
                         if (!perfil.getUsuario().getUsername().toLowerCase().startsWith(query.toLowerCase().trim())) {
                             return false;
                         }
                     }
-                    // Filter by technologies if provided
+                    
+                    // Filtrar por tecnologías: debe tener AL MENOS UNA de las seleccionadas
                     if (techIds != null && !techIds.isEmpty()) {
                         Set<Long> perfilTechIds = perfil.getTecnologias().stream()
                                 .map(Tecnologia::getId)
@@ -95,6 +83,26 @@ public class SearchService {
                         }
                     }
                     return true;
+                })
+                .sorted((p1, p2) -> {
+                    if (techIds == null || techIds.isEmpty()) return 0;
+
+                    long matches1 = p1.getTecnologias().stream()
+                            .filter(t -> techIds.contains(t.getId()))
+                            .count();
+                    long matches2 = p2.getTecnologias().stream()
+                            .filter(t -> techIds.contains(t.getId()))
+                            .count();
+
+                    // 1. Primero por número de coincidencias con el filtro (Descendente)
+                    if (matches1 != matches2) {
+                        return Long.compare(matches2, matches1);
+                    }
+
+                    // 2. Si hay empate, el que tenga más tecnologías en total va primero (Descendente)
+                    int total1 = p1.getTecnologias().size();
+                    int total2 = p2.getTecnologias().size();
+                    return Integer.compare(total2, total1);
                 })
                 .peek(this::sortTecnologiasByPriority)
                 .collect(Collectors.toList());
@@ -110,5 +118,9 @@ public class SearchService {
     private int getTechPriority(Tecnologia tecnologia) {
         int index = TECHNOLOGY_PRIORITY.indexOf(tecnologia.getNombre());
         return index >= 0 ? index : TECHNOLOGY_PRIORITY.size();
+    }
+
+    public List<Tecnologia> getAllTechnologies() {
+        return tecnologiaRepository.findAll();
     }
 }

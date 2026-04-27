@@ -2,7 +2,6 @@ package com.programmer.backend.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import com.programmer.backend.domain.PerfilDesarrollador;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.service.SearchService;
@@ -11,7 +10,9 @@ import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ViewController {
@@ -48,20 +49,6 @@ public class ViewController {
     // =========================
     // PERFIL
     // =========================
-    /*@GetMapping("/ownProfile")
-    public String ownProfile(HttpSession session, Model model) {
-
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("usuarioHeader", usuario);
-
-        return "UI/ownProfile/ownProfile";
-    }*/
-
     @GetMapping("/profileView")
     public String profileView() {
         return "UI/profileView/profileView";
@@ -103,32 +90,51 @@ public class ViewController {
     // =========================
     // EMPLEO
     // =========================
-
     @GetMapping("/jobview")
     public String jobview() {
         return "UI/jobview/jobview";
     }
 
     // =========================
-    // RED / BÚSQUEDA
+    // RED / BÚSQUEDA (CORREGIDO)
     // =========================
     @GetMapping("/searchProgrammer")
-    public String searchProgrammer(Model model) {
-        model.addAttribute("developers", searchService.getFeaturedDevelopers());
+    public String searchProgrammer(HttpSession session, Model model) {
+        // Obtenemos el ID del usuario logueado para no mostrarse a sí mismo en destacados
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        model.addAttribute("developers", searchService.getFeaturedDevelopers(currentUserId));
         model.addAttribute("allTechnologies", searchService.getAllTechnologies());
+        
+        // Inicializamos lista vacía para que el HTML no de error al buscar "selectedTechIds"
+        model.addAttribute("selectedTechIds", new ArrayList<Long>());
+        
         return "UI/searchHome/searchProgrammer";
     }
 
     @GetMapping("/searchProgrammer/search")
     public String searchProgrammer(@RequestParam(value = "query", required = false) String query, 
                                    @RequestParam(value = "tech", required = false) List<Long> techIds, 
+                                   HttpSession session,
                                    Model model) {
-        List<PerfilDesarrollador> results = searchService.searchDevelopers(query, techIds);
+        
+        // Obtenemos el ID del usuario logueado para pasárselo al servicio
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        // LLAMADA CORREGIDA: Ahora enviamos los 3 parámetros que pide el SearchService
+        List<PerfilDesarrollador> results = searchService.searchDevelopers(query, techIds, currentUserId);
+        
         model.addAttribute("developers", results);
         model.addAttribute("searchQuery", query);
         model.addAttribute("resultCount", results.size());
         model.addAttribute("allTechnologies", searchService.getAllTechnologies());
-        model.addAttribute("selectedTechIds", techIds != null ? techIds : searchService.getAllTechnologies().stream().map(t -> t.getId()).collect(java.util.stream.Collectors.toList()));
+        
+        // PERSISTENCIA DE FILTROS:
+        // Si techIds es null (no se marcó nada), enviamos lista vacía para evitar errores en el HTML
+        model.addAttribute("selectedTechIds", techIds != null ? techIds : new ArrayList<Long>());
+        
         return "UI/searchHome/searchProgrammer";
     }
 
@@ -151,7 +157,7 @@ public class ViewController {
     }
 
     // =========================
-    // PUBLICAR OFERTA (CASO ESPECIAL)
+    // PUBLICAR OFERTA
     // =========================
     @GetMapping("/publishOffer")
     public String publishOffer() {
@@ -163,26 +169,9 @@ public class ViewController {
         return "UI/loginPage/loginPage";
     }
 
-    // =========================
-    // TECNOLOGÍAS
-    // =========================
-    /* 
-    @GetMapping("/addTechnology")
-    public String addTechnology(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("usuarioHeader", usuario);
-        return "UI/addTechnology/addTechnology"; 
-    }
-    */
-
-
     // =======================================
-    // TERMINOS,PRIVACIDAD,SOBRE NOSOTROS
+    // TERMINOS, PRIVACIDAD, SOBRE NOSOTROS
     // =======================================
-
     @GetMapping("/terminos")
     public String mostrarTerminos() {
         return "UI/terminos/terminos"; 

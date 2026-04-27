@@ -283,14 +283,14 @@ body.fondo-oscuro-neon {
 .bio-recortada.interactiva { cursor: pointer; }
 .bio-recortada.interactiva:hover { color: #FFCC00; }
 
-/* --- TAGS: Espaciadas y Animadas --- */
+/* --- TAGS: Separación equilibrada --- */
 .tags-container { position: relative; margin-bottom: 15px; width: 100%; }
 
 .tags { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 6px; /* Más separación entre tecnologías principales */
-    justify-content: center; /* Distribución equilibrada */
+    gap: 8px; /* Separación justa para que no estén pegadas ni muy lejos */
+    justify-content: center; /* Centradas en la tarjeta */
     width: 100%;
 }
 
@@ -298,7 +298,7 @@ body.fondo-oscuro-neon {
     display: inline-block;
     background: rgba(255, 204, 0, 0.1);
     color: #FFCC00;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 5px;
     font-size: 0.75rem;
     border: 1px solid rgba(255, 204, 0, 0.2);

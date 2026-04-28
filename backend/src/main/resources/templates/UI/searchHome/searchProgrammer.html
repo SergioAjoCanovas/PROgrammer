@@ -19,25 +19,27 @@
             opacity: 1 !important;
         }
 
+        /* DISEÑO AZUL CON ICONO ROJO PARA ERROR */
         .no-resultados-container {
             grid-column: 1 / -1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 50px 20px;
+            padding: 60px 20px;
             text-align: center;
             color: rgba(255, 255, 255, 0.6);
             border: 1px dashed rgba(0, 243, 255, 0.3);
             border-radius: 15px;
             background: rgba(0, 243, 255, 0.05);
             margin: 20px 0;
+            width: 100%;
         }
 
         .no-resultados-container i {
             font-size: 4rem;
             margin-bottom: 15px;
-            color: #ff003c;
+            color: #ff003c; /* ROJO */
             text-shadow: 0 0 10px #ff003c;
         }
 
@@ -122,14 +124,22 @@
                 th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'">
             </h2>
             
-            <div th:if="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())}" class="contador-resultados">
+            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !developers.empty}" class="contador-resultados">
                 <div class="texto-contador">
                     Perfiles encontrados: <span class="numero" th:text="${developers.size()}">0</span>
                 </div>
                 <div class="linea-neon"></div>
             </div>
 
-            <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados'">
+            <div th:if="${developers.empty}" class="no-resultados-container">
+                <i class="fas fa-user-slash"></i>
+                <p th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} 
+                           ? 'No se ha encontrado a nadie que coincida con tu búsqueda' 
+                           : 'No se han encontrado perfiles destacados'"></p>
+            </div>
+
+            <div th:unless="${developers.empty}" 
+                 th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados'">
                 
                 <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav prev" onclick="moverCarrusel(-1)">
                     <i class="fas fa-chevron-left"></i>
@@ -139,11 +149,6 @@
                     <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
                          th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-resultados-inner'">
                         
-                        <div th:if="${developers.empty}" class="no-resultados-container">
-                            <i class="fas fa-user-slash"></i>
-                            <p>No se ha encontrado a nadie que coincida con tu búsqueda</p>
-                        </div>
-
                         <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
                              th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
                                       esLarga=${#strings.length(fullBio) > 60}">
@@ -163,7 +168,7 @@
                                     </div>
                                     <i th:if="${developer.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
                                 </div>
-                                <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
+                                <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${developer.usuario.id}|">Ver Perfil</button>
                             </div>
 
                             <div class="vista-todas-techs">
@@ -198,7 +203,17 @@
     <script>
     function inicializarHeader() {
         const navRed = document.getElementById('nav-red'); 
-        if (navRed) navRed.classList.add('activo');
+        if (navRed) {
+            navRed.classList.add('activo');
+        } else {
+            const links = document.querySelectorAll('header a');
+            links.forEach(l => {
+                const href = l.getAttribute('href');
+                if (href && (href.includes('searchProgrammer') || href.includes('red'))) {
+                    l.classList.add('activo');
+                }
+            });
+        }
     }
 
     const funnelBtn = document.getElementById('funnelBtn');
@@ -216,7 +231,6 @@
     function actualizarEstadoBotonesGlobales() {
         const total = document.querySelectorAll('.item-tech input').length;
         const seleccionados = document.querySelectorAll('.item-tech input:checked').length;
-
         if (btnSelectAll) btnSelectAll.classList.toggle('btn-active', seleccionados === total && total > 0);
         if (btnDeselectAll) btnDeselectAll.classList.toggle('btn-active', seleccionados === 0);
     }
@@ -265,6 +279,7 @@
     function actualizarCarrusel() {
         if(!track) return;
         const totalCards = track.querySelectorAll('.tarjeta-perfil-neon').length;
+        if (totalCards === 0) return;
         const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
         const maxIndex = Math.max(0, totalCards - visibleCards);
         if (index > maxIndex) index = 0;
@@ -293,7 +308,7 @@
 
     window.addEventListener('resize', actualizarCarrusel);
     window.addEventListener('load', () => {
-        inicializarHeader();
+        setTimeout(inicializarHeader, 100);
         actualizarCarrusel();
         startAutoPlay();
         actualizarEstadoBotonesGlobales();

@@ -89,16 +89,37 @@
                 </button>
             </div>
 
-            <form action="/proyectos/crear" method="post">
+            <form id="formProyecto" action="/proyectos/crear" method="post" enctype="multipart/form-data">
 
                 <div class="campo">
-                    <label>Imagen de portada</label>
-                    <div class="portada-contenedor">
-                        <img src="https://via.placeholder.com/800x400/1a1a1a/FFCC00?text=Haz+clic+para+subir+portada" id="preview-img" alt="Vista previa">
-                        <div class="overlay-subir-portada">
-                            <label for="file-upload"><i class="fas fa-cloud-upload-alt"></i></label>
-                            <input type="file" id="file-upload" accept="image/*" hidden>
+                    <label>Imágenes del Proyecto</label>
+                
+                    <div class="grid-imagenes">
+                
+                        <div class="img-box">
+                            <div class="img-placeholder" id="ph1"><i class="fas fa-plus"></i></div>
+                            <img id="preview1">
+                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview1', 'ph1')">
                         </div>
+                
+                        <div class="img-box">
+                            <div class="img-placeholder" id="ph2"><i class="fas fa-plus"></i></div>
+                            <img id="preview2">
+                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview2', 'ph2')">
+                        </div>
+                
+                        <div class="img-box">
+                            <div class="img-placeholder" id="ph3"><i class="fas fa-plus"></i></div>
+                            <img id="preview3">
+                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview3', 'ph3')">
+                        </div>
+                
+                        <div class="img-box">
+                            <div class="img-placeholder" id="ph4"><i class="fas fa-plus"></i></div>
+                            <img id="preview4">
+                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview4', 'ph4')">
+                        </div>
+                
                     </div>
                 </div>
 
@@ -132,7 +153,7 @@
                 </div>
 
                 <div class="contenedor-botones">
-                    <button type="submit" class="btn-guardar">
+                    <button type="submit" class="btn-guardar" id="btnSubmit">
                         <i class="fas fa-rocket"></i> Publicar Proyecto
                     </button>
                 </div>
@@ -140,81 +161,195 @@
         </section>
     </main>
 
+    <div id="toast" class="toast"></div>
+
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
+        let enviando = false;
+        
+        // -------------------- INIT --------------------
         $(document).ready(function() {
             if (typeof actualizarMiUsuarioEnHeader === "function") {
                 actualizarMiUsuarioEnHeader();
             }
-            inicializarPreviewImagen();
-            cargarTecnologiasAgrupadas(); // Llamada a tu API de Categorías
+            cargarTecnologiasAgrupadas();
         });
-
-       // --- CARGAR TECNOLOGÍAS AGRUPADAS DESDE API ---
+        
+        // -------------------- TOAST --------------------
+        function mostrarToast(msg, tipo = "success") {
+            const toast = document.getElementById("toast");
+        
+            toast.className = "toast";
+            toast.classList.add(tipo === "error" ? "toast-error" : "toast-success");
+        
+            toast.innerText = msg;
+            toast.classList.add("show");
+        
+            setTimeout(() => toast.classList.remove("show"), 4000);
+        }
+        
+        // -------------------- VALIDACIÓN IMAGEN --------------------
+        function validarImagen(file) {
+            if (!file) return true;
+        
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const allowed = ["image/jpeg", "image/png", "image/webp"];
+        
+            if (!allowed.includes(file.type)) {
+                mostrarToast("Formato de imagen no permitido", "error");
+                return false;
+            }
+        
+            if (file.size > maxSize) {
+                mostrarToast("Una imagen supera los 2MB", "error");
+                return false;
+            }
+        
+            return true;
+        }
+        
+        // -------------------- SUBMIT CONTROLADO --------------------
+        document.getElementById("formProyecto").addEventListener("submit", function(e) {
+            if (enviando) {
+                e.preventDefault();
+                return;
+            }
+        
+            const titulo = document.querySelector("[name='titulo']").value.trim();
+            const desc = document.querySelector("[name='descripcion']").value.trim();
+        
+            if (!titulo || !desc) {
+                e.preventDefault();
+                mostrarToast("Rellena título y descripción", "error");
+                return;
+            }
+        
+            // validar imágenes
+            const inputs = document.querySelectorAll("input[type='file']");
+            for (let input of inputs) {
+                if (input.files[0] && !validarImagen(input.files[0])) {
+                    e.preventDefault();
+                    return;
+                }
+            }
+        
+            enviando = true;
+            document.getElementById("btnSubmit").disabled = true;
+            mostrarToast("Publicando proyecto...", "success");
+        });
+        
+        // -------------------- TECNOLOGÍAS --------------------
         function cargarTecnologiasAgrupadas() {
             $.ajax({
-                url: '/api/categorias/todas', 
+                url: '/api/categorias/todas',
                 type: 'GET',
                 success: function(categorias) {
+        
                     const contenedor = $('#contenedor-tecnologias');
-                    contenedor.empty(); 
-                    
+                    contenedor.empty();
+        
                     categorias.forEach(function(categoria) {
-                        if (categoria.tecnologias && categoria.tecnologias.length > 0) {
-                            
-                            let htmlCaja = `
-                                <div class="grupo-categoria">
-                                    <div class="titulo-categoria">${categoria.nombre}</div>
-                                    <div class="grid-tecnologias">
+        
+                        if (!categoria.tecnologias?.length) return;
+        
+                        let html = `
+                            <div class="grupo-categoria">
+                                <div class="titulo-categoria">${categoria.nombre}</div>
+                                <div class="grid-tecnologias">
+                        `;
+        
+                        categoria.tecnologias.forEach(function(tech) {
+        
+                            const icon = tech.icono
+                                ? `<i class="${tech.icono} tech-icon"></i>`
+                                : `<i class="fas fa-code tech-icon"></i>`;
+        
+                            html += `
+                                <label class="item-check">
+                                    <input type="checkbox" name="tecnologias" value="${tech.id}">
+                                    ${icon}
+                                    <span>${tech.nombre}</span>
+                                </label>
                             `;
-                            
-                            categoria.tecnologias.forEach(function(tech) {
-                                const iconoHtml = tech.icono ? `<i class="${tech.icono} tech-icon"></i>` : `<i class="fas fa-code tech-icon"></i>`;
-                                
-                                htmlCaja += `
-                                    <label class="item-check">
-                                        <input type="checkbox" name="tecnologias" value="${tech.id}">
-                                        <span class="custom-check"></span> ${iconoHtml}
-                                        <span>${tech.nombre}</span>
-                                    </label>
-                                `;
-                            });
-                            
-                            htmlCaja += `
-                                    </div>
-                                </div>
-                            `;
-                            
-                            contenedor.append(htmlCaja);
-                        }
+                        });
+        
+                        html += `</div></div>`;
+                        contenedor.append(html);
                     });
                 },
                 error: function() {
-                    $('#contenedor-tecnologias').html('<p style="color: #ff003c; text-align: center;">Error al cargar las tecnologías desde el servidor.</p>');
+                    mostrarToast("Error al cargar tecnologías", "error");
                 }
             });
         }
-
-        // --- PREVIEW DE IMAGEN ---
-        function inicializarPreviewImagen() {
-            const fileInput = document.getElementById('file-upload');
-            const previewImg = document.getElementById('preview-img');
-
-            if (fileInput && previewImg) {
-                fileInput.addEventListener('change', function() {
-                    const file = this.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            previewImg.setAttribute('src', e.target.result);
-                        }
-                        reader.readAsDataURL(file);
-                    }
-                });
+        
+        // -------------------- PREVIEW IMAGEN --------------------
+        function previewImg(event, imgId, placeholderId) {
+            const file = event.target.files[0];
+        
+            if (!validarImagen(file)) {
+                event.target.value = "";
+                return;
             }
+        
+            if (!file) return;
+        
+            const reader = new FileReader();
+        
+            reader.onload = function() {
+                const img = document.getElementById(imgId);
+                img.src = reader.result;
+                img.style.display = "block";
+        
+                document.getElementById(placeholderId).style.display = "none";
+            };
+        
+            reader.readAsDataURL(file);
         }
+        
+        // -------------------- DRAG & DROP --------------------
+        document.querySelectorAll(".img-box").forEach(box => {
+        
+            box.addEventListener("dragover", e => {
+                e.preventDefault();
+                box.style.border = "2px solid #FFCC00";
+            });
+        
+            box.addEventListener("dragleave", () => {
+                box.style.border = "2px dashed #FFCC00";
+            });
+        
+            box.addEventListener("drop", e => {
+                e.preventDefault();
+        
+                const file = e.dataTransfer.files[0];
+                const input = box.querySelector("input[type='file']");
+        
+                if (!file || !validarImagen(file)) return;
+        
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+        
+                input.dispatchEvent(new Event("change"));
+            });
+        });
+        </script>
+
+    <script th:if="${error != null}">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let mensaje = /*[[${error}]]*/ null;
+
+            if (mensaje === "FILE_TOO_LARGE") {
+                mensaje = "Una imagen es demasiado grande";
+            }
+
+            mostrarToast(mensaje, "error");
+        });
     </script>
 </body>
 </html>

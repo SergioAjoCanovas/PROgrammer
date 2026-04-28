@@ -584,3 +584,70 @@ p, span, div, h1, h2, h3, h4 {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* ============================================================
+    10. REJILLA DE PROYECTOS
+   ============================================================ */
+
+   .proyecto-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 260px;
+}
+
+/* DESCRIPCIÓN CON SCROLL COMO BIO */
+.proyecto-desc {
+    max-height: 70px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    color: #bbb;
+    padding-right: 5px;
+}
+
+/* SCROLL bonito */
+.proyecto-desc::-webkit-scrollbar {
+    width: 6px;
+}
+
+.proyecto-desc::-webkit-scrollbar-thumb {
+    background: var(--amarillo-neon);
+    border-radius: 10px;
+}
+
+/* CARRUSEL PEQUEÑO */
+.carousel-proyecto {
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+}
+
+.carousel-img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    display: none;
+}
+
+.carousel-img.active {
+    display: block;
+}
+
+/* TECNOLOGÍAS PROYECTO */
+.tech-proyecto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.small {
+    font-size: 0.7rem;
+    padding: 5px 10px !important;
+}
+
+/* ocultas */
+.tech-extra-proyecto {
+    display: none;
+}

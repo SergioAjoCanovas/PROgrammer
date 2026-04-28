@@ -1,9 +1,11 @@
 package com.programmer.backend.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.Comparator;
 import com.programmer.backend.domain.*;
-import com.programmer.backend.repository.NewReviewRepository; // Repositorio de reseñas
+import com.programmer.backend.repository.NewReviewRepository;
 import com.programmer.backend.repository.PerfilDesarrolladorRepository;
 import com.programmer.backend.repository.PerfilEmpresaRepository;
 import com.programmer.backend.repository.UsuarioRepository;
@@ -27,7 +29,7 @@ public class ProfileController {
     private UsuarioRepository usuarioRepo;
 
     @Autowired
-    private NewReviewRepository reviewRepository; // Inyectamos el repositorio
+    private NewReviewRepository reviewRepository;
 
     @GetMapping("/ownProfile")
     public String ownProfile(HttpSession session, Model model) {
@@ -95,14 +97,16 @@ public class ProfileController {
 
     @GetMapping("/profileView/{id}")
     public String verPerfilPublico(@PathVariable Long id, Model model, HttpSession session) {
+        
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         if (usuarioLogueado != null) {
             model.addAttribute("usuarioHeader", usuarioLogueado);
         }
 
         Usuario usuarioDestino = usuarioRepo.findById(id).orElse(null);
+
         if (usuarioDestino == null) {
-            return "redirect:/searchProgrammer";
+            return "redirect:/searchProgrammer"; 
         }
 
         model.addAttribute("usuario", usuarioDestino);
@@ -112,10 +116,25 @@ public class ProfileController {
         
         model.addAttribute("reviews", reviews);
         model.addAttribute("media", media != null ? media : 0);
-        model.addAttribute("newReview", new NewReview());
+        model.addAttribute("newReview", new NewReview()); 
 
         devRepo.findByUsuarioId(id).ifPresent(perfilDev -> {
             model.addAttribute("perfilDesarrollador", perfilDev);
+            
+            // AGRUPAR TECNOLOGÍAS POR CATEGORÍA PARA LA VISTA
+            try {
+                Map<String, List<Tecnologia>> techsAgrupadas = perfilDev.getTecnologias().stream()
+                    .collect(Collectors.groupingBy(t -> {
+                        if (t.getCategoria() != null && t.getCategoria().getNombre() != null) {
+                            return t.getCategoria().getNombre();
+                        }
+                        return "Otras";
+                    }));
+                model.addAttribute("techsPorCategoria", techsAgrupadas);
+            } catch (Exception e) {
+                // Si falla por algún motivo de base de datos, lo dejamos nulo
+                model.addAttribute("techsPorCategoria", null);
+            }
         });
 
         return "UI/profileView/profileView"; 

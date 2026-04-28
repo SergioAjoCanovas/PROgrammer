@@ -19,7 +19,6 @@
             opacity: 1 !important;
         }
 
-        /* DISEÑO AZUL CON ICONO ROJO PARA ERROR */
         .no-resultados-container {
             grid-column: 1 / -1;
             display: flex;
@@ -39,7 +38,7 @@
         .no-resultados-container i {
             font-size: 4rem;
             margin-bottom: 15px;
-            color: #ff003c; /* ROJO */
+            color: #ff003c; 
             text-shadow: 0 0 10px #ff003c;
         }
 
@@ -85,6 +84,12 @@
 <body class="body-layout fondo-oscuro-neon">
     
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
 
     <main class="contenedor-busqueda">
         <section class="seccion-buscador-central">

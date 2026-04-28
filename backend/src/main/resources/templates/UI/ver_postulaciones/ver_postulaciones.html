@@ -9,107 +9,8 @@
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
+    <link rel="stylesheet" href="/Style/verPostulaciones_styles/verPostulaciones.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        .candidato-card {
-            background: rgba(25, 25, 25, 0.8);
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start; /* Alineado arriba para que las cajas encajen bien */
-            gap: 20px;
-            transition: all 0.3s ease;
-        }
-        .candidato-card:hover {
-            border-color: rgba(255, 204, 0, 0.5);
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.1);
-        }
-        .avatar-candidato {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 2px solid #FFCC00;
-            object-fit: cover;
-        }
-        
-        /* Estilos para la carta de presentación (Mensaje) */
-        .caja-mensaje {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 3px solid #FFCC00;
-            padding: 12px 15px;
-            margin: 12px 0;
-            border-radius: 0 5px 5px 0;
-            color: #ddd;
-            font-size: 0.95rem;
-            font-style: italic;
-            line-height: 1.5;
-        }
-        
-        /* Estilos para el proyecto vinculado */
-        .caja-proyecto {
-            margin-top: 10px;
-            background: rgba(0, 242, 255, 0.05);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: #aaa;
-            display: inline-block;
-        }
-        
-        /* Contenedor de los botones de la derecha */
-        .acciones-candidato {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-end;
-            min-width: 150px;
-        }
-
-        /* Botones Neón */
-        .btn-ver-perfil {
-            background: transparent;
-            color: #FFCC00;
-            border: 1px solid #FFCC00;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: center;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-        .btn-ver-perfil:hover {
-            background: #FFCC00;
-            color: #000;
-            box-shadow: 0 0 10px #FFCC00;
-        }
-
-        .btn-ver-cv {
-            background: rgba(0, 242, 255, 0.1);
-            color: #00f2ff;
-            border: 1px solid #00f2ff;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: center;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-        .btn-ver-cv:hover {
-            background: #00f2ff;
-            color: #000;
-            box-shadow: 0 0 10px #00f2ff;
-        }
-    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
@@ -117,11 +18,22 @@
 
     <main class="contenedor-principal-ofertas">
         
-        <div style="margin-bottom: 30px; text-align: left; color: #FFCC00;">
-            <a th:href="@{/mis-ofertas(empresa=${oferta.empresa.username})}" style="color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;" onmouseover="this.style.color='#FFCC00'" onmouseout="this.style.color='#888'">
-                <i class="fas fa-arrow-left"></i> Volver a mis ofertas
-            </a>
-            <h2 style="margin-top: 15px;">Candidatos para: <span th:text="${oferta.titulo}" style="color: white;"></span></h2>
+        <div style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 20px;">
+            
+            <div style="display: flex; align-items: center;">
+                <a href="javascript:history.back()" class="enlace-volver">
+                    <i class="fas fa-arrow-left"></i> Volver a mis ofertas
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <h2 style="margin: 0; font-size: 1.8rem; color: #FFCC00;">
+                    Candidatos para: <span th:text="${oferta.titulo}" style="color: white;"></span>
+                </h2>
+                <p style="color: #ccc; font-size: 0.95rem; margin-top: 10px;">
+                    Revisa los perfiles de los desarrolladores que han aplicado a tu oferta.
+                </p>
+            </div>
         </div>
 
         <div th:each="post : ${postulaciones}" class="candidato-card">

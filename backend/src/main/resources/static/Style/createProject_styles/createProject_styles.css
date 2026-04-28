@@ -208,34 +208,6 @@ input:focus, textarea:focus {
 
 .item-check:hover { color: var(--amarillo-neon); }
 
-.item-check input { display: none; }
-
-.custom-check {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--amarillo-neon);
-    border-radius: 4px;
-    background: transparent;
-    position: relative;
-}
-
-.item-check input:checked + .custom-check {
-    background-color: var(--amarillo-neon);
-    box-shadow: 0 0 10px var(--amarillo-neon);
-}
-
-.item-check input:checked + .custom-check::after {
-    content: '\f00c';
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    font-size: 11px;
-    color: var(--negro-puro);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 /* --- BOTÓN GUARDAR (CENTRADÍSIMO) --- */
 .contenedor-botones {
     display: flex;
@@ -272,3 +244,110 @@ input:focus, textarea:focus {
 /* --- SCROLLBAR --- */
 .contenedor-checkboxes::-webkit-scrollbar { width: 6px; }
 .contenedor-checkboxes::-webkit-scrollbar-thumb { background: var(--amarillo-neon); border-radius: 10px; }
+
+/* ----CSS PARA IMAGENES ---*/
+.grid-imagenes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.img-box {
+    position: relative;
+    border: 2px dashed var(--amarillo-neon);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 150px;
+    cursor: pointer;
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-box input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.img-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0,0,0,0.6);
+    color: var(--amarillo-neon);
+    font-size: 2rem;
+
+    z-index: 5;
+    pointer-events: none;
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; 
+}
+
+/* TOASTS */
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success {
+    background: #00e676;
+    color: #000;
+}
+
+.toast-error {
+    background: #ff4d4d;
+    color: #fff;
+}
+
+/*CHECKBOXES*/
+
+.item-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.item-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #FFCC00;
+    cursor: pointer;
+}

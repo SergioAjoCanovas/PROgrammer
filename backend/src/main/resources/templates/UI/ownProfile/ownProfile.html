@@ -78,13 +78,62 @@
             <section class="tarjeta-acordeon card-proyectos-principal">
                 <div class="cabecera-tarjeta"><h2>MIS PROYECTOS</h2><i class="fas fa-th icono-grid-top"></i></div>
                 <div class="rejilla-proyectos">
+
+                    <!-- TARJETA CREAR PROYECTO -->
                     <div class="tarjeta-mini-proyecto tarjeta-anadir">
                         <i class="fas fa-plus-circle"></i>
                         <h3>Nuevo Proyecto</h3>
                         <p>Sube tu código y muéstralo al mundo.</p>
-                        <button onclick="window.location.href='/createProject'" class="boton-amarillo-solido">CREAR AHORA</button>
+                        <button onclick="window.location.href='/createProject'" class="boton-amarillo-solido">
+                            CREAR AHORA
+                        </button>
                     </div>
-                    <div class="tarjeta-mini-proyecto"><h3>Gestor de Tareas</h3><p>App con React y Node.js</p></div>
+                
+                    <!-- PROYECTOS (2 ÚLTIMOS) -->
+                    <div th:each="p : ${ultimosProyectos}" class="tarjeta-mini-proyecto proyecto-card">
+                
+                        <!-- NOMBRE -->
+                        <h3 th:text="${p.nombre}">Nombre proyecto</h3>
+                
+                        <!-- DESCRIPCIÓN CON SCROLL -->
+                        <div class="proyecto-desc" th:text="${p.descripcion}">
+                            Descripción proyecto...
+                        </div>
+                
+                        <!-- CARRUSEL IMÁGENES -->
+                        <div class="carousel-proyecto" th:attr="data-id=${p.id}">
+                            <img th:each="img : ${p.imagenes}"
+                                 th:src="${img}"
+                                 class="carousel-img">
+                        </div>
+                
+                        <!-- TECNOLOGÍAS -->
+                        <div class="tech-proyecto">
+                            <span th:each="t,iter : ${p.tecnologias}"
+                                  th:if="${iter.index < 3}"
+                                  class="tag-tech small"
+                                  th:text="${t.nombre}">
+                            </span>
+                
+                            <!-- BOTÓN +N (igual que tu sistema actual) -->
+                            <span th:if="${#lists.size(p.tecnologias) > 3}"
+                                  class="tag-tech tag-mas"
+                                  th:attr="onclick=|toggleTechs(${p.id})|">
+                                +<span th:text="${#lists.size(p.tecnologias) - 3}"></span>
+                            </span>
+                
+                            <!-- OCULTAS -->
+                            <div th:id="'tech-extra-' + ${p.id}" class="tech-extra-proyecto">
+                                <span th:each="t,iter : ${p.tecnologias}"
+                                      th:if="${iter.index >= 3}"
+                                      class="tag-tech small"
+                                      th:text="${t.nombre}">
+                                </span>
+                            </div>
+                        </div>
+                
+                    </div>
+                
                 </div>
             </section>
 
@@ -623,6 +672,40 @@ function guardarBio() {
         document.getElementById("bio-view").style.display = "block";
         document.getElementById("bio-edit").style.display = "none";
     });
+}
+
+// CARRUSEL AUTOMÁTICO SIMPLE
+function iniciarCarruseles() {
+    document.querySelectorAll(".carousel-proyecto").forEach(carousel => {
+        const imgs = carousel.querySelectorAll("img");
+        let index = 0;
+
+        if (imgs.length === 0) return;
+
+        imgs[0].classList.add("active");
+
+        setInterval(() => {
+            imgs[index].classList.remove("active");
+            index = (index + 1) % imgs.length;
+            imgs[index].classList.add("active");
+        }, 2500);
+    });
+}
+
+window.addEventListener("load", iniciarCarruseles);
+
+// EXPANDIR TECNOLOGÍAS PROYECTO
+function toggleTechs(id) {
+    const extra = document.getElementById("tech-extra-" + id);
+    if (!extra) return;
+
+    if (extra.style.display === "flex") {
+        extra.style.display = "none";
+    } else {
+        extra.style.display = "flex";
+        extra.style.gap = "6px";
+        extra.style.flexWrap = "wrap";
+    }
 }
     </script>
 </body>

@@ -36,6 +36,17 @@ public class Proyecto {
     @Column(name = "esta_validado")
     private Boolean estaValidado;
 
+    // ==========================================
+    // AÑADIDO: Relación exacta con tu base de datos
+    // ==========================================
+    @ManyToMany
+    @JoinTable(
+        name = "proyecto_tecnologias", 
+        joinColumns = @JoinColumn(name = "proyecto_id"),
+        inverseJoinColumns = @JoinColumn(name = "tecnologia_id")
+    )
+    private List<Tecnologia> tecnologias;
+
     // REVIEWS
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
     private List<ProjectReview> reviews;

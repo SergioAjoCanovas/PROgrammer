@@ -1,5 +1,8 @@
 package com.programmer.backend.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -57,5 +60,21 @@ public class PerfilEmpresa {
 
     public void setSitioWeb(String sitioWeb) {
         this.sitioWeb = sitioWeb;
+    }
+
+    @ManyToMany
+    @JoinTable(
+        name = "perfil_empresa_tecnologia",
+        joinColumns = @JoinColumn(name = "perfil_empresa_id"),
+        inverseJoinColumns = @JoinColumn(name = "tecnologia_id")
+    )
+    private Set<Tecnologia> tecnologias = new HashSet<>();
+
+    public Set<Tecnologia> getTecnologias() {
+        return tecnologias;
+    }
+    
+    public void setTecnologias(Set<Tecnologia> tecnologias) {
+        this.tecnologias = tecnologias;
     }
 }

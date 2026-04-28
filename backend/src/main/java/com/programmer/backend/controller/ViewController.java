@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class ViewController {
@@ -21,7 +20,7 @@ public class ViewController {
     private SearchService searchService;
 
     // =========================
-    // HOME
+    // HOME / AUTH
     // =========================
     @GetMapping("/")
     public String root() {
@@ -33,9 +32,6 @@ public class ViewController {
         return "UI/main";
     }
 
-    // =========================
-    // AUTH
-    // =========================
     @GetMapping("/login")
     public String login() {
         return "UI/loginPage/loginPage";
@@ -88,26 +84,15 @@ public class ViewController {
     }
 
     // =========================
-    // EMPLEO
-    // =========================
-    @GetMapping("/jobview")
-    public String jobview() {
-        return "UI/jobview/jobview";
-    }
-
-    // =========================
-    // RED / BÚSQUEDA (CORREGIDO)
+    // BÚSQUEDA PROGRAMADORES
     // =========================
     @GetMapping("/searchProgrammer")
     public String searchProgrammer(HttpSession session, Model model) {
-        // Obtenemos el ID del usuario logueado para no mostrarse a sí mismo en destacados
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
         Long currentUserId = (usuario != null) ? usuario.getId() : null;
 
         model.addAttribute("developers", searchService.getFeaturedDevelopers(currentUserId));
         model.addAttribute("allTechnologies", searchService.getAllTechnologies());
-        
-        // Inicializamos lista vacía para que el HTML no de error al buscar "selectedTechIds"
         model.addAttribute("selectedTechIds", new ArrayList<Long>());
         
         return "UI/searchHome/searchProgrammer";
@@ -119,32 +104,48 @@ public class ViewController {
                                    HttpSession session,
                                    Model model) {
         
-        // Obtenemos el ID del usuario logueado para pasárselo al servicio
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
         Long currentUserId = (usuario != null) ? usuario.getId() : null;
 
-        // LLAMADA CORREGIDA: Ahora enviamos los 3 parámetros que pide el SearchService
         List<PerfilDesarrollador> results = searchService.searchDevelopers(query, techIds, currentUserId);
         
         model.addAttribute("developers", results);
         model.addAttribute("searchQuery", query);
-        model.addAttribute("resultCount", results.size());
         model.addAttribute("allTechnologies", searchService.getAllTechnologies());
-        
-        // PERSISTENCIA DE FILTROS:
-        // Si techIds es null (no se marcó nada), enviamos lista vacía para evitar errores en el HTML
         model.addAttribute("selectedTechIds", techIds != null ? techIds : new ArrayList<Long>());
         
         return "UI/searchHome/searchProgrammer";
     }
 
-    @GetMapping("/serachCompanies") 
-    public String serachCompanies() {
-        return "UI/searchHome/serachCompanies";
+    // =========================
+    // BÚSQUEDA EMPRESAS (CORREGIDO)
+    // =========================
+    @GetMapping("/searchCompanies") 
+    public String searchCompanies(Model model) {
+        // IMPORTANTE: Inicializamos las listas para que Thymeleaf no de Error 500
+        // Si tienes un método en searchService para empresas, úsalo aquí
+        model.addAttribute("companies", new ArrayList<>()); 
+        model.addAttribute("searchQuery", "");
+        
+        // Ejemplo si tuvieras el servicio:
+        // model.addAttribute("companies", searchService.getFeaturedCompanies());
+
+        return "UI/searchHome/searchCompanies";
+    }
+
+    @GetMapping("/searchCompanies/search")
+    public String searchCompaniesSearch(@RequestParam(value = "query", required = false) String query, 
+                                       Model model) {
+        
+        // Aquí realizarías la búsqueda real. Por ahora pasamos lista vacía para pruebas
+        model.addAttribute("companies", new ArrayList<>()); 
+        model.addAttribute("searchQuery", query);
+        
+        return "UI/searchHome/searchCompanies";
     }
 
     // =========================
-    // MENÚ / GENERAL
+    // MENÚ / CHATS / EMPLEO
     // =========================
     @GetMapping("/menu")
     public String menu() {
@@ -156,21 +157,18 @@ public class ViewController {
         return "UI/chats/chats";
     }
 
-    // =========================
-    // PUBLICAR OFERTA
-    // =========================
+    @GetMapping("/jobview")
+    public String jobview() {
+        return "UI/jobview/jobview";
+    }
+
     @GetMapping("/publishOffer")
     public String publishOffer() {
         return "UI/company/publishOffer";
     }
 
-    @GetMapping("/loginPage")
-    public String loginPage() {
-        return "UI/loginPage/loginPage";
-    }
-
     // =======================================
-    // TERMINOS, PRIVACIDAD, SOBRE NOSOTROS
+    // LEGAL Y OTROS
     // =======================================
     @GetMapping("/terminos")
     public String mostrarTerminos() {

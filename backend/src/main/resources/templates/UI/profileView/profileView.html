@@ -10,40 +10,16 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-        .circulo-foto img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0; z-index: 1;
-        }
-        .icono-corazon { z-index: 2; position: absolute; }
-        .estrellas i { cursor: pointer; color: #555; transition: 0.3s; }
-        .estrellas i.activa { color: #FFCC00; text-shadow: 0 0 5px #FFCC00; }
-        
-        .resena-item {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 10px 0;
-            margin-bottom: 10px;
-        }
-        .resena-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .resena-usuario { font-weight: bold; color: #00f3ff; font-size: 0.9rem; }
-        .resena-rating { color: #FFCC00; }
-        .resena-texto { font-size: 0.85rem; color: #ccc; }
-    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="/searchProgrammer" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
@@ -56,7 +32,7 @@
                         <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                     </div>
                     <h2 class="nombre-usuario" th:text="${usuario.username}">Nombre</h2>
-                    <p style="color: #FFCC00; font-weight: bold;">Media: <span th:text="${media}">0</span> ⭐</p>
+                    <p style="color: #FFCC00; font-weight: bold;">Media: <span th:text="${#numbers.formatDecimal(media, 1, 1)}">0.0</span> ⭐</p>
                 </div>
 
                 <div class="perfil-inferior">
@@ -139,11 +115,29 @@
                 </div>
 
                 <div class="tarjeta-inferior">
-                    <div class="cabecera-inferior"><h3>SOBRE MI</h3></div>
+                    <div class="cabecera-inferior"><h3>SOBRE MÍ</h3></div>
                     <div class="contenido-inferior">
                         <p th:text="${usuario.biografia != null and !usuario.biografia.isEmpty() ? usuario.biografia : 'Sin descripción.'}"></p>
                         
-                        <div th:if="${perfilDesarrollador != null and !perfilDesarrollador.tecnologias.isEmpty()}" style="margin-top: 15px;">
+                        <div th:if="${techsPorCategoria != null and !techsPorCategoria.isEmpty()}" style="margin-top: 25px;">
+                            <h4 style="color: #FFCC00; font-size: 0.95rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">TECNOLOGÍAS:</h4>
+                            
+                            <div th:each="entry : ${techsPorCategoria}" style="margin-bottom: 15px;">
+                                <h5 style="color: #00f3ff; font-size: 0.8rem; margin: 0 0 10px 0; text-transform: uppercase;" th:text="${entry.key}">Categoría</h5>
+                                
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <span th:each="tech : ${entry.value}" 
+                                          style="background: rgba(0,243,255,0.05); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(0,243,255,0.2); color: white; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                        
+                                        <i th:if="${tech.icono != null}" th:class="${tech.icono}" style="color: #00f3ff;"></i>
+                                        
+                                        <span th:text="${tech.nombre}"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${techsPorCategoria == null and perfilDesarrollador != null and !perfilDesarrollador.tecnologias.isEmpty()}" style="margin-top: 15px;">
                             <h4 style="color: #FFCC00; font-size: 0.9rem; margin-bottom: 10px;">Tecnologías:</h4>
                             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                                 <span th:each="tech : ${perfilDesarrollador.tecnologias}" th:text="${tech.nombre}" 
@@ -151,6 +145,7 @@
                                 </span>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

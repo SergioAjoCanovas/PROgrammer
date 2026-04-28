@@ -12,9 +12,37 @@ body.fondo-oscuro-neon {
     font-family: 'Segoe UI', sans-serif;
 }
 
+/* --- NUEVO BOTÓN VOLVER --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-busqueda {
     flex: 1; 
-    padding: 60px 20px;
+    /* Reducido el padding-top para compensar el nuevo botón de volver */
+    padding: 20px 20px 60px 20px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -289,8 +317,8 @@ body.fondo-oscuro-neon {
 .tags { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 8px; /* Separación justa para que no estén pegadas ni muy lejos */
-    justify-content: center; /* Centradas en la tarjeta */
+    gap: 8px;
+    justify-content: center; 
     width: 100%;
 }
 

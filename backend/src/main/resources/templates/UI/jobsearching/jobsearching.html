@@ -15,6 +15,12 @@
 
     <div th:replace="~{includes/header :: header}"></div>
 
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
     <main class="contenedor-principal-ofertas">
         
         <div class="cabecera-filtros">
@@ -75,7 +81,6 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-    // Variable global para guardar a qué ofertas se ha postulado el desarrollador
     let misPostulacionesIds = [];
 
     function irAJobView(ofertaId) {
@@ -108,7 +113,6 @@
         }
     }
 
-    // FUNCIÓN MODIFICADA: Ahora gestiona las postulaciones y el cartel de "vacío"
     function aplicarFiltro(tipo, botonSeleccionado) {
         if (botonSeleccionado) {
             document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('filtro-seleccionado'));
@@ -134,7 +138,6 @@
             if (mostrar) hayResultados = true;
         });
 
-        // Mostramos el mensaje si el filtro no deja ninguna oferta en pantalla
         const divVacio = document.getElementById('mensaje-filtro-vacio');
         if (divVacio && tarjetas.length > 0) {
             divVacio.style.display = hayResultados ? 'none' : 'block';
@@ -146,18 +149,14 @@
         const username = localStorage.getItem('usuarioLogueado');
         const rolString = rolGuardado ? String(rolGuardado).trim().toUpperCase() : 'VISITOR';
 
-        // 1. Lógica para empresas
         const contenedorOfertas = document.getElementById('contenedor-ofertas-propias');
         if ((rolString === 'COMPANY' || rolString === '3') && contenedorOfertas) {
             contenedorOfertas.style.display = 'flex';
         }
 
-        // 2. Lógica para desarrolladores (NUEVO)
         if ((rolString === 'DEVELOPER' || rolString === '2') && username) {
-            // Activamos el botón de la pestaña
             document.getElementById('btn-filtro-postulaciones').style.display = 'inline-block';
             
-            // Le pedimos al backend los IDs de las ofertas
             fetch('/api/postulaciones/mis-ofertas-ids?username=' + encodeURIComponent(username))
                 .then(res => res.json())
                 .then(data => {
@@ -193,7 +192,7 @@
 
     window.addEventListener('load', () => {
         inicializarHeader();
-        setTimeout(comprobarRoles, 50); // Comprueba Empresas y carga datos de Desarrollador
+        setTimeout(comprobarRoles, 50); 
         setTimeout(adaptarBotonesPorRol, 50); 
     });
     </script>

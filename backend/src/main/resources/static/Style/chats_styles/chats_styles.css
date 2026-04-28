@@ -1,4 +1,33 @@
 /* =========================================================
+   NUEVO: BOTÓN VOLVER (Calcadísimo a searchProgrammer.css)
+   ========================================================= */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
+/* =========================================================
    CONTENEDOR PRINCIPAL CHATS
    ========================================================= */
 .contenedor-principal-chats {
@@ -6,8 +35,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 20px;
-    height: calc(100vh - 100px);
+    /* Ajustado a 20px para igualar la distancia de searchProgrammer */
+    padding: 20px 20px 60px 20px; 
+    height: calc(100vh - 160px); 
     position: relative;
     z-index: 10;
 }
@@ -56,7 +86,6 @@
     margin: 0;
 }
 
-/* BOTÓN NUEVO CHAT (MÁS) */
 .btn-nuevo-chat {
     background-color: #FFCC00;
     color: black;
@@ -97,7 +126,6 @@
     outline: none;
 }
 
-/* LISTA DE CONVERSACIONES */
 .lista-conversaciones {
     flex-grow: 1;
     overflow-y: auto;
@@ -208,7 +236,6 @@
     font-size: 0.8rem;
 }
 
-/* BOTONES DE ACCIÓN */
 .acciones-chat button {
     background: none;
     border: none;
@@ -224,7 +251,6 @@
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
 }
 
-/* HISTORIAL DE MENSAJES */
 .area-mensajes {
     flex-grow: 1;
     padding: 25px;
@@ -263,7 +289,6 @@
     font-weight: 500;
 }
 
-/* ZONA DE ESCRITURA */
 .zona-input-chat {
     display: flex;
     align-items: center;
@@ -286,7 +311,6 @@
     color: #FFCC00;
 }
 
-/* INPUT CON BORDE NEÓN AL ESCRIBIR */
 .zona-input-chat input {
     flex-grow: 1;
     background-color: #1a1a1a;
@@ -304,7 +328,6 @@
                 inset 0 0 8px rgba(255, 204, 0, 0.1);
 }
 
-/* BOTÓN ENVIAR */
 .btn-enviar {
     background-color: #FFCC00;
     color: black;
@@ -325,20 +348,15 @@
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.8); 
 }
 
-/* SCROLLBAR PERSONALIZADO AMARILLO */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
-/* RESPONSIVE */
 @media (max-width: 800px) {
     .panel-contactos { width: 100%; }
     .panel-conversacion { display: none; }
 }
 
-/* =========================================
-   ESTILO ENLACE ACTIVO (HEADER)
-   ========================================= */
 #header-placeholder a.activo, 
 #header-placeholder a.activo i, 
 #header-placeholder a.activo span {

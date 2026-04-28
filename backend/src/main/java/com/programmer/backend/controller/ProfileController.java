@@ -3,15 +3,16 @@ package com.programmer.backend.controller;
 import java.util.List;
 import java.util.Comparator;
 import com.programmer.backend.domain.*;
+import com.programmer.backend.repository.NewReviewRepository; // Repositorio de reseñas
 import com.programmer.backend.repository.PerfilDesarrolladorRepository;
 import com.programmer.backend.repository.PerfilEmpresaRepository;
-import com.programmer.backend.repository.UsuarioRepository; // NUEVO
+import com.programmer.backend.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable; // NUEVO
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ProfileController {
@@ -23,7 +24,10 @@ public class ProfileController {
     private PerfilEmpresaRepository empresaRepo;
 
     @Autowired
-    private UsuarioRepository usuarioRepo; // NUEVO: Repositorio de Usuarios
+    private UsuarioRepository usuarioRepo;
+
+    @Autowired
+    private NewReviewRepository reviewRepository; // Inyectamos el repositorio
 
     @GetMapping("/ownProfile")
     public String ownProfile(HttpSession session, Model model) {
@@ -36,6 +40,13 @@ public class ProfileController {
     
         model.addAttribute("usuarioHeader", usuario);
     
+        // CARGAR RESEÑAS PROPIAS Y MEDIA
+        List<NewReview> reviews = reviewRepository.findByReceptor(usuario);
+        Double media = reviewRepository.getAverageRating(usuario);
+        
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("media", media != null ? media : 0);
+
         String cvUrl = usuario.getCurriculum();
         model.addAttribute("cvUrl", cvUrl);
         model.addAttribute("cvNombre", limpiarNombreCV(extraerNombreCV(cvUrl)));
@@ -82,27 +93,27 @@ public class ProfileController {
         return "redirect:/login";
     }
 
-    // ==========================================
-    // NUEVO MÉTODO: VER PERFIL PÚBLICO DE TERCEROS
-    // ==========================================
     @GetMapping("/profileView/{id}")
     public String verPerfilPublico(@PathVariable Long id, Model model, HttpSession session) {
-        
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         if (usuarioLogueado != null) {
             model.addAttribute("usuarioHeader", usuarioLogueado);
         }
 
-        // Buscar al usuario destino en la Base de Datos
         Usuario usuarioDestino = usuarioRepo.findById(id).orElse(null);
-
         if (usuarioDestino == null) {
-            return "redirect:/searchProgrammer"; // Si no existe, vuelve al buscador
+            return "redirect:/searchProgrammer";
         }
 
         model.addAttribute("usuario", usuarioDestino);
 
-        // Si es desarrollador, pasamos también sus tecnologías al modelo
+        List<NewReview> reviews = reviewRepository.findByReceptor(usuarioDestino);
+        Double media = reviewRepository.getAverageRating(usuarioDestino);
+        
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("media", media != null ? media : 0);
+        model.addAttribute("newReview", new NewReview());
+
         devRepo.findByUsuarioId(id).ifPresent(perfilDev -> {
             model.addAttribute("perfilDesarrollador", perfilDev);
         });

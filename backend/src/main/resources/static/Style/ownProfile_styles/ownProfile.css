@@ -135,118 +135,105 @@ body.fondo-oscuro-neon {
 /* ============================================================
    EDITAR NOMBRE DE USUARIO
    ============================================================ */
+.contenedor-nombre-usuario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 
-   .contenedor-nombre-usuario {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
+.icono-editar-nombre {
+    color: var(--amarillo-neon);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
 
-    .icono-editar-nombre {
-        color: var(--amarillo-neon);
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
+.icono-editar-nombre:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px var(--amarillo-neon);
+}
 
-    .icono-editar-nombre:hover {
-        transform: scale(1.2);
-        text-shadow: 0 0 10px var(--amarillo-neon);
-    }
+.input-nombre-perfil {
+    width: 80%;
+    margin: 10px auto 0;
+    display: none;
+    background-color: var(--negro-input);
+    border: 2px solid var(--amarillo-neon);
+    border-radius: 10px;
+    color: var(--amarillo-neon);
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    transition: all 0.3s ease;
+}
 
-    .input-nombre-perfil {
-        width: 80%;
-        margin: 10px auto 0;
-        display: none;
-
-        background-color: var(--negro-input);
-        border: 2px solid var(--amarillo-neon);
-        border-radius: 10px;
-
-        color: var(--amarillo-neon);
-        font-weight: bold;
-        text-align: center;
-
-        padding: 10px;
-        outline: none;
-
-        box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .input-nombre-perfil:focus {
-        box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
-    }
+.input-nombre-perfil:focus {
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+}
 
 /* ============================================================
     EDITAR REDES SOCIALES
     ============================================================ */
+.campo-red {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+}
 
-    .campo-red {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .valor-red {
-        cursor: pointer;
-        display: inline-block;
-    }
-    
-    /* INPUT SUPERPUESTO */
-    .campo-red {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    
-    .acciones-red {
-        display: flex;
-        gap: 6px; /* iconos juntos */
-        margin-left: auto;
-    }
-    
-    .icono-rojo {
-        color: #ff3b3b !important;
-        cursor: pointer;
-    }
-    
-    /* input encima del texto */
-    .input-red {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        z-index: 10;
-    }
-    
-    .icono-borrar-texto {
-        color: #ff3b3b;
-        cursor: pointer;
-    }
-    
-    .icono-editar-texto {
-        cursor: pointer;
-    }
+.valor-red {
+    cursor: pointer;
+    display: inline-block;
+}
 
-    .clicable-red {
-        cursor: pointer;
-        border-bottom: 1px dotted rgba(255, 204, 0, 0.8);
-        display: inline-block;
-    }
-    
-    .clicable-red:hover {
-        border-bottom: 1px dotted #FFCC00;
-        text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
-    }
+.acciones-red {
+    display: flex;
+    gap: 6px; 
+    margin-left: auto;
+}
+
+.icono-rojo {
+    color: #ff3b3b !important;
+    cursor: pointer;
+}
+
+.input-red {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.icono-borrar-texto {
+    color: #ff3b3b;
+    cursor: pointer;
+}
+
+.icono-editar-texto {
+    cursor: pointer;
+}
+
+.clicable-red {
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(255, 204, 0, 0.8);
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.clicable-red:hover {
+    border-bottom: 1px dotted #FFCC00;
+    text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+    color: white;
+}
 
 /* ============================================================
 APARTADO DE CURRICULUM
 ============================================================ */
-
 .cv-container {
     margin-top: 10px;
     display: flex;
@@ -255,103 +242,93 @@ APARTADO DE CURRICULUM
 }
 
 .cv-link {
+    color: white; 
     text-decoration: underline;
     text-decoration-style: dotted;
+    text-decoration-color: var(--amarillo-neon); 
     cursor: pointer;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.icono-rojo {
-    color: #ff4d4d;
-    cursor: pointer;
+.cv-link:hover {
+    color: var(--amarillo-neon);
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
 }
 
 /* ============================================================
     APARTADO DE BIOGRAFIA
     ============================================================ */
+#bio-edit textarea {
+    width: 100%;
+    min-height: 120px;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #FFCC00;
+    border-radius: 10px;
+    padding: 10px;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
 
-    #bio-edit textarea {
-        width: 100%;
-        min-height: 120px;
-    
-        background: #1a1a1a;
-        color: #ffffff;
-    
-        border: 1px solid #FFCC00;
-        border-radius: 10px;
-    
-        padding: 10px;
-    
-        resize: none;
-        outline: none;
-    
-        font-family: inherit;
-    }
-    
-    .bio-footer {
-        display: flex;
-        flex-direction: column; 
-        align-items: flex-end; 
-    
-        margin-top: 8px;
-        font-size: 12px;
-        color: #FFCC00;
-        gap: 6px;
-    }
+.bio-footer {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-end; 
+    margin-top: 8px;
+    font-size: 12px;
+    color: #FFCC00;
+    gap: 6px;
+}
 
-    #bio-counter {
-        opacity: 0.8;
-    }
+#bio-counter {
+    opacity: 0.8;
+}
 
-    #bio-texto {
-        max-width: 100%;
-        width: 100%;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-        white-space: pre-wrap; /* IMPORTANTE */
-    }
+#bio-texto {
+    max-width: 100%;
+    width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap; 
+}
 
-    #bio-edit textarea {
-        overflow-y: auto;
-    }
+#bio-edit textarea::-webkit-scrollbar {
+    width: 8px;
+}
 
-    #bio-edit textarea::-webkit-scrollbar {
-        width: 8px;
-    }
+#bio-edit textarea::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+#bio-edit textarea::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #FFCC00, #b38f00);
+    border-radius: 10px;
+    border: 2px solid #1a1a1a;
+}
+
+#bio-edit textarea::-webkit-scrollbar-thumb:hover {
+    background: #FFCC00;
+}
+
+.info-half-card,
+.tarjeta-acordeon,
+.tarjeta-mini-proyecto,
+.columna-derecha {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+p, span, div, h1, h2, h3, h4 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+}
     
-    #bio-edit textarea::-webkit-scrollbar-track {
-        background: #1a1a1a;
-        border-radius: 10px;
-    }
-    
-    #bio-edit textarea::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #FFCC00, #b38f00);
-        border-radius: 10px;
-        border: 2px solid #1a1a1a;
-    }
-    
-    #bio-edit textarea::-webkit-scrollbar-thumb:hover {
-        background: #FFCC00;
-    }
-
-    #bio-edit textarea {
-        scrollbar-gutter: stable;
-    }
-
-    .info-half-card,
-    .tarjeta-acordeon,
-    .tarjeta-mini-proyecto,
-    .columna-derecha {
-        min-width: 0;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    p, span, div, h1, h2, h3, h4 {
-        overflow-wrap: anywhere;
-        word-break: break-word;
-        max-width: 100%;
-    }
-        
 /* ============================================================
     5. REJILLA DE PROYECTOS (DERECHA)
    ============================================================ */
@@ -483,6 +460,25 @@ APARTADO DE CURRICULUM
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
+/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÍAS */
+.tech-oculta {
+    display: none !important;
+}
+
+/* ESTILOS PARA LOS BOTONES MÁS Y MENOS */
+.tag-mas, .tag-menos {
+    background-color: transparent !important;
+    border: 1px dashed var(--amarillo-neon) !important;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: none !important;
+}
+
+.tag-mas:hover, .tag-menos:hover {
+    background-color: rgba(255, 204, 0, 0.1) !important;
+    transform: scale(1.05);
+}
+
 /* ============================================================
     8. DISEÑO INFERIOR Y RESPONSIVE
    ============================================================ */
@@ -490,6 +486,7 @@ APARTADO DE CURRICULUM
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    align-items: start; 
 }
 
 @media (max-width: 1000px) {
@@ -500,72 +497,90 @@ APARTADO DE CURRICULUM
 }
 
 /* ============================================================
-    10. LÓGICA DE ESTADO ACTIVO (HEADER Y AJUSTES)
+    9. LÓGICA DE ESTADO ACTIVO Y RESEÑAS
    ============================================================ */
-/* Clase unificada que activa el neón en Campana y Ajustes */
-.activo-btn, 
-.activo-btn i, 
-.activo-btn span {
+.activo-neon, .activo-neon i {
     color: var(--amarillo-neon) !important;
-    /* Efecto neón intenso */
+    text-shadow: 0 0 10px var(--amarillo-neon) !important;
+}
+
+.activo-btn, .activo-btn i, .activo-btn span {
+    color: var(--amarillo-neon) !important;
     text-shadow: 0 0 15px var(--amarillo-neon), 
                  0 0 30px rgba(255, 204, 0, 0.6) !important;
     opacity: 1 !important;
     border-color: var(--amarillo-neon) !important;
-    
-    /* Aseguramos que no haya animaciones */
     animation: none !important; 
     transform: none !important;
 }
 
-/* Aseguramos que el icono de engranaje no rote */
 .activo-btn .fa-cog {
     animation: none !important;
+}
+
+.resena-item-own {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 12px 0;
+}
+
+.resena-header-own {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.resena-autor-own {
+    font-weight: bold;
+    color: #00f3ff;
+    font-size: 0.85rem;
+}
+
+.resena-estrellas-own {
+    color: var(--amarillo-neon);
+    font-size: 0.75rem;
+}
+
+.resena-texto-own {
+    color: #bbb;
+    font-size: 0.8rem;
+    line-height: 1.4;
 }
 
 /* ============================================================
     10. TOAST DE AVISO
    ============================================================ */
-   .toast {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid transparent;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
 
-        padding: 12px 20px;
-        border-radius: 10px;
+.toast-error {
+    background: #ff4d4d;
+    color: #fff;
+    border: 1px solid #ff4d4d;
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
+}
 
-        font-weight: bold;
-        z-index: 9999;
+.toast-success {
+    background: #00e676;
+    color: #000; 
+    border: 1px solid #00e676;
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.6);
+}
 
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.3s ease;
-
-        /* base neutra */
-        background: #1a1a1a;
-        color: #ffffff;
-        border: 1px solid transparent;
-
-        box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .toast-error {
-        background: #ff4d4d;
-        color: #fff;
-    
-        border: 1px solid #ff4d4d;
-        box-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
-    }
-
-    .toast-success {
-        background: #00e676;
-        color: #000; 
-    
-        border: 1px solid #00e676;
-        box-shadow: 0 0 15px rgba(0, 230, 118, 0.6);
-    }
-
-    .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}

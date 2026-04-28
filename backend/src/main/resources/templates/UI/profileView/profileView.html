@@ -18,7 +18,6 @@
             color: #FFCC00 !important;
             text-shadow: 0 0 10px #FFCC00 !important;
         }
-        /* Estilos auxiliares para la foto de perfil */
         .circulo-foto img {
             width: 100%;
             height: 100%;
@@ -28,6 +27,18 @@
             top: 0; left: 0; z-index: 1;
         }
         .icono-corazon { z-index: 2; position: absolute; }
+        .estrellas i { cursor: pointer; color: #555; transition: 0.3s; }
+        .estrellas i.activa { color: #FFCC00; text-shadow: 0 0 5px #FFCC00; }
+        
+        .resena-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        .resena-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .resena-usuario { font-weight: bold; color: #00f3ff; font-size: 0.9rem; }
+        .resena-rating { color: #FFCC00; }
+        .resena-texto { font-size: 0.85rem; color: #ccc; }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -44,7 +55,8 @@
                         </div>
                         <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                     </div>
-                    <h2 class="nombre-usuario" th:text="${usuario.username}">Nombre del usuario</h2>
+                    <h2 class="nombre-usuario" th:text="${usuario.username}">Nombre</h2>
+                    <p style="color: #FFCC00; font-weight: bold;">Media: <span th:text="${media}">0</span> ⭐</p>
                 </div>
 
                 <div class="perfil-inferior">
@@ -62,25 +74,33 @@
                 </div>
             </div>
             
-            <div class="tarjeta-resenas-izq">
-                <h3>RESEÑAS</h3>
+            <div class="tarjeta-resenas-izq" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != usuario.id}">
+                <h3>AÑADIR RESEÑA</h3>
                 
-                <div class="campo">
-                    <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
-                    <div class="estrellas" id="estrellas-selector">
-                        <i class="far fa-star" data-value="1"></i>
-                        <i class="far fa-star" data-value="2"></i>
-                        <i class="far fa-star" data-value="3"></i>
-                        <i class="far fa-star" data-value="4"></i>
-                        <i class="far fa-star" data-value="5"></i>
+                <form th:action="@{/reviews/crear}" method="post" th:object="${newReview}">
+                    <input type="hidden" name="receptorId" th:value="${usuario.id}">
+                    
+                    <div class="campo">
+                        <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
+                        <div class="estrellas" id="estrellas-selector">
+                            <i class="far fa-star" data-value="1"></i>
+                            <i class="far fa-star" data-value="2"></i>
+                            <i class="far fa-star" data-value="3"></i>
+                            <i class="far fa-star" data-value="4"></i>
+                            <i class="far fa-star" data-value="5"></i>
+                        </div>
+                        <input type="hidden" th:field="*{rating}" id="rating-value" value="0">
                     </div>
-                    <input type="hidden" id="rating-value" value="0">
-                </div>
 
-                <textarea class="input-resena" id="texto-resena" placeholder="Cuéntanos tu experiencia con este profesional..."></textarea>
-                <button class="boton-anadir" id="btn-publicar-local">
-                    <i class="fas fa-paper-plane"></i> Publicar reseña
-                </button>
+                    <textarea class="input-resena" th:field="*{comentario}" placeholder="Cuéntanos tu experiencia..." required></textarea>
+                    
+                    <button type="submit" class="boton-anadir">
+                        <i class="fas fa-paper-plane"></i> Publicar reseña
+                    </button>
+                </form>
+                
+                <p th:if="${param.error == 'duplicated'}" style="color: #ff4444; font-size: 0.8rem; margin-top: 5px;">Ya has valorado a este usuario.</p>
+                <p th:if="${param.error == 'autoreview'}" style="color: #ff4444; font-size: 0.8rem; margin-top: 5px;">No puedes valorarte a ti mismo.</p>
             </div>
         </aside>
 
@@ -88,18 +108,12 @@
             <section class="seccion-proyectos">
                 <div class="tarjeta-proyectos-contenedor">
                     <div class="cabecera-proyectos">
-                        <h2>
-                            <a href="#" class="enlace-titulo-proyectos">PROYECTOS</a>
-                            <a href="#" class="enlace-grid-proyectos" title="Ver todos los proyectos">
-                                <i class="fas fa-th"></i>
-                            </a>
-                        </h2>
+                        <h2>PROYECTOS</h2>
                     </div>
-                    
                     <div class="rejilla-proyectos">
                         <div class="tarjeta-mini-proyecto">
                             <h3>Próximamente</h3>
-                            <p>Esta sección mostrará los proyectos del usuario en futuras actualizaciones.</p>
+                            <p>Proyectos del usuario.</p>
                         </div>
                     </div>
                 </div>
@@ -108,15 +122,26 @@
             <div class="contenedor-inferior-derecha">
                 <div class="tarjeta-inferior">
                     <div class="cabecera-inferior"><h3>RESEÑAS RECIENTES</h3></div>
-                    <div class="contenido-inferior"><p>No hay reseñas aún.</p></div>
+                    <div class="contenido-inferior">
+                        <div th:if="${#lists.isEmpty(reviews)}">
+                            <p>No hay reseñas aún.</p>
+                        </div>
+                        <div th:each="r : ${reviews}" class="resena-item">
+                            <div class="resena-header">
+                                <span class="resena-usuario" th:text="${r.autor.username}">Usuario</span>
+                                <span class="resena-rating">
+                                    <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                </span>
+                            </div>
+                            <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tarjeta-inferior">
                     <div class="cabecera-inferior"><h3>SOBRE MI</h3></div>
                     <div class="contenido-inferior">
-                        <p th:text="${usuario.biografia != null and !usuario.biografia.isEmpty() ? usuario.biografia : 'Este usuario aún no ha escrito una descripción sobre sí mismo.'}">
-                            Aqui puedes escribir una breve descripción profesional sobre tu trayectoria y habilidades.
-                        </p>
+                        <p th:text="${usuario.biografia != null and !usuario.biografia.isEmpty() ? usuario.biografia : 'Sin descripción.'}"></p>
                         
                         <div th:if="${perfilDesarrollador != null and !perfilDesarrollador.tecnologias.isEmpty()}" style="margin-top: 15px;">
                             <h4 style="color: #FFCC00; font-size: 0.9rem; margin-bottom: 10px;">Tecnologías:</h4>
@@ -138,10 +163,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const estrellas = document.querySelectorAll("#estrellas-selector i");
             const inputRating = document.getElementById("rating-value");
-            const btnPublicar = document.getElementById("btn-publicar-local");
-            const contenedorResenas = document.querySelector(".tarjeta-inferior .contenido-inferior");
 
-            // 1. LÓGICA DE SELECCIÓN DE ESTRELLAS
             estrellas.forEach(star => {
                 star.addEventListener("click", () => {
                     const val = star.dataset.value;
@@ -156,45 +178,6 @@
                             s.classList.remove("activa");
                         }
                     });
-                });
-            });
-
-            // 2. LÓGICA DE PUBLICAR RESEÑA LOCALMENTE
-            btnPublicar.addEventListener("click", () => {
-                const texto = document.getElementById("texto-resena").value;
-                const rating = inputRating.value;
-
-                if (rating == 0) {
-                    alert("Por favor, selecciona una puntuación.");
-                    return;
-                }
-                if (texto.trim() === "") {
-                    alert("Por favor, escribe un comentario.");
-                    return;
-                }
-
-                const estrellasHTML = '⭐'.repeat(rating);
-                const nuevaResenaHTML = `
-                    <div class="resena-reciente-item">
-                        <div class="resena-reciente-header">
-                            <span class="resena-reciente-usuario"><i class="fas fa-user-circle"></i> Tú</span>
-                            <span class="resena-reciente-estrellas">${estrellasHTML}</span>
-                        </div>
-                        <p class="resena-reciente-texto">${texto}</p>
-                    </div>
-                `;
-
-                if (contenedorResenas.innerHTML.includes("No hay reseñas aún")) {
-                    contenedorResenas.innerHTML = "";
-                }
-
-                contenedorResenas.insertAdjacentHTML('afterbegin', nuevaResenaHTML);
-
-                document.getElementById("texto-resena").value = "";
-                inputRating.value = 0;
-                estrellas.forEach(s => {
-                    s.classList.replace("fas", "far");
-                    s.classList.remove("activa");
                 });
             });
         });

@@ -79,26 +79,32 @@ public class ProfileController {
             return "UI/profile/visitorProfile";
         }
     
+        List<Tecnologia> tecnologiasOrdenadas = List.of();
+
         if ("DEVELOPER".equals(rol)) {
-    
+        
             PerfilDesarrollador perfil = devRepo.findByUsuarioId(usuario.getId())
-                    .orElseGet(() -> {
-                        PerfilDesarrollador nuevo = new PerfilDesarrollador();
-                        nuevo.setUsuario(usuario);
-                        return devRepo.save(nuevo);
-                    });
-    
-            model.addAttribute("perfil", perfil);
-    
-            List<Tecnologia> tecnologiasOrdenadas = perfil.getTecnologias()
-                    .stream()
-                    .sorted(Comparator.comparing(Tecnologia::getNombre))
-                    .toList();
-    
-            model.addAttribute("tecnologiasUsuario", tecnologiasOrdenadas);
-    
-            return "UI/ownProfile/ownProfile";
+                    .orElse(null);
+        
+            if (perfil != null) {
+                tecnologiasOrdenadas = perfil.getTecnologias().stream()
+                        .sorted(Comparator.comparing(Tecnologia::getNombre))
+                        .toList();
+            }
+        
+        } else if ("COMPANY".equals(rol)) {
+        
+            PerfilEmpresa perfil = empresaRepo.findByUsuarioId(usuario.getId())
+                    .orElse(null);
+        
+            if (perfil != null) {
+                tecnologiasOrdenadas = perfil.getTecnologias().stream()
+                        .sorted(Comparator.comparing(Tecnologia::getNombre))
+                        .toList();
+            }
         }
+        
+        model.addAttribute("tecnologiasUsuario", tecnologiasOrdenadas);
     
         if ("COMPANY".equals(rol)) {
             PerfilEmpresa perfil = empresaRepo.findByUsuarioId(usuario.getId())

@@ -163,7 +163,7 @@
                                     </div>
                                     <i th:if="${developer.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
                                 </div>
-                                <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
+                                <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${developer.usuario.id}|">Ver Perfil</button>
                             </div>
 
                             <div class="vista-todas-techs">

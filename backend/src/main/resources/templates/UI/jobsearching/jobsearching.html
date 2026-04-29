@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer - Ofertas de Trabajo</title>
-    
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
@@ -15,8 +14,13 @@
 
     <div th:replace="~{includes/header :: header}"></div>
 
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
     <main class="contenedor-principal-ofertas">
-        
         <div class="cabecera-filtros">
             <div class="filtro-contenedor">
                 <button class="btn-filtro filtro-seleccionado" onclick="aplicarFiltro('todas', this)">Todas</button>
@@ -24,7 +28,6 @@
                 <button class="btn-filtro" onclick="aplicarFiltro('cerradas', this)">Cerradas</button>
                 <button class="btn-filtro" id="btn-filtro-postulaciones" style="display: none;" onclick="aplicarFiltro('postulaciones', this)">Mis Postulaciones</button>
             </div>
-
             <div class="acciones-superiores" id="contenedor-ofertas-propias" style="display: none;">
                 <button class="boton-ofertas-propias" onclick="irAMisOfertas()">
                     <i class="fas fa-briefcase"></i> Ver mis ofertas publicadas
@@ -32,68 +35,54 @@
             </div>
         </div>
 
-        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}" th:data-id="${oferta.id}">
+        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}" th:data-id="${oferta.id}" th:data-empresa="${oferta.empresa?.username}">
             <div class="logo-empresa">
                 <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" alt="Logo Empresa">
             </div>
-            
             <div class="info-oferta">
                 <h3 class="nombre-empresa" th:text="${oferta.empresa?.username ?: 'Empresa ProGrammer'}">Empresa</h3>
                 <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título</h4>
                 <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción</p>
-                
                 <div class="tech-tags">
                     <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">Tech</span>
                 </div>
             </div>
-            
             <div class="acciones-oferta">
                 <span class="estado-oferta" th:classappend="${oferta.activa} ? 'activo' : 'inactivo'">
                     <i th:class="${oferta.activa} ? 'fas fa-check-circle' : 'fas fa-times-circle'"></i> 
                     <span th:text="${oferta.activa} ? 'Activa' : 'Cerrada'"></span>
                 </span>
-                
-                <button class="boton-postular" 
-                        th:disabled="${!oferta.activa}" 
-                        th:data-activa="${oferta.activa}"
-                        th:text="${oferta.activa} ? 'POSTULAR' : 'CERRADA'"
-                        th:onclick="'irAJobView(' + ${oferta.id} + ')'">
-                </button>
+                <button class="boton-postular" th:disabled="${!oferta.activa}" th:data-activa="${oferta.activa}" th:onclick="'irAJobView(' + ${oferta.id} + ')'">POSTULAR</button>
             </div>
         </div>
-
-        <div th:if="${#lists.isEmpty(ofertas)}" style="text-align: center; color: white; margin-top: 50px;">
-            <h2><i class="fas fa-search"></i> No hay ofertas publicadas.</h2>
-        </div>
-
-        <div id="mensaje-filtro-vacio" style="display: none; text-align: center; color: #888; margin-top: 50px;">
-            <h2><i class="fas fa-folder-open"></i> No hay resultados para este filtro.</h2>
-        </div>
-
     </main>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-    <script>
-    // Variable global para guardar a qué ofertas se ha postulado el desarrollador
+    <style>
+        .toast-neon-exito { position: fixed; bottom: 30px; right: 30px; background-color: rgba(10, 10, 10, 0.98); color: white; padding: 18px 28px; border-radius: 8px; border-left: 6px solid #00e676; box-shadow: 0 8px 32px rgba(0, 230, 118, 0.4); display: flex; align-items: center; gap: 15px; font-family: sans-serif; transform: translateX(120%); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 9999; }
+        .toast-neon-exito.mostrar { transform: translateX(0); opacity: 1; }
+        .toast-neon-exito i { color: #00e676; font-size: 2rem; }
+        .toast-neon-exito strong { display: block; color: #00e676; font-size: 1.1rem; margin-bottom: 2px; }
+        .badge-propia { background: #FFCC00; color: black; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 5px; display: inline-block; text-transform: uppercase; }
+        .btn-empresa-editar { background: transparent !important; border: 1px solid #FFCC00 !important; color: #FFCC00 !important; }
+    </style>
+
+    <div id="toast-postulacion" class="toast-neon-exito">
+        <i class="fas fa-check-circle"></i>
+        <div><strong id="toast-titulo">¡Postulación enviada!</strong><span id="toast-subtitulo" style="font-size: 0.9rem; color: #eee;">La empresa ya ha recibido tu perfil.</span></div>
+    </div>
+
+<script>
     let misPostulacionesIds = [];
 
     function irAJobView(ofertaId) {
-        const username = localStorage.getItem('usuarioLogueado') || '';
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/jobview/' + ofertaId; 
-
-        const inputUsername = document.createElement('input');
-        inputUsername.type = 'hidden';
-        inputUsername.name = 'username';
-        inputUsername.value = username;
-
-        form.appendChild(inputUsername);
-        document.body.appendChild(form);
-        form.submit();
+        const u = localStorage.getItem('usuarioLogueado') || '';
+        const f = document.createElement('form'); f.method = 'POST'; f.action = '/jobview/' + ofertaId; 
+        const i = document.createElement('input'); i.type = 'hidden'; i.name = 'username'; i.value = u;
+        f.appendChild(i); document.body.appendChild(f); f.submit();
     }
-    
+
     function inicializarHeader() {
         const navEmpleos = document.getElementById('nav-empleos'); 
         if (navEmpleos) {
@@ -108,94 +97,62 @@
         }
     }
 
-    // FUNCIÓN MODIFICADA: Ahora gestiona las postulaciones y el cartel de "vacío"
-    function aplicarFiltro(tipo, botonSeleccionado) {
-        if (botonSeleccionado) {
-            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('filtro-seleccionado'));
-            botonSeleccionado.classList.add('filtro-seleccionado');
-        }
-        
-        const tarjetas = document.querySelectorAll('.tarjeta-oferta');
-        let hayResultados = false;
-
-        tarjetas.forEach(tarjeta => {
-            const estadoSpan = tarjeta.querySelector('.estado-oferta');
-            const estaActiva = estadoSpan && estadoSpan.classList.contains('activo');
-            const ofertaId = parseInt(tarjeta.getAttribute('data-id'));
-
-            let mostrar = false;
-            
-            if (tipo === 'todas') mostrar = true;
-            else if (tipo === 'activas' && estaActiva) mostrar = true;
-            else if (tipo === 'cerradas' && !estaActiva) mostrar = true;
-            else if (tipo === 'postulaciones' && misPostulacionesIds.includes(ofertaId)) mostrar = true;
-
-            tarjeta.style.display = mostrar ? 'flex' : 'none';
-            if (mostrar) hayResultados = true;
+    function aplicarFiltro(tipo, btn) {
+        if (btn) { document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('filtro-seleccionado')); btn.classList.add('filtro-seleccionado'); }
+        document.querySelectorAll('.tarjeta-oferta').forEach(t => {
+            const act = t.querySelector('.estado-oferta').classList.contains('activo');
+            const id = parseInt(t.getAttribute('data-id'));
+            let m = (tipo==='todas') || (tipo==='activas'&&act) || (tipo==='cerradas'&&!act) || (tipo==='postulaciones'&&misPostulacionesIds.includes(id));
+            t.style.display = m ? 'flex' : 'none';
         });
-
-        // Mostramos el mensaje si el filtro no deja ninguna oferta en pantalla
-        const divVacio = document.getElementById('mensaje-filtro-vacio');
-        if (divVacio && tarjetas.length > 0) {
-            divVacio.style.display = hayResultados ? 'none' : 'block';
-        }
     }
 
     function comprobarRoles() {
-        const rolGuardado = localStorage.getItem('rolUsuario');
-        const username = localStorage.getItem('usuarioLogueado');
-        const rolString = rolGuardado ? String(rolGuardado).trim().toUpperCase() : 'VISITOR';
-
-        // 1. Lógica para empresas
-        const contenedorOfertas = document.getElementById('contenedor-ofertas-propias');
-        if ((rolString === 'COMPANY' || rolString === '3') && contenedorOfertas) {
-            contenedorOfertas.style.display = 'flex';
-        }
-
-        // 2. Lógica para desarrolladores (NUEVO)
-        if ((rolString === 'DEVELOPER' || rolString === '2') && username) {
-            // Activamos el botón de la pestaña
+        const rs = (localStorage.getItem('rolUsuario') || '').trim().toUpperCase(); const u = localStorage.getItem('usuarioLogueado');
+        if (rs === 'COMPANY' || rs === '3') document.getElementById('contenedor-ofertas-propias').style.display = 'flex';
+        if ((rs === 'DEVELOPER' || rs === '2') && u) {
             document.getElementById('btn-filtro-postulaciones').style.display = 'inline-block';
-            
-            // Le pedimos al backend los IDs de las ofertas
-            fetch('/api/postulaciones/mis-ofertas-ids?username=' + encodeURIComponent(username))
-                .then(res => res.json())
-                .then(data => {
-                    misPostulacionesIds = data;
-                })
-                .catch(err => console.error("Error al cargar mis postulaciones:", err));
-        }
+            fetch('/api/postulaciones/mis-ofertas-ids?username=' + encodeURIComponent(u)).then(r => r.json()).then(d => { misPostulacionesIds = d; adaptarBotonesPorRol(); });
+        } else { adaptarBotonesPorRol(); }
     }
 
-    function irAMisOfertas() {
-        const usuario = localStorage.getItem('usuarioLogueado');
-        if (usuario) window.location.href = '/mis-ofertas?empresa=' + encodeURIComponent(usuario);
-    }
+    function irAMisOfertas() { const u = localStorage.getItem('usuarioLogueado'); if (u) window.location.href = '/mis-ofertas?empresa=' + encodeURIComponent(u); }
 
     function adaptarBotonesPorRol() {
-        const rolGuardado = localStorage.getItem('rolUsuario');
-        const rolString = rolGuardado ? String(rolGuardado).trim().toUpperCase() : 'VISITOR';
-        const botones = document.querySelectorAll('.boton-postular');
-        
-        botones.forEach(boton => {
-            const estaActiva = boton.getAttribute('data-activa') === 'true';
-            if (estaActiva) {
-                if (rolString === 'DEVELOPER' || rolString === '2') {
-                    boton.innerHTML = 'POSTULAR';
-                } else {
-                    boton.innerHTML = 'VER INFORMACIÓN';
+        const u = localStorage.getItem('usuarioLogueado'); const r = (localStorage.getItem('rolUsuario') || '').trim().toUpperCase();
+        document.querySelectorAll('.tarjeta-oferta').forEach(t => {
+            const acc = t.querySelector('.acciones-oferta'); const emp = t.getAttribute('data-empresa');
+            const id = t.getAttribute('data-id'); const act = t.querySelector('.estado-oferta').classList.contains('activo');
+
+            if ((r === 'COMPANY' || r === '3') && emp === u) {
+                if (!t.querySelector('.badge-propia')) {
+                    const b = document.createElement('span'); b.className = 'badge-propia'; b.innerHTML = '<i class="fas fa-star"></i> Tu Oferta';
+                    t.querySelector('.info-oferta').prepend(b);
                 }
-            } else {
-                boton.innerHTML = '<i class="fas fa-lock"></i> CERRADA';
+                acc.innerHTML = `<span class="estado-oferta ${act?'activo':'inactivo'}"><i class="fas ${act?'fa-check-circle':'fa-times-circle'}"></i> <span>${act?'Activa':'Cerrada'}</span></span>
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;"><button class="boton-postular" onclick="irAJobView(${id})">VER INFO</button>
+                    <button class="boton-postular btn-empresa-editar" onclick="window.location.href='/editOffer/${id}'"><i class="fas fa-edit"></i> EDITAR</button></div>`;
+            } else if (act) {
+                const b = t.querySelector('.boton-postular');
+                if (r === 'DEVELOPER' || r === '2') { b.innerHTML = misPostulacionesIds.includes(parseInt(id)) ? '<i class="fas fa-edit"></i> EDITAR POSTULACIÓN' : 'POSTULAR'; }
+                else { b.innerHTML = 'VER INFORMACIÓN'; }
             }
         });
     }
 
-    window.addEventListener('load', () => {
-        inicializarHeader();
-        setTimeout(comprobarRoles, 50); // Comprueba Empresas y carga datos de Desarrollador
-        setTimeout(adaptarBotonesPorRol, 50); 
+    window.addEventListener('load', () => { inicializarHeader(); comprobarRoles(); });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const p = new URLSearchParams(window.location.search); const t = document.getElementById('toast-postulacion');
+        if (p.has('postulado') || p.has('actualizado') || p.has('ofertaPublicada') || p.has('ofertaEditada')) {
+            if (p.get('ofertaEditada') === 'true') { document.getElementById('toast-titulo').innerText = "¡Oferta editada!"; document.getElementById('toast-subtitulo').innerText = "Los cambios en tu oferta se han guardado con éxito."; t.querySelector('i').className = "fas fa-edit"; }
+            else if (p.get('ofertaPublicada') === 'true') { document.getElementById('toast-titulo').innerText = "¡Oferta publicada!"; document.getElementById('toast-subtitulo').innerText = "Tu oferta ya es visible."; t.querySelector('i').className = "fas fa-bullhorn"; }
+            else if (p.get('actualizado') === 'true') { document.getElementById('toast-titulo').innerText = "¡Postulación actualizada!"; document.getElementById('toast-subtitulo').innerText = "Tus cambios se han guardado correctamente."; t.querySelector('i').className = "fas fa-save"; }
+            setTimeout(() => { t.classList.add('mostrar'); }, 100);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setTimeout(() => { t.classList.remove('mostrar'); }, 4500);
+        }
     });
-    </script>
+</script>
 </body>
 </html>

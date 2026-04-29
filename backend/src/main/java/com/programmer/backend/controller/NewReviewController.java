@@ -1,4 +1,5 @@
 package com.programmer.backend.controller;
+
 import com.programmer.backend.domain.NewReview;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.NewReviewRepository;
@@ -24,75 +25,52 @@ public class NewReviewController {
         this.usuarioRepository = usuarioRepository;
     }
 
-    // =========================
-    // VER PERFIL + REVIEWS
-    // =========================
+    // El método verPerfil se mantiene por compatibilidad, 
+    // pero ahora el flujo principal irá por ProfileController
     @GetMapping("/{id}")
     public String verPerfil(@PathVariable Long id, Model model) {
-
-        Usuario receptor = usuarioRepository.findById(id)
-                .orElseThrow();
-
-        List<NewReview> reviews = reviewRepository.findByReceptor(receptor);
-
-        Double media = reviewRepository.getAverageRating(receptor);
-
-        model.addAttribute("usuario", receptor);
-        model.addAttribute("reviews", reviews);
-        model.addAttribute("media", media != null ? media : 0);
-
-        model.addAttribute("newReview", new NewReview());
-
-        return "UI/newreview";
+        return "redirect:/profileView/" + id;
     }
 
-    // =========================
-    // CREAR REVIEW (BACKEND REAL)
-    // =========================
     @PostMapping("/crear")
     public String crearReview(@ModelAttribute NewReview newReview,
                               @RequestParam Long receptorId,
-                              HttpSession session,
-                              Model model) {
+                              HttpSession session) {
 
-        // 1. comprobar login
-        String username = (String) session.getAttribute("usuarioLogueado");
+        // 1. Comprobar login
+        Usuario autor = (Usuario) session.getAttribute("usuarioLogueado");
 
-        if (username == null) {
-            return "redirect:/reviews/" + receptorId + "?error=login";
+        if (autor == null) {
+            return "redirect:/profileView/" + receptorId + "?error=login";
         }
-
-        Usuario autor = usuarioRepository.findByUsername(username)
-                .orElseThrow();
 
         Usuario receptor = usuarioRepository.findById(receptorId)
                 .orElseThrow();
 
-        // 2. evitar autoreview
+        // 2. Evitar autoreview
         if (autor.getId().equals(receptor.getId())) {
-            return "redirect:/reviews/" + receptorId + "?error=autoreview";
+            return "redirect:/profileView/" + receptorId + "?error=autoreview";
         }
 
-        // 3. evitar duplicadas (1 review por usuario hacia receptor)
+        // 3. Evitar duplicadas
         Optional<NewReview> existente =
                 reviewRepository.findByAutorAndReceptor(autor, receptor);
 
         if (existente.isPresent()) {
-            return "redirect:/reviews/" + receptorId + "?error=duplicated";
+            return "redirect:/profileView/" + receptorId + "?error=duplicated";
         }
 
-        // 4. validar datos mínimos
+        // 4. Validar datos mínimos
         if (newReview.getRating() <= 0 || newReview.getComentario() == null
                 || newReview.getComentario().trim().isEmpty()) {
-            return "redirect:/reviews/" + receptorId + "?error=invalid";
+            return "redirect:/profileView/" + receptorId + "?error=invalid";
         }
 
-        // 5. asignar
+        // 5. Asignar y guardar
         newReview.setAutor(autor);
         newReview.setReceptor(receptor);
-
         reviewRepository.save(newReview);
 
-        return "redirect:/reviews/" + receptorId;
+        return "redirect:/profileView/" + receptorId + "?success=true";
     }
 }

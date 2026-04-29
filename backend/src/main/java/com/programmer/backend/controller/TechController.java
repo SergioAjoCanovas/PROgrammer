@@ -1,9 +1,11 @@
 package com.programmer.backend.controller;
 
 import com.programmer.backend.domain.PerfilDesarrollador;
+import com.programmer.backend.domain.PerfilEmpresa;
 import com.programmer.backend.domain.Tecnologia;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.PerfilDesarrolladorRepository;
+import com.programmer.backend.repository.PerfilEmpresaRepository;
 import com.programmer.backend.repository.TecnologiaRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class TechController {
 
     @Autowired
     private PerfilDesarrolladorRepository perfilRepo;
+
+    @Autowired
+    private PerfilEmpresaRepository empresaRepo;
 
     // =========================
     // VISTA AÑADIR TECNOLOGÍAS
@@ -78,27 +83,11 @@ public class TechController {
     // =========================
     @PostMapping("/usuario/saveTechnologies")
     public String saveTechnologies(@RequestParam(required = false) List<Long> techIds,
-                                    HttpSession session) {
+                                HttpSession session) {
 
-        Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
+        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
 
-        if (sessionUser == null) {
-            return "redirect:/login";
-        }
-
-        // 🔒 CONTROL ROL
-        String rol = sessionUser.getRol().getNombre();
-
-        if ("USUARIO".equals(rol)) {
-            return "redirect:/ownProfile";
-        }
-
-        PerfilDesarrollador perfil = perfilRepo.findByUsuarioId(sessionUser.getId())
-                .orElseGet(() -> {
-                    PerfilDesarrollador nuevo = new PerfilDesarrollador();
-                    nuevo.setUsuario(sessionUser);
-                    return perfilRepo.save(nuevo);
-                });
+        if (user == null) return "redirect:/login";
 
         Set<Tecnologia> nuevas = new HashSet<>();
 
@@ -106,9 +95,32 @@ public class TechController {
             nuevas = new HashSet<>(tecnologiaRepository.findAllById(techIds));
         }
 
-        perfil.setTecnologias(nuevas);
+        String rol = user.getRol().getNombre();
 
-        perfilRepo.save(perfil);
+        if ("DEVELOPER".equals(rol)) {
+
+            PerfilDesarrollador perfil = perfilRepo.findByUsuarioId(user.getId())
+                    .orElseGet(() -> {
+                        PerfilDesarrollador p = new PerfilDesarrollador();
+                        p.setUsuario(user);
+                        return perfilRepo.save(p);
+                    });
+
+            perfil.setTecnologias(nuevas);
+            perfilRepo.save(perfil);
+
+        } else if ("COMPANY".equals(rol)) {
+
+            PerfilEmpresa perfil = empresaRepo.findByUsuarioId(user.getId())
+                    .orElseGet(() -> {
+                        PerfilEmpresa p = new PerfilEmpresa();
+                        p.setUsuario(user);
+                        return empresaRepo.save(p);
+                    });
+
+            perfil.setTecnologias(nuevas);
+            empresaRepo.save(perfil);
+        }
 
         return "redirect:/ownProfile";
     }

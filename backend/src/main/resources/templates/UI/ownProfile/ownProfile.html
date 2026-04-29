@@ -9,155 +9,65 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .activo-neon, .activo-neon i {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-        /* Clase para iluminar el botón de ajustes específicamente */
-        .activo-btn, .activo-btn i, .activo-btn span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
-        }
-    </style>
 </head>
 <body class="fondo-oscuro-neon">
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('user')) {
-            localStorage.setItem('usuarioLogueado', params.get('user'));
-            // Forzamos que si el rol no viene o es diferente, se guarde como USER si así lo prefieres, 
-            // o simplemente tomamos el valor y lo validamos abajo.
-            localStorage.setItem('rolUsuario', params.get('rol') || 'USER');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    </script>
-
     <div th:replace="~{includes/header :: header}"></div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
             <div class="tarjeta-acordeon profile-main-card">
                 <div class="perfil-superior">
-                    <!-- FORMULARIO OCULTO PARA SUBIR FOTO -->
-                        <form id="formFoto"
-                        action="/usuario/uploadFoto"
-                        method="post"
-                        enctype="multipart/form-data"
-                        style="display:none;">
-
-                        <input type="file"
-                            id="inputFoto"
-                            name="foto"
-                            accept="image/*"
-                            onchange="document.getElementById('formFoto').submit();">
+                        <form id="formFoto" action="/usuario/uploadFoto" method="post" enctype="multipart/form-data" style="display:none;">
+                            <input type="file" id="inputFoto" name="foto" accept="image/*" onchange="document.getElementById('formFoto').submit();">
                         </form>
 
-                        <!-- CÍRCULO DE FOTO (CLICKABLE) -->
                         <div class="circulo-foto" onclick="document.getElementById('inputFoto').click()">
-
-                            <img th:if="${usuarioHeader.fotoPerfil != null}"
-                                 th:src="${usuarioHeader.fotoPerfil}"
-                                 alt="foto perfil"
-                                 style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
-                        
-                            <i th:if="${usuarioHeader.fotoPerfil == null}"
-                               class="fas fa-camera icono-camera"></i>
-                        
+                            <img th:if="${usuarioHeader.fotoPerfil != null}" th:src="${usuarioHeader.fotoPerfil}" alt="foto perfil" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                            <i th:if="${usuarioHeader.fotoPerfil == null}" class="fas fa-camera icono-camera"></i>
                         </div>
                         <div class="contenedor-nombre-usuario">
                             <div class="nombre-wrapper">
-                                <h2 class="nombre-usuario"
-                                    id="nombre-perfil-display"
-                                    th:text="${usuarioHeader.username}">
-                                </h2>
-                            
-                                <!-- INPUT SUPERPUESTO / INLINE -->
-                                <input type="text"
-                                       id="nombre-perfil-input"
-                                       class="input-nombre-perfil"
-                                       style="display:none;"
-                                       onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
+                                <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}"></h2>
+                                <input type="text" id="nombre-perfil-input" class="input-nombre-perfil" style="display:none;" onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
                             </div>
-                        
-                            <!-- ICONO LÁPIZ -->
-                            <i class="fas fa-pencil-alt icono-editar-nombre"
-                               onclick="activarEdicionNombre()"></i>
+                            <i class="fas fa-pencil-alt icono-editar-nombre" onclick="activarEdicionNombre()"></i>
+                        </div>
+                        <div th:if="${media > 0}" style="margin-top: 10px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
+                            Valoración: <span th:text="${media}">0</span> ⭐
                         </div>
                 </div>
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
                         <li class="campo-red" data-type="github">
-                    
-                            <span class="valor-red"
-                                id="github-display"
-                                th:classappend="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github)} ? ' clicable-red' : ''"
-                                th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}"
-                                th:attr="data-url=${usuarioHeader.github}">
-                            </span>
-                                                
-                            <div class="acciones-red">
-                                <i class="fas fa-pencil-alt icono-editar-texto"
-                                   onclick="activarEdicionRed('github')"></i>
-                    
-                                <i class="fas fa-trash icono-borrar-texto icono-rojo"
-                                   onclick="eliminarRed('github')"></i>
-                            </div>
-                    
-                            <input type="text"
-                                   id="github-input"
-                                   class="input-nombre-perfil input-red"
-                                   style="display:none; position:absolute;">
+                            <span class="valor-red" id="github-display" th:classappend="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github)} ? ' clicable-red' : ''" th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}" th:attr="data-url=${usuarioHeader.github}"></span>
+                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto" onclick="activarEdicionRed('github')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo" onclick="eliminarRed('github')"></i></div>
+                            <input type="text" id="github-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
-                    
                         <li class="campo-red" data-type="linkedin">
-                    
-                            <span class="valor-red"
-                                    id="linkedin-display"
-                                    th:classappend="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin)} ? ' clicable-red' : ''"
-                                    th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}"
-                                    th:attr="data-url=${usuarioHeader.linkedin}">
-                            </span>
-                    
-                            <div class="acciones-red">
-                                <i class="fas fa-pencil-alt icono-editar-texto"
-                                   onclick="activarEdicionRed('linkedin')"></i>
-                    
-                                <i class="fas fa-trash icono-borrar-texto icono-rojo"
-                                   onclick="eliminarRed('linkedin')"></i>
-                            </div>
-                    
-                            <input type="text"
-                                   id="linkedin-input"
-                                   class="input-nombre-perfil input-red"
-                                   style="display:none; position:absolute;">
+                            <span class="valor-red" id="linkedin-display" th:classappend="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin)} ? ' clicable-red' : ''" th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}" th:attr="data-url=${usuarioHeader.linkedin}"></span>
+                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto" onclick="activarEdicionRed('linkedin')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo" onclick="eliminarRed('linkedin')"></i></div>
+                            <input type="text" id="linkedin-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
                     </ul>
-                    <button class="boton-amarillo-solido" onclick="document.getElementById('inputCV').click()">
-                        ACTUALIZAR CURRÍCULUM
-                    </button>
-                    
-                    <input type="file"
-                           id="inputCV"
-                           accept="application/pdf"
-                           style="display:none;"
-                           onchange="subirCV(event)">
-                    
-                           <div id="cv-container" class="cv-container"
-                                th:attr="data-url=${cvUrl}, data-nombre=${cvNombre}">
-                            </div>
+                    <button class="boton-amarillo-solido" onclick="document.getElementById('inputCV').click()">ACTUALIZAR CURRÍCULUM</button>
+                    <input type="file" id="inputCV" accept="application/pdf" style="display:none;" onchange="subirCV(event)">
+                    <div id="cv-container" class="cv-container" th:attr="data-url=${cvUrl}, data-nombre=${cvNombre}"></div>
                 </div>
             </div>
 
             <div class="tarjeta-acordeon">
-                <div class="cabecera-tarjeta">
-                    <h3>MIS TECNOLOGÍAS</h3>
-                    <i class="fas fa-laptop-code"></i>
-                </div>
+                <div class="cabecera-tarjeta"><h3>MIS TECNOLOGÍAS</h3><i class="fas fa-laptop-code"></i></div>
                 <div class="tags-tecnologias">
-                    <span class="tag-tech"
-                          th:each="tech : ${tecnologiasUsuario}"
-                          th:text="${tech.nombre}">
+                    <span class="tag-tech" th:each="tech, iterStat : ${tecnologiasUsuario}" 
+                          th:text="${tech.nombre}"
+                          th:classappend="${iterStat.index >= 6 ? 'tech-oculta tech-extra' : ''}"></span>
+                    
+                    <span class="tag-tech tag-mas" id="btn-mas-techs" th:if="${#lists.size(tecnologiasUsuario) > 6}" onclick="mostrarMasTechs()">
+                        +<span th:text="${#lists.size(tecnologiasUsuario) - 6}"></span>
+                    </span>
+
+                    <span class="tag-tech tag-menos" id="btn-menos-techs" style="display: none;" onclick="mostrarMenosTechs()">
+                        <i class="fas fa-minus" style="margin-right: 5px;"></i> Menos
                     </span>
                 </div>
                 <button onclick="window.location.href='/stack'" class="boton-amarillo-solido">AÑADIR TECNOLOGÍA</button>
@@ -166,67 +76,74 @@
 
         <div class="columna-derecha">
             <section class="tarjeta-acordeon card-proyectos-principal">
-                <div class="cabecera-tarjeta">
-                    <h2>MIS PROYECTOS</h2>
-                    <i class="fas fa-th icono-grid-top"></i>
-                </div>
-                
+                <div class="cabecera-tarjeta"><h2>MIS PROYECTOS</h2><i class="fas fa-th icono-grid-top"></i></div>
                 <div class="rejilla-proyectos">
+
+                    <!-- TARJETA CREAR PROYECTO -->
                     <div class="tarjeta-mini-proyecto tarjeta-anadir">
                         <i class="fas fa-plus-circle"></i>
                         <h3>Nuevo Proyecto</h3>
                         <p>Sube tu código y muéstralo al mundo.</p>
-                        <button onclick="window.location.href='/createProject'" class="boton-amarillo-solido">CREAR AHORA</button>
+                        <button onclick="window.location.href='/createProject'" class="boton-amarillo-solido">
+                            CREAR AHORA
+                        </button>
                     </div>
-
-                    <div class="tarjeta-mini-proyecto">
-                        <h3>Gestor de Tareas</h3>
-                        <p>App con React y Node.js</p>
-                        <div class="acciones-proyecto">
-                            <button onclick="window.location.href='/editProject'" class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
-                            <button onclick="window.location.href='/projectview'" class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
+                
+                    <!-- PROYECTOS (2 ÚLTIMOS) -->
+                    <div th:each="p : ${ultimosProyectos}" class="tarjeta-mini-proyecto proyecto-card">
+                
+                        <!-- NOMBRE -->
+                        <h3 th:text="${p.nombre}">Nombre proyecto</h3>
+                
+                        <!-- DESCRIPCIÓN CON SCROLL -->
+                        <div class="proyecto-desc" th:text="${p.descripcion}">
+                            Descripción proyecto...
                         </div>
-                    </div>
-
-                    <div class="tarjeta-mini-proyecto">
-                        <h3>API REST Ventas</h3>
-                        <p>Backend en Spring Boot</p>
-                        <div class="acciones-proyecto">
-                            <button onclick="window.location.href='/editProject'" class="btn-mini"><i class="fas fa-edit"></i> Editar</button>
-                            <button onclick="window.location.href='/projectview'" class="btn-mini"><i class="fas fa-eye"></i> Ver</button>
+                
+                        <!-- CARRUSEL IMÁGENES -->
+                        <div class="carousel-proyecto" th:attr="data-id=${p.id}">
+                            <img th:each="img : ${p.imagenes}"
+                                 th:src="${img}"
+                                 class="carousel-img">
                         </div>
+                
+                        <!-- TECNOLOGÍAS -->
+                        <div class="tech-proyecto">
+                            <span th:each="t,iter : ${p.tecnologias}"
+                                  th:if="${iter.index < 3}"
+                                  class="tag-tech small"
+                                  th:text="${t.nombre}">
+                            </span>
+                
+                            <!-- BOTÓN +N (igual que tu sistema actual) -->
+                            <span th:if="${#lists.size(p.tecnologias) > 3}"
+                                  class="tag-tech tag-mas"
+                                  th:attr="onclick=|toggleTechs(${p.id})|">
+                                +<span th:text="${#lists.size(p.tecnologias) - 3}"></span>
+                            </span>
+                
+                            <!-- OCULTAS -->
+                            <div th:id="'tech-extra-' + ${p.id}" class="tech-extra-proyecto">
+                                <span th:each="t,iter : ${p.tecnologias}"
+                                      th:if="${iter.index >= 3}"
+                                      class="tag-tech small"
+                                      th:text="${t.nombre}">
+                                </span>
+                            </div>
+                        </div>
+                
                     </div>
+                
                 </div>
             </section>
 
             <div class="fila-inferior">
                 <div class="tarjeta-acordeon info-half-card">
-                    <div class="cabecera-tarjeta">
-                        <h3>SOBRE MÍ</h3>
-                        <i class="fas fa-edit icono-editar-texto" onclick="activarEdicionBio()"></i>
-                    </div>
-                    
-                    <div id="bio-view">
-                        <p id="bio-texto"
-                           th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) 
-                           ? usuarioHeader.biografia 
-                           : 'Cuéntale al mundo más acerca de ti'}">
-                        </p>
-                    </div>
-                    
+                    <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto" onclick="activarEdicionBio()"></i></div>
+                    <div id="bio-view"><p id="bio-texto" th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) ? usuarioHeader.biografia : 'Cuéntale al mundo más acerca de ti'}"></p></div>
                     <div id="bio-edit" style="display:none;">
-                        <textarea id="bio-textarea"
-                            maxlength="500"
-                            data-maxlength="500"
-                            oninput="actualizarContadorBio()"></textarea>
-                    
-                        <div class="bio-footer">
-                            <span id="bio-counter"></span>
-                    
-                            <button class="boton-amarillo-solido" onclick="guardarBio()">
-                                GUARDAR
-                            </button>
-                        </div>
+                        <textarea id="bio-textarea" maxlength="500"></textarea>
+                        <div class="bio-footer"><span id="bio-counter"></span><button class="boton-amarillo-solido" onclick="guardarBio()">GUARDAR</button></div>
                     </div>
                 </div>
 
@@ -234,7 +151,22 @@
                     <div class="cabecera-tarjeta">
                         <h3>RESEÑAS RECIBIDAS</h3>
                     </div>
-                    <p>Aún nadie ha valorado tus proyectos. ¡Sigue programando!</p>
+                    
+                    <div style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
+                        <div th:if="${#lists.isEmpty(reviews)}">
+                            <p style="color: #888; font-style: italic;">Aún nadie ha valorado tu perfil. ¡Sigue programando!</p>
+                        </div>
+
+                        <div th:each="r : ${reviews}" class="resena-item-own">
+                            <div class="resena-header-own">
+                                <span class="resena-autor-own" th:text="${r.autor.username}">Usuario</span>
+                                <span class="resena-estrellas-own">
+                                    <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                </span>
+                            </div>
+                            <p class="resena-texto-own" th:text="${r.comentario}">Comentario...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div> 
@@ -242,6 +174,30 @@
 
     <div id="toast" class="toast"></div>
     <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script>
+        function mostrarMasTechs() {
+            // Quita la clase 'tech-oculta' a las extras
+            const ocultas = document.querySelectorAll('.tech-extra');
+            ocultas.forEach(span => {
+                span.classList.remove('tech-oculta');
+            });
+            // Oculta el botón de MÁS y muestra el de MENOS
+            document.getElementById('btn-mas-techs').style.display = 'none';
+            document.getElementById('btn-menos-techs').style.display = 'inline-flex';
+        }
+
+        function mostrarMenosTechs() {
+            // Vuelve a añadir la clase 'tech-oculta' a las extras
+            const extras = document.querySelectorAll('.tech-extra');
+            extras.forEach(span => {
+                span.classList.add('tech-oculta');
+            });
+            // Oculta el botón de MENOS y muestra el de MÁS
+            document.getElementById('btn-menos-techs').style.display = 'none';
+            document.getElementById('btn-mas-techs').style.display = 'inline-flex';
+        }
+    </script>
 
     <script>
         let editandoNombre = false;
@@ -716,6 +672,40 @@ function guardarBio() {
         document.getElementById("bio-view").style.display = "block";
         document.getElementById("bio-edit").style.display = "none";
     });
+}
+
+// CARRUSEL AUTOMÁTICO SIMPLE
+function iniciarCarruseles() {
+    document.querySelectorAll(".carousel-proyecto").forEach(carousel => {
+        const imgs = carousel.querySelectorAll("img");
+        let index = 0;
+
+        if (imgs.length === 0) return;
+
+        imgs[0].classList.add("active");
+
+        setInterval(() => {
+            imgs[index].classList.remove("active");
+            index = (index + 1) % imgs.length;
+            imgs[index].classList.add("active");
+        }, 2500);
+    });
+}
+
+window.addEventListener("load", iniciarCarruseles);
+
+// EXPANDIR TECNOLOGÍAS PROYECTO
+function toggleTechs(id) {
+    const extra = document.getElementById("tech-extra-" + id);
+    if (!extra) return;
+
+    if (extra.style.display === "flex") {
+        extra.style.display = "none";
+    } else {
+        extra.style.display = "flex";
+        extra.style.gap = "6px";
+        extra.style.flexWrap = "wrap";
+    }
 }
     </script>
 </body>

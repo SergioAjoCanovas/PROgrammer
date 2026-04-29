@@ -3,68 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProGrammer - Perfil</title>
+    <title>ProGrammer - Perfil de <span th:text="${usuario.username}">Usuario</span></title>
     
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        /* Brillo neón para la sección activa en el header */
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
 
     <main class="contenedor-principal">
         <aside class="columna-perfil">
             <div class="tarjeta-perfil">
                 <div class="perfil-superior">
                     <div class="foto-perfil-contenedor">
-                        <div class="circulo-foto"></div>
+                        <div class="circulo-foto">
+                            <img th:src="${usuario.fotoPerfil != null ? usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de Perfil">
+                        </div>
                         <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                     </div>
-                    <h2 class="nombre-usuario">Nombre del usuario</h2>
+                    <h2 class="nombre-usuario" th:text="${usuario.username}">Nombre</h2>
+                    <p style="color: #FFCC00; font-weight: bold;">Media: <span th:text="${#numbers.formatDecimal(media, 1, 1)}">0.0</span> ⭐</p>
                 </div>
 
                 <div class="perfil-inferior">
                     <ul class="redes-sociales">
-                        <li><i class="fab fa-instagram"></i> Instagram</li>
-                        <li><i class="fab fa-twitter"></i> Twitter</li>
-                        <li><i class="fas fa-phone"></i> Teléfono</li>
+                        <li th:if="${usuario.github != null and !usuario.github.isEmpty()}">
+                            <i class="fab fa-github"></i> <a th:href="${usuario.github}" target="_blank" style="color: white; text-decoration: none;">GitHub</a>
+                        </li>
+                        <li th:if="${usuario.linkedin != null and !usuario.linkedin.isEmpty()}">
+                            <i class="fab fa-linkedin"></i> <a th:href="${usuario.linkedin}" target="_blank" style="color: white; text-decoration: none;">LinkedIn</a>
+                        </li>
                     </ul>
-                    <button class="boton-curriculum">CURRICULUM</button>
+                    <a th:if="${usuario.curriculum != null and !usuario.curriculum.isEmpty()}" th:href="${usuario.curriculum}" target="_blank" style="text-decoration: none;">
+                        <button class="boton-curriculum">CURRICULUM</button>
+                    </a>
                 </div>
             </div>
             
-            <div class="tarjeta-resenas-izq">
-                <h3>RESEÑAS</h3>
+            <div class="tarjeta-resenas-izq" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != usuario.id}">
+                <h3>AÑADIR RESEÑA</h3>
                 
-                <div class="campo">
-                    <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
-                    <div class="estrellas" id="estrellas-selector">
-                        <i class="far fa-star" data-value="1"></i>
-                        <i class="far fa-star" data-value="2"></i>
-                        <i class="far fa-star" data-value="3"></i>
-                        <i class="far fa-star" data-value="4"></i>
-                        <i class="far fa-star" data-value="5"></i>
+                <form th:action="@{/reviews/crear}" method="post" th:object="${newReview}">
+                    <input type="hidden" name="receptorId" th:value="${usuario.id}">
+                    
+                    <div class="campo">
+                        <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
+                        <div class="estrellas" id="estrellas-selector">
+                            <i class="far fa-star" data-value="1"></i>
+                            <i class="far fa-star" data-value="2"></i>
+                            <i class="far fa-star" data-value="3"></i>
+                            <i class="far fa-star" data-value="4"></i>
+                            <i class="far fa-star" data-value="5"></i>
+                        </div>
+                        <input type="hidden" th:field="*{rating}" id="rating-value" value="0">
                     </div>
-                    <input type="hidden" id="rating-value" value="0">
-                </div>
 
-                <textarea class="input-resena" id="texto-resena" placeholder="Cuéntanos tu experiencia con este profesional..."></textarea>
-                <button class="boton-anadir" id="btn-publicar-local">
-                    <i class="fas fa-paper-plane"></i> Publicar reseña
-                </button>
+                    <textarea class="input-resena" th:field="*{comentario}" placeholder="Cuéntanos tu experiencia..." required></textarea>
+                    
+                    <button type="submit" class="boton-anadir">
+                        <i class="fas fa-paper-plane"></i> Publicar reseña
+                    </button>
+                </form>
+                
+                <p th:if="${param.error == 'duplicated'}" style="color: #ff4444; font-size: 0.8rem; margin-top: 5px;">Ya has valorado a este usuario.</p>
+                <p th:if="${param.error == 'autoreview'}" style="color: #ff4444; font-size: 0.8rem; margin-top: 5px;">No puedes valorarte a ti mismo.</p>
             </div>
         </aside>
 
@@ -72,29 +84,12 @@
             <section class="seccion-proyectos">
                 <div class="tarjeta-proyectos-contenedor">
                     <div class="cabecera-proyectos">
-                        <h2>
-                            <a href="/projectlist" class="enlace-titulo-proyectos">PROYECTOS</a>
-                            <a href="/projectlist" class="enlace-grid-proyectos" title="Ver todos los proyectos">
-                                <i class="fas fa-th"></i>
-                            </a>
-                        </h2>
+                        <h2>PROYECTOS</h2>
                     </div>
-                    
                     <div class="rejilla-proyectos">
                         <div class="tarjeta-mini-proyecto">
-                            <h3>Nombre del proyecto</h3>
-                            <p>Descripcion breve del proyecto</p>
-                            <button class="boton-ver" onclick="window.location.href='/projectview'">VER PROYECTO</button>
-                        </div>
-                        <div class="tarjeta-mini-proyecto">
-                            <h3>Nombre del proyecto</h3>
-                            <p>Descripcion breve del proyecto</p>
-                            <button class="boton-ver" onclick="window.location.href='/projectview'">VER PROYECTO</button>
-                        </div>
-                        <div class="tarjeta-mini-proyecto">
-                            <h3>Nombre del proyecto</h3>
-                            <p>Descripcion breve del proyecto</p>
-                            <button class="boton-ver" onclick="window.location.href='/projectview'">VER PROYECTO</button>
+                            <h3>Próximamente</h3>
+                            <p>Proyectos del usuario.</p>
                         </div>
                     </div>
                 </div>
@@ -103,13 +98,54 @@
             <div class="contenedor-inferior-derecha">
                 <div class="tarjeta-inferior">
                     <div class="cabecera-inferior"><h3>RESEÑAS RECIENTES</h3></div>
-                    <div class="contenido-inferior"><p>No hay reseñas aún.</p></div>
+                    <div class="contenido-inferior">
+                        <div th:if="${#lists.isEmpty(reviews)}">
+                            <p>No hay reseñas aún.</p>
+                        </div>
+                        <div th:each="r : ${reviews}" class="resena-item">
+                            <div class="resena-header">
+                                <span class="resena-usuario" th:text="${r.autor.username}">Usuario</span>
+                                <span class="resena-rating">
+                                    <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                </span>
+                            </div>
+                            <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="tarjeta-inferior">
-                    <div class="cabecera-inferior"><h3>SOBRE MI</h3></div>
+                    <div class="cabecera-inferior"><h3>SOBRE MÍ</h3></div>
                     <div class="contenido-inferior">
-                        <p>Aqui puedes escribir una breve descripción profesional sobre tu trayectoria y habilidades.</p>
+                        <p th:text="${usuario.biografia != null and !usuario.biografia.isEmpty() ? usuario.biografia : 'Sin descripción.'}"></p>
+                        
+                        <div th:if="${techsPorCategoria != null and !techsPorCategoria.isEmpty()}" style="margin-top: 25px;">
+                            <h4 style="color: #FFCC00; font-size: 0.95rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">TECNOLOGÍAS:</h4>
+                            
+                            <div th:each="entry : ${techsPorCategoria}" style="margin-bottom: 15px;">
+                                <h5 style="color: #00f3ff; font-size: 0.8rem; margin: 0 0 10px 0; text-transform: uppercase;" th:text="${entry.key}">Categoría</h5>
+                                
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <span th:each="tech : ${entry.value}" 
+                                          style="background: rgba(0,243,255,0.05); padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(0,243,255,0.2); color: white; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+                                        
+                                        <i th:if="${tech.icono != null}" th:class="${tech.icono}" style="color: #00f3ff;"></i>
+                                        
+                                        <span th:text="${tech.nombre}"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${techsPorCategoria == null and perfilDesarrollador != null and !perfilDesarrollador.tecnologias.isEmpty()}" style="margin-top: 15px;">
+                            <h4 style="color: #FFCC00; font-size: 0.9rem; margin-bottom: 10px;">Tecnologías:</h4>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <span th:each="tech : ${perfilDesarrollador.tecnologias}" th:text="${tech.nombre}" 
+                                      style="background: rgba(0,243,255,0.1); padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(0,243,255,0.3); color: white; font-size: 0.8rem;">
+                                </span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -122,10 +158,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const estrellas = document.querySelectorAll("#estrellas-selector i");
             const inputRating = document.getElementById("rating-value");
-            const btnPublicar = document.getElementById("btn-publicar-local");
-            const contenedorResenas = document.querySelector(".tarjeta-inferior .contenido-inferior");
 
-            // 1. LÓGICA DE SELECCIÓN DE ESTRELLAS
             estrellas.forEach(star => {
                 star.addEventListener("click", () => {
                     const val = star.dataset.value;
@@ -142,62 +175,6 @@
                     });
                 });
             });
-
-            // 2. LÓGICA DE PUBLICAR RESEÑA EN EL DIV DERECHO
-            btnPublicar.addEventListener("click", () => {
-                const texto = document.getElementById("texto-resena").value;
-                const rating = inputRating.value;
-
-                if (rating == 0) {
-                    alert("Por favor, selecciona una puntuación.");
-                    return;
-                }
-                if (texto.trim() === "") {
-                    alert("Por favor, escribe un comentario.");
-                    return;
-                }
-
-                // Crear el elemento de la reseña
-                const estrellasHTML = '⭐'.repeat(rating);
-                const nuevaResenaHTML = `
-                    <div class="resena-reciente-item">
-                        <div class="resena-reciente-header">
-                            <span class="resena-reciente-usuario"><i class="fas fa-user-circle"></i> Tú</span>
-                            <span class="resena-reciente-estrellas">${estrellasHTML}</span>
-                        </div>
-                        <p class="resena-reciente-texto">${texto}</p>
-                    </div>
-                `;
-
-                // Limpiar el mensaje de "No hay reseñas" si es la primera
-                if (contenedorResenas.innerHTML.includes("No hay reseñas aún")) {
-                    contenedorResenas.innerHTML = "";
-                }
-
-                // Insertar al principio
-                contenedorResenas.insertAdjacentHTML('afterbegin', nuevaResenaHTML);
-
-                // Limpiar formulario
-                document.getElementById("texto-resena").value = "";
-                inputRating.value = 0;
-                estrellas.forEach(s => {
-                    s.classList.replace("fas", "far");
-                    s.classList.remove("activa");
-                });
-            });
-
-            // 3. IDENTIDAD DEL HEADER (Tu código original)
-            setTimeout(() => {
-                const navPerfil = document.getElementById('nav-perfil');
-                if (navPerfil) navPerfil.classList.add('activo');
-                
-                const links = document.querySelectorAll('header a');
-                links.forEach(l => {
-                    if (l.getAttribute('href')?.includes('profileView')) {
-                        l.classList.add('activo');
-                    }
-                });
-            }, 100);
         });
     </script>
 </body>

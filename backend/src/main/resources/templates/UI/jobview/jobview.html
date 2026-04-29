@@ -54,7 +54,7 @@
                 <div class="tarjeta-proyecto-detalle tarjeta-formulario" id="seccion-candidatura" style="position: relative;">
                     
                     <div class="cabecera-proyecto">
-                        <h2>Tu candidatura</h2>
+                        <h2 th:text="${postulacionExistente != null} ? 'Editar tu candidatura' : 'Tu candidatura'">Tu candidatura</h2>
                         <a href="/jobsearching" class="boton-volver-curvo" title="Volver">
                             <i class="fas fa-undo"></i>
                         </a>
@@ -72,7 +72,9 @@
                         
                         <input type="hidden" name="ofertaId" th:value="${oferta.id}">
                         <input type="hidden" name="username" id="input-username" value="">
-                        <input type="hidden" name="proyectoId" id="input-proyecto" value="">
+                        
+                        <input type="hidden" name="proyectoId" id="input-proyecto" 
+                               th:value="${postulacionExistente != null and postulacionExistente.proyectoVinculado != null} ? ${postulacionExistente.proyectoVinculado.id} : ''">
 
                         <div class="campo">
                             <label><i class="fas fa-file-pdf"></i> Currículum Vitae</label>
@@ -113,7 +115,10 @@
                             <label><i class="fas fa-code"></i> Selecciona un proyecto de tu perfil para destacar</label>
                             
                             <div th:if="${!#lists.isEmpty(proyectos)}" class="contenedor-proyectos-seleccion">
-                                <div class="seleccionable" th:each="proyecto, iterStat : ${proyectos}" th:attr="data-id=${proyecto.id}">
+                                <div class="seleccionable" 
+                                     th:each="proyecto, iterStat : ${proyectos}" 
+                                     th:attr="data-id=${proyecto.id}"
+                                     th:classappend="${postulacionExistente != null and postulacionExistente.proyectoVinculado != null and postulacionExistente.proyectoVinculado.id == proyecto.id} ? ' seleccionado' : ''">
                                     <p style="margin: 0;">
                                         <strong>Proyecto <span th:text="${iterStat.index + 1}"></span>:</strong> 
                                         <span th:text="${proyecto.titulo}">Título del Proyecto</span>
@@ -132,16 +137,17 @@
 
                         <div class="campo">
                             <label><i class="fas fa-envelope-open-text"></i> Carta de presentación (Opcional)</label>
-                            <textarea name="mensaje" placeholder="Cuéntales por qué eres el mejor candidato y qué puedes aportar al equipo..."></textarea>
+                            <textarea name="mensaje" placeholder="Cuéntales por qué eres el mejor candidato y qué puedes aportar al equipo..." 
+                                      th:text="${postulacionExistente != null ? postulacionExistente.mensajeAdjunto : ''}"></textarea>
                         </div>
 
                         <div class="contenedor-boton-central">
-                            <button type="submit" class="boton-postular-final">
-                                <i class="fas fa-paper-plane"></i> ENVIAR POSTULACIÓN
-                            </button>
+                                    <button type="submit" class="boton-postular-final">
+                                        <i th:class="${postulacionExistente != null} ? 'fas fa-save' : 'fas fa-paper-plane'"></i> 
+                                        <span th:text="${postulacionExistente != null} ? ' ACTUALIZAR POSTULACIÓN' : ' ENVIAR POSTULACIÓN'"></span>
+                                    </button>
+                            </form>
                         </div>
-                    </form>
-                </div>
 
             </div>
         </section>

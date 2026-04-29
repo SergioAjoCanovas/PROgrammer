@@ -13,15 +13,44 @@ html, body {
     background-color: #000;
 }
 
+/* --- BOTÓN VOLVER (1800px para que se pegue a la izquierda global de la pantalla) --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-principal-ofertas {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding: 40px 25px;
+    padding: 20px 25px 40px 25px; 
     max-width: 1000px;
     margin: 0 auto;
     width: 100%;
+    box-sizing: border-box;
 }
 
 /* =========================================================
@@ -29,8 +58,8 @@ html, body {
    ========================================================= */
 .cabecera-filtros {
     display: flex;
-    justify-content: space-between; /* Filtros a la izquierda, botón a la derecha */
-    align-items: center;           /* Alineación vertical perfecta */
+    justify-content: space-between; 
+    align-items: center;           
     margin-bottom: 35px;
     width: 100%;
     padding: 0 5px;
@@ -214,13 +243,12 @@ html, body {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
-/* ESTILO GRISÁCEO PARA BOTÓN DESHABILITADO (OFERTA CERRADA) */
 .boton-postular:disabled {
-    background-color: #2a2a2a !important; /* Gris oscuro mate */
-    color: #666 !important;               /* Texto gris apagado */
-    border: 1px solid #444 !important;    /* Borde sutil */
-    cursor: not-allowed;                  /* Cursor de bloqueo */
-    opacity: 0.5;                         /* Opacidad baja */
+    background-color: #2a2a2a !important; 
+    color: #666 !important;               
+    border: 1px solid #444 !important;    
+    cursor: not-allowed;                  
+    opacity: 0.5;                         
     box-shadow: none !important;
     transform: none !important;
 }

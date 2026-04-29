@@ -19,7 +19,6 @@
             opacity: 1 !important;
         }
 
-        /* Contenedor de No Resultados (Azul con icono rojo) */
         .no-resultados-container {
             grid-column: 1 / -1;
             display: flex;
@@ -43,7 +42,6 @@
             text-shadow: 0 0 10px #ff003c;
         }
 
-        /* Contador de resultados */
         .contador-resultados {
             width: 100%;
             display: flex;
@@ -80,6 +78,12 @@
 <body class="body-layout fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
 
     <main class="contenedor-busqueda">
         <section class="seccion-buscador-central">
@@ -233,7 +237,7 @@
             btnDeselectAll?.classList.toggle('btn-active', check === 0);
         }
 
-        // Lógica Carrusel
+        // Lógica Carrusel 
         const track = document.getElementById('track');
         let index = 0;
 

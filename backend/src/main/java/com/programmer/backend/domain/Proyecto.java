@@ -33,8 +33,31 @@ public class Proyecto {
     @Column(name = "repo_url")
     private String repoUrl;
 
+    @Column(name = "foto_1")
+    private String foto1;
+    
+    @Column(name = "foto_2")
+    private String foto2;
+    
+    @Column(name = "foto_3")
+    private String foto3;
+    
+    @Column(name = "foto_4")
+    private String foto4;
+
     @Column(name = "esta_validado")
     private Boolean estaValidado;
+
+    // ==========================================
+    // AÑADIDO: Relación exacta con tu base de datos
+    // ==========================================
+    @ManyToMany
+    @JoinTable(
+        name = "proyecto_tecnologias", 
+        joinColumns = @JoinColumn(name = "proyecto_id"),
+        inverseJoinColumns = @JoinColumn(name = "tecnologia_id")
+    )
+    private List<Tecnologia> tecnologias;
 
     // REVIEWS
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)

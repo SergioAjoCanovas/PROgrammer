@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,46 @@
     <link rel="stylesheet" href="/Style/loginPage_styles/loginPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Login - PROgrammer</title>
+
+    <style>
+        /* ESTILO DEL TOAST DE ERROR NEÓN */
+        .toast-error-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(15, 5, 5, 0.98); /* Fondo muy oscuro con tinte rojizo */
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #ff4444; /* Rojo neón */
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); /* Resplandor rojo */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+
+        .toast-error-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-error-neon i {
+            color: #ff4444;
+            font-size: 2rem;
+        }
+
+        .toast-error-neon strong {
+            display: block;
+            color: #ff4444;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+    </style>
 </head>
 <body>
     <main class="contenedor-login">
@@ -45,36 +85,65 @@
         </div>
     </main>
 
-    <div th:replace="includes/footer :: footer"></div>
+    <div id="toast-login-error" class="toast-error-neon">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong id="toast-error-titulo">Error de acceso</strong>
+            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">Usuario o contraseña incorrectos.</span>
+        </div>
+    </div>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
+        // Lógica para mostrar/ocultar contraseña
         const togglePassword = document.querySelector('#togglePassword');
         const passwordInput = document.querySelector('#password');
 
         togglePassword.addEventListener('click', function () {
-            // Cambia el tipo de input (de password a text y viceversa)
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            
-            // Cambia el icono del ojo abierto al cerrado
             this.classList.toggle('fa-eye-slash');
             this.classList.toggle('fa-eye');
         });
+
+        // LÓGICA PARA DETECTAR ERRORES EN LA URL Y MOSTRAR EL TOAST
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toast = document.getElementById('toast-login-error');
+            
+            // Si la URL tiene ?error o ?error=true
+            if (urlParams.has('error')) {
+                const errorType = urlParams.get('error');
+                
+                // Personalización del mensaje según el valor (opcional)
+                if (errorType === 'invalid') {
+                    document.getElementById('toast-error-mensaje').innerText = "Las credenciales no son válidas.";
+                } else if (errorType === 'locked') {
+                    document.getElementById('toast-error-mensaje').innerText = "Tu cuenta está bloqueada temporalmente.";
+                }
+                
+                // Mostrar el toast
+                setTimeout(() => {
+                    toast.classList.add('mostrar');
+                }, 100);
+
+                // Limpiar la URL para que no vuelva a salir al recargar
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Ocultar automáticamente tras 5 segundos
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                }, 5000);
+            }
+        });
     </script>
 
-    <!-- JS para cargar header y footer -->
     <script>
-        // Ajusta las rutas según la ubicación del HTML
-        const headerPath = "localhost:8080/includes/header.html";
-        const footerPath = "localhost:8080/includes/footer.html";
-
-        fetch(headerPath)
-            .then(res => res.text())
-            .then(html => document.getElementById("header-placeholder").innerHTML = html);
-
-        fetch(footerPath)
-            .then(res => res.text())
-            .then(html => document.getElementById("footer-placeholder").innerHTML = html);
+        // Si usas el fragmento de Thymeleaf de arriba (th:replace), este bloque fetch es redundante pero lo mantengo
+        // por si lo necesitas para el header que no estaba definido arriba.
+        const headerPath = "http://localhost:8080/includes/header.html";
+        // fetch(headerPath)... etc
     </script>
 </body>
 </html>

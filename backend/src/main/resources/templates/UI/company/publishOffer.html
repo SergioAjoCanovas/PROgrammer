@@ -3,65 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProGrammer - Publicar Oferta</title>
+    <title th:text="${oferta != null} ? 'ProGrammer - Editar Oferta' : 'ProGrammer - Publicar Oferta'">ProGrammer - Publicar Oferta</title>
     
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/company_styles/publishOffer.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* COPIADO DE RED/EMPLEOS PARA MANTENER LA CONSISTENCIA */
-        .activo, 
-        header .navegacion-central a.activo i, 
-        header .navegacion-central a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-            opacity: 1 !important;
+        .activo, header .navegacion-central a.activo i, header .navegacion-central a.activo span { 
+            color: #FFCC00 !important; 
+            text-shadow: 0 0 10px #FFCC00 !important; 
+            opacity: 1 !important; 
         }
-        
-        .seccion-categoria {
-            margin-bottom: 25px;
-            background: rgba(25, 25, 25, 0.6);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-        
-        .titulo-categoria-form {
-            color: #00f2ff;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            border-left: 3px solid #FFCC00;
-            padding-left: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .grid-tecnologias {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 10px;
-        }
-
-        .check-tech {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ddd;
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .check-tech:hover {
-            background: rgba(0, 242, 255, 0.1);
-            color: white;
-        }
+        .seccion-categoria { margin-bottom: 25px; background: rgba(25, 25, 25, 0.6); padding: 15px; border-radius: 8px; border: 1px solid #333; }
+        .titulo-categoria-form { color: #00f2ff; font-size: 1.1rem; margin-bottom: 15px; border-left: 3px solid #FFCC00; padding-left: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .grid-tecnologias { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        .check-tech { display: flex; align-items: center; gap: 8px; color: #ddd; font-size: 0.9rem; cursor: pointer; padding: 5px; border-radius: 4px; transition: all 0.3s ease; }
+        .check-tech:hover { background: rgba(0, 242, 255, 0.1); color: white; }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -77,57 +37,67 @@
     <main class="contenedor-principal-oferta">
         <section class="tarjeta-publicacion">
             <div class="cabecera-tarjeta">
-                <h2><i class="fas fa-bullhorn"></i> Nueva Oferta de Empleo</h2>
-                <p style="color: #aaa; margin-top: 5px;">Publica los detalles para atraer a los mejores programadores</p>
+                <h2 th:text="${oferta != null} ? 'Editar Oferta de Empleo' : 'Nueva Oferta de Empleo'">
+                    <i class="fas fa-bullhorn"></i> Nueva Oferta
+                </h2>
+                <p style="color: #aaa; margin-top: 5px;">Define los detalles para encontrar al candidato ideal</p>
             </div>
 
             <form th:action="@{/api/ofertas/crear}" method="POST" class="formulario-oferta">
+                <input type="hidden" name="id" th:value="${oferta?.id}">
                 <input type="hidden" id="username_empresa" name="username_empresa" value="">
 
                 <div class="grupo-input">
                     <label for="titulo"><i class="fas fa-signature"></i> Título del Puesto</label>
                     <input type="text" id="titulo" name="titulo" class="input-neon" 
-                           placeholder="Ej: Desarrollador Backend Senior (Java/Spring Boot) - 100% Remoto" required>
+                           th:value="${oferta?.titulo}" 
+                           placeholder="Ej: Desarrollador Backend Senior (Java)" required>
                 </div>
 
                 <div class="grupo-input">
-                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción del Proyecto / Puesto</label>
+                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción</label>
                     <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta textarea-grande" 
-                              placeholder="Ej: Buscamos un desarrollador apasionado para unirse a nuestro equipo core. Trabajarás en la creación y migración de nuevos microservicios para nuestra plataforma SaaS principal. Serás clave en la toma de decisiones arquitectónicas y colaborarás estrechamente con el equipo de Frontend y Producto..." 
-                              rows="4" required></textarea>
+                              th:text="${oferta?.descripcion}" rows="4" 
+                              placeholder="Describe las funciones principales y los objetivos de la posición..." required></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="requisitos"><i class="fas fa-list-check"></i> Requisitos</label>
                     <textarea id="requisitos" name="requisitos" class="input-neon textarea-oferta textarea-mediano" 
-                              placeholder="Ej:&#10;- Mínimo 3 años de experiencia trabajando con Java y Spring Boot.&#10;- Sólidos conocimientos en bases de datos relacionales (MySQL/PostgreSQL).&#10;- Experiencia creando y consumiendo APIs REST.&#10;- Buenas prácticas de código (Clean Code, principios SOLID).&#10;- Valorable experiencia con Docker y AWS." 
-                              rows="5"></textarea>
+                              th:text="${oferta?.requisitos}" rows="5"
+                              placeholder="Indica las tecnologías, años de experiencia y aptitudes necesarias..."></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="ofrecemos"><i class="fas fa-gift"></i> ¿Qué ofrecemos?</label>
                     <textarea id="ofrecemos" name="ofrecemos" class="input-neon textarea-oferta textarea-mediano" 
-                              placeholder="Ej:&#10;- Contrato indefinido a jornada completa.&#10;- Flexibilidad horaria y modalidad 100% remota.&#10;- Presupuesto anual de 1.000€ para formación, cursos o eventos.&#10;- Seguro médico privado cubierto por la empresa.&#10;- Buen ambiente de trabajo y equipo dinámico." 
-                              rows="5"></textarea>
+                              th:text="${oferta?.ofrecemos}" rows="5"
+                              placeholder="Describe los beneficios: tipo de contrato, flexibilidad, retos del equipo..."></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="rango_salarial"><i class="fas fa-money-bill-wave"></i> Rango Salarial</label>
                     <input type="text" id="rango_salarial" name="rango_salarial" class="input-neon" 
-                           placeholder="Ej: 30.000€ - 45.000€ Brutos/año (según valía del candidato)">
+                           th:value="${oferta?.rangoSalarial}"
+                           placeholder="Ej: 35.000€ - 45.000€ o A convenir">
                 </div>
 
                 <div class="grupo-input">
                     <label><i class="fas fa-layer-group"></i> Tecnologías Requeridas</label>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        const techIdsPreseleccionadas = /*[[${techIdsActuales != null ? techIdsActuales : '[]'}]]*/ [];
+                        /*]]>*/
+                    </script>
                     <div id="contenedor-tecnologias">
-                        <span style="color: #666; font-size: 0.9rem;"><i class="fas fa-spinner fa-spin"></i> Cargando tecnologías...</span>
+                        <span style="color: #666;"><i class="fas fa-spinner fa-spin"></i> Cargando...</span>
                     </div>
                 </div>
 
-                <div class="acciones-formulario" style="display: flex; gap: 15px; margin-top: 20px;">
-                    <a th:href="@{/main}" class="btn-cancelar" style="padding: 12px 20px; background: #333; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Descartar</a>
-                    <button type="submit" class="btn-publicar-neon" style="flex: 1;">
-                        <i class="fas fa-paper-plane"></i> Lanzar Oferta
+                <div class="acciones-formulario">
+                    <button type="submit" class="btn-publicar-neon">
+                        <i th:class="${oferta != null} ? 'fas fa-save' : 'fas fa-paper-plane'"></i> 
+                        <span th:text="${oferta != null} ? ' Guardar Cambios' : ' Lanzar Oferta'"></span>
                     </button>
                 </div>
             </form>
@@ -139,77 +109,48 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            const miNombre = localStorage.getItem('usuarioLogueado');
-            if (miNombre) {
-                document.getElementById('username_empresa').value = miNombre;
-            }
-            actualizarMiUsuarioEnHeader();
-            cargarTecnologiasDesdeBD();
+            const n = localStorage.getItem('usuarioLogueado'); 
+            if (n) document.getElementById('username_empresa').value = n;
             
-            // Lanzamos la iluminación con un pequeño delay para que el header cargue
-            setTimeout(marcarLinkActivo, 100);
+            const r = localStorage.getItem('rolUsuario') || 'EMPRESA'; 
+            const c = document.getElementById('info-usuario');
+            if (n && c) { 
+                c.innerHTML = `<div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;"><span style="color: white; font-weight: bold; font-size: 0.85em;">${n.toUpperCase()}</span><span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${r.toUpperCase()}</span></div>`; 
+            }
+            
+            const l = document.getElementById('nav-publicar-oferta'); 
+            if (l) l.classList.add('activo');
+            
+            cargarTecnologiasDesdeBD();
         });
 
-        function actualizarMiUsuarioEnHeader() {
-            const miNombre = localStorage.getItem('usuarioLogueado');
-            const miRol = localStorage.getItem('rolUsuario') || 'EMPRESA';
-            const contenedorHeader = document.getElementById('info-usuario');
-            if (miNombre && contenedorHeader) {
-                contenedorHeader.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${miNombre.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${miRol.toUpperCase()}</span>
-                    </div>
-                `;
-            }
-        }
-
-        // FUNCIÓN MEJORADA PARA ILUMINAR EL BOTÓN DE PUBLICAR
-        function marcarLinkActivo() {
-            // Buscamos el botón por su ID
-            const btnPublicar = document.getElementById('nav-publicar-oferta');
-            if (btnPublicar) {
-                btnPublicar.classList.add('activo');
-            } else {
-                // Si no hay ID, buscamos por la URL
-                const path = window.location.pathname;
-                const enlaces = document.querySelectorAll('header a');
-                enlaces.forEach(enlace => {
-                    if (enlace.getAttribute('href')?.includes('publishOffer')) {
-                        enlace.classList.add('activo');
-                    }
-                });
-            }
-        }
-
         function cargarTecnologiasDesdeBD() {
-            fetch('/api/categorias/todas') 
-                .then(res => res.json())
-                .then(categorias => {
-                    const contenedor = document.getElementById('contenedor-tecnologias');
-                    contenedor.innerHTML = ''; 
-                    categorias.forEach(cat => {
-                        const divCategoria = document.createElement('div');
-                        divCategoria.className = 'seccion-categoria';
-                        const titulo = document.createElement('h3');
-                        titulo.className = 'titulo-categoria-form';
-                        titulo.innerText = cat.nombre;
-                        divCategoria.appendChild(titulo);
-                        const grid = document.createElement('div');
-                        grid.className = 'grid-tecnologias';
-                        cat.tecnologias.forEach(tech => {
-                            const label = document.createElement('label');
-                            label.className = 'check-tech'; 
-                            
-                            // ÚNICO CAMBIO: Se añade la etiqueta <i> con la clase tech.icono
-                            label.innerHTML = `<input type="checkbox" name="tecnologias_ids" value="${tech.id}"><span><i class="${tech.icono || 'fas fa-code'}"></i> ${tech.nombre}</span>`;
-                            
-                            grid.appendChild(label);
-                        });
-                        divCategoria.appendChild(grid);
-                        contenedor.appendChild(divCategoria);
+            fetch('/api/categorias/todas').then(res => res.json()).then(categorias => {
+                const contenedor = document.getElementById('contenedor-tecnologias'); 
+                contenedor.innerHTML = ''; 
+                categorias.forEach(cat => {
+                    const div = document.createElement('div'); 
+                    div.className = 'seccion-categoria';
+                    div.innerHTML = `<h3 class="titulo-categoria-form">${cat.nombre}</h3>`;
+                    const grid = document.createElement('div'); 
+                    grid.className = 'grid-tecnologias';
+                    
+                    cat.tecnologias.forEach(tech => {
+                        // Lógica para marcar los checkboxes si estamos editando
+                        const ck = techIdsPreseleccionadas.includes(tech.id) ? 'checked' : '';
+                        const label = document.createElement('label'); 
+                        label.className = 'check-tech'; 
+                        label.innerHTML = `
+                            <input type="checkbox" name="tecnologias_ids" value="${tech.id}" ${ck}>
+                            <span><i class="${tech.icono || 'fas fa-code'}"></i> ${tech.nombre}</span>
+                        `;
+                        grid.appendChild(label);
                     });
+                    
+                    div.appendChild(grid); 
+                    contenedor.appendChild(div);
                 });
+            });
         }
     </script>
 </body>

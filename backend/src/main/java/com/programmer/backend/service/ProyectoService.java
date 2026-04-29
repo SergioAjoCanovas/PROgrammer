@@ -7,6 +7,8 @@ import com.programmer.backend.repository.ProyectoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 public class ProyectoService {
@@ -77,28 +79,35 @@ public class ProyectoService {
      * Convierte entidad → DTO
      */
     private ProyectoDTO mapToDTO(Proyecto p) {
+
+        if (p == null) {
+            return null; // protección extra (no debería pasar, pero evita crashes)
+        }
+
         return new ProyectoDTO(
-                p.getId(),              // 🔥 AÑADIDO
+                p.getId(),
                 p.getTitulo(),
                 p.getDescripcion(),
                 mapImagenes(p),
-                p.getTecnologias()
+                p.getTecnologias() != null ? p.getTecnologias() : List.of()
         );
     }
 
     /**
-     * Convierte foto_1..foto_4 → List<String>
+     * Convierte foto_1..foto_4 → List<String> (sin nulls)
      */
     private List<String> mapImagenes(Proyecto p) {
-        return List.of(
-                        p.getFoto1(),
-                        p.getFoto2(),
-                        p.getFoto3(),
-                        p.getFoto4()
-                )
-                .stream()
-                .filter(java.util.Objects::nonNull)
-                .filter(f -> !f.isBlank())
-                .toList();
+
+        if (p == null) return List.of();
+
+        return Stream.of(
+                p.getFoto1(),
+                p.getFoto2(),
+                p.getFoto3(),
+                p.getFoto4()
+        )
+        .filter(Objects::nonNull)
+        .filter(f -> !f.isBlank())
+        .toList();
     }
 }

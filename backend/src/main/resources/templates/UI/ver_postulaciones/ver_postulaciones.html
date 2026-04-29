@@ -59,9 +59,9 @@
                 <span style="color: #888; font-size: 0.75rem; margin-bottom: 5px;" 
                       th:text="${#dates.format(post.fechaPostulacion, 'dd/MM/yyyy HH:mm')}"></span>
                 
-                <a th:href="@{/profileView/{username}(username=${post.desarrollador.username})}" class="btn-ver-perfil">
-                    <i class="fas fa-user-circle"></i> VER PERFIL
-                </a>
+            <a th:href="@{/profileView/{id}(id=${post.desarrollador.id})}" class="btn-ver-perfil">
+                <i class="fas fa-user-circle"></i> VER PERFIL
+            </a>
 
                 <a th:if="${post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty()}" 
                    th:href="@{${post.desarrollador.curriculum}}" target="_blank" class="btn-ver-cv">

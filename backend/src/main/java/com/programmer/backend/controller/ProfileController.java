@@ -48,22 +48,25 @@ public class ProfileController {
     
         model.addAttribute("usuarioHeader", usuario);
     
+        // =========================
         // RESEÑAS
+        // =========================
         List<NewReview> reviews = reviewRepository.findByReceptor(usuario);
         Double media = reviewRepository.getAverageRating(usuario);
     
         model.addAttribute("reviews", reviews);
         model.addAttribute("media", media != null ? media : 0);
     
+        // =========================
         // CV
+        // =========================
         String cvUrl = usuario.getCurriculum();
         model.addAttribute("cvUrl", cvUrl);
         model.addAttribute("cvNombre", limpiarNombreCV(extraerNombreCV(cvUrl)));
     
-        // TECNOLOGÍAS (por defecto vacío)
-        model.addAttribute("tecnologiasUsuario", List.of());
-    
-        // 🔥 PROYECTOS GLOBAL (AQUÍ ESTÁ LA CLAVE)
+        // =========================
+        // PROYECTOS
+        // =========================
         List<ProyectoService.ProyectoDTO> ultimosProyectos =
                 proyectoService.obtenerUltimosProyectos(usuario);
     
@@ -71,42 +74,48 @@ public class ProfileController {
     
         String rol = usuario.getRol().getNombre();
     
+        // =========================
+        // ADMIN
+        // =========================
         if ("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)) {
+            model.addAttribute("tecnologiasUsuario", List.of());
             return "UI/ownProfile/ownProfile";
         }
     
+        // =========================
+        // USER (visitante)
+        // =========================
         if ("USER".equals(rol)) {
             return "UI/profile/visitorProfile";
         }
     
-        List<Tecnologia> tecnologiasOrdenadas = List.of();
-
+        // =========================
+        // DEVELOPER
+        // =========================
         if ("DEVELOPER".equals(rol)) {
-        
-            PerfilDesarrollador perfil = devRepo.findByUsuarioId(usuario.getId())
-                    .orElse(null);
-        
-            if (perfil != null) {
-                tecnologiasOrdenadas = perfil.getTecnologias().stream()
-                        .sorted(Comparator.comparing(Tecnologia::getNombre))
-                        .toList();
-            }
-        
-        } else if ("COMPANY".equals(rol)) {
-        
-            PerfilEmpresa perfil = empresaRepo.findByUsuarioId(usuario.getId())
-                    .orElse(null);
-        
-            if (perfil != null) {
-                tecnologiasOrdenadas = perfil.getTecnologias().stream()
-                        .sorted(Comparator.comparing(Tecnologia::getNombre))
-                        .toList();
-            }
-        }
-        
-        model.addAttribute("tecnologiasUsuario", tecnologiasOrdenadas);
     
+            PerfilDesarrollador perfil = devRepo.findByUsuarioId(usuario.getId())
+                    .orElseGet(() -> {
+                        PerfilDesarrollador nuevo = new PerfilDesarrollador();
+                        nuevo.setUsuario(usuario);
+                        return devRepo.save(nuevo);
+                    });
+    
+            List<Tecnologia> tecnologiasOrdenadas = perfil.getTecnologias().stream()
+                    .sorted(Comparator.comparing(Tecnologia::getNombre))
+                    .toList();
+    
+            model.addAttribute("perfil", perfil);
+            model.addAttribute("tecnologiasUsuario", tecnologiasOrdenadas);
+    
+            return "UI/ownProfile/ownProfile";
+        }
+    
+        // =========================
+        // COMPANY
+        // =========================
         if ("COMPANY".equals(rol)) {
+    
             PerfilEmpresa perfil = empresaRepo.findByUsuarioId(usuario.getId())
                     .orElseGet(() -> {
                         PerfilEmpresa nuevo = new PerfilEmpresa();
@@ -114,10 +123,19 @@ public class ProfileController {
                         return empresaRepo.save(nuevo);
                     });
     
+            List<Tecnologia> tecnologiasOrdenadas = perfil.getTecnologias().stream()
+                    .sorted(Comparator.comparing(Tecnologia::getNombre))
+                    .toList();
+    
             model.addAttribute("perfil", perfil);
+            model.addAttribute("tecnologiasUsuario", tecnologiasOrdenadas);
+    
             return "UI/ownProfile/ownProfile";
         }
     
+        // =========================
+        // FALLBACK
+        // =========================
         return "redirect:/login";
     }
 

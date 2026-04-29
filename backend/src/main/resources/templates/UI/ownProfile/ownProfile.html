@@ -101,10 +101,13 @@
                         </div>
                 
                         <!-- CARRUSEL IMÁGENES -->
-                        <div class="carousel-proyecto" th:attr="data-id=${p.id}">
+                        <div class="carousel-proyecto"
+                                th:if="${p.imagenes != null and !p.imagenes.isEmpty()}"
+                                th:attr="data-id=${p.id}">
+                                
                             <img th:each="img : ${p.imagenes}"
-                                 th:src="${img}"
-                                 class="carousel-img">
+                                    th:src="${img}"
+                                    class="carousel-img">
                         </div>
                 
                         <!-- TECNOLOGÍAS -->

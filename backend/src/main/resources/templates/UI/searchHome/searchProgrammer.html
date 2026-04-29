@@ -47,38 +47,6 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-
-        .contador-resultados {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin: 20px 0 30px 0;
-            color: rgba(0, 243, 255, 0.8);
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .contador-resultados .linea-neon {
-            flex-grow: 1;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(0, 243, 255, 0.5), transparent);
-        }
-
-        .contador-resultados .texto-contador {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: rgba(0, 243, 255, 0.1);
-            padding: 5px 15px;
-            border-radius: 4px;
-            border-left: 3px solid #00f3ff;
-        }
-
-        .contador-resultados .numero {
-            color: #fff;
-            font-weight: bold;
-            text-shadow: 0 0 5px #00f3ff;
-        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -129,18 +97,20 @@
                 th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'">
             </h2>
             
-            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !developers.empty}" class="contador-resultados">
-                <div class="texto-contador">
-                    Perfiles encontrados: <span class="numero" th:text="${developers.size()}">0</span>
+            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !developers.empty}" class="contador-resultados-azul">
+                <div class="contenedor-texto-contador">
+                    <span class="texto-etiqueta">PROGRAMADORES ENCONTRADOS:</span>
+                    <div class="caja-numero">
+                        <span class="numero" th:text="${developers.size()}">0</span>
+                    </div>
                 </div>
-                <div class="linea-neon"></div>
             </div>
 
             <div th:if="${developers.empty}" class="no-resultados-container">
                 <i class="fas fa-user-slash"></i>
                 <p th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} 
-                           ? 'No se ha encontrado a nadie que coincida con tu búsqueda' 
-                           : 'No se han encontrado perfiles destacados'"></p>
+                            ? 'No se ha encontrado a nadie que coincida con tu búsqueda' 
+                            : 'No se han encontrado perfiles destacados'"></p>
             </div>
 
             <div th:unless="${developers.empty}" 
@@ -156,7 +126,7 @@
                         
                         <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
                              th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
-                                      esLarga=${#strings.length(fullBio) > 60}">
+                                     esLarga=${#strings.length(fullBio) > 60}">
                             
                             <div class="contenido-perfil">
                                 <img th:src="${developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
@@ -192,7 +162,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 

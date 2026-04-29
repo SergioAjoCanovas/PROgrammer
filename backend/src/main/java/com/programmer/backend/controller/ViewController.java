@@ -3,6 +3,7 @@ package com.programmer.backend.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.programmer.backend.domain.PerfilDesarrollador;
+import com.programmer.backend.domain.PerfilEmpresa;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,9 @@ public class ViewController {
         return "UI/viewprojectreviews/viewprojectreviews";
     }
 
+   
+   
+
     // =========================
     // BÚSQUEDA PROGRAMADORES
     // =========================
@@ -118,28 +122,28 @@ public class ViewController {
     }
 
     // =========================
-    // BÚSQUEDA EMPRESAS (CORREGIDO)
+    // BÚSQUEDA EMPRESAS (ACTUALIZADO)
     // =========================
-    @GetMapping("/searchCompanies") 
+   @GetMapping("/searchCompanies") 
     public String searchCompanies(Model model) {
-        // IMPORTANTE: Inicializamos las listas para que Thymeleaf no de Error 500
-        // Si tienes un método en searchService para empresas, úsalo aquí
-        model.addAttribute("companies", new ArrayList<>()); 
+        // CAMBIO: Ahora usamos el servicio real
+        model.addAttribute("companies", searchService.getFeaturedCompanies()); 
         model.addAttribute("searchQuery", "");
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies());
+        model.addAttribute("selectedTechIds", new ArrayList<Long>());
         
-        // Ejemplo si tuvieras el servicio:
-        // model.addAttribute("companies", searchService.getFeaturedCompanies());
-
         return "UI/searchHome/searchCompanies";
     }
 
     @GetMapping("/searchCompanies/search")
-    public String searchCompaniesSearch(@RequestParam(value = "query", required = false) String query, 
-                                       Model model) {
+    public String searchCompaniesSearch(@RequestParam(value = "query", required = false) String query,
+                                        @RequestParam(value = "tech", required = false) List<Long> techIds,
+                                    Model model) {
         
-        // Aquí realizarías la búsqueda real. Por ahora pasamos lista vacía para pruebas
-        model.addAttribute("companies", new ArrayList<>()); 
+        model.addAttribute("companies", searchService.searchCompanies(query)); 
         model.addAttribute("searchQuery", query);
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies()); 
+        model.addAttribute("selectedTechIds", techIds != null ? techIds : new ArrayList<Long>());
         
         return "UI/searchHome/searchCompanies";
     }

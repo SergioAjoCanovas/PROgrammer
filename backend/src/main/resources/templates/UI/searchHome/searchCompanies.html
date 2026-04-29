@@ -102,8 +102,15 @@
                         <button type="button" class="btn-control" id="deselectAll">Deseleccionar Todos</button>
                     </div>
                     <div class="grid-checkboxes">
-                        <label th:each="tech : ${allTechnologies}" class="item-tech" th:classappend="${selectedTechIds != null and selectedTechIds.contains(tech.id)} ? 'selected' : ''">
-                            <input type="checkbox" name="tech" th:value="${tech.id}" th:checked="${selectedTechIds != null and selectedTechIds.contains(tech.id)}">
+                        <label th:each="tech : ${allTechnologies}" 
+                               class="item-tech" 
+                               th:classappend="${selectedTechIds != null and selectedTechIds.contains(tech.id)} ? 'selected' : ''">
+                            
+                            <input type="checkbox" name="tech" 
+                                   th:value="${tech.id}" 
+                                   th:checked="${selectedTechIds != null and selectedTechIds.contains(tech.id)}"
+                                   style="display: none;">
+                            
                             <span th:text="${tech.nombre}"></span>
                             <div class="tick-minimalista">
                                 <i class="fas fa-check"></i>
@@ -190,6 +197,7 @@
             });
         }
 
+        // Selección individual
         document.querySelectorAll('.item-tech').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -200,6 +208,7 @@
             });
         });
 
+        // Botón Seleccionar Todos
         btnSelectAll?.addEventListener('click', () => {
             document.querySelectorAll('.item-tech').forEach(item => {
                 item.querySelector('input').checked = true;
@@ -208,6 +217,7 @@
             actualizarBotones();
         });
 
+        // Botón Deseleccionar Todos
         btnDeselectAll?.addEventListener('click', () => {
             document.querySelectorAll('.item-tech').forEach(item => {
                 item.querySelector('input').checked = false;
@@ -223,10 +233,9 @@
             btnDeselectAll?.classList.toggle('btn-active', check === 0);
         }
 
-        // Lógica Carrusel adadadad
+        // Lógica Carrusel
         const track = document.getElementById('track');
         let index = 0;
-        let autoPlayInterval;
 
         function actualizarCarrusel() {
             if(!track) return;
@@ -236,17 +245,23 @@
             const anchoTarjeta = tarjetas[0].offsetWidth + gap;
             const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
             const maxIndex = Math.max(0, tarjetas.length - visibleCards);
+            
             if (index > maxIndex) index = 0;
             if (index < 0) index = maxIndex;
+            
             track.style.transform = `translateX(${-index * anchoTarjeta}px)`;
         }
 
-        function moverCarrusel(dir) { index += dir; actualizarCarrusel(); }
+        function moverCarrusel(dir) { 
+            index += dir; 
+            actualizarCarrusel(); 
+        }
 
         window.addEventListener('resize', actualizarCarrusel);
         window.addEventListener('load', () => {
             actualizarCarrusel();
             actualizarBotones();
+            // Marcar enlace activo en el header
             const links = document.querySelectorAll('header a');
             links.forEach(l => {
                 if (l.getAttribute('href')?.includes('searchCompanies')) l.classList.add('activo');

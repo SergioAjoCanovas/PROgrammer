@@ -1,9 +1,11 @@
 package com.programmer.backend.service;
 
 import com.programmer.backend.domain.PerfilDesarrollador;
+import com.programmer.backend.domain.PerfilEmpresa;
 import com.programmer.backend.domain.Tecnologia;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.PerfilDesarrolladorRepository;
+import com.programmer.backend.repository.PerfilEmpresaRepository;
 import com.programmer.backend.repository.TecnologiaRepository;
 import com.programmer.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,5 +124,38 @@ public class SearchService {
 
     public List<Tecnologia> getAllTechnologies() {
         return tecnologiaRepository.findAll();
+    }
+
+
+        
+    @Autowired
+    private PerfilEmpresaRepository perfilEmpresaRepository;
+
+    // Método para las empresas destacadas (el carrusel inicial)
+    public List<PerfilEmpresa> getFeaturedCompanies() {
+        List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
+        return companies.stream()
+                .limit(10)
+                .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
+    // Método para la búsqueda filtrada
+    public List<PerfilEmpresa> searchCompanies(String query) {
+        List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
+        return companies.stream()
+                .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(perfil -> {
+                    if (query == null || query.trim().isEmpty()) return true;
+                    String q = query.toLowerCase().trim();
+                    // Busca coincidencia en el nombre de usuario o en el sector
+                    return perfil.getUsuario().getUsername().toLowerCase().contains(q) ||
+                        (perfil.getSector() != null && perfil.getSector().toLowerCase().contains(q));
+                })
+                .collect(Collectors.toList());
     }
 }

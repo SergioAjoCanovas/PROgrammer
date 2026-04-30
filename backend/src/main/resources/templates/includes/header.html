@@ -105,11 +105,13 @@
 
         <a href="/publishOffer"
            class="icono-nav"
-           th:if="${usuarioHeader != null and usuarioHeader.rol.nombre == 'COMPANY'}"
+           th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'COMPANY' or usuarioHeader.rol.nombre == '3' or usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}"
            id="nav-publicar-oferta">
             <i class="fas fa-plus-circle"></i>
             <span class="texto-icono">Publicar</span>
         </a>
+
+
 
         <a href="/chats" class="icono-nav">
             <i class="fas fa-comment"></i>
@@ -141,6 +143,14 @@
         <a href="/menu" class="icono-nav">
             <i class="fas fa-th"></i>
             <span class="texto-icono">Menú</span>
+        </a>
+
+        <a href="/adminPanel" 
+           class="icono-nav" 
+           th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}" 
+           id="nav-admin">
+            <i class="fas fa-shield-alt"></i>
+            <span class="texto-icono">Admin</span>
         </a>
 
     </nav>
@@ -228,6 +238,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const path = window.location.pathname;
     if (path === '/main') {
         document.getElementById('nav-inicio')?.classList.add('activo-btn');
+    } else if (path.startsWith('/adminPanel')) {
+        document.getElementById('nav-admin')?.classList.add('activo-btn');
     }
 });
 
@@ -245,6 +257,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (rol && btnPublicar) {
         const r = String(rol).trim().toUpperCase();
         btnPublicar.style.display = (r === 'COMPANY' || r === '3') ? 'flex' : 'none';
+    }
+
+    const btnAdmin = document.getElementById('nav-admin');
+    if (rol && btnAdmin) {
+        const r = String(rol).trim().toUpperCase();
+        if (r === 'ADMIN' || r === '1') {
+            btnAdmin.style.setProperty('display', 'flex', 'important');
+        } else {
+            btnAdmin.style.setProperty('display', 'none', 'important');
+        }
     }
 
     const contenedorInfo = document.getElementById('info-usuario');

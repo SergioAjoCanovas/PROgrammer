@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* Resaltado neón para la navegación activa */
         .activo, 
         header .nav-enlaces a.activo i, 
         header .nav-enlaces a.activo span {
@@ -23,128 +22,172 @@
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
-    <div th:replace="~{includes/header :: header}"></div>
+<div th:replace="~{includes/header :: header}"></div>
 
-    <main class="contenedor-principal">
-        <aside class="columna-perfil">
-            <div class="tarjeta-perfil tarjeta-neon-estatica">
-                <div class="cabecera-tarjeta">
-                    <div class="foto-perfil-contenedor">
-                        <div class="circulo-foto"></div>
-                        <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+<main class="contenedor-principal">
+
+    <!-- ========================= -->
+    <!-- PERFIL AUTOR -->
+    <!-- ========================= -->
+    <aside class="columna-perfil">
+        <div class="tarjeta-perfil tarjeta-neon-estatica">
+            <div class="cabecera-tarjeta">
+                <div class="foto-perfil-contenedor">
+                    <div class="circulo-foto">
+                        <img th:if="${autor.fotoPerfil != null}" 
+                             th:src="${autor.fotoPerfil}" 
+                             style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
                     </div>
-                    <h2 class="nombre-usuario">David Alcázar</h2>
+                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
                 </div>
 
-                <div class="cuerpo-tarjeta">
-                    <ul class="redes-sociales">
-                        <li><i class="fab fa-instagram"></i> Instagram</li>
-                        <li><i class="fab fa-twitter"></i> Twitter</li>
-                        <li><i class="fas fa-phone"></i> Teléfono</li>
-                    </ul>
-                    <button class="btn-accion-neon">CURRICULUM</button>
-                </div>
+                <h2 class="nombre-usuario" th:text="${autor.username}">Autor</h2>
             </div>
-            
-            <div class="tarjeta-resenas-izq tarjeta-neon-estatica">
-                <div class="cabecera-tarjeta">
-                    <h3>RESEÑAS</h3>
-                </div>
-                <div class="cuerpo-tarjeta">
-                    <textarea class="input-resena" placeholder="Escribe tu reseña aquí..."></textarea>
-                    <button class="btn-accion-neon" onclick="window.location.href='/newreview'">Añadir reseña</button>
-                </div>
-            </div>
-        </aside>
 
-        <section class="seccion-derecha-dinamica">
-            <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
-                <div class="cabecera-proyecto">
-                    <h2>Nombre del Proyecto</h2>
-                    <a href="/profileView" class="boton-volver-circular" title="Volver al Perfil">
-                        <i class="fas fa-undo"></i>
+            <div class="cuerpo-tarjeta">
+                <ul class="redes-sociales">
+                    <li th:if="${autor.github}">
+                        <i class="fab fa-github"></i> GitHub
+                    </li>
+                    <li th:if="${autor.linkedin}">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </li>
+                </ul>
+
+                <a th:if="${autor.curriculum != null}" 
+                   th:href="${autor.curriculum}" 
+                   target="_blank"
+                   class="btn-accion-neon">
+                    CURRICULUM
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ========================= -->
+    <!-- PROYECTO -->
+    <!-- ========================= -->
+    <section class="seccion-derecha-dinamica">
+        <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
+
+            <!-- CABECERA -->
+            <div class="cabecera-proyecto">
+                <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
+
+                <!-- 🔙 VOLVER -->
+                <a th:href="@{/ownProfile}" 
+                    class="boton-volver-circular"
+                    title="Volver al Perfil">
+                    <i class="fas fa-undo"></i>
+                </a>
+            </div>
+
+            <div class="contenedor-detalles-proyecto">
+
+                <!-- AUTOR -->
+                <p class="autor-texto">
+                    <strong>Autor:</strong> 
+                    <span th:text="${autor.username}">Autor</span>
+                </p>
+
+                <!-- VALIDADO -->
+                <div class="fila-botones-neon">
+
+                    <span th:if="${proyecto.estaValidado}" class="badge-validado">
+                        <i class="fas fa-check-circle"></i> Validado
+                    </span>
+
+                    <span th:unless="${proyecto.estaValidado}" class="badge no-validado">
+                        <i class="fas fa-times-circle"></i> No validado
+                    </span>
+
+                    <a href="/newprojectreview" class="btn-accion-neon">
+                        <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
                     </a>
+
+                    <a href="/viewprojectreviews" class="btn-accion-neon">
+                        <i class="fas fa-comments"></i> VER RESEÑAS
+                    </a>
+
+                    <button class="btn-accion-neon btn-brillante">
+                        <i class="fas fa-download"></i> DESCARGAR
+                    </button>
                 </div>
 
-                <div class="contenedor-detalles-proyecto">
-                    <p class="autor-texto"><strong>Autor:</strong> David Alcázar</p>
-                    
-                    <div class="fila-botones-neon">
-                        <span class="badge-validado">
-                            <i class="fas fa-check-circle"></i> Validado
-                        </span>
-                    
-                        <a href="/newprojectreview" class="btn-accion-neon">
-                            <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
-                        </a>
-                    
-                        <a href="/viewprojectreviews" class="btn-accion-neon">
-                            <i class="fas fa-comments"></i> VER RESEÑAS
-                        </a>
-                    
-                        <button class="btn-accion-neon btn-brillante">
-                            <i class="fas fa-download"></i> DESCARGAR
-                        </button>
-                    </div>
+                <!-- TECNOLOGÍAS -->
+                <div class="fila-botones-neon" th:if="${#lists.size(proyecto.tecnologias) > 0}">
+                    <span th:each="tec : ${proyecto.tecnologias}" class="badge">
+                        <i th:class="${tec.icono}"></i>
+                        <span th:text="${tec.nombre}"></span>
+                    </span>
+                </div>
 
-                    <div class="galeria-capturas">
-                        <div class="marco-captura"><img src="/Img/stock/ejemplo1.jpg" alt="Captura 1"></div>
-                        <div class="marco-captura"><img src="/Img/stock/ejemplo2.jpg" alt="Captura 2"></div>
-                        <div class="marco-captura"><img src="/Img/stock/ejemplo3.jpg" alt="Captura 3"></div>
+                <!-- GALERÍA -->
+                <div class="galeria-capturas">
+                    <div class="marco-captura" th:each="img : ${imagenes}">
+                        <img th:src="@{${img}}" alt="Captura">
                     </div>
-                    
-                    <div class="bloque-texto-informativo">
-                        <h3 class="titulo-seccion">Descripción</h3>
-                        <p class="texto-parrafo">Este proyecto consiste en una plataforma para conectar desarrolladores y fomentar el aprendizaje colaborativo...</p>
-                        
-                        <h3 class="titulo-seccion">Repositorio</h3>
-                        <a href="#" class="enlace-repositorio" target="_blank">
-                            <i class="fab fa-github"></i> https://github.com/proyecto
-                        </a>
-                    </div>
+                </div>
+
+                <!-- TEXTO -->
+                <div class="bloque-texto-informativo">
+
+                    <h3 class="titulo-seccion">Descripción</h3>
+                    <p class="texto-parrafo" th:text="${proyecto.descripcion}">
+                        Descripción
+                    </p>
+
+                    <h3 class="titulo-seccion">Repositorio</h3>
+                    <a th:href="${proyecto.repoUrl}" 
+                       class="enlace-repositorio" 
+                       target="_blank">
+                        <i class="fab fa-github"></i>
+                        <span th:text="${proyecto.repoUrl}">Repo</span>
+                    </a>
+
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
-    <div id="modal-imagen" class="modal">
-        <img class="contenido-modal" id="img-ampliada">
-        <div id="caption-modal"></div>
-    </div>
+<!-- MODAL -->
+<div id="modal-imagen" class="modal">
+    <img class="contenido-modal" id="img-ampliada">
+    <div id="caption-modal"></div>
+</div>
 
-    <div th:replace="~{includes/footer :: footer}"></div>
+<div th:replace="~{includes/footer :: footer}"></div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Inicializar datos del usuario logueado en el header
-            inicializarHeader();
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
 
-            // Lógica del Modal para las capturas del proyecto
-            $(".marco-captura img").on("click", function() {
-                $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
-                $("#img-ampliada").attr("src", $(this).attr("src"));
-                $("#caption-modal").text($(this).attr("alt"));
-                $("body").css("overflow", "hidden"); 
-            });
+        inicializarHeader();
 
-            $("#modal-imagen").on("click", function(e) {
-                if(e.target !== document.getElementById("img-ampliada")) {
-                    $(this).fadeOut(300, function() {
-                        $("body").css("overflow", "auto");
-                    });
-                }
-            });
+        $(".marco-captura img").on("click", function() {
+            $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
+            $("#img-ampliada").attr("src", $(this).attr("src"));
+            $("#caption-modal").text($(this).attr("alt"));
+            $("body").css("overflow", "hidden"); 
         });
 
-        function inicializarHeader() {
-            const navPerfil = document.getElementById('nav-perfil');
-
-            // Iluminar el icono de perfil (indicando que estamos en la rama de navegación del usuario)
-            if (navPerfil) {
-                navPerfil.classList.add('activo');
+        $("#modal-imagen").on("click", function(e) {
+            if(e.target !== document.getElementById("img-ampliada")) {
+                $(this).fadeOut(300, function() {
+                    $("body").css("overflow", "auto");
+                });
             }
+        });
+    });
+
+    function inicializarHeader() {
+        const navPerfil = document.getElementById('nav-perfil');
+        if (navPerfil) {
+            navPerfil.classList.add('activo');
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>

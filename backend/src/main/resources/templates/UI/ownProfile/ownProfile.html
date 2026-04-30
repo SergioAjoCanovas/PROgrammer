@@ -90,7 +90,9 @@
                     </div>
                 
                     <!-- PROYECTOS (2 ÚLTIMOS) -->
-                    <div th:each="p : ${ultimosProyectos}" class="tarjeta-mini-proyecto proyecto-card">
+                    <div th:each="p : ${ultimosProyectos}"
+                        class="tarjeta-mini-proyecto proyecto-card"
+                        th:attr="data-id=${p.id}">
                 
                         <!-- NOMBRE -->
                         <h3 th:text="${p.nombre}">Nombre proyecto</h3>
@@ -710,6 +712,21 @@ function toggleTechs(id) {
         extra.style.flexWrap = "wrap";
     }
 }
+
+document.addEventListener("click", function (e) {
+    const card = e.target.closest(".proyecto-card");
+    if (!card) return;
+
+    // Evita que clics en botones internos disparen la navegación
+    if (e.target.closest("button, a, .tag-tech, .tag-mas, .tech-extra-proyecto")) {
+        return;
+    }
+
+    const id = card.dataset.id;
+    if (id) {
+        window.location.href = "/proyectos/proyecto/" + id;
+    }
+});
     </script>
 </body>
 </html>

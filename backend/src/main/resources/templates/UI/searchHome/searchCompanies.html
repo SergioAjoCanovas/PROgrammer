@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Buscar Empresas</title>
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/homePage_styles/searchCompanies.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body class="body-layout fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <main class="contenedor-busqueda">
+        <section class="seccion-buscador-central">
+            <h1 class="titulo-neon">CONECTA CON <span class="resaltado">EMPRESAS</span></h1>
+            
+            <form action="/searchCompanies/search" method="get" class="caja-busqueda-neon" id="searchForm" autocomplete="off">
+                <div class="input-wrapper">
+                    <button type="button" class="funnel-icon" id="funnelBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <input type="text" name="query" placeholder="Busca por sector o nombre..." th:value="${searchQuery}">
+                    <button type="submit" class="btn-buscar-neon">
+                        <i class="fas fa-search"></i> BUSCAR
+                    </button>
+                </div>
+
+                <div class="tech-dropdown" id="techDropdown">
+                    <div class="controles-globales">
+                        <button type="button" class="btn-control" id="selectAll">Seleccionar Todos</button>
+                        <button type="button" class="btn-control" id="deselectAll">Deseleccionar Todos</button>
+                    </div>
+                    <div class="grid-checkboxes">
+                        <label th:each="tech : ${allTechnologies}" 
+                               class="item-tech" 
+                               th:classappend="${selectedTechIds != null and selectedTechIds.contains(tech.id)} ? 'selected' : ''">
+                            <input type="checkbox" name="tech" 
+                                   th:value="${tech.id}" 
+                                   th:checked="${selectedTechIds != null and selectedTechIds.contains(tech.id)}">
+                            <span th:text="${tech.nombre}"></span>
+                            <div class="tick-minimalista"><i class="fas fa-check"></i></div>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="seccion-carrusel">
+            <h2 class="subtitulo-neon" 
+                th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Empresas Destacadas'">
+            </h2>
+            
+            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !companies.empty}" class="contador-resultados-azul">
+                <div class="texto-contador">
+                    Empresas encontradas: <span class="numero" th:text="${companies.size()}">0</span>
+                </div>
+                <div class="linea-neon-azul"></div>
+            </div>
+
+            <div th:if="${companies.empty}" class="no-resultados-container-azul">
+                <div class="no-resultados-box-azul">
+                    <i class="fas fa-city icon-city"></i>
+                    <i class="fas fa-ban icono-overlay-rojo"></i>
+                </div>
+                <p th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} 
+                            ? 'No se ha encontrado ninguna empresa que coincida con tu búsqueda' 
+                            : 'No hay empresas destacadas disponibles'"></p>
+                <div class="linea-decorativa-azul"></div>
+            </div>
+
+            <div th:unless="${companies.empty}" 
+                 th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados-empresas'">
+                
+                <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav prev" onclick="moverCarrusel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-contenedor' : ''">
+                    <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
+                         th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-inner-empresas'">
+                        
+                        <div class="tarjeta-perfil-neon" th:each="company : ${companies}"
+                             th:with="fullBio=${company.usuario.biografia != null and !#strings.isEmpty(company.usuario.biografia.trim()) ? company.usuario.biografia : 'Sin descripción'},
+                                     esLarga=${#strings.length(fullBio) > 60}">
+                            
+                            <div class="contenido-perfil">
+                                <div class="foto-perfil-container">
+                                    <img th:src="${company.usuario.fotoPerfil != null ? company.usuario.fotoPerfil : '/Img/stock/default-company.png'}" 
+                                         class="foto-perfil-img" alt="Logo">
+                                </div>
+                                <h3 th:text="${company.usuario.username}"></h3>
+                                <p th:text="${company.sector != null ? company.sector : 'Sector Tecnológico'}" class="sector-texto"></p>
+                                
+                                <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
+                                     th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
+                                    <p th:text="${esLarga ? #strings.substring(fullBio,0,60) + '...' : fullBio}"></p>
+                                </div>
+
+                                <div class="tags-container">
+                                    <div class="tags">
+                                        <span th:each="tech, iterStat : ${company.tecnologias}" th:if="${iterStat.index < 3}" th:text="${tech.nombre}"></span>
+                                    </div>
+                                    <i th:if="${company.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
+                                </div>
+                                
+                                <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${company.usuario.id}|">Ver Perfil</button>
+                            </div>
+
+                            <div class="vista-todas-techs">
+                                <i class="fas fa-times close-overlay" onclick="toggleTechExpansion(this)"></i>
+                                <h4 class="titulo-overlay">Tecnologías</h4>
+                                <div class="grid-techs-3">
+                                    <span th:each="tech : ${company.tecnologias}" th:text="${tech.nombre}"></span>
+                                </div>
+                            </div>
+
+                            <div class="vista-bio-completa" th:if="${esLarga}">
+                                <i class="fas fa-times close-overlay" onclick="toggleBioExpansion(this)"></i>
+                                <h4 class="titulo-overlay">Sobre nosotros</h4>
+                                <div class="caja-bio-full">
+                                    <p th:text="${fullBio}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav next" onclick="moverCarrusel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script>
+        function inicializarHeader() {
+            const links = document.querySelectorAll('header a');
+            links.forEach(l => {
+                if (l.getAttribute('href')?.includes('searchCompanies')) l.classList.add('activo');
+            });
+        }
+
+        const funnelBtn = document.getElementById('funnelBtn');
+        const techDropdown = document.getElementById('techDropdown');
+        if(funnelBtn) {
+            funnelBtn.addEventListener('click', () => {
+                techDropdown.classList.toggle('show');
+                funnelBtn.classList.toggle('active');
+            });
+        }
+
+        document.querySelectorAll('.item-tech').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+                actualizarBotonesGlobales();
+            });
+        });
+
+        const btnSelectAll = document.getElementById('selectAll');
+        const btnDeselectAll = document.getElementById('deselectAll');
+
+        function actualizarBotonesGlobales() {
+            const total = document.querySelectorAll('.item-tech input').length;
+            const seleccionados = document.querySelectorAll('.item-tech input:checked').length;
+            btnSelectAll?.classList.toggle('btn-active', seleccionados === total && total > 0);
+            btnDeselectAll?.classList.toggle('btn-active', seleccionados === 0);
+        }
+
+        btnSelectAll?.addEventListener('click', () => {
+            document.querySelectorAll('.item-tech').forEach(item => {
+                item.querySelector('input').checked = true;
+                item.classList.add('selected');
+            });
+            actualizarBotonesGlobales();
+        });
+
+        btnDeselectAll?.addEventListener('click', () => {
+            document.querySelectorAll('.item-tech').forEach(item => {
+                item.querySelector('input').checked = false;
+                item.classList.remove('selected');
+            });
+            actualizarBotonesGlobales();
+        });
+
+        function toggleTechExpansion(element) {
+            const tarjeta = element.closest('.tarjeta-perfil-neon');
+            tarjeta.classList.toggle('tech-expanded');
+        }
+
+        function toggleBioExpansion(element) {
+            const tarjeta = element.closest('.tarjeta-perfil-neon');
+            tarjeta.classList.toggle('bio-expanded');
+        }
+
+        const track = document.getElementById('track');
+        let index = 0;
+        const cardStep = 310;
+
+        function actualizarCarrusel() {
+            if(!track) return;
+            const tarjetas = track.querySelectorAll('.tarjeta-perfil-neon');
+            if (tarjetas.length === 0) return;
+            const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
+            const maxIndex = Math.max(0, tarjetas.length - visibleCards);
+            if (index > maxIndex) index = 0;
+            if (index < 0) index = maxIndex;
+            track.style.transform = `translateX(${-index * cardStep}px)`;
+        }
+
+        function moverCarrusel(dir) { 
+            index += dir; 
+            actualizarCarrusel(); 
+        }
+
+        window.addEventListener('resize', actualizarCarrusel);
+        window.addEventListener('load', () => {
+            inicializarHeader();
+            actualizarCarrusel();
+            actualizarBotonesGlobales();
+        });
+    </script>
+</body>
+</html>

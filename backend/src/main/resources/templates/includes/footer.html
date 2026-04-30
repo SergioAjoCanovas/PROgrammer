@@ -19,9 +19,9 @@
             </div>
 
             <div class="footer-seccion footer-links">
-                <a th:href="@{/nosotros}"> Sobre Nosotros</a>
-                <a th:href="@{/privacidad}">Políticas de Privacidad</a>
-                <a th:href="@{/terminos}">Términos y Condiciones</a>
+                <a th:href="@{/nosotros}" id="footer-nosotros"> Sobre Nosotros</a>
+                <a th:href="@{/privacidad}" id="footer-privacidad">Políticas de Privacidad</a>
+                <a th:href="@{/terminos}" id="footer-terminos">Términos y Condiciones</a>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=programmer.soporte@gmail.com&su=Soporte%20ProGrammer&body=Hola%20equipo%20de%20ProGrammer," 
                    target="_blank">
                     Contáctanos
@@ -38,6 +38,19 @@
 
     </footer>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const path = window.location.pathname;
+            
+            if (path.includes('/nosotros')) {
+                document.getElementById('footer-nosotros')?.classList.add('activo-footer');
+            } else if (path.includes('/privacidad')) {
+                document.getElementById('footer-privacidad')?.classList.add('activo-footer');
+            } else if (path.includes('/terminos')) {
+                document.getElementById('footer-terminos')?.classList.add('activo-footer');
+            }
+        });
+    </script>
 </div>
 
 </html>

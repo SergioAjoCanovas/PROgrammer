@@ -1,85 +1,113 @@
 package com.programmer.backend.service;
 
-import com.programmer.backend.domain.Usuario;
-import com.programmer.backend.repository.UsuarioRepository;
+import com.programmer.backend.domain.*;
+import com.programmer.backend.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.UUID;
 
 @Service
 public class RegistroService {
 
-    // ÚNICAMENTE llamamos al repositorio de Usuario
     private final UsuarioRepository usuarioRepository;
+    private final PerfilDesarrolladorRepository perfilDesarrolladorRepository;
+    private final PerfilEmpresaRepository perfilEmpresaRepository;
 
-    public RegistroService(UsuarioRepository usuarioRepository) {
+    public RegistroService(UsuarioRepository usuarioRepository,
+                           PerfilDesarrolladorRepository perfilDesarrolladorRepository,
+                           PerfilEmpresaRepository perfilEmpresaRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.perfilDesarrolladorRepository = perfilDesarrolladorRepository;
+        this.perfilEmpresaRepository = perfilEmpresaRepository;
     }
 
     // --------------------------------------------------------
-    // MÉTODO 1: GUARDAR EL USUARIO EN LA BASE DE DATOS
+    // 1. REGISTRO + CREACIÓN DE PERFIL SEGÚN ROL
     // --------------------------------------------------------
     @Transactional
     public Usuario registrarUsuario(Usuario usuarioNuevo) {
-        // Guarda el usuario en tu única tabla y punto final
-        return usuarioRepository.save(usuarioNuevo);
+
+        Usuario usuarioGuardado = usuarioRepository.save(usuarioNuevo);
+
+        Rol rol = usuarioGuardado.getRol();
+
+        if (rol != null && rol.getNombre() != null) {
+
+            String nombreRol = rol.getNombre().toLowerCase();
+
+            // =========================
+            // DESARROLLADOR
+            // =========================
+            if (nombreRol.equals("desarrollador")) {
+
+                PerfilDesarrollador perfil = new PerfilDesarrollador();
+                perfil.setUsuario(usuarioGuardado);
+
+                perfilDesarrolladorRepository.save(perfil);
+            }
+
+            // =========================
+            // EMPRESA
+            // =========================
+            if (nombreRol.equals("empresa")) {
+
+                PerfilEmpresa perfil = new PerfilEmpresa();
+                perfil.setUsuario(usuarioGuardado);
+
+                perfilEmpresaRepository.save(perfil);
+            }
+        }
+
+        return usuarioGuardado;
     }
 
     // --------------------------------------------------------
-    // MÉTODO 2: GUARDAR LA FOTO EN LA CARPETA STATIC
+    // 2. FOTO PERFIL
     // --------------------------------------------------------
     public String guardarFoto(MultipartFile archivo) throws IOException {
+
         if (archivo == null || archivo.isEmpty()) {
             return null;
         }
 
-        // 1. Generamos el nombre único para la imagen
-        String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename();
-        
-        // 2. Ruta RELATIVA (Quitamos el System.getProperty)
-        // Java buscará esta ruta dentro de la carpeta donde se está ejecutando el proyecto
+        String nombreArchivo = UUID.randomUUID() + "_" + archivo.getOriginalFilename();
+
         Path directorioPath = Paths.get(System.getProperty("user.dir"), "uploads", "perfiles");
-        
-        // Creamos la carpeta si no existe (esto evita errores de "ruta no encontrada")
+
         if (!Files.exists(directorioPath)) {
             Files.createDirectories(directorioPath);
         }
-        
-        // Unimos la carpeta con el nombre del archivo
+
         Path rutaFinal = directorioPath.resolve(nombreArchivo);
-        
-        // 3. Guardar físicamente el archivo
+
         Files.copy(archivo.getInputStream(), rutaFinal);
-        
-        // 4. Retornamos la ruta que se guardará en el String de la Base de Datos
+
         return "/uploads/perfiles/" + nombreArchivo;
     }
 
     // --------------------------------------------------------
-    // MÉTODO 3: GUARDAR CV
+    // 3. CV
     // --------------------------------------------------------
     public String guardarCV(MultipartFile file) throws IOException {
 
         String carpeta = "uploads/cv/";
-    
+
         File directorio = new File(carpeta);
         if (!directorio.exists()) {
             directorio.mkdirs();
         }
-    
+
         String nombreArchivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-    
+
         Path ruta = Paths.get(carpeta + nombreArchivo);
-    
+
         Files.write(ruta, file.getBytes());
-    
-        // Esto es lo que usarás en el frontend
+
         return "/" + carpeta + nombreArchivo;
     }
 }

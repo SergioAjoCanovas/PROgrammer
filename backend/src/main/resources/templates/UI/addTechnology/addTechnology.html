@@ -4,85 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurar Stack - PROgrammer</title>
+
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/addTechnology_styles/addTechnology_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="fondo-oscuro-neon cuerpo-flexible">
 
-    <div th:replace="~{includes/header :: header}"></div>
+<div th:replace="~{includes/header :: header}"></div>
 
-    <main class="contenedor-principal-stack">
-        <div class="vidrio-contenedor">
-            
-            <div class="cabecera-seccion-stack">
-                <h2><i class="fas fa-layer-group"></i> Configurar Stack Tecnológico</h2>
-                <a href="/ownProfile" class="boton-volver-stack" title="Cancelar">
-                    <i class="fas fa-times"></i>
-                </a>
+<main class="contenedor-principal-stack">
+    <div class="vidrio-contenedor">
+
+        <div class="cabecera-seccion-stack">
+            <h2><i class="fas fa-layer-group"></i> Configurar Stack Tecnológico</h2>
+            <a href="/ownProfile" class="boton-volver-stack" title="Cancelar">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+
+        <p class="subtitulo-stack">
+            Define tu arsenal técnico para destacar en la comunidad.
+        </p>
+
+        <form id="form-stack"
+              class="formulario-stack"
+              method="post"
+              th:action="@{/usuario/saveTechnologies}">
+
+            <fieldset class="grupo-tecnologico"
+                      th:each="entry : ${tecnologiasPorCategoria}">
+
+                <legend>
+                    <i class="fas fa-layer-group"></i>
+                    <span th:text="${entry.key}">Categoría</span>
+                </legend>
+
+                <div class="grid-checkboxes">
+
+                    <label class="item-tech"
+                           th:each="tech : ${entry.value}">
+
+                        <input type="checkbox"
+                        name="techIds"
+                        th:value="${tech.id}"
+                        th:checked="${techSeleccionadas.contains(tech.id)}">
+
+                        <div class="caja-diseno">
+
+                            <i th:class="${tech.icono}"></i>
+
+                            <span th:text="${tech.nombre}">Nombre</span>
+
+                            <div class="tick-minimalista"></div>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </fieldset>
+
+            <div class="contenedor-boton">
+                <button type="submit" class="boton-amarillo-solido">
+                    PUBLICAR TECNOLOGÍAS
+                </button>
             </div>
 
-            <p class="subtitulo-stack">Define tu arsenal técnico para destacar en la comunidad.</p>
+        </form>
 
-            <form id="form-stack" class="formulario-stack">
-                
-                <fieldset class="grupo-tecnologico">
-                    <legend><i class="fas fa-desktop"></i> Frontend Development</legend>
-                    <div class="grid-checkboxes">
-                        <label class="item-tech"><input type="checkbox" name="tech" value="html5"><div class="caja-diseno"><i class="fab fa-html5"></i><span>HTML5</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="css3"><div class="caja-diseno"><i class="fab fa-css3-alt"></i><span>CSS3</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="javascript"><div class="caja-diseno"><i class="fab fa-js"></i><span>JavaScript</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="react"><div class="caja-diseno"><i class="fab fa-react"></i><span>React</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="vue"><div class="caja-diseno"><i class="fab fa-vuejs"></i><span>Vue.js</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="angular"><div class="caja-diseno"><i class="fab fa-angular"></i><span>Angular</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="typescript"><div class="caja-diseno"><i class="fas fa-code"></i><span>TypeScript</span><div class="tick-minimalista"></div></div></label>
-                    </div>
-                </fieldset>
+    </div>
+</main>
 
-                <fieldset class="grupo-tecnologico">
-                    <legend><i class="fas fa-server"></i> Backend & Languages</legend>
-                    <div class="grid-checkboxes">
-                        <label class="item-tech"><input type="checkbox" name="tech" value="java"><div class="caja-diseno"><i class="fab fa-java"></i><span>Java</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="python"><div class="caja-diseno"><i class="fab fa-python"></i><span>Python</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="node"><div class="caja-diseno"><i class="fab fa-node-js"></i><span>Node.js</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="php"><div class="caja-diseno"><i class="fab fa-php"></i><span>PHP</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="csharp"><div class="caja-diseno"><i class="fas fa-hashtag"></i><span>C#</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="go"><div class="caja-diseno"><i class="fas fa-terminal"></i><span>Go</span><div class="tick-minimalista"></div></div></label>
-                    </div>
-                </fieldset>
-
-                <fieldset class="grupo-tecnologico">
-                    <legend><i class="fas fa-mobile-alt"></i> Mobile Development</legend>
-                    <div class="grid-checkboxes">
-                        <label class="item-tech"><input type="checkbox" name="tech" value="flutter"><div class="caja-diseno"><i class="fas fa-rocket"></i><span>Flutter</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="reactnative"><div class="caja-diseno"><i class="fab fa-react"></i><span>React Native</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="swift"><div class="caja-diseno"><i class="fab fa-apple"></i><span>Swift</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="kotlin"><div class="caja-diseno"><i class="fas fa-mobile"></i><span>Kotlin</span><div class="tick-minimalista"></div></div></label>
-                    </div>
-                </fieldset>
-
-                <fieldset class="grupo-tecnologico">
-                    <legend><i class="fas fa-database"></i> Database & Infrastructure</legend>
-                    <div class="grid-checkboxes">
-                        <label class="item-tech"><input type="checkbox" name="tech" value="mysql"><div class="caja-diseno"><i class="fas fa-database"></i><span>MySQL</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="postgresql"><div class="caja-diseno"><i class="fas fa-file-code"></i><span>PostgreSQL</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="mongodb"><div class="caja-diseno"><i class="fas fa-leaf"></i><span>MongoDB</span><div class="tick-minimalista"></div></div></label>
-                        <label class="item-tech"><input type="checkbox" name="tech" value="docker"><div class="caja-diseno"><i class="fab fa-docker"></i><span>Docker</span><div class="tick-minimalista"></div></div></label>
-                    </div>
-                </fieldset>
-
-                <div class="contenedor-boton">
-                    <button type="submit" class="boton-amarillo-solido">
-                        PUBLICAR TECNOLOGÍAS
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-
-    <div th:replace="~{includes/footer :: footer}"></div>
+<div th:replace="~{includes/footer :: footer}"></div>
 
 </body>
 </html>

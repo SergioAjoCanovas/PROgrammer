@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* IMPORTANTE: Usamos selectores más específicos para ganarle a otros estilos */
         .activo, 
         header .nav-enlaces a.activo i, 
         header .nav-enlaces a.activo span {
@@ -19,60 +18,156 @@
             text-shadow: 0 0 10px #FFCC00 !important;
             opacity: 1 !important;
         }
+
+        .no-resultados-container {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(0, 243, 255, 0.05);
+            margin: 20px 0;
+            width: 100%;
+        }
+
+        .no-resultados-container i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #ff003c; 
+            text-shadow: 0 0 10px #ff003c;
+        }
+
+        .no-resultados-container p {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
     
     <div th:replace="~{includes/header :: header}"></div>
 
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
     <main class="contenedor-busqueda">
         <section class="seccion-buscador-central">
             <h1 class="titulo-neon">CONECTA CON <span class="resaltado">PROGRAMADORES</span></h1>
-            <div class="caja-busqueda-neon">
-                <input type="text" placeholder="Busca por nombre, lenguaje o tecnología...">
-                <button class="btn-buscar-neon">
-                    <i class="fas fa-terminal"></i> BUSCAR
-                </button>
-            </div>
+            
+            <form action="/searchProgrammer/search" method="get" class="caja-busqueda-neon" autocomplete="off" id="searchForm">
+                <div class="input-wrapper">
+                    <button type="button" class="funnel-icon" id="funnelBtn">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <input type="text" name="query" placeholder="Pincha aquí para buscar programadores Ej: Alicia Fernandez" th:value="${searchQuery}" autocomplete="off" spellcheck="false">
+                    <button type="submit" class="btn-buscar-neon">
+                        <i class="fas fa-terminal"></i> BUSCAR
+                    </button>
+                </div>
+
+                <div class="tech-dropdown" id="techDropdown">
+                    <div class="controles-globales">
+                        <button type="button" class="btn-control" id="selectAll">Seleccionar Todos</button>
+                        <button type="button" class="btn-control" id="deselectAll">Deseleccionar Todos</button>
+                    </div>
+                    <div class="grid-checkboxes">
+                        <label th:each="tech : ${allTechnologies}" class="item-tech" th:classappend="${selectedTechIds != null and selectedTechIds.contains(tech.id)} ? 'selected' : ''">
+                            <input type="checkbox" name="tech" th:value="${tech.id}" th:checked="${selectedTechIds != null and selectedTechIds.contains(tech.id)}">
+                            <span th:text="${tech.nombre}"></span>
+                            <div class="tick-minimalista">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </form>
         </section>
 
         <section class="seccion-carrusel">
-            <h2 class="subtitulo-neon">Perfiles Destacados</h2>
-            <div class="carrusel-wrapper">
-                <button class="btn-nav prev" onclick="moverCarrusel(-1)"><i class="fas fa-chevron-left"></i></button>
-                <div class="carrusel-contenedor">
-                    <div class="carrusel-track" id="track">
-                        <div class="tarjeta-perfil-neon">
-                            <div class="foto-perfil-dummy"></div>
-                            <h3>David Alcázar</h3>
-                            <p>Full Stack Developer</p>
-                            <div class="tags"><span>Java</span><span>Python</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
-                        </div>
-                        <div class="tarjeta-perfil-neon">
-                            <div class="foto-perfil-dummy"></div>
-                            <h3>Cristian Escobar</h3>
-                            <p>UI/UX Designer</p>
-                            <div class="tags"><span>Figma</span><span>CSS3</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
-                        </div>
-                        <div class="tarjeta-perfil-neon">
-                            <div class="foto-perfil-dummy"></div>
-                            <h3>Sergio Ajo</h3>
-                            <p>Backend Engineer</p>
-                            <div class="tags"><span>Node.js</span><span>SQL</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
-                        </div>
-                        <div class="tarjeta-perfil-neon">
-                            <div class="foto-perfil-dummy"></div>
-                            <h3>Ana Felicia</h3>
-                            <p>Fronted Engineer</p>
-                            <div class="tags"><span>CSS</span><span>HTML</span></div>
-                            <button class="btn-perfil" onclick="window.location.href='/profileView'">Ver Perfil</button>
+            <h2 class="subtitulo-neon" 
+                th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'">
+            </h2>
+            
+            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !developers.empty}" class="contador-resultados-azul">
+                <div class="contenedor-texto-contador">
+                    <span class="texto-etiqueta">PROGRAMADORES ENCONTRADOS:</span>
+                    <div class="caja-numero">
+                        <span class="numero" th:text="${developers.size()}">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${developers.empty}" class="no-resultados-container">
+                <i class="fas fa-user-slash"></i>
+                <p th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} 
+                            ? 'No se ha encontrado a nadie que coincida con tu búsqueda' 
+                            : 'No se han encontrado perfiles destacados'"></p>
+            </div>
+
+            <div th:unless="${developers.empty}" 
+                 th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados'">
+                
+                <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav prev" onclick="moverCarrusel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-contenedor' : ''">
+                    <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
+                         th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-resultados-inner'">
+                        
+                        <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
+                             th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
+                                     esLarga=${#strings.length(fullBio) > 60}">
+                            
+                            <div class="contenido-perfil">
+                                <img th:src="${developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
+                                <h3 th:text="${developer.usuario.username}"></h3>
+                                
+                                <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
+                                     th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
+                                    <p th:text="${esLarga ? #strings.substring(fullBio,0,60) + '...' : fullBio}"></p>
+                                </div>
+                                
+                                <div class="tags-container">
+                                    <div class="tags">
+                                        <span th:each="tech, iterStat : ${developer.tecnologias}" th:if="${iterStat.index < 3}" th:text="${tech.nombre}"></span>
+                                    </div>
+                                    <i th:if="${developer.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
+                                </div>
+                                <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${developer.usuario.id}|">Ver Perfil</button>
+                            </div>
+
+                            <div class="vista-todas-techs">
+                                <i class="fas fa-times close-overlay" onclick="toggleTechExpansion(this)"></i>
+                                <h4 class="titulo-overlay">Tecnologías</h4>
+                                <div class="grid-techs-3">
+                                    <span th:each="tech : ${developer.tecnologias}" th:text="${tech.nombre}"></span>
+                                </div>
+                            </div>
+
+                            <div class="vista-bio-completa" th:if="${esLarga}">
+                                <i class="fas fa-times close-overlay" onclick="toggleBioExpansion(this)"></i>
+                                <h4 class="titulo-overlay">Sobre mí</h4>
+                                <div class="caja-bio-full">
+                                    <p th:text="${fullBio}"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn-nav next" onclick="moverCarrusel(1)"><i class="fas fa-chevron-right"></i></button>
+                
+                <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav next" onclick="moverCarrusel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </section>
     </main>
@@ -81,31 +176,84 @@
 
     <script>
     function inicializarHeader() {
-        const contenedor = document.getElementById('info-usuario');
-
-        // 2. ILUMINAR ICONO (DOBLE COMPROBACIÓN)
-        // Intento A: Por ID
         const navRed = document.getElementById('nav-red'); 
         if (navRed) {
             navRed.classList.add('activo');
         } else {
-            // Intento B: Por URL si el ID fallase
-            const todosLosLinks = document.querySelectorAll('header a');
-            todosLosLinks.forEach(link => {
-                if (link.getAttribute('href') === '/searchProgrammer' || link.getAttribute('href')?.includes('searchProgrammer')) {
-                    link.classList.add('activo');
+            const links = document.querySelectorAll('header a');
+            links.forEach(l => {
+                const href = l.getAttribute('href');
+                if (href && (href.includes('searchProgrammer') || href.includes('red'))) {
+                    l.classList.add('activo');
                 }
             });
         }
     }
 
-    // --- LÓGICA DEL CARRUSEL ---
+    const funnelBtn = document.getElementById('funnelBtn');
+    const techDropdown = document.getElementById('techDropdown');
+    const btnSelectAll = document.getElementById('selectAll');
+    const btnDeselectAll = document.getElementById('deselectAll');
+
+    if(funnelBtn) {
+        funnelBtn.addEventListener('click', () => {
+            techDropdown.classList.toggle('show');
+            funnelBtn.classList.toggle('active');
+        });
+    }
+
+    function actualizarEstadoBotonesGlobales() {
+        const total = document.querySelectorAll('.item-tech input').length;
+        const seleccionados = document.querySelectorAll('.item-tech input:checked').length;
+        if (btnSelectAll) btnSelectAll.classList.toggle('btn-active', seleccionados === total && total > 0);
+        if (btnDeselectAll) btnDeselectAll.classList.toggle('btn-active', seleccionados === 0);
+    }
+
+    document.querySelectorAll('.item-tech').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            this.classList.toggle('selected', checkbox.checked);
+            actualizarEstadoBotonesGlobales();
+        });
+    });
+
+    btnSelectAll?.addEventListener('click', () => {
+        document.querySelectorAll('.item-tech').forEach(item => {
+            item.querySelector('input').checked = true;
+            item.classList.add('selected');
+        });
+        actualizarEstadoBotonesGlobales();
+    });
+
+    btnDeselectAll?.addEventListener('click', () => {
+        document.querySelectorAll('.item-tech').forEach(item => {
+            item.querySelector('input').checked = false;
+            item.classList.remove('selected');
+        });
+        actualizarEstadoBotonesGlobales();
+    });
+
+    function toggleTechExpansion(element) {
+        const tarjeta = element.closest('.tarjeta-perfil-neon');
+        tarjeta.classList.toggle('tech-expanded');
+    }
+
+    function toggleBioExpansion(element) {
+        const tarjeta = element.closest('.tarjeta-perfil-neon');
+        tarjeta.classList.toggle('bio-expanded');
+    }
+
     const track = document.getElementById('track');
     let index = 0;
     const cardStep = 290; 
+    let autoPlayInterval;
 
     function actualizarCarrusel() {
-        const totalCards = document.querySelectorAll('.tarjeta-perfil-neon').length;
+        if(!track) return;
+        const totalCards = track.querySelectorAll('.tarjeta-perfil-neon').length;
+        if (totalCards === 0) return;
         const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
         const maxIndex = Math.max(0, totalCards - visibleCards);
         if (index > maxIndex) index = 0;
@@ -116,22 +264,28 @@
     function moverCarrusel(direccion) {
         index += direccion;
         actualizarCarrusel();
-        reiniciarIntervalo();
+        reiniciarAutoPlay();
     }
 
-    let intervalo = setInterval(() => { index++; actualizarCarrusel(); }, 5000);
-    function reiniciarIntervalo() { 
-        clearInterval(intervalo); 
-        intervalo = setInterval(() => { index++; actualizarCarrusel(); }, 5000); 
+    function startAutoPlay() {
+        if(!track) return;
+        autoPlayInterval = setInterval(() => {
+            index++;
+            actualizarCarrusel();
+        }, 4000);
+    }
+
+    function reiniciarAutoPlay() {
+        clearInterval(autoPlayInterval);
+        startAutoPlay();
     }
 
     window.addEventListener('resize', actualizarCarrusel);
-    
     window.addEventListener('load', () => {
-        // Ejecutamos con varios intentos por si Thymeleaf es lento inyectando el fragmento
-        setTimeout(inicializarHeader, 50);
-        setTimeout(inicializarHeader, 300);
+        setTimeout(inicializarHeader, 100);
         actualizarCarrusel();
+        startAutoPlay();
+        actualizarEstadoBotonesGlobales();
     });
     </script>
 </body>

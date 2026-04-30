@@ -35,7 +35,7 @@ public class Usuario {
 
     @Column(name = "curriculum")
     private String curriculum;
-
+    
     @Lob
     @Column(name = "biografia", columnDefinition = "TEXT")
     private String biografia;

@@ -2,16 +2,26 @@ package com.programmer.backend.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import com.programmer.backend.domain.PerfilDesarrollador;
+import com.programmer.backend.domain.PerfilEmpresa;
 import com.programmer.backend.domain.Usuario;
+import com.programmer.backend.service.SearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ViewController {
 
+    @Autowired
+    private SearchService searchService;
+
     // =========================
-    // HOME
+    // HOME / AUTH
     // =========================
     @GetMapping("/")
     public String root() {
@@ -23,9 +33,6 @@ public class ViewController {
         return "UI/main";
     }
 
-    // =========================
-    // AUTH
-    // =========================
     @GetMapping("/login")
     public String login() {
         return "UI/loginPage/loginPage";
@@ -39,20 +46,6 @@ public class ViewController {
     // =========================
     // PERFIL
     // =========================
-    @GetMapping("/ownProfile")
-    public String ownProfile(HttpSession session, Model model) {
-
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("usuarioHeader", usuario);
-
-        return "UI/ownProfile/ownProfile";
-    }
-
     @GetMapping("/profileView")
     public String profileView() {
         return "UI/profileView/profileView";
@@ -91,30 +84,78 @@ public class ViewController {
         return "UI/viewprojectreviews/viewprojectreviews";
     }
 
-    // =========================
-    // EMPLEO
-    // =========================
-
-    @GetMapping("/jobview")
-    public String jobview() {
-        return "UI/jobview/jobview";
-    }
+   
+   
 
     // =========================
-    // RED / BÚSQUEDA
+    // BÚSQUEDA PROGRAMADORES
     // =========================
     @GetMapping("/searchProgrammer")
-    public String searchProgrammer() {
+    public String searchProgrammer(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        model.addAttribute("developers", searchService.getFeaturedDevelopers(currentUserId));
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies());
+        model.addAttribute("selectedTechIds", new ArrayList<Long>());
+        
         return "UI/searchHome/searchProgrammer";
     }
 
-    @GetMapping("/serachCompanies") 
-    public String serachCompanies() {
-        return "UI/searchHome/serachCompanies";
+    @GetMapping("/searchProgrammer/search")
+    public String searchProgrammer(@RequestParam(value = "query", required = false) String query, 
+                                   @RequestParam(value = "tech", required = false) List<Long> techIds, 
+                                   HttpSession session,
+                                   Model model) {
+        
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        List<PerfilDesarrollador> results = searchService.searchDevelopers(query, techIds, currentUserId);
+        
+        model.addAttribute("developers", results);
+        model.addAttribute("searchQuery", query);
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies());
+        model.addAttribute("selectedTechIds", techIds != null ? techIds : new ArrayList<Long>());
+        
+        return "UI/searchHome/searchProgrammer";
     }
 
     // =========================
-    // MENÚ / GENERAL
+    // BÚSQUEDA EMPRESAS (ACTUALIZADO)
+    // =========================
+   @GetMapping("/searchCompanies") 
+    public String searchCompanies(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        model.addAttribute("companies", searchService.getFeaturedCompanies(currentUserId)); 
+        model.addAttribute("searchQuery", "");
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies());
+        model.addAttribute("selectedTechIds", new ArrayList<Long>());
+        
+        return "UI/searchHome/searchCompanies";
+    }
+
+    @GetMapping("/searchCompanies/search")
+    public String searchCompaniesSearch(@RequestParam(value = "query", required = false) String query,
+                                        @RequestParam(value = "tech", required = false) List<Long> techIds,
+                                        HttpSession session,
+                                        Model model) {
+        
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        model.addAttribute("companies", searchService.searchCompanies(query, techIds, currentUserId)); 
+        model.addAttribute("searchQuery", query);
+        model.addAttribute("allTechnologies", searchService.getAllTechnologies()); 
+        model.addAttribute("selectedTechIds", techIds != null ? techIds : new ArrayList<Long>());
+        
+        return "UI/searchHome/searchCompanies";
+    }
+
+    // =========================
+    // MENÚ / CHATS / EMPLEO
     // =========================
     @GetMapping("/menu")
     public String menu() {
@@ -126,38 +167,19 @@ public class ViewController {
         return "UI/chats/chats";
     }
 
-    // =========================
-    // PUBLICAR OFERTA (CASO ESPECIAL)
-    // =========================
+    @GetMapping("/jobview")
+    public String jobview() {
+        return "UI/jobview/jobview";
+    }
+
     @GetMapping("/publishOffer")
     public String publishOffer() {
         return "UI/company/publishOffer";
     }
 
-    @GetMapping("/loginPage")
-    public String loginPage() {
-        return "UI/loginPage/loginPage";
-    }
-
-    // =========================
-    // TECNOLOGÍAS
-    // =========================
-    @GetMapping("/addTechnology")
-    public String addTechnology(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("usuarioHeader", usuario);
-        return "UI/addTechnology/addTechnology"; 
-    }
-
-
-
     // =======================================
-    // TERMINOS,PRIVACIDAD,SOBRE NOSOTROS
+    // LEGAL Y OTROS
     // =======================================
-
     @GetMapping("/terminos")
     public String mostrarTerminos() {
         return "UI/terminos/terminos"; 

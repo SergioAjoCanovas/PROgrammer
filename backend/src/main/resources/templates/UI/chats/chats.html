@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* Estilo para que el icono de la sección de CHATS brille */
         .activo, 
         header .nav-enlaces a.activo i, 
         header .nav-enlaces a.activo span {
@@ -24,6 +23,12 @@
 <body class="fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
 
     <main class="contenedor-principal-chats">
         <section class="tarjeta-chats border-neon">
@@ -116,14 +121,11 @@
 
     <script>
         function inicializarInterfazChat() {
-            const contenedorHeader = document.getElementById('info-usuario');
-            const navChats = document.getElementById('nav-chats'); // Asegúrate que el link en header.html tenga este id
+            const navChats = document.getElementById('nav-chats'); 
 
-            // 2. Iluminar icono de Mensajes/Chats
             if (navChats) {
                 navChats.classList.add('activo');
             } else {
-                // Alternativa por URL
                 const links = document.querySelectorAll('header a');
                 links.forEach(l => {
                     if (l.getAttribute('href')?.includes('chats')) {
@@ -133,7 +135,6 @@
             }
         }
 
-        // Ejecutar al cargar
         window.addEventListener('load', () => {
             setTimeout(inicializarInterfazChat, 100);
         });

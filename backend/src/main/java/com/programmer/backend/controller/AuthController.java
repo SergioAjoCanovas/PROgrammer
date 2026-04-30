@@ -2,9 +2,16 @@ package com.programmer.backend.controller;
 
 import com.programmer.backend.domain.Rol;
 import com.programmer.backend.domain.Usuario;
+import com.programmer.backend.domain.PerfilDesarrollador;
+import com.programmer.backend.domain.PerfilEmpresa;
+
 import com.programmer.backend.repository.RolRepository;
 import com.programmer.backend.repository.UsuarioRepository;
+import com.programmer.backend.repository.PerfilDesarrolladorRepository;
+import com.programmer.backend.repository.PerfilEmpresaRepository;
+
 import com.programmer.backend.service.RegistroService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +34,19 @@ public class AuthController {
     private RolRepository rolRepository;
 
     @Autowired
+    private PerfilDesarrolladorRepository perfilDesarrolladorRepository;
+
+    @Autowired
+    private PerfilEmpresaRepository perfilEmpresaRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private RegistroService registroService;
 
     // =========================
-    // REGISTRO (Fusionado y Único)
+    // REGISTRO
     // =========================
     @PostMapping("/signup")
     public void registrar(
@@ -42,12 +55,12 @@ public class AuthController {
             @RequestParam("password") String password,
             @RequestParam("confirm_password") String confirmPassword,
             @RequestParam("id_rol") long idRol,
-            @RequestParam(value = "foto", required = false) MultipartFile foto, // Foto opcional
+            @RequestParam(value = "foto", required = false) MultipartFile foto,
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
 
-        // Validaciones previas
+        // Validaciones
         if (!password.equals(confirmPassword)
                 || usuarioRepository.existsByUsername(username)
                 || usuarioRepository.existsByEmail(email)) {
@@ -56,17 +69,17 @@ public class AuthController {
             return;
         }
 
-        // Buscar el rol
+        // Rol
         Rol rolElegido = rolRepository.findById(idRol)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
-        // Lógica de la foto
+        // Foto
         String rutaFoto = null;
         if (foto != null && !foto.isEmpty()) {
             rutaFoto = registroService.guardarFoto(foto);
         }
 
-        // Crear el usuario y rellenarlo
+        // Usuario
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setUsername(username);
         nuevoUsuario.setEmail(email);
@@ -74,14 +87,32 @@ public class AuthController {
         nuevoUsuario.setRol(rolElegido);
         nuevoUsuario.setFotoPerfil(rutaFoto);
 
-        // Guardar el usuario en BD
-        usuarioRepository.save(nuevoUsuario);
+        // Guardar usuario
+        Usuario usuarioGuardado = registroService.registrarUsuario(nuevoUsuario);
 
-        // Guardar en sesión
-        session.setAttribute("usuarioLogueado", nuevoUsuario);
-        session.setAttribute("rolUsuario", rolElegido.getNombre());
+        // =========================
+        // 🔥 CREACIÓN DE PERFIL AUTOMÁTICA
+        // =========================
 
-        response.sendRedirect("/main?user=" + username + "&rol=" + rolElegido.getNombre());
+        String rolNombre = rolElegido.getNombre();
+
+        if (rolNombre.equals("DESARROLLADOR")) {
+            PerfilDesarrollador perfil = new PerfilDesarrollador();
+            perfil.setUsuario(usuarioGuardado);
+            perfilDesarrolladorRepository.save(perfil);
+        }
+
+        if (rolNombre.equals("EMPRESA")) {
+            PerfilEmpresa perfil = new PerfilEmpresa();
+            perfil.setUsuario(usuarioGuardado);
+            perfilEmpresaRepository.save(perfil);
+        }
+
+        // Sesión
+        session.setAttribute("usuarioLogueado", usuarioGuardado);
+        session.setAttribute("rolUsuario", rolNombre);
+
+        response.sendRedirect("/main?user=" + username + "&rol=" + rolNombre);
     }
 
     // =========================

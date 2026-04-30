@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/admin_styles/admin_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .activo-btn, .activo-btn i, .activo-btn span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+            opacity: 1 !important;
+        }
+
+        /* Estilos del Modal Personalizado */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.mostrar {
+            display: flex;
+        }
+        .modal-box {
+            background: #111;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border: 2px solid transparent;
+            box-shadow: 0 0 20px transparent;
+            transition: all 0.3s ease;
+        }
+        .modal-box h3 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .modal-box p {
+            color: #ddd;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+        .modal-botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .btn-cancelar-modal {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .btn-cancelar-modal:hover { background: #555; }
+        .btn-confirmar-modal {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        /* Tema Verificar (Azul Neón) */
+        .modal-verificar {
+            border-color: #00f2ff;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+        }
+        .modal-verificar h3 { color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
+        .modal-verificar .btn-confirmar-modal { background: rgba(0, 242, 255, 0.1); border: 1px solid #00f2ff; color: #00f2ff; }
+        .modal-verificar .btn-confirmar-modal:hover { background: #00f2ff; color: #000; box-shadow: 0 0 15px #00f2ff; }
+
+        /* Tema Eliminar (Rojo Neón) */
+        .modal-eliminar {
+            border-color: #ff003c;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
+        }
+        .modal-eliminar h3 { color: #ff003c; text-shadow: 0 0 10px #ff003c; }
+        .modal-eliminar .btn-confirmar-modal { background: rgba(255, 0, 60, 0.1); border: 1px solid #ff003c; color: #ff003c; }
+        .modal-eliminar .btn-confirmar-modal:hover { background: #ff003c; color: #fff; box-shadow: 0 0 15px #ff003c; }
+    </style>
+</head>
+<body class="fondo-oscuro-neon cuerpo-flexible">
+
+<div th:replace="~{includes/header :: header}"></div>
+
+<main class="contenedor-principal-admin">
+    <div class="vidrio-contenedor-admin">
+        
+        <h2 class="titulo-admin"><i class="fas fa-shield-alt"></i> Panel de Administración</h2>
+
+        <div class="tabs-admin">
+            <button class="tab-btn activo" onclick="mostrarTab('logueados')">Logueados</button>
+            <button class="tab-btn" onclick="mostrarTab('verificados')">Verificados</button>
+        </div>
+
+        <div id="logueados" class="tab-content activo">
+            <div class="grid-usuarios">
+                <div class="card-usuario" th:each="u : ${logueados}">
+                    <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
+                    <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
+                    
+                    <h3 th:text="${u.username}">Nombre</h3>
+                    <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
+                    <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
+
+                    <div class="botones-accion">
+                        <a th:href="@{/profileView/{id}(id=${u.id})}" class="btn-perfil"><i class="fas fa-eye"></i></a>
+                        <form th:action="@{/adminPanel/verificar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'verificar');">
+                            <button type="submit" class="btn-verificar" title="Verificar"><i class="fas fa-check"></i></button>
+                        </form>
+                        <form th:action="@{/adminPanel/eliminar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminar');">
+                            <button type="submit" class="btn-eliminar" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <p th:if="${#lists.isEmpty(logueados)}" class="mensaje-vacio">No hay usuarios logueados pendientes.</p>
+        </div>
+
+        <div id="verificados" class="tab-content">
+            <div class="grid-usuarios">
+                <div class="card-usuario" th:each="u : ${verificados}">
+                    <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
+                    <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
+                    
+                    <h3>
+                        <span th:text="${u.username}">Nombre</span>
+                        <i class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </h3>
+                    <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
+                    <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
+
+                    <div class="botones-accion">
+                        <a th:href="@{/profileView/{id}(id=${u.id})}" class="btn-perfil"><i class="fas fa-eye"></i></a>
+                        <form th:if="${u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/eliminar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminar');">
+                            <button type="submit" class="btn-eliminar" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <p th:if="${#lists.isEmpty(verificados)}" class="mensaje-vacio">No hay usuarios verificados.</p>
+        </div>
+    </div>
+</main>
+
+<div id="modalConfirmacion" class="modal-overlay">
+    <div class="modal-box" id="modalBox">
+        <h3 id="modalTitle">Confirmación</h3>
+        <p id="modalMessage">¿Estás seguro?</p>
+        <div class="modal-botones">
+            <button type="button" class="btn-cancelar-modal" onclick="cerrarModal()">Cancelar</button>
+            <button type="button" id="btnConfirmar" class="btn-confirmar-modal">Aceptar</button>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
+<script>
+    let formActual = null;
+
+    function confirmarAccion(event, formElement, accion) {
+        event.preventDefault();
+        formActual = formElement;
+        
+        const modal = document.getElementById('modalConfirmacion');
+        const modalBox = document.getElementById('modalBox');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const btnConfirmar = document.getElementById('btnConfirmar');
+        
+        // Reset classes
+        modalBox.className = 'modal-box';
+        
+        if (accion === 'verificar') {
+            modalBox.classList.add('modal-verificar');
+            modalTitle.innerHTML = '<i class="fas fa-check-circle"></i> Verificar Usuario';
+            modalMessage.innerText = '¿Estás seguro de que deseas verificar a este usuario? Obtendrá la marca azul en su perfil.';
+            btnConfirmar.innerHTML = '<i class="fas fa-check"></i> Sí, verificar';
+        } else if (accion === 'eliminar') {
+            modalBox.classList.add('modal-eliminar');
+            modalTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Eliminar Usuario';
+            modalMessage.innerText = 'ATENCIÓN: ¿Seguro que quieres borrar a este usuario? Se perderá permanentemente de la Base de Datos.';
+            btnConfirmar.innerHTML = '<i class="fas fa-trash"></i> Sí, eliminar';
+        }
+        
+        modal.classList.add('mostrar');
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalConfirmacion').classList.remove('mostrar');
+        formActual = null;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById('btnConfirmar').addEventListener('click', () => {
+            if (formActual) {
+                formActual.submit();
+            }
+        });
+    });
+
+    function mostrarTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('activo'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('activo'));
+        
+        document.getElementById(tabId).classList.add('activo');
+        event.target.classList.add('activo');
+    }
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const navAdmin = document.getElementById('nav-admin');
+            if (navAdmin) {
+                navAdmin.classList.add('activo-btn');
+            } else {
+                const links = document.querySelectorAll('header a');
+                links.forEach(l => {
+                    const href = l.getAttribute('href');
+                    if (href && href.includes('adminPanel')) {
+                        l.classList.add('activo-btn');
+                    }
+                });
+            }
+        }, 100);
+    });
+</script>
+
+</body>
+</html>

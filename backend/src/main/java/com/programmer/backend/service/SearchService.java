@@ -132,9 +132,10 @@ public class SearchService {
     private PerfilEmpresaRepository perfilEmpresaRepository;
 
     // Método para las empresas destacadas (el carrusel inicial)
-    public List<PerfilEmpresa> getFeaturedCompanies() {
+    public List<PerfilEmpresa> getFeaturedCompanies(Long currentUserId) {
         List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
         return companies.stream()
+                .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .limit(10)
                 .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
@@ -143,18 +144,49 @@ public class SearchService {
     }
 
     // Método para la búsqueda filtrada
-    public List<PerfilEmpresa> searchCompanies(String query) {
+    public List<PerfilEmpresa> searchCompanies(String query, List<Long> techIds, Long currentUserId) {
         List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
         return companies.stream()
+                .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(perfil -> {
-                    if (query == null || query.trim().isEmpty()) return true;
-                    String q = query.toLowerCase().trim();
-                    // Busca coincidencia en el nombre de usuario o en el sector
-                    return perfil.getUsuario().getUsername().toLowerCase().contains(q) ||
-                        (perfil.getSector() != null && perfil.getSector().toLowerCase().contains(q));
+                    if (query != null && !query.trim().isEmpty()) {
+                        String q = query.toLowerCase().trim();
+                        if (!(perfil.getUsuario().getUsername().toLowerCase().contains(q) ||
+                             (perfil.getSector() != null && perfil.getSector().toLowerCase().contains(q)))) {
+                             return false;
+                        }
+                    }
+
+                    if (techIds != null && !techIds.isEmpty()) {
+                        Set<Long> perfilTechIds = perfil.getTecnologias().stream()
+                                .map(Tecnologia::getId)
+                                .collect(Collectors.toSet());
+                        if (!perfilTechIds.stream().anyMatch(techIds::contains)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                })
+                .sorted((p1, p2) -> {
+                    if (techIds == null || techIds.isEmpty()) return 0;
+
+                    long matches1 = p1.getTecnologias().stream()
+                            .filter(t -> techIds.contains(t.getId()))
+                            .count();
+                    long matches2 = p2.getTecnologias().stream()
+                            .filter(t -> techIds.contains(t.getId()))
+                            .count();
+
+                    if (matches1 != matches2) {
+                        return Long.compare(matches2, matches1);
+                    }
+
+                    int total1 = p1.getTecnologias().size();
+                    int total2 = p2.getTecnologias().size();
+                    return Integer.compare(total2, total1);
                 })
                 .collect(Collectors.toList());
     }

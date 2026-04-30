@@ -61,16 +61,24 @@ public class TechController {
     
         model.addAttribute("tecnologiasPorCategoria", tecnologiasPorCategoria);
     
-        PerfilDesarrollador perfil = perfilRepo.findByUsuarioId(usuario.getId())
-                .orElse(null);
-    
         Set<Long> techSeleccionadas = new HashSet<>();
     
-        if (perfil != null && perfil.getTecnologias() != null) {
-            techSeleccionadas = perfil.getTecnologias()
-                    .stream()
-                    .map(Tecnologia::getId)
-                    .collect(Collectors.toSet());
+        if ("COMPANY".equals(rol)) {
+            PerfilEmpresa empresa = empresaRepo.findByUsuarioId(usuario.getId()).orElse(null);
+            if (empresa != null && empresa.getTecnologias() != null) {
+                techSeleccionadas = empresa.getTecnologias()
+                        .stream()
+                        .map(Tecnologia::getId)
+                        .collect(Collectors.toSet());
+            }
+        } else {
+            PerfilDesarrollador perfil = perfilRepo.findByUsuarioId(usuario.getId()).orElse(null);
+            if (perfil != null && perfil.getTecnologias() != null) {
+                techSeleccionadas = perfil.getTecnologias()
+                        .stream()
+                        .map(Tecnologia::getId)
+                        .collect(Collectors.toSet());
+            }
         }
     
         model.addAttribute("techSeleccionadas", techSeleccionadas);

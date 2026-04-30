@@ -125,9 +125,11 @@ public class ViewController {
     // BÚSQUEDA EMPRESAS (ACTUALIZADO)
     // =========================
    @GetMapping("/searchCompanies") 
-    public String searchCompanies(Model model) {
-        // CAMBIO: Ahora usamos el servicio real
-        model.addAttribute("companies", searchService.getFeaturedCompanies()); 
+    public String searchCompanies(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        model.addAttribute("companies", searchService.getFeaturedCompanies(currentUserId)); 
         model.addAttribute("searchQuery", "");
         model.addAttribute("allTechnologies", searchService.getAllTechnologies());
         model.addAttribute("selectedTechIds", new ArrayList<Long>());
@@ -138,9 +140,13 @@ public class ViewController {
     @GetMapping("/searchCompanies/search")
     public String searchCompaniesSearch(@RequestParam(value = "query", required = false) String query,
                                         @RequestParam(value = "tech", required = false) List<Long> techIds,
-                                    Model model) {
+                                        HttpSession session,
+                                        Model model) {
         
-        model.addAttribute("companies", searchService.searchCompanies(query)); 
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Long currentUserId = (usuario != null) ? usuario.getId() : null;
+
+        model.addAttribute("companies", searchService.searchCompanies(query, techIds, currentUserId)); 
         model.addAttribute("searchQuery", query);
         model.addAttribute("allTechnologies", searchService.getAllTechnologies()); 
         model.addAttribute("selectedTechIds", techIds != null ? techIds : new ArrayList<Long>());

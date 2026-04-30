@@ -58,7 +58,8 @@
     transition: 0.3s;
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-links a.activo-footer {
     color: #FFCC00 !important;
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }

@@ -162,6 +162,10 @@ public class ProfileController {
         model.addAttribute("media", media != null ? media : 0);
         model.addAttribute("newReview", new NewReview());
 
+        // AÑADIDO: Obtener proyectos del usuario que se está visitando
+        List<ProyectoService.ProyectoDTO> ultimosProyectos = proyectoService.obtenerUltimosProyectos(usuarioDestino);
+        model.addAttribute("ultimosProyectos", ultimosProyectos);
+
         devRepo.findByUsuarioId(id).ifPresent(perfilDev -> {
             model.addAttribute("perfilDesarrollador", perfilDev);
 

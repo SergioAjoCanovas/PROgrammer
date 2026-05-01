@@ -8,11 +8,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
+        /* --- ESTILOS PRINCIPALES DEL HEADER (CORRECCIÓN FLUIDA) --- */
+        .encabezado-principal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            background-color: rgba(26, 26, 26, 0.95); /* Color de fondo por si acaso */
+            border-bottom: 2px solid #FFCC00;
+        }
+
+        .seccion-izquierda, .seccion-derecha {
+            flex-shrink: 0; /* Evita que el logo o el menú derecho se aplasten */
+        }
+
+        /* --- MAGIA DINÁMICA AQUÍ --- */
+        .navegacion-central {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly; 
+            align-items: center;
+            flex: 1; 
+            margin: 0 1vw; /* Margen reducido para que el Admin tenga más sitio */
+            gap: clamp(5px, 1vw, 15px); /* Espacio extra elástico */
+            min-width: 0; /* Previene desbordamientos en flexbox */
+        }
+
+        .icono-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+
+        .icono-nav i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .texto-icono {
+            white-space: nowrap; /* Evita que las palabras se partan */
+            font-size: clamp(10px, 0.75vw, 13px); /* Letra adaptable */
+            font-weight: bold;
+        }
+
+        .icono-nav:hover, .icono-nav:hover i, .icono-nav:hover .texto-icono {
+            color: #FFCC00;
+            transform: scale(1.05);
+        }
+
         .activo-btn, .activo-btn i, .activo-btn span {
             color: #FFCC00 !important;
             text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
         }
 
+        /* --- NOTIFICACIONES --- */
         .contenedor-avisos {
             position: relative;
             display: inline-block;
@@ -65,11 +120,61 @@
             display: block;
         }
 
+        /* --- SECCIÓN DERECHA (PERFIL Y LOGOUT) --- */
         .seccion-derecha {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: clamp(10px, 1.5vw, 20px);
             margin-left: auto;
+        }
+
+        .info-texto-usuario {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Reforzamos que se alineen a la derecha y en columna */
+            text-align: right;
+            justify-content: center;
+            line-height: 1.2;
+        }
+        
+        .avatar-usuario img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FFCC00;
+            object-fit: cover;
+        }
+
+        .avatar-usuario i {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .item-derecha {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn-menu-movil {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFCC00;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Adaptación para pantallas más pequeñas / tablets */
+        @media (max-width: 900px) {
+            .navegacion-central {
+                margin: 0 1vw;
+            }
+            .info-texto-usuario {
+                display: none; /* Ocultar nombre en pantallas estrechas para dar espacio al menú */
+            }
         }
     </style>
 </head>
@@ -81,7 +186,7 @@
     <div class="seccion-izquierda">
         <div class="contenedor-logotipo">
             <a href="/main">
-                <img src="/Img/SILLARUEDASFONDOGRIS.png" class="imagen-logotipo">
+                <img src="/Img/SILLARUEDASFONDOGRIS.png" class="imagen-logotipo" style="height: 70px; width: auto;">
             </a>
         </div>
     </div>
@@ -120,17 +225,15 @@
             <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
                 <span class="texto-icono">Avisos</span>
-                <span class="globo-notificacion">2</span>
+                <span class="globo-notificacion" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 0; right: 5px;">2</span>
             </a>
 
             <div id="panel-notificaciones" class="panel-notificaciones">
                 <span class="titulo-panel">Notificaciones recientes</span>
-
                 <div class="notificacion-item">
                     <i class="fas fa-briefcase"></i>
                     <span>Nueva oferta de TechSolutions</span>
                 </div>
-
                 <div class="notificacion-item">
                     <i class="fas fa-user-plus"></i>
                     <span>Juan ha visto tu perfil</span>
@@ -156,54 +259,30 @@
     <div class="seccion-derecha">
 
         <a href="/login" class="btn-logout" onclick="cerrarSesionLocal(event)" 
-           style="text-decoration: none; display: flex; flex-direction: row; align-items: center; gap: 8px; margin-right: 30px;">
-            
+           style="text-decoration: none; display: flex; flex-direction: row; align-items: center; gap: 8px;">
             <i class="fas fa-sign-out-alt btn-logout-icon"></i>
             <span class="texto-icono btn-logout-texto">Cerrar Sesión</span>
 
             <style>
-                .btn-logout-icon {
-                    color: #ffffff; 
-                    font-size: 1.2rem;
-                    transition: all 0.3s ease;
-                }
-                .btn-logout-texto {
-                    color: #ffffff; 
-                    transition: all 0.3s ease;
-                    white-space: nowrap; 
-                }
-                .btn-logout:hover .btn-logout-icon {
-                    color: #ff0000 !important;
-                    text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-                    transform: scale(1.1);
-                }
-                .btn-logout:hover .btn-logout-texto {
-                    color: #ff0000 !important;
-                }
+                .btn-logout-icon { color: #ffffff; font-size: 1.2rem; transition: all 0.3s ease; }
+                .btn-logout-texto { color: #ffffff; transition: all 0.3s ease; white-space: nowrap; }
+                .btn-logout:hover .btn-logout-icon, .btn-logout:hover .btn-logout-texto { color: #ff0000 !important; }
             </style>
         </a>
 
         <div th:if="${usuarioHeader != null}" class="info-texto-usuario" id="info-usuario-db">
-            <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
-                <span style="color:white;font-weight:bold;font-size:0.85em;"
-                      th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
-
-                <span style="color:#FFCC00;font-size:0.65em;font-weight:600;"
-                      th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
-            </div>
+            <span style="color:white;font-weight:bold;font-size:0.85em; display: block;" th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
+            <span style="color:#FFCC00;font-size:0.65em;font-weight:600; display: block;" th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
         </div>
         
-        <div id="info-usuario" class="info-texto-usuario"></div>
+        <div th:unless="${usuarioHeader != null}" id="info-usuario" class="info-texto-usuario"></div>
 
         <a href="/ownProfile" class="item-derecha">
             <div class="avatar-usuario">
-                <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}"
-                     th:src="@{${usuarioHeader.fotoPerfil}}"/>
-
-                <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}"
-                   class="fas fa-user"></i>
+                <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}" th:src="@{${usuarioHeader.fotoPerfil}}"/>
+                <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}" class="fas fa-user-circle"></i>
             </div>
-            <span class="texto-icono texto-perfil-movil">Perfil</span>
+            <span class="texto-icono texto-perfil-movil" style="font-size: 0.7em; margin-top:3px;">Perfil</span>
         </a>
 
         <button class="btn-menu-movil" onclick="toggleMenuMovil()">
@@ -213,13 +292,9 @@
     </div>
 
     <script th:inline="javascript">
-        /* El script se coloca dentro del header para que Thymeleaf lo incluya al hacer el replace */
-        
         window.toggleMenuMovil = function() {
             const nav = document.getElementById('nav-central');
-            if (nav) {
-                nav.classList.toggle('mostrar-menu');
-            }
+            if (nav) nav.classList.toggle('mostrar-menu');
         };
 
         window.toggleAvisos = function(event) {
@@ -254,8 +329,6 @@
         (function configurarHeader() {
             const params = new URLSearchParams(window.location.search);
             const username = params.get('user') || localStorage.getItem('usuarioLogueado');
-            
-            /* Guardamos 'rol' en window para que sea global y no de error en otros scripts */
             window.rol = params.get('rol') || localStorage.getItem('rolUsuario');
 
             if (params.get('user')) {
@@ -266,7 +339,11 @@
             const btnPublicar = document.getElementById('nav-publicar-oferta');
             if (window.rol && btnPublicar) {
                 const r = String(window.rol).trim().toUpperCase();
-                btnPublicar.style.display = (r === 'COMPANY' || r === '3') ? 'flex' : 'none';
+                if (r === 'COMPANY' || r === '3' || r === 'ADMIN' || r === '1') {
+                    btnPublicar.style.setProperty('display', 'flex', 'important');
+                } else {
+                    btnPublicar.style.setProperty('display', 'none', 'important');
+                }
             }
 
             const btnAdmin = document.getElementById('nav-admin');
@@ -288,11 +365,10 @@
                 if (window.rol == '2') nombreRol = 'DEVELOPER';
                 if (window.rol == '3') nombreRol = 'COMPANY';
 
+                /* display: block; en los span para forzar el salto de línea en JavaScript */
                 contenedorInfo.innerHTML = `
-                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
-                    </div>
+                    <span style="color: white; font-weight: bold; font-size: 0.85em; display: block;">${username.toUpperCase()}</span>
+                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600; display: block;">${nombreRol}</span>
                 `;
             }
         })();

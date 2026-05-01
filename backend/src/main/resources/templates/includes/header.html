@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <nav class="navegacion-central">
+    <nav class="navegacion-central" id="nav-central">
 
         <a href="/main" class="icono-nav" id="nav-inicio">
             <i class="fas fa-home"></i>
@@ -110,8 +110,6 @@
             <i class="fas fa-plus-circle"></i>
             <span class="texto-icono">Publicar</span>
         </a>
-
-
 
         <a href="/chats" class="icono-nav">
             <i class="fas fa-comment"></i>
@@ -172,23 +170,20 @@
                 .btn-logout-texto {
                     color: #ffffff; 
                     transition: all 0.3s ease;
-                    white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
+                    white-space: nowrap; 
                 }
-
-                /* Hover: Icono y Texto cambian a rojo */
                 .btn-logout:hover .btn-logout-icon {
                     color: #ff0000 !important;
                     text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
                     transform: scale(1.1);
                 }
-                
                 .btn-logout:hover .btn-logout-texto {
                     color: #ff0000 !important;
                 }
             </style>
         </a>
 
-        <div th:if="${usuarioHeader != null}" class="info-texto-usuario">
+        <div th:if="${usuarioHeader != null}" class="info-texto-usuario" id="info-usuario-db">
             <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
                 <span style="color:white;font-weight:bold;font-size:0.85em;"
                       th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
@@ -197,6 +192,8 @@
                       th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
             </div>
         </div>
+        
+        <div id="info-usuario" class="info-texto-usuario"></div>
 
         <a href="/ownProfile" class="item-derecha">
             <div class="avatar-usuario">
@@ -206,85 +203,101 @@
                 <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}"
                    class="fas fa-user"></i>
             </div>
-            <span class="texto-icono">Perfil</span>
+            <span class="texto-icono texto-perfil-movil">Perfil</span>
         </a>
+
+        <button class="btn-menu-movil" onclick="toggleMenuMovil()">
+            <i class="fas fa-bars"></i>
+        </button>
 
     </div>
 
+    <script th:inline="javascript">
+        /* El script se coloca dentro del header para que Thymeleaf lo incluya al hacer el replace */
+        
+        window.toggleMenuMovil = function() {
+            const nav = document.getElementById('nav-central');
+            if (nav) {
+                nav.classList.toggle('mostrar-menu');
+            }
+        };
+
+        window.toggleAvisos = function(event) {
+            event.preventDefault();
+            document.getElementById('panel-notificaciones').classList.toggle('mostrar');
+            document.getElementById('link-avisos').classList.toggle('activo-btn');
+        };
+
+        window.cerrarPanel = function() {
+            const panel = document.getElementById('panel-notificaciones');
+            const link = document.getElementById('link-avisos');
+            if(panel) panel.classList.remove('mostrar');
+            if(link) link.classList.remove('activo-btn');
+        };
+
+        window.cerrarSesionLocal = function(event) {
+            event.preventDefault();
+            localStorage.removeItem('usuarioLogueado');
+            localStorage.removeItem('rolUsuario');
+            window.location.href = "/login";
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const path = window.location.pathname;
+            if (path === '/main') {
+                document.getElementById('nav-inicio')?.classList.add('activo-btn');
+            } else if (path.startsWith('/adminPanel')) {
+                document.getElementById('nav-admin')?.classList.add('activo-btn');
+            }
+        });
+
+        (function configurarHeader() {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('user') || localStorage.getItem('usuarioLogueado');
+            
+            /* Guardamos 'rol' en window para que sea global y no de error en otros scripts */
+            window.rol = params.get('rol') || localStorage.getItem('rolUsuario');
+
+            if (params.get('user')) {
+                localStorage.setItem('usuarioLogueado', params.get('user'));
+                localStorage.setItem('rolUsuario', window.rol || '2'); 
+            }
+
+            const btnPublicar = document.getElementById('nav-publicar-oferta');
+            if (window.rol && btnPublicar) {
+                const r = String(window.rol).trim().toUpperCase();
+                btnPublicar.style.display = (r === 'COMPANY' || r === '3') ? 'flex' : 'none';
+            }
+
+            const btnAdmin = document.getElementById('nav-admin');
+            if (window.rol && btnAdmin) {
+                const r = String(window.rol).trim().toUpperCase();
+                if (r === 'ADMIN' || r === '1') {
+                    btnAdmin.style.setProperty('display', 'flex', 'important');
+                } else {
+                    btnAdmin.style.setProperty('display', 'none', 'important');
+                }
+            }
+
+            const contenedorInfo = document.getElementById('info-usuario');
+            const contenedorDb = document.getElementById('info-usuario-db');
+            
+            if (username && contenedorInfo && !contenedorDb) {
+                let nombreRol = window.rol;
+                if (window.rol == '1') nombreRol = 'ADMIN';
+                if (window.rol == '2') nombreRol = 'DEVELOPER';
+                if (window.rol == '3') nombreRol = 'COMPANY';
+
+                contenedorInfo.innerHTML = `
+                    <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
+                        <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
+                        <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
+                    </div>
+                `;
+            }
+        })();
+    </script>
 </header>
-
-<script>
-function toggleAvisos(event) {
-    event.preventDefault();
-    document.getElementById('panel-notificaciones').classList.toggle('mostrar');
-    document.getElementById('link-avisos').classList.toggle('activo-btn');
-}
-
-function cerrarPanel() {
-    const panel = document.getElementById('panel-notificaciones');
-    const link = document.getElementById('link-avisos');
-    if(panel) panel.classList.remove('mostrar');
-    if(link) link.classList.remove('activo-btn');
-}
-
-function cerrarSesionLocal(event) {
-    event.preventDefault();
-    localStorage.removeItem('usuarioLogueado');
-    localStorage.removeItem('rolUsuario');
-    window.location.href = "/login";
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    const path = window.location.pathname;
-    if (path === '/main') {
-        document.getElementById('nav-inicio')?.classList.add('activo-btn');
-    } else if (path.startsWith('/adminPanel')) {
-        document.getElementById('nav-admin')?.classList.add('activo-btn');
-    }
-});
-
-(function configurarHeader() {
-    const params = new URLSearchParams(window.location.search);
-    const username = params.get('user') || localStorage.getItem('usuarioLogueado');
-    const rol = params.get('rol') || localStorage.getItem('rolUsuario');
-
-    if (params.get('user')) {
-        localStorage.setItem('usuarioLogueado', params.get('user'));
-        localStorage.setItem('rolUsuario', params.get('rol') || '2'); 
-    }
-
-    const btnPublicar = document.getElementById('nav-publicar-oferta');
-    if (rol && btnPublicar) {
-        const r = String(rol).trim().toUpperCase();
-        btnPublicar.style.display = (r === 'COMPANY' || r === '3') ? 'flex' : 'none';
-    }
-
-    const btnAdmin = document.getElementById('nav-admin');
-    if (rol && btnAdmin) {
-        const r = String(rol).trim().toUpperCase();
-        if (r === 'ADMIN' || r === '1') {
-            btnAdmin.style.setProperty('display', 'flex', 'important');
-        } else {
-            btnAdmin.style.setProperty('display', 'none', 'important');
-        }
-    }
-
-    const contenedorInfo = document.getElementById('info-usuario');
-    if (username && contenedorInfo) {
-        let nombreRol = rol;
-        if (rol == '1') nombreRol = 'ADMIN';
-        if (rol == '2') nombreRol = 'DEVELOPER';
-        if (rol == '3') nombreRol = 'COMPANY';
-
-        contenedorInfo.innerHTML = `
-            <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
-            </div>
-        `;
-    }
-})();
-</script>
 
 </body>
 </html>

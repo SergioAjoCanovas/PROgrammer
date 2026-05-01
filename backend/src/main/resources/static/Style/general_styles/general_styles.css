@@ -2,6 +2,12 @@
    ESTILO GLOBAL: ATMÓSFERA NEÓN AMARILLA (SIN CUADRÍCULA)
    ========================================================= */
 
+/* Bloqueo vital de scroll horizontal en todo el sitio web para móviles */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
@@ -11,8 +17,6 @@ body.fondo-oscuro-neon {
     position: relative;
     overflow-x: hidden;
     z-index: 0;
-    
-    /* ¡Animación inicial eliminada! */
 }
 
 /* Transparencia total de contenedores para no tapar el fondo */
@@ -40,7 +44,7 @@ body.fondo-oscuro-neon::before {
     width: 500px;
     height: 500px;
     background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, rgba(255, 204, 0, 0.05) 50%, rgba(0, 0, 0, 0) 80%);
-    filter: blur(90px); /* Desenfoque extremo */
+    filter: blur(90px); 
     top: -15%;
     left: -15%;
 
@@ -69,6 +73,24 @@ body.fondo-oscuro-neon::after {
     animation: viajeLateral 35s ease-in-out infinite alternate !important;
 }
 
+/* Ajuste de orbs para móviles (Mejora el rendimiento y evita bugs visuales) */
+@media (max-width: 768px) {
+    body.fondo-oscuro-neon::before {
+        width: 300px;
+        height: 300px;
+        filter: blur(50px);
+        box-shadow: 
+            300px 200px 100px rgba(255, 204, 0, 0.1), 
+            100px 400px 100px rgba(255, 204, 0, 0.08) !important;
+    }
+    body.fondo-oscuro-neon::after {
+        width: 150px;
+        height: 150px;
+        filter: blur(30px);
+        box-shadow: -200px 200px 50px rgba(255, 204, 0, 0.1) !important;
+    }
+}
+
 /* =========================================================
    ANIMACIONES (Suavizadas)
    ========================================================= */
@@ -86,7 +108,7 @@ body.fondo-oscuro-neon::after {
 }
 
 /* =========================================================
-   BOTONES NEÓN (Amarillo #FFCC00)
+   BOTONES NEÓN GLOBALES (Amarillo #FFCC00)
    ========================================================= */
 .boton-curriculum, .boton-anadir, .boton-ver {
     background-color: #1a1a1a !important;

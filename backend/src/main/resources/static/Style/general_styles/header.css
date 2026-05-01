@@ -351,3 +351,139 @@ body {
 .avatar-usuario i {
     font-size: 1.2rem;
 }
+
+/* =========================================================
+   RESPONSIVE PARA MOVILES Y TABLETS (AÑADIDO AL FINAL)
+   ========================================================= */
+
+/* Ocultar botón menú por defecto en PC para que no moleste */
+.btn-menu-movil {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 5px 10px;
+}
+
+.btn-menu-movil:hover {
+    color: #FFCC00;
+}
+
+/* Ajustes para pantallas medianas (Tablets en horizontal) */
+@media (max-width: 1100px) {
+    .navegacion-central {
+        gap: 30px; /* Reducimos la separación entre iconos para que quepan */
+    }
+}
+
+/* Ajustes para Tablets en vertical y Móviles */
+@media (max-width: 900px) {
+    .encabezado-principal {
+        padding: 10px 20px;
+        position: relative; /* Necesario para que el menú desplegable se ancle bien */
+    }
+
+    .seccion-derecha {
+        gap: 15px;
+    }
+
+    /* Ocultamos los textos largos para que no desborden la pantalla */
+    .info-texto-usuario {
+        display: none !important; 
+    }
+
+    .btn-logout-texto, .texto-perfil-movil {
+        display: none; 
+    }
+
+    .btn-logout {
+        margin-right: 0 !important;
+    }
+
+    .imagen-logotipo {
+        max-height: 55px; /* Hacemos el logo un poco más pequeño */
+    }
+
+    /* Mostramos el botón hamburguesa */
+    .btn-menu-movil {
+        display: block; 
+    }
+
+    /* Convertimos la navegación central en un menú oculto que cae desde arriba */
+    .navegacion-central {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #1a1a1a;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        border-bottom: 3px solid #FFCC00;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+        z-index: 1000;
+        display: none; /* Oculto por defecto */
+    }
+
+    /* Clase que se activa con el JS cuando tocas la hamburguesa */
+    .navegacion-central.mostrar-menu {
+        display: flex;
+        animation: deslizarAbajo 0.3s ease;
+    }
+
+    /* Estilo de los enlaces dentro del menú móvil */
+    .navegacion-central a {
+        flex-direction: row; /* Icono a la izquierda y texto a la derecha */
+        justify-content: flex-start;
+        padding: 15px 30px;
+        border-bottom: 1px solid #333; 
+    }
+
+    .navegacion-central a:hover {
+        background-color: #222;
+        transform: scale(1); /* Quitamos el zoom exagerado en móvil */
+    }
+
+    .navegacion-central a i {
+        width: 40px; 
+        height: auto;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .texto-icono {
+        font-size: 1rem;
+    }
+
+    /* Ajustamos el panel de notificaciones para que no se salga de la pantalla */
+    .panel-notificaciones {
+        right: -80px; 
+        width: 280px;
+    }
+}
+
+/* Ajustes extra para móviles muy pequeños */
+@media (max-width: 480px) {
+    .panel-notificaciones {
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%) !important;
+        width: 90%;
+        right: auto;
+    }
+
+    /* Para que la animación de notificaciones funcione centrada en móvil */
+    .panel-notificaciones.activo {
+        transform: translateX(-50%) scale(1) !important;
+    }
+}
+
+/* Animación fluida para cuando se abre el menú hamburguesa */
+@keyframes deslizarAbajo {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

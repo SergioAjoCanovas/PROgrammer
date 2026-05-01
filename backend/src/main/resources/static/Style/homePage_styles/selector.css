@@ -11,6 +11,8 @@
 
 .contenido-central {
     text-align: center;
+    width: 100%;
+    max-width: 1200px;
 }
 
 /* Título estilo neón */
@@ -21,6 +23,7 @@
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     letter-spacing: 3px;
     font-weight: bold;
+    transition: font-size 0.3s ease;
 }
 
 /* Contenedor de botones en fila */
@@ -29,17 +32,19 @@
     gap: 40px;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
 }
 
-/* BOTONES IGUALES EN ANCHO Y MENOS REDONDEADOS */
+/* BOTONES FLUIDOS Y RESPONSIVES */
 .btn-seleccion-neon {
     text-decoration: none;
     background: transparent;
     border: 3px solid #FFCC00;
     color: #FFCC00;
-    padding: 40px 0; 
+    padding: 40px 20px; 
     border-radius: 20px; 
-    width: 380px;  
+    width: 100%;          /* Cambiado a 100% para fluidez */
+    max-width: 380px;     /* Límite máximo en pantallas grandes */
     font-size: 1.5rem;
     font-weight: bold;
     display: flex;
@@ -56,10 +61,12 @@
 
 .btn-seleccion-neon i {
     font-size: 2.8rem;
+    transition: font-size 0.3s ease;
 }
 
 .btn-seleccion-neon span {
     letter-spacing: 2px;
+    text-align: center;
 }
 
 /* Efecto HOVER: Iluminación máxima */
@@ -76,22 +83,53 @@
     transform: scale(0.95);
 }
 
-/* Responsive para móviles */
+/* =========================================
+   DISEÑO RESPONSIVE MÓVIL Y TABLET
+   ========================================= */
+
+/* Tablets y pantallas medianas */
 @media (max-width: 850px) {
     .btn-seleccion-neon {
-        width: 300px;
-        padding: 30px 0;
+        max-width: 320px;
+        padding: 30px 15px;
         font-size: 1.3rem;
+    }
+    .contenedor-botones-gigantes {
+        gap: 25px; /* Reducimos el espacio entre botones */
     }
 }
 
+/* Móviles estándar */
 @media (max-width: 600px) {
     .titulo-selector {
         font-size: 2rem;
+        margin-bottom: 35px;
     }
     .btn-seleccion-neon {
-        width: 260px;
+        max-width: 280px; /* Se hace más estrecho para móviles */
+        padding: 25px 10px;
+        font-size: 1.1rem;
         border-radius: 15px; 
+    }
+    .btn-seleccion-neon i {
+        font-size: 2.2rem;
+    }
+}
+
+/* Móviles muy pequeños (iPhone SE, etc.) */
+@media (max-width: 360px) {
+    .titulo-selector {
+        font-size: 1.6rem;
+    }
+    .btn-seleccion-neon {
+        max-width: 90%; /* Ocupa casi toda la pantalla */
+        font-size: 1rem;
+    }
+    .btn-seleccion-neon i {
+        font-size: 1.8rem;
+    }
+    .btn-seleccion-neon span {
+        letter-spacing: 1px;
     }
 }
 

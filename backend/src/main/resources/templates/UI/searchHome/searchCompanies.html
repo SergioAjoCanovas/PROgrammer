@@ -219,16 +219,31 @@
 
         const track = document.getElementById('track');
         let index = 0;
-        const cardStep = 310;
 
         function actualizarCarrusel() {
             if(!track) return;
+            
+            // Si estamos en móvil, apagamos el JS para que el CSS nativo haga el trabajo suave
+            if (window.innerWidth <= 768) {
+                track.style.transform = 'none';
+                return;
+            }
+
             const tarjetas = track.querySelectorAll('.tarjeta-perfil-neon');
             if (tarjetas.length === 0) return;
-            const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
+            
+            // Calculamos cuántas caben en pantalla
+            const visibleCards = window.innerWidth <= 1050 ? 2 : 3;
+            
             const maxIndex = Math.max(0, tarjetas.length - visibleCards);
             if (index > maxIndex) index = 0;
             if (index < 0) index = maxIndex;
+
+            // Calculo Dinámico del tamaño de la tarjeta (ancho real + el espacio de separación que es 30)
+            const cardWidth = tarjetas[0].offsetWidth;
+            const gap = 30; 
+            const cardStep = cardWidth + gap;
+
             track.style.transform = `translateX(${-index * cardStep}px)`;
         }
 

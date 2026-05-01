@@ -46,6 +46,8 @@ body.fondo-oscuro-neon {
     flex-direction: column;
     align-items: center;
     z-index: 10;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* =========================================
@@ -61,6 +63,7 @@ body.fondo-oscuro-neon {
     font-size: 2.5rem;
     margin-bottom: 30px;
     text-align: center;
+    transition: font-size 0.3s ease;
 }
 
 .titulo-neon .resaltado {
@@ -77,6 +80,8 @@ body.fondo-oscuro-neon {
     display: flex;
     flex-direction: column;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input-wrapper {
@@ -84,6 +89,7 @@ body.fondo-oscuro-neon {
     align-items: center;
     width: 100%;
     padding: 5px;
+    box-sizing: border-box;
 }
 
 .caja-busqueda-neon input {
@@ -94,6 +100,7 @@ body.fondo-oscuro-neon {
     color: #fff;
     outline: none;
     font-size: 1rem;
+    width: 100%;
 }
 
 .funnel-icon {
@@ -119,6 +126,7 @@ body.fondo-oscuro-neon {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 .btn-buscar-neon:hover {
     background: #FFCC00;
@@ -133,6 +141,7 @@ body.fondo-oscuro-neon {
     padding: 20px;
     display: none; 
     box-sizing: border-box;
+    border-radius: 0 0 25px 25px;
 }
 
 .tech-dropdown.show { display: block; }
@@ -142,6 +151,7 @@ body.fondo-oscuro-neon {
     gap: 10px;
     margin-bottom: 15px;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .btn-control {
@@ -228,6 +238,7 @@ body.fondo-oscuro-neon {
 .seccion-carrusel { 
     width: 100%; 
     max-width: 900px; 
+    box-sizing: border-box;
 }
 
 .subtitulo-neon {
@@ -238,7 +249,7 @@ body.fondo-oscuro-neon {
     padding-left: 15px;
 }
 
-/* --- CONTADOR ESTILO EMPRESAS (AZUL) --- */
+/* --- CONTADOR ESTILO PROGRAMADORES (AZUL) --- */
 .contador-resultados-azul {
     width: 100%;
     display: flex;
@@ -251,17 +262,16 @@ body.fondo-oscuro-neon {
     align-items: center;
     gap: 15px;
     position: relative;
-    padding-bottom: 10px; /* Espacio para la línea */
+    padding-bottom: 10px; 
 }
 
-/* Línea decorativa azul centrada y más pequeña */
 .contenedor-texto-contador::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 75%;
-    transform: translateX(-110%); /* Centrada bajo el texto */
-    width: 45%; /* Más corta */
+    transform: translateX(-110%);
+    width: 45%; 
     height: 2px;
     background: #00f3ff;
     box-shadow: 0 0 10px #00f3ff;
@@ -314,17 +324,19 @@ body.fondo-oscuro-neon {
     gap: 30px;
 }
 
-/* ESTILO TARJETA */
+/* ESTILO TARJETA (AHORA FLUIDO) */
 .tarjeta-perfil-neon {
     background: #1a1a1a; 
     border: 1px solid rgba(255, 204, 0, 0.4);
     border-radius: 20px;
-    width: 260px; 
+    width: 100%; 
+    max-width: 260px; 
     min-height: 430px; 
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease-out;
+    box-sizing: border-box;
 }
 
 .tarjeta-perfil-neon:hover { 
@@ -341,6 +353,7 @@ body.fondo-oscuro-neon {
     justify-content: space-between;
     align-items: center;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .foto-perfil {
@@ -348,6 +361,7 @@ body.fondo-oscuro-neon {
     border-radius: 50%;
     border: 2px solid #FFCC00;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 
 .bio-recortada {
@@ -356,6 +370,7 @@ body.fondo-oscuro-neon {
     height: 60px;
     margin-bottom: 15px;
     overflow: hidden;
+    width: 100%;
 }
 
 .bio-recortada.interactiva { cursor: pointer; }
@@ -382,20 +397,13 @@ body.fondo-oscuro-neon {
     transition: all 0.3s ease; 
 }
 
-.tags span:hover {
-    background: #FFCC00;
-    color: #000;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
-    border-color: #FFCC00;
-    transform: translateY(-5px); 
-}
-
-.grid-techs-3 span:hover {
+.tags span:hover, .grid-techs-3 span:hover {
     background: #FFCC00;
     color: #000;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
     border-color: #FFCC00;
 }
+.tags span:hover { transform: translateY(-5px); }
 
 .tech-toggle { 
     cursor: pointer; 
@@ -421,6 +429,7 @@ body.fondo-oscuro-neon {
     width: 100%;
     text-transform: uppercase;
     transition: all 0.3s ease;
+    margin-top: auto;
 }
 .btn-perfil:hover { 
     background: #FFCC00; 
@@ -464,6 +473,7 @@ body.fondo-oscuro-neon {
     padding: 20px;
     display: none; 
     flex-direction: column;
+    border-radius: 20px;
 }
 
 .tarjeta-perfil-neon.tech-expanded .contenido-perfil,
@@ -515,6 +525,66 @@ body.fondo-oscuro-neon {
     max-height: 280px;
 }
 
+/* =========================================
+   DISEÑO RESPONSIVE Y MÓVIL
+   ========================================= */
+
 @media (max-width: 1050px) {
-    .btn-nav { display: none; }
+    .btn-nav { display: none !important; }
+}
+
+@media (max-width: 768px) {
+    /* Barra de búsqueda adaptada */
+    .titulo-neon { font-size: 2rem; }
+    .input-wrapper { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
+    .caja-busqueda-neon input { padding: 8px 10px; text-align: center; font-size: 0.9rem; }
+    .btn-buscar-neon { width: 100%; padding: 12px; font-size: 1rem; }
+    .funnel-icon { position: absolute; top: -45px; right: 0; background: rgba(0,0,0,0.5); border-radius: 50%; border: 1px solid #FFCC00; }
+    
+    .grid-checkboxes { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    .controles-globales { flex-direction: column; align-items: stretch; }
+    .btn-control { text-align: center; padding: 10px; }
+
+    /* Adaptación contadores */
+    .contenedor-texto-contador { flex-direction: column; text-align: center; padding-bottom: 20px; }
+    .contenedor-texto-contador::after { left: 50%; transform: translateX(-50%); width: 80%; }
+
+    /* Forzar a que la cuadrícula se ponga en 1 sola columna centrada */
+    .grid-resultados-inner {
+        grid-template-columns: 1fr;
+    }
+    .grid-resultados-inner .tarjeta-perfil-neon {
+        margin: 0 auto; /* Centrar la tarjeta */
+    }
+
+    /* Magia para el carrusel en móvil: Desactiva el JS y usa Scroll táctil nativo */
+    .carrusel-contenedor {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 20px; 
+        width: 100vw; 
+        margin-left: -20px; 
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .carrusel-track {
+        transform: none !important; 
+        width: max-content;
+        gap: 15px;
+    }
+    
+    .carrusel-track .tarjeta-perfil-neon {
+        width: 80vw; 
+        max-width: 300px;
+        scroll-snap-align: center;
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-neon { font-size: 1.6rem; }
+    .subtitulo-neon { font-size: 1.4rem; }
+    .carrusel-track .tarjeta-perfil-neon { width: 85vw; }
 }

@@ -50,6 +50,29 @@
             max-width: 100%;
             word-wrap: break-word;
         }
+
+        /* BOTONES EN FILA */
+        .botones-proyecto {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .botones-proyecto button {
+            flex: 1;
+        }
+
+        /* MODAL (por si acaso no lo tienes en CSS global) */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
     </style>
 </head>
 
@@ -109,26 +132,31 @@
                 </a>
             </div>
 
-            <!-- ACORDEÓN -->
             <div id="acordeon-proyectos">
 
                 <th:block th:each="p : ${proyectos}">
 
-                    <h3 th:text="${p.titulo}">
-                        Proyecto
-                    </h3>
+                    <h3 th:text="${p.titulo}"></h3>
 
                     <div>
                         <div class="inner-content">
 
-                            <p th:text="${p.descripcion}">
-                                Descripción del proyecto...
-                            </p>
+                            <p th:text="${p.descripcion}"></p>
 
-                            <button class="boton-ver-proyecto"
-                                    th:onclick="'window.location.href=\'/proyectos/proyecto/' + ${p.id} + '\';'">
-                                VER PROYECTO
-                            </button>
+                            <div class="botones-proyecto">
+
+                                <button class="boton-ver-proyecto"
+                                        th:onclick="'window.location.href=\'/proyectos/proyecto/' + ${p.id} + '\';'">
+                                    VER PROYECTO
+                                </button>
+
+                                <button class="boton-eliminar-proyecto"
+                                        th:attr="data-id=${p.id}"
+                                        onclick="abrirModalEliminarLista(this)">
+                                    BORRAR PROYECTO
+                                </button>
+
+                            </div>
 
                         </div>
                     </div>
@@ -143,47 +171,104 @@
 
 </main>
 
+<!-- MODAL -->
+<div id="modal-eliminar" class="modal">
+    <div class="contenido-modal-confirmacion">
+
+        <p>¿Estás seguro de que quieres eliminar este proyecto?</p>
+
+        <div class="botones-confirmacion">
+            <button class="btn-eliminar" onclick="eliminarProyecto()">
+                Sí, eliminar
+            </button>
+
+            <button onclick="cerrarModalEliminar()">
+                Cancelar
+            </button>
+        </div>
+
+    </div>
+</div>
+
 <div th:replace="~{includes/footer :: footer}"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <script>
-    $(function () {
 
-        const $acc = $("#acordeon-proyectos");
+let proyectoIdEliminar = null;
 
-        if ($acc.hasClass("ui-accordion")) {
-            $acc.accordion("destroy");
-        }
+// ACCORDION
+$(function () {
 
-        $acc.accordion({
-            collapsible: true,
-            heightStyle: "content",
-            active: false,
-            animate: 200
-        });
+    const $acc = $("#acordeon-proyectos");
 
-        inicializarHeaderProyectos();
-    });
-
-    function inicializarHeaderProyectos() {
-        const navPerfil = document.getElementById('nav-perfil');
-
-        if (navPerfil) {
-            navPerfil.classList.add('activo');
-        } else {
-            document.querySelectorAll('header a').forEach(l => {
-                if (l.href.includes('profileView') || l.href.includes('projectlist')) {
-                    l.classList.add('activo');
-                }
-            });
-        }
+    if ($acc.hasClass("ui-accordion")) {
+        $acc.accordion("destroy");
     }
 
-    $(document).on("click", ".boton-ver-proyecto", function (e) {
-        e.stopPropagation();
+    $acc.accordion({
+        collapsible: true,
+        heightStyle: "content",
+        active: false,
+        animate: 200
     });
+
+    inicializarHeaderProyectos();
+});
+
+// HEADER
+function inicializarHeaderProyectos() {
+    document.querySelectorAll('header a').forEach(l => {
+        if (l.href.includes('projectlist')) {
+            l.classList.add('activo');
+        }
+    });
+}
+
+// EVITAR CLICK ACCORDION
+$(document).on("click", ".boton-ver-proyecto, .boton-eliminar-proyecto", function (e) {
+    e.stopPropagation();
+});
+
+// MODAL OPEN
+function abrirModalEliminarLista(btn) {
+    proyectoIdEliminar = btn.getAttribute("data-id");
+    $("#modal-eliminar").css("display", "flex").hide().fadeIn(200);
+    document.body.style.overflow = "hidden";
+}
+
+// MODAL CLOSE
+function cerrarModalEliminar() {
+    $("#modal-eliminar").fadeOut(200);
+    document.body.style.overflow = "auto";
+}
+
+// DELETE
+function eliminarProyecto() {
+
+    if (!proyectoIdEliminar) return;
+
+    fetch("/proyectos/delete/" + proyectoIdEliminar, {
+        method: "POST"
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Error HTTP");
+        return res.text();
+    })
+    .then(data => {
+        if (data === "OK") {
+            window.location.href = "/proyectos/projectList";
+        } else {
+            alert("Error: " + data);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error eliminando proyecto");
+    });
+}
 
 </script>
 

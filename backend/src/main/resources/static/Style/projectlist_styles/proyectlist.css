@@ -366,33 +366,149 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
     overflow-x: hidden;
 }
 
-/* BOTON BORRAR */
+/* =========================
+   BOTÓN BORRAR PROYECTO (IGUAL AL DE VER PROYECTO)
+   ========================= */
 
-.btn-eliminar {
-    border: 2px solid #ff4d4d !important;
-    color: #ff4d4d !important;
-}
+   body.fondo-oscuro-neon .boton-eliminar-proyecto {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
 
-.btn-eliminar:hover {
-    background-color: #ff4d4d !important;
-    color: #111 !important;
-    box-shadow: 0 0 20px rgba(255, 77, 77, 0.8) !important;
-}
+    background-color: #050505 !important;
+    color: #ff3b3b !important;
 
-/* ESTILOS PARA EL MODAL */
+    border: 2px solid #ff3b3b !important;
+    border-radius: 10px !important;
 
-.contenido-modal-confirmacion {
-    background-color: #1a1a1a;
-    border: 2px solid #ff4d4d;
-    border-radius: 20px;
-    padding: 30px;
+    font-weight: bold !important;
+    cursor: pointer;
+    text-transform: uppercase;
     text-align: center;
-    box-shadow: 0 0 25px rgba(255, 77, 77, 0.5);
+    text-decoration: none;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+
+    margin-top: 25px;
+
+    height: auto;
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
 }
 
+body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
+    background-color: #ff3b3b !important;
+    color: #050505 !important;
+
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.6) !important;
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   MODAL ELIMINAR - FIX REAL
+   ========================= */
+
+   .contenido-modal-confirmacion {
+    background-color: #1a1a1a;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 35px 40px;
+
+    min-width: 420px;
+    max-width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+.contenido-modal-confirmacion p {
+    font-size: 1.3rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* CONTENEDOR BOTONES */
 .botones-confirmacion {
     display: flex;
+    justify-content: space-between;
     gap: 20px;
+}
+
+/* 🔥 FORZAMOS TODOS LOS BOTONES DEL MODAL */
+#modal-eliminar button {
+    flex: 1;
+
+    padding: 12px;
+    font-size: 0.95rem;
+
+    border-radius: 10px !important;
+    cursor: pointer;
+
+    text-transform: uppercase;
+    font-weight: bold;
+
+    transition: all 0.25s ease;
+
+    display: flex;
+    align-items: center;
     justify-content: center;
-    margin-top: 25px;
+
+    background-color: #050505;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+}
+
+/* BOTÓN ELIMINAR */
+#modal-eliminar .btn-eliminar {
+    border: 2px solid #ff3b3b !important;
+    color: #ff3b3b !important;
+}
+
+/* HOVER ELIMINAR */
+#modal-eliminar .btn-eliminar:hover {
+    background-color: #ff3b3b !important;
+    color: #111 !important;
+    box-shadow: 0 0 15px rgba(255, 59, 59, 0.6);
+    transform: translateY(-2px);
+}
+
+/* HOVER CANCELAR */
+#modal-eliminar button:not(.btn-eliminar):hover {
+    background-color: #FFCC00;
+    color: #050505;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   OVERLAY OSCURECIDO MODAL
+   ========================= */
+   #modal-eliminar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    /* 🔥 CASI NEGRO (como quieres) */
+    background: rgba(0, 0, 0, 0.96);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
 }

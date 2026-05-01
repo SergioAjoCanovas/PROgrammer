@@ -3,6 +3,7 @@ package com.programmer.backend.controller;
 import com.programmer.backend.domain.Proyecto;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.ProyectoRepository;
+import com.programmer.backend.service.ProyectoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,12 @@ import java.util.stream.Stream;
 public class ProyectoController {
 
     private final ProyectoRepository proyectoRepository;
+    private final ProyectoService proyectoService;
 
-    public ProyectoController(ProyectoRepository proyectoRepository) {
+    public ProyectoController(ProyectoRepository proyectoRepository,
+                              ProyectoService proyectoService) {
         this.proyectoRepository = proyectoRepository;
+        this.proyectoService = proyectoService;
     }
 
     // =========================================================
@@ -78,10 +82,10 @@ public class ProyectoController {
     }
 
     // =========================================================
-    // VER PROYECTO INDIVIDUAL
+    // VER PROYECTO
     // =========================================================
     @GetMapping("/proyecto/{id}")
-    public String verProyecto(@PathVariable Long id, Model model, HttpSession session) {
+    public String verProyecto(@PathVariable Long id, Model model) {
 
         Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
 
@@ -108,7 +112,7 @@ public class ProyectoController {
     }
 
     // =========================================================
-    // LISTA DE PROYECTOS DEL USUARIO (FIX REAL)
+    // LISTA PROYECTOS
     // =========================================================
     @GetMapping("/projectList")
     public String projectList(HttpSession session, Model model) {
@@ -120,7 +124,7 @@ public class ProyectoController {
         }
 
         List<Proyecto> proyectos =
-        proyectoRepository.findByAutorId(usuario.getId());
+                proyectoRepository.findByAutorId(usuario.getId());
 
         model.addAttribute("usuario", usuario);
         model.addAttribute("proyectos", proyectos);
@@ -129,7 +133,35 @@ public class ProyectoController {
     }
 
     // =========================================================
-    // HANDLER DE ERRORES DE SUBIDA
+    // BORRAR PROYECTO (POST + FETCH FRIENDLY)
+    // =========================================================
+    @PostMapping("/delete/{id}")
+    @ResponseBody
+    public String eliminarProyecto(@PathVariable Long id, HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            return "NO_LOGIN";
+        }
+
+        Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
+
+        if (proyecto == null) {
+            return "NOT_FOUND";
+        }
+
+        if (!proyecto.getAutor().getId().equals(usuario.getId())) {
+            return "UNAUTHORIZED";
+        }
+
+        proyectoService.eliminarProyecto(proyecto);
+
+        return "OK";
+    }
+
+    // =========================================================
+    // HANDLER
     // =========================================================
     @ControllerAdvice
     public static class GlobalExceptionHandler {

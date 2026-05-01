@@ -244,3 +244,69 @@ img {
 .tarjeta-proyecto-detalle * {
     max-width: 100%;
 }
+
+.btn-eliminar {
+    border: 2px solid #ff3b3b !important;
+    color: #ff3b3b !important;
+    background-color: #0e0e0e !important;
+}
+
+.btn-eliminar:hover {
+    background-color: #ff3b3b !important;
+    color: #111 !important;
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.8) !important;
+    transform: scale(1.06) translateY(-2px);
+}
+
+/* =========================
+   MODAL ELIMINAR - MEJORADO
+   ========================= */
+
+   .contenido-modal-confirmacion {
+    background-color: #1a1a1a;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 35px 40px;
+    min-width: 420px;
+    max-width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+/* Texto del modal */
+.contenido-modal-confirmacion p {
+    font-size: 1.3rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Contenedor botones */
+.botones-confirmacion {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Botones dentro del modal */
+.botones-confirmacion .btn-accion-neon {
+    flex: 1;
+    padding: 12px;
+    font-size: 0.95rem;
+}
+
+.botones-confirmacion .btn-eliminar {
+    background-color: #0e0e0e;
+    border: 2px solid #ff3b3b !important;
+    color: #ff3b3b !important;
+}
+
+.botones-confirmacion .btn-eliminar:hover {
+    background-color: #ff3b3b !important;
+    color: #111 !important;
+}

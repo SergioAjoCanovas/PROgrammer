@@ -175,7 +175,7 @@ CREATE TABLE proyecto_tecnologias(
 	proyecto_id BIGINT,
     tecnologia_id BIGINT,
     PRIMARY KEY (proyecto_id, tecnologia_id),
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (tecnologia_id) REFERENCES tecnologias(id)
 );
 
@@ -189,7 +189,7 @@ CREATE TABLE evaluaciones(
     nota_documentacion INT CHECK (nota_documentacion BETWEEN 1 AND 10),
     comentario_tecnico TEXT,
     fecha_evaluacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (admin_id) REFERENCES usuarios(id)
 );
 
@@ -200,7 +200,7 @@ CREATE TABLE resenas_proyectos(
     usuario_id BIGINT,
 	comentario TEXT NOT NULL,
     fecha_resena TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+    FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
@@ -236,7 +236,7 @@ CREATE TABLE postulaciones (
     fecha_postulacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (oferta_id) REFERENCES ofertas_empleo(id),
     FOREIGN KEY (desarrollador_id) REFERENCES usuarios(id),
-    FOREIGN KEY (proyecto_vinculado_id) REFERENCES proyectos(id)
+    FOREIGN KEY (proyecto_vinculado_id) REFERENCES proyectos(id) ON DELETE CASCADE
 );
 
 -- Tabla de mensajes

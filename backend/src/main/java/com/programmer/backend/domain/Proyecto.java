@@ -59,7 +59,7 @@ public class Proyecto {
     )
     private List<Tecnologia> tecnologias;
 
-    // REVIEWS
-    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+    // BORRADO
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectReview> reviews;
 }

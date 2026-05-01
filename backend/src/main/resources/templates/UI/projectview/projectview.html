@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/projectview_styles/projectview.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/badgestatus.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -93,10 +94,10 @@
                 <!-- VALIDADO -->
                 <div class="fila-botones-neon">
 
-                    <span th:if="${proyecto.estaValidado}" class="badge-validado">
+                    <span th:if="${proyecto.estaValidado}" class="badge validado">
                         <i class="fas fa-check-circle"></i> Validado
                     </span>
-
+                    
                     <span th:unless="${proyecto.estaValidado}" class="badge no-validado">
                         <i class="fas fa-times-circle"></i> No validado
                     </span>

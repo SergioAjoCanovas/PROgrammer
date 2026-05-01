@@ -651,3 +651,41 @@ p, span, div, h1, h2, h3, h4 {
 .tech-extra-proyecto {
     display: none;
 }
+
+.icono-grid-top {
+    cursor: pointer;
+    color: var(--amarillo-neon);
+    transition: all 0.3s ease;
+}
+
+/* Hover estilo neón como el resto */
+.icono-grid-top:hover {
+    transform: scale(1.2);
+    color: #ffffff;
+    text-shadow: 0 0 10px var(--amarillo-neon),
+                 0 0 20px var(--amarillo-neon);
+}
+
+.icono-lapiz {
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.icono-lapiz:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px #ffffff,
+                 0 0 18px rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
+}
+
+.icono-papelera {
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.icono-papelera:hover {
+    color: #ff3b3b !important;
+    text-shadow: 0 0 8px #ff3b3b,
+                 0 0 18px rgba(255, 59, 59, 0.6);
+    transform: scale(1.2);
+}

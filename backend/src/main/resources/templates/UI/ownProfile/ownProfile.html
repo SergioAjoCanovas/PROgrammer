@@ -30,7 +30,7 @@
                                 <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}"></h2>
                                 <input type="text" id="nombre-perfil-input" class="input-nombre-perfil" style="display:none;" onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
                             </div>
-                            <i class="fas fa-pencil-alt icono-editar-nombre" onclick="activarEdicionNombre()"></i>
+                            <i class="fas fa-pencil-alt icono-editar-nombre icono-lapiz" onclick="activarEdicionNombre()"></i>
                         </div>
                         <div th:if="${media > 0}" style="margin-top: 10px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
                             Valoración: <span th:text="${media}">0</span> ⭐
@@ -40,12 +40,12 @@
                     <ul class="redes-sociales">
                         <li class="campo-red" data-type="github">
                             <span class="valor-red" id="github-display" th:classappend="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github)} ? ' clicable-red' : ''" th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}" th:attr="data-url=${usuarioHeader.github}"></span>
-                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto" onclick="activarEdicionRed('github')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo" onclick="eliminarRed('github')"></i></div>
+                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto icono-lapiz" onclick="activarEdicionRed('github')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo icono-papelera" onclick="eliminarRed('github')"></i></div>
                             <input type="text" id="github-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
                         <li class="campo-red" data-type="linkedin">
                             <span class="valor-red" id="linkedin-display" th:classappend="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin)} ? ' clicable-red' : ''" th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}" th:attr="data-url=${usuarioHeader.linkedin}"></span>
-                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto" onclick="activarEdicionRed('linkedin')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo" onclick="eliminarRed('linkedin')"></i></div>
+                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto icono-lapiz" onclick="activarEdicionRed('linkedin')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo icono-papelera" onclick="eliminarRed('linkedin')"></i></div>
                             <input type="text" id="linkedin-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
                     </ul>
@@ -76,7 +76,8 @@
 
         <div class="columna-derecha">
             <section class="tarjeta-acordeon card-proyectos-principal">
-                <div class="cabecera-tarjeta"><h2>MIS PROYECTOS</h2><i class="fas fa-th icono-grid-top"></i></div>
+                <div class="cabecera-tarjeta"><h2>MIS PROYECTOS</h2><i class="fas fa-th icono-grid-top"
+                    onclick="window.location.href='/proyectos/projectList'"></i></div>
                 <div class="rejilla-proyectos">
 
                     <!-- TARJETA CREAR PROYECTO -->
@@ -144,7 +145,7 @@
 
             <div class="fila-inferior">
                 <div class="tarjeta-acordeon info-half-card">
-                    <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto" onclick="activarEdicionBio()"></i></div>
+                    <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto icono-lapiz" onclick="activarEdicionBio()"></i></div>
                     <div id="bio-view"><p id="bio-texto" th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) ? usuarioHeader.biografia : 'Cuéntale al mundo más acerca de ti'}"></p></div>
                     <div id="bio-edit" style="display:none;">
                         <textarea id="bio-textarea" maxlength="500"></textarea>

@@ -219,3 +219,28 @@ body.fondo-oscuro-neon::before {
     .galeria-capturas { flex-direction: column; align-items: center; }
     .marco-captura { width: 100%; max-width: 500px; height: 250px; }
 }
+
+body {
+    overflow-x: hidden;
+}
+
+.contenedor-principal {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.texto-parrafo {
+    white-space: pre-wrap;       
+    overflow-wrap: anywhere;     
+    word-break: break-word;    
+    max-width: 100%;
+}
+
+.tarjeta-proyecto-detalle * {
+    max-width: 100%;
+}

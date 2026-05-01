@@ -45,6 +45,9 @@ body.fondo-oscuro-neon {
 
 .seccion-derecha-dinamica {
     flex: 1;
+
+    min-width: 0;
+    overflow-x: hidden;
 }
 
 /* =========================================================
@@ -57,7 +60,7 @@ body.fondo-oscuro-neon {
     border: 2px solid #FFCC00 !important;
     border-radius: 20px !important;
     box-shadow: 0 0 25px rgba(255, 204, 0, 0.2) !important;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .tarjeta-resenas-izq, .tarjeta-acordeon-contenedor { 
@@ -182,8 +185,8 @@ body.fondo-oscuro-neon .boton-ver-proyecto {
 /* Ajuste específico para el de ver proyecto (No ocupa todo el ancho) */
 body.fondo-oscuro-neon .boton-ver-proyecto {
     margin-top: 25px;
-    width: auto !important; 
-    padding: 12px 40px !important;
+    max-width: 100%;
+    white-space: normal;
 }
 
 /* Hover de los botones */
@@ -244,11 +247,17 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
     outline: none;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+
+    font-size: 1rem !important;
+    padding: 12px 18px !important;
+    margin: 10px 0 !important;
+    line-height: 1.2 !important;
+    box-sizing: border-box;
 }
 
 /* Animación Hover: Solo se aplica si NO tiene la clase active */
 #acordeon-proyectos .ui-accordion-header:not(.ui-accordion-header-active):hover {
-    transform: translateY(-5px) scale(1.01);
+    transform: translateY(-5px) scaleY(1.02);
     background-color: #292929 !important;
     box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
 }
@@ -299,4 +308,60 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
     line-height: 1.8;
     margin: 0;
     font-size: 1.1rem;
+}
+
+.ui-accordion {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.ui-accordion-content {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.inner-content p {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   FIX ACORDEÓN UI JQUERY
+   ========================= */
+
+   #acordeon-proyectos {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: visible;
+}
+
+/* HEADER DEL ACORDEÓN */
+.ui-accordion .ui-accordion-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100% !important;
+    max-width: 100%;
+
+    padding: 10px 14px !important;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    box-sizing: border-box;
+
+    transform-origin: center;
+}
+
+/* CONTENIDO */
+.ui-accordion .ui-accordion-content {
+    max-width: 100%;
+    overflow-x: hidden;
 }

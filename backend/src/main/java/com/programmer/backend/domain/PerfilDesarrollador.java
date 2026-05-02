@@ -23,7 +23,7 @@ public class PerfilDesarrollador {
     @Column(name = "github_url")
     private String githubUrl;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
         name = "perfil_tecnologia",
         joinColumns = @JoinColumn(name = "perfil_id"),
@@ -31,7 +31,9 @@ public class PerfilDesarrollador {
     )
     private Set<Tecnologia> tecnologias = new HashSet<>();
 
-    // GETTERS & SETTERS
+    // ======================
+    // GETTERS / SETTERS
+    // ======================
 
     public Long getId() {
         return id;
@@ -67,5 +69,21 @@ public class PerfilDesarrollador {
 
     public void setTecnologias(Set<Tecnologia> tecnologias) {
         this.tecnologias = tecnologias;
+    }
+
+    // ======================
+    // MÉTODOS IMPORTANTES
+    // ======================
+
+    public void addTecnologia(Tecnologia t) {
+        this.tecnologias.add(t);
+    }
+
+    public void removeTecnologia(Tecnologia t) {
+        this.tecnologias.remove(t);
+    }
+
+    public void clearTecnologias() {
+        this.tecnologias.clear();
     }
 }

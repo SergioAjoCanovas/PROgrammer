@@ -27,6 +27,10 @@ public class Postulacion {
     @Column(name = "mensaje_adjunto", length = 500)
     private String mensajeAdjunto;
 
+    // --- NUEVA COLUMNA AÑADIDA PARA EL CV ---
+    @Column(name = "cv_adjunto")
+    private String cvAdjunto;
+
     @Column(name = "fecha_postulacion", insertable = false, updatable = false)
     private Date fechaPostulacion;
 
@@ -70,6 +74,14 @@ public class Postulacion {
 
     public void setMensajeAdjunto(String mensajeAdjunto) {
         this.mensajeAdjunto = mensajeAdjunto;
+    }
+
+    public String getCvAdjunto() {
+        return cvAdjunto;
+    }
+
+    public void setCvAdjunto(String cvAdjunto) {
+        this.cvAdjunto = cvAdjunto;
     }
 
     public Date getFechaPostulacion() {

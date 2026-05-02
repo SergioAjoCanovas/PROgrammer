@@ -204,15 +204,15 @@ CREATE TABLE resenas_proyectos(
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
--- Tabla de ofertas (ACTUALIZADA CON LAS NUEVAS COLUMNAS)
+-- Tabla de ofertas 
 CREATE TABLE ofertas_empleo(
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,
     empresa_id BIGINT,
     titulo VARCHAR(100),
     descripcion TEXT,
-    requisitos TEXT,          -- <-- NUEVA COLUMNA
-    ofrecemos TEXT,            -- <-- NUEVA COLUMNA
-    rango_salarial VARCHAR(100), -- <-- NUEVA COLUMNA
+    requisitos TEXT,          
+    ofrecemos TEXT,            
+    rango_salarial VARCHAR(100), 
     activa BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (empresa_id) REFERENCES usuarios(id)
 );
@@ -226,13 +226,14 @@ CREATE TABLE oferta_tecnologia (
     FOREIGN KEY (tecnologia_id) REFERENCES tecnologias(id)
 );
 
--- Tabla de postulaciones
+-- Tabla de postulaciones (ACTUALIZADA CON CV ADJUNTO)
 CREATE TABLE postulaciones (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     oferta_id BIGINT,
     desarrollador_id BIGINT,
     proyecto_vinculado_id BIGINT, 
     mensaje_adjunto VARCHAR(500),
+    cv_adjunto VARCHAR(255), -- <-- NUEVA COLUMNA AÑADIDA AQUÍ
     fecha_postulacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (oferta_id) REFERENCES ofertas_empleo(id),
     FOREIGN KEY (desarrollador_id) REFERENCES usuarios(id),
@@ -262,6 +263,6 @@ CREATE TABLE favoritos (
 
 -- Inserción de administradores por defecto
 INSERT INTO usuarios (username, email, password, foto_perfil, id_rol) VALUES 
-('Sergio Ajo', 'sergiowork47@gmail.com', '$2a$12$dIm9H6z6vRMyDa8MzqJZXuf8J617eWGdTcExMt3BkDJYLi2foAkN6', '/Img/perfiles/SergioAjo.jpg', 1),
+('Sergio Ajo', 'sergiowork47@gmail.com', '$2a$12$$2a$12$osg0yoVo26.Pq7PoshFyJ.SpwWfQ3f3crGXFFRsCKYQGPAD3pPSlO', '/Img/perfiles/SergioAjo.jpg', 1),
 ('David Alcázar', 'davidalcazar2015@gmail.com', '$2a$12$qJWqybbDpYHU5k4j8rO5xu/hHb2HzOqk1hM9w.DihIglbgILg2P5y', '/Img/perfiles/DavidAlcazar.jpg', 1),
 ('Cristian Escobar', 'crisescobardominguez@gmail.com', '$2a$12$sanMgW3WUX4uXuoEpO3yGeqXPHwlg2JEIN9Mju1wedAdSIzrhc3ou', '/Img/perfiles/CristianEscobar.jpg', 1);

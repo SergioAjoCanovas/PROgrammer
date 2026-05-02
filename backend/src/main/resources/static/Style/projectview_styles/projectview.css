@@ -310,3 +310,51 @@ img {
     background-color: #ff3b3b !important;
     color: #111 !important;
 }
+
+/* =========================================================
+   LISTA DOTTED (REDES + CV ESTILO UNIFICADO)
+   ========================================================= */
+
+   .lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+/* ITEM */
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+
+    color: #ccc;
+    text-decoration: none;
+
+    background-color: transparent;
+
+    transition: all 0.35s ease;
+}
+
+/* ICONO */
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+/* HOVER */
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
+}

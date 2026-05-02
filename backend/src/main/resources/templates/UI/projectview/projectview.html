@@ -120,14 +120,16 @@
                             th:src="${autor.fotoPerfil}">
                         <i th:unless="${autor.fotoPerfil != null}" class="fas fa-user" style="font-size: 3rem; color: #aaa;"></i>
                     </div>
-
                     <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != autor.id}" 
                          th:attr="data-id=${autor.id}" 
                          onclick="toggleFollowUser(this, event)">
                          <i class="fa-heart" th:classappend="${autor.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
                     </button>
                 </div>
-                <h2 class="nombre-usuario" th:text="${autor.username}">Autor</h2>
+                <h2 class="nombre-usuario">
+                    <span th:text="${autor.username}">Autor</span>
+                    <i th:if="${autor != null and (autor.estado == 'VERIFICADO' or (autor.rol != null and (autor.rol.nombre == 'ADMIN' or autor.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                </h2>
                 <div style="text-align: center; margin-top: 5px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
                     <i class="fas fa-users"></i> <span th:text="${autor.followersCountFormatted}">0</span> <span th:text="${autor.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
                 </div>
@@ -190,7 +192,10 @@
                 <!-- AUTOR -->
                 <p class="autor-texto">
                     <strong>Autor:</strong>
-                    <span th:text="${autor.username}">Autor</span>
+                    <span>
+                        <span th:text="${autor.username}">Autor</span>
+                        <i th:if="${autor != null and (autor.estado == 'VERIFICADO' or (autor.rol != null and (autor.rol.nombre == 'ADMIN' or autor.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </span>
                 </p>
 
                 <!-- BOTONES -->

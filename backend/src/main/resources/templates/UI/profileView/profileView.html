@@ -195,7 +195,10 @@
                              <i class="fas fa-heart"></i>
                         </div>
                     </div>
-                    <h2 class="nombre-usuario" th:text="${usuario.username}">Nombre</h2>
+                    <h2 class="nombre-usuario">
+                        <span th:text="${usuario.username}">Nombre</span>
+                        <i th:if="${usuario != null and (usuario.estado == 'VERIFICADO' or (usuario.rol != null and (usuario.rol.nombre == 'ADMIN' or usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </h2>
                     <div style="text-align: center; margin-top: 5px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
                         <i class="fas fa-users"></i> <span th:text="${usuario.followersCountFormatted}">0</span> <span th:text="${usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
                     </div>
@@ -261,7 +264,10 @@
                             <p style="color: #ccc; font-style: italic;">Este usuario aún no tiene proyectos publicados.</p>
                         </div>
 
-                        <div th:each="proyecto : ${ultimosProyectos}" class="tarjeta-mini-proyecto">
+                        <div th:each="proyecto : ${ultimosProyectos}" class="tarjeta-mini-proyecto" style="position: relative; padding-top: 40px;">
+                            <span th:if="${proyecto.estaValidado}" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 242, 255, 0.9); color: black; border-radius: 4px; padding: 3px 8px; font-size: 0.65em; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.5);">
+                                <i class="fas fa-check-circle"></i> VERIFICADO
+                            </span>
                             
                             <div class="carrusel-proyecto" th:if="${proyecto.imagenes != null and !proyecto.imagenes.isEmpty()}">
                                 <div class="carrusel-inner" th:id="'carrusel-inner-' + ${proyecto.id}">
@@ -322,7 +328,10 @@
                         </div>
                         <div th:each="r : ${reviews}" class="resena-item">
                             <div class="resena-header">
-                                <span class="resena-usuario" th:text="${r.autor.username}">Usuario</span>
+                                <span class="resena-usuario">
+                                    <span th:text="${r.autor.username}">Usuario</span>
+                                    <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </span>
                                 <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
                                     <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                 </span>

@@ -56,17 +56,20 @@ public class ProyectoService {
         private String descripcion;
         private List<String> imagenes;
         private List<Tecnologia> tecnologias;
+        private Boolean estaValidado;
 
         public ProyectoDTO(Long id,
                            String nombre,
                            String descripcion,
                            List<String> imagenes,
-                           List<Tecnologia> tecnologias) {
+                           List<Tecnologia> tecnologias,
+                           Boolean estaValidado) {
             this.id = id;
             this.nombre = nombre;
             this.descripcion = descripcion;
             this.imagenes = imagenes;
             this.tecnologias = tecnologias;
+            this.estaValidado = estaValidado;
         }
 
         public Long getId() { return id; }
@@ -74,6 +77,7 @@ public class ProyectoService {
         public String getDescripcion() { return descripcion; }
         public List<String> getImagenes() { return imagenes; }
         public List<Tecnologia> getTecnologias() { return tecnologias; }
+        public Boolean getEstaValidado() { return estaValidado; }
     }
 
     public List<ProyectoDTO> obtenerUltimosProyectos(Usuario usuario) {
@@ -92,7 +96,8 @@ public class ProyectoService {
                 p.getTitulo(),
                 p.getDescripcion(),
                 mapImagenes(p),
-                p.getTecnologias() != null ? p.getTecnologias() : List.of()
+                p.getTecnologias() != null ? p.getTecnologias() : List.of(),
+                p.getEstaValidado()
         );
     }
 

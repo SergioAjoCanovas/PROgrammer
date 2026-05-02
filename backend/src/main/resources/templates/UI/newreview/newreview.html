@@ -28,7 +28,10 @@
                             <i class="fas fa-heart"></i>
                         </div>
                     </div>
-                    <h2 class="nombre-usuario" th:text="${usuario.username}">Usuario</h2>
+                    <h2 class="nombre-usuario">
+                        <span th:text="${usuario.username}">Usuario</span>
+                        <i th:if="${usuario != null and (usuario.estado == 'VERIFICADO' or (usuario.rol != null and (usuario.rol.nombre == 'ADMIN' or usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </h2>
                 </div>
 
                 <div class="perfil-inferior">
@@ -98,7 +101,8 @@
                     <div class="reseña" th:each="r : ${reviews}">
                         <div class="reseña-header">
                             <span class="usuario-autor">
-                                <i class="fas fa-user-circle"></i> [[${r.autor.username}]]
+                                <i class="fas fa-user-circle"></i> <span th:text="${r.autor.username}"></span>
+                                <i th:if="${r.autor != null and (r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                             </span>
                             <span class="rating-visual" th:text="${#strings.repeat('⭐', r.rating)}"></span>
                         </div>

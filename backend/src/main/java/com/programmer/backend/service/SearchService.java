@@ -52,10 +52,14 @@ public class SearchService {
         List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
         return developers.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
-                .limit(10)
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .filter(perfil -> perfil.getTecnologias() != null && !perfil.getTecnologias().isEmpty())
+                .sorted((p1, p2) -> Integer.compare(
+                        p2.getUsuario().getFollowersCount(),
+                        p1.getUsuario().getFollowersCount()))
+                .limit(10)
                 .peek(this::sortTecnologiasByPriority)
                 .collect(Collectors.toList());
     }
@@ -68,6 +72,11 @@ public class SearchService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(perfil -> {
+                    // Filtrar si no tiene tecnologías asignadas
+                    if (perfil.getTecnologias() == null || perfil.getTecnologias().isEmpty()) {
+                        return false;
+                    }
+
                     // Filtrar por nombre si existe query
                     if (query != null && !query.trim().isEmpty()) {
                         if (!perfil.getUsuario().getUsername().toLowerCase().startsWith(query.toLowerCase().trim())) {

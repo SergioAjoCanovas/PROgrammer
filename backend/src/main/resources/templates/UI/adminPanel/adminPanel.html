@@ -113,19 +113,31 @@
         
         <h2 class="titulo-admin"><i class="fas fa-shield-alt"></i> Panel de Administración</h2>
 
-        <div class="tabs-admin">
-            <button class="tab-btn activo" onclick="mostrarTab('logueados')">Logueados</button>
-            <button class="tab-btn" onclick="mostrarTab('verificados')">Verificados</button>
+        <div class="tabs-admin main-tabs" style="margin-bottom: 20px; border-bottom: 2px solid #333;">
+            <button class="tab-btn main-tab-btn activo" onclick="mostrarMainTab('seccion-cuentas')">Verificar Cuentas</button>
+            <button class="tab-btn main-tab-btn" onclick="mostrarMainTab('seccion-proyectos')">Verificar Proyectos</button>
         </div>
 
-        <div id="logueados" class="tab-content activo">
+        <div id="seccion-cuentas" class="main-tab-content activo" style="display: block;">
+            <div class="tabs-admin sub-tabs">
+                <button class="tab-btn sub-tab-cuentas activo" onclick="mostrarTabCuentas('logueados')">Pendientes</button>
+                <button class="tab-btn sub-tab-cuentas" onclick="mostrarTabCuentas('verificados')">Verificados</button>
+            </div>
+
+        <div id="logueados" class="tab-content-cuentas activo" style="display: block;">
             <div class="grid-usuarios">
                 <div class="card-usuario" th:each="u : ${logueados}">
-                    <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
-                    <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
-                    <h3 th:text="${u.username}">Nombre</h3>
+                    <div style="position: relative; display: inline-block;">
+                        <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
+                        <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
+                    </div>
+                    <h3>
+                        <span th:text="${u.username}">Nombre</span>
+                        <i th:if="${u.estado == 'VERIFICADO' or (u.rol != null and (u.rol.nombre == 'ADMIN' or u.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </h3>
                     <div style="font-size: 0.8rem; color: #FFCC00; margin-top: 5px; margin-bottom: 5px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${u.followersCountFormatted}">0</span> <span th:text="${u.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                     <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
+                    <p class="email-usuario" th:text="${u.email}" style="font-size: 0.8rem; color: #ccc; margin-top: 2px; margin-bottom: 5px; word-break: break-all;">Email</p>
                     <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
 
                     <div class="botones-accion">
@@ -145,21 +157,27 @@
             </div>
         </div>
 
-        <div id="verificados" class="tab-content">
+        <div id="verificados" class="tab-content-cuentas" style="display: none;">
             <div class="grid-usuarios">
                 <div class="card-usuario" th:each="u : ${verificados}">
-                    <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
-                    <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
+                    <div style="position: relative; display: inline-block;">
+                        <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
+                        <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
+                    </div>
                     <h3>
                         <span th:text="${u.username}">Nombre</span>
                         <i class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                     </h3>
                     <div style="font-size: 0.8rem; color: #FFCC00; margin-top: 5px; margin-bottom: 5px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${u.followersCountFormatted}">0</span> <span th:text="${u.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                     <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
+                    <p class="email-usuario" th:text="${u.email}" style="font-size: 0.8rem; color: #ccc; margin-top: 2px; margin-bottom: 5px; word-break: break-all;">Email</p>
                     <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
 
                     <div class="botones-accion">
                         <a th:href="@{/profileView/{id}(id=${u.id})}" class="btn-perfil"><i class="fas fa-eye"></i></a>
+                        <form th:if="${u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/desverificar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'desverificar');">
+                            <button type="submit" class="btn-eliminar" title="Quitar Verificación"><i class="fas fa-times"></i></button>
+                        </form>
                         <form th:if="${u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/eliminar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminar');">
                             <button type="submit" class="btn-eliminar" title="Eliminar"><i class="fas fa-trash"></i></button>
                         </form>
@@ -171,6 +189,105 @@
                 <p>No hay usuarios verificados.</p>
             </div>
         </div>
+        </div> <!-- Fin seccion cuentas -->
+
+        <div id="seccion-proyectos" class="main-tab-content" style="display: none;">
+            <div class="tabs-admin sub-tabs">
+                <button class="tab-btn sub-tab-proyectos activo" onclick="mostrarTabProyectos('proyectos-pendientes')">Pendientes</button>
+                <button class="tab-btn sub-tab-proyectos" onclick="mostrarTabProyectos('proyectos-verificados')">Verificados</button>
+            </div>
+
+            <div id="proyectos-pendientes" class="tab-content-proyectos activo" style="display: block;">
+                <div class="grid-usuarios">
+                    <div class="card-usuario" th:each="entry : ${proyectosNoValidados}">
+                        <!-- Info del usuario (desplegable) -->
+                        <div class="usuario-proyectos-header" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #333;" th:onclick="'toggleUserProjects(' + ${entry.key.id} + ')'">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="position: relative; display: inline-block;">
+                                    <img th:if="${entry.key.fotoPerfil != null and entry.key.fotoPerfil != ''}" th:src="@{${entry.key.fotoPerfil}}" class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" alt="Foto">
+                                    <i th:if="${entry.key.fotoPerfil == null or entry.key.fotoPerfil == ''}" class="fas fa-user-circle" style="font-size: 50px; color: #555;"></i>
+                                </div>
+                                <div style="text-align: left;">
+                                    <h3 style="margin: 0; font-size: 1.1em;">
+                                        <span th:text="${entry.key.username}">Nombre</span>
+                                        <i th:if="${entry.key.estado == 'VERIFICADO' or (entry.key.rol != null and (entry.key.rol.nombre == 'ADMIN' or entry.key.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                    </h3>
+                                    <span style="font-size: 0.8em; color: #FFCC00;"><span th:text="${#lists.size(entry.value)}"></span> proyectos pendientes</span>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-down" th:id="'icon-user-' + ${entry.key.id}"></i>
+                        </div>
+
+                        <!-- Lista de proyectos del usuario -->
+                        <div th:id="'proyectos-user-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
+                            <div th:each="p : ${entry.value}" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444;">
+                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00;"></h4>
+                                <div class="botones-accion" style="margin-top: 10px; justify-content: flex-start;">
+                                    <a th:href="@{/proyectos/proyecto/{id}(id=${p.id})}" target="_blank" class="btn-perfil" title="Ver Proyecto"><i class="fas fa-eye"></i></a>
+                                    <form th:action="@{/adminPanel/verificarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'verificarProyecto');">
+                                        <button type="submit" class="btn-verificar" title="Verificar Proyecto"><i class="fas fa-check"></i></button>
+                                    </form>
+                                    <form th:action="@{/adminPanel/eliminarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminarProyecto');">
+                                        <button type="submit" class="btn-eliminar" title="Eliminar Proyecto"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${proyectosNoValidados == null or proyectosNoValidados.isEmpty()}" class="mensaje-vacio">
+                    <i class="fas fa-folder-open"></i>
+                    <p>No hay proyectos pendientes de validación.</p>
+                </div>
+            </div>
+
+            <div id="proyectos-verificados" class="tab-content-proyectos" style="display: none;">
+                <div class="grid-usuarios">
+                    <div class="card-usuario" th:each="entry : ${proyectosValidados}">
+                        <div class="usuario-proyectos-header" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #333;" th:onclick="'toggleUserProjectsValidados(' + ${entry.key.id} + ')'">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="position: relative; display: inline-block;">
+                                    <img th:if="${entry.key.fotoPerfil != null and entry.key.fotoPerfil != ''}" th:src="@{${entry.key.fotoPerfil}}" class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" alt="Foto">
+                                    <i th:if="${entry.key.fotoPerfil == null or entry.key.fotoPerfil == ''}" class="fas fa-user-circle" style="font-size: 50px; color: #555;"></i>
+                                </div>
+                                <div style="text-align: left;">
+                                    <h3 style="margin: 0; font-size: 1.1em;">
+                                        <span th:text="${entry.key.username}">Nombre</span>
+                                        <i th:if="${entry.key.estado == 'VERIFICADO' or (entry.key.rol != null and (entry.key.rol.nombre == 'ADMIN' or entry.key.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                    </h3>
+                                    <span style="font-size: 0.8em; color: #FFCC00;"><span th:text="${#lists.size(entry.value)}"></span> proyectos validados</span>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-down" th:id="'icon-user-validados-' + ${entry.key.id}"></i>
+                        </div>
+
+                        <div th:id="'proyectos-user-validados-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
+                            <div th:each="p : ${entry.value}" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; position: relative;">
+                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; display: inline-block;"></h4>
+                                <!-- Div azulito de verificado -->
+                                <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 8px; vertical-align: middle;">
+                                    <i class="fas fa-check-circle"></i> VERIFICADO
+                                </span>
+                                
+                                <div class="botones-accion" style="margin-top: 10px; justify-content: flex-start;">
+                                    <a th:href="@{/proyectos/proyecto/{id}(id=${p.id})}" target="_blank" class="btn-perfil" title="Ver Proyecto"><i class="fas fa-eye"></i></a>
+                                    <form th:action="@{/adminPanel/desverificarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'desverificarProyecto');">
+                                        <button type="submit" class="btn-eliminar" title="Quitar Verificación"><i class="fas fa-times"></i></button>
+                                    </form>
+                                    <form th:action="@{/adminPanel/eliminarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminarProyecto');">
+                                        <button type="submit" class="btn-eliminar" title="Eliminar Proyecto"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${proyectosValidados == null or proyectosValidados.isEmpty()}" class="mensaje-vacio">
+                    <i class="fas fa-folder-open"></i>
+                    <p>No hay proyectos validados.</p>
+                </div>
+            </div>
+        </div> <!-- Fin seccion proyectos -->
     </div>
 </main>
 
@@ -208,10 +325,30 @@
             modalTitle.innerHTML = '<i class="fas fa-check-circle"></i> Verificar Usuario';
             modalMessage.innerText = '¿Estás seguro de que deseas verificar a este usuario? Obtendrá la marca azul en su perfil.';
             btnConfirmar.innerHTML = '<i class="fas fa-check"></i> Sí, verificar';
+        } else if (accion === 'desverificar') {
+            modalBox.classList.add('modal-eliminar');
+            modalTitle.innerHTML = '<i class="fas fa-times-circle"></i> Quitar Verificación';
+            modalMessage.innerText = '¿Estás seguro de que deseas quitarle la verificación a este usuario? Perderá su marca azul.';
+            btnConfirmar.innerHTML = '<i class="fas fa-times"></i> Sí, quitar verificación';
         } else if (accion === 'eliminar') {
             modalBox.classList.add('modal-eliminar');
             modalTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Eliminar Usuario';
             modalMessage.innerText = 'ATENCIÓN: ¿Seguro que quieres borrar a este usuario? Se perderá permanentemente de la Base de Datos.';
+            btnConfirmar.innerHTML = '<i class="fas fa-trash"></i> Sí, eliminar';
+        } else if (accion === 'verificarProyecto') {
+            modalBox.classList.add('modal-verificar');
+            modalTitle.innerHTML = '<i class="fas fa-check-circle"></i> Verificar Proyecto';
+            modalMessage.innerText = '¿Estás seguro de que deseas verificar este proyecto? Cambiará su estado a validado y será destacado en el portal.';
+            btnConfirmar.innerHTML = '<i class="fas fa-check"></i> Sí, verificar';
+        } else if (accion === 'desverificarProyecto') {
+            modalBox.classList.add('modal-eliminar');
+            modalTitle.innerHTML = '<i class="fas fa-times-circle"></i> Quitar Verificación a Proyecto';
+            modalMessage.innerText = '¿Estás seguro de que deseas quitar la verificación a este proyecto? Dejará de ser destacado.';
+            btnConfirmar.innerHTML = '<i class="fas fa-times"></i> Sí, quitar verificación';
+        } else if (accion === 'eliminarProyecto') {
+            modalBox.classList.add('modal-eliminar');
+            modalTitle.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Eliminar Proyecto';
+            modalMessage.innerText = 'ATENCIÓN: ¿Seguro que quieres borrar este proyecto permanentemente?';
             btnConfirmar.innerHTML = '<i class="fas fa-trash"></i> Sí, eliminar';
         }
         
@@ -231,12 +368,56 @@
         });
     });
 
-    function mostrarTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('activo'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('activo'));
+    function mostrarMainTab(tabId) {
+        document.querySelectorAll('.main-tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.main-tab-btn').forEach(el => el.classList.remove('activo'));
         
-        document.getElementById(tabId).classList.add('activo');
+        document.getElementById(tabId).style.display = 'block';
         event.target.classList.add('activo');
+    }
+
+    function mostrarTabCuentas(tabId) {
+        document.querySelectorAll('.tab-content-cuentas').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.sub-tab-cuentas').forEach(el => el.classList.remove('activo'));
+        
+        document.getElementById(tabId).style.display = 'block';
+        event.target.classList.add('activo');
+    }
+
+    function mostrarTabProyectos(tabId) {
+        document.querySelectorAll('.tab-content-proyectos').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.sub-tab-proyectos').forEach(el => el.classList.remove('activo'));
+        
+        document.getElementById(tabId).style.display = 'block';
+        event.target.classList.add('activo');
+    }
+
+    function toggleUserProjects(userId) {
+        const div = document.getElementById('proyectos-user-' + userId);
+        const icon = document.getElementById('icon-user-' + userId);
+        if (div.style.display === 'none') {
+            div.style.display = 'block';
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        } else {
+            div.style.display = 'none';
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    }
+
+    function toggleUserProjectsValidados(userId) {
+        const div = document.getElementById('proyectos-user-validados-' + userId);
+        const icon = document.getElementById('icon-user-validados-' + userId);
+        if (div.style.display === 'none') {
+            div.style.display = 'block';
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        } else {
+            div.style.display = 'none';
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
     }
 
     window.addEventListener('load', () => {

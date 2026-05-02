@@ -37,10 +37,15 @@
         </div>
 
         <div th:each="post : ${postulaciones}" class="candidato-card">
-            <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/default-avatar.png'}" class="avatar-candidato">
+            <div style="position: relative; display: inline-block;">
+                <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/default-avatar.png'}" class="avatar-candidato">
+            </div>
             
             <div style="flex: 1;">
-                <h3 th:text="${post.desarrollador.username}" style="color: white; margin: 0 0 5px 0; font-size: 1.2rem;"></h3>
+                <h3 style="color: white; margin: 0 0 5px 0; font-size: 1.2rem;">
+                    <span th:text="${post.desarrollador.username}"></span>
+                    <i th:if="${post.desarrollador != null and (post.desarrollador.estado == 'VERIFICADO' or (post.desarrollador.rol != null and (post.desarrollador.rol.nombre == 'ADMIN' or post.desarrollador.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                </h3>
                 <span style="color: #666; font-size: 0.8rem;"><i class="fas fa-envelope"></i> <span th:text="${post.desarrollador.email}"></span></span>
                 
                 <div th:if="${post.mensajeAdjunto != null && !post.mensajeAdjunto.isEmpty()}" class="caja-mensaje">

@@ -27,7 +27,10 @@
 
                     <div class="info-superior">
                         <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="logo-empresa" alt="Logo Empresa">
-                        <p><strong>Empresa:</strong> <span th:text="${oferta.empresa?.username ?: 'Empresa Confidencial'}">Nombre Empresa</span></p>
+                        <p style="display: flex; align-items: center; gap: 5px;"><strong>Empresa:</strong> 
+                            <span th:text="${oferta.empresa?.username ?: 'Empresa Confidencial'}"></span>
+                            <i th:if="${oferta.empresa != null and (oferta.empresa.estado == 'VERIFICADO' or (oferta.empresa.rol != null and (oferta.empresa.rol.nombre == 'ADMIN' or oferta.empresa.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </p>
                     </div>
 
                     <div class="descripcion-proyecto">

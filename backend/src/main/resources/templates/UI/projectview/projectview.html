@@ -217,6 +217,12 @@
                         <i class="fas fa-comments"></i> VER RESEÑAS
                     </a>
 
+                    <a th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == autor.id or session.usuarioLogueado.rol.nombre == 'ADMIN')}"
+                        th:href="@{/proyectos/editar/{id}(id=${proyecto.id})}"
+                        class="btn-accion-neon">
+                        <i class="fas fa-edit"></i> EDITAR PROYECTO
+                    </a>
+
                     <!-- BOTÓN ELIMINAR -->
                     <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == autor.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and autor.rol.id != 1 and autor.rol.nombre != 'ADMIN'))}"
                             class="btn-accion-neon btn-eliminar"

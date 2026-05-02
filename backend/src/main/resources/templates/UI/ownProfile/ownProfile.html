@@ -9,12 +9,27 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .icono-grid-top:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon">
     <div th:replace="~{includes/header :: header}"></div>
 
-    <main class="contenedor-principal">
-        <aside class="columna-perfil">
+    <main class="contenedor-principal" style="align-items: center; justify-content: flex-start;">
+        <div class="vidrio-contenedor-perfil">
+            <!-- Pestañas de Navegación -->
+        <div class="tabs-neon">
+            <button class="tab-btn active" id="btn-tab-personalizacion" onclick="mostrarSeccion('personalizacion')">Personalización de Perfil</button>
+            <button class="tab-btn" id="btn-tab-seguimiento" onclick="mostrarSeccion('seguimiento')">Seguimiento</button>
+        </div>
+
+        <div id="seccion-personalizacion" style="display: flex; width: 100%; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+            <aside class="columna-perfil" style="flex: 0 0 320px;">
             <div class="tarjeta-acordeon profile-main-card">
                 <div class="perfil-superior">
                         <form id="formFoto" action="/usuario/uploadFoto" method="post" enctype="multipart/form-data" style="display:none;">
@@ -26,13 +41,17 @@
                             <i th:if="${usuarioHeader.fotoPerfil == null}" class="fas fa-camera icono-camera"></i>
                         </div>
                         <div class="contenedor-nombre-usuario">
-                            <div class="nombre-wrapper">
-                                <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}"></h2>
+                            <div class="nombre-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                                <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}" style="margin: 0;"></h2>
+                                <i th:if="${usuarioHeader != null and (usuarioHeader.estado == 'VERIFICADO' or (usuarioHeader.rol != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                                 <input type="text" id="nombre-perfil-input" class="input-nombre-perfil" style="display:none;" onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
                             </div>
-                            <i class="fas fa-pencil-alt icono-editar-nombre" onclick="activarEdicionNombre()"></i>
+                            <i class="fas fa-pencil-alt icono-editar-nombre icono-lapiz" onclick="activarEdicionNombre()"></i>
                         </div>
-                        <div th:if="${media > 0}" style="margin-top: 10px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
+                        <div style="text-align: center; margin-top: 5px; margin-bottom: 0px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
+                            <i class="fas fa-users"></i> <span th:text="${usuarioHeader.followersCountFormatted}">0</span> <span th:text="${usuarioHeader.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                        </div>
+                        <div th:if="${media > 0}" style="margin-top: 0px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
                             Valoración: <span th:text="${media}">0</span> ⭐
                         </div>
                 </div>
@@ -40,12 +59,12 @@
                     <ul class="redes-sociales">
                         <li class="campo-red" data-type="github">
                             <span class="valor-red" id="github-display" th:classappend="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github)} ? ' clicable-red' : ''" th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}" th:attr="data-url=${usuarioHeader.github}"></span>
-                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto" onclick="activarEdicionRed('github')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo" onclick="eliminarRed('github')"></i></div>
+                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto icono-lapiz" onclick="activarEdicionRed('github')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo icono-papelera" onclick="eliminarRed('github')"></i></div>
                             <input type="text" id="github-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
                         <li class="campo-red" data-type="linkedin">
                             <span class="valor-red" id="linkedin-display" th:classappend="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin)} ? ' clicable-red' : ''" th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}" th:attr="data-url=${usuarioHeader.linkedin}"></span>
-                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto" onclick="activarEdicionRed('linkedin')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo" onclick="eliminarRed('linkedin')"></i></div>
+                            <div class="acciones-red"><i class="fas fa-pencil-alt icono-editar-texto icono-lapiz" onclick="activarEdicionRed('linkedin')"></i><i class="fas fa-trash icono-borrar-texto icono-rojo icono-papelera" onclick="eliminarRed('linkedin')"></i></div>
                             <input type="text" id="linkedin-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
                     </ul>
@@ -76,7 +95,10 @@
 
         <div class="columna-derecha">
             <section class="tarjeta-acordeon card-proyectos-principal">
-                <div class="cabecera-tarjeta"><h2>MIS PROYECTOS</h2><i class="fas fa-th icono-grid-top"></i></div>
+                <div class="cabecera-tarjeta">
+                    <h2>MIS PROYECTOS</h2>
+                    <i class="fas fa-th icono-grid-top" style="color: white; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;" onclick="window.location.href='/proyectos/projectList'"></i>
+                </div>
                 <div class="rejilla-proyectos">
 
                     <!-- TARJETA CREAR PROYECTO -->
@@ -90,10 +112,17 @@
                     </div>
                 
                     <!-- PROYECTOS (2 ÚLTIMOS) -->
-                    <div th:each="p : ${ultimosProyectos}" class="tarjeta-mini-proyecto proyecto-card">
+                    <div th:each="p : ${ultimosProyectos}"
+                        class="tarjeta-mini-proyecto proyecto-card"
+                        th:attr="data-id=${p.id}" style="position: relative; padding-top: 40px;">
+                        <span th:if="${p.estaValidado}" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 242, 255, 0.9); color: black; border-radius: 4px; padding: 3px 8px; font-size: 0.65em; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.5);">
+                            <i class="fas fa-check-circle"></i> VERIFICADO
+                        </span>
                 
                         <!-- NOMBRE -->
-                        <h3 th:text="${p.nombre}">Nombre proyecto</h3>
+                        <h3>
+                            <span th:text="${p.nombre}">Nombre proyecto</span>
+                        </h3>
                 
                         <!-- DESCRIPCIÓN CON SCROLL -->
                         <div class="proyecto-desc" th:text="${p.descripcion}">
@@ -142,7 +171,7 @@
 
             <div class="fila-inferior">
                 <div class="tarjeta-acordeon info-half-card">
-                    <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto" onclick="activarEdicionBio()"></i></div>
+                    <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto icono-lapiz" onclick="activarEdicionBio()"></i></div>
                     <div id="bio-view"><p id="bio-texto" th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) ? usuarioHeader.biografia : 'Cuéntale al mundo más acerca de ti'}"></p></div>
                     <div id="bio-edit" style="display:none;">
                         <textarea id="bio-textarea" maxlength="500"></textarea>
@@ -162,7 +191,10 @@
 
                         <div th:each="r : ${reviews}" class="resena-item-own">
                             <div class="resena-header-own">
-                                <span class="resena-autor-own" th:text="${r.autor.username}">Usuario</span>
+                                <span class="resena-autor-own">
+                                    <span th:text="${r.autor.username}">Usuario</span>
+                                    <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </span>
                                 <span class="resena-estrellas-own">
                                     <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                 </span>
@@ -173,6 +205,81 @@
                 </div>
             </div>
         </div> 
+        </div> <!-- FIN SECCION PERSONALIZACION -->
+
+        <div id="seccion-seguimiento" style="display: none; width: 100%; flex-direction: column;">
+            
+            <!-- SECCION: AMIGOS -->
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-handshake"></i> Amigos (<span th:text="${amigos != null ? amigos.size() : 0}">0</span>)</h2>
+                <div class="grid-usuarios-seguimiento" th:if="${amigos != null and !amigos.isEmpty()}">
+                    <div class="usuario-seguimiento-card" th:each="user : ${amigos}">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
+                        <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
+                        <div class="seguimiento-acciones">
+                            <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p th:if="${amigos == null or amigos.isEmpty()}" style="color:#aaa;">No tienes amigos mutuamente seguidos.</p>
+            </div>
+
+            <!-- SECCION: SIGUIENDO -->
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-user-plus"></i> Usuarios que Sigues (<span th:text="${siguiendo != null ? siguiendo.size() : 0}">0</span>)</h2>
+                <div class="grid-usuarios-seguimiento" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
+                    <div class="usuario-seguimiento-card" th:each="user : ${siguiendo}">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
+                        <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
+                        <div class="seguimiento-acciones">
+                            <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p th:if="${siguiendo == null or siguiendo.isEmpty()}" style="color:#aaa;">No sigues a ningún usuario aún.</p>
+            </div>
+
+            <!-- SECCION: SEGUIDORES -->
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-users"></i> Tus Seguidores (<span th:text="${seguidores != null ? seguidores.size() : 0}">0</span>)</h2>
+                <div class="grid-usuarios-seguimiento" th:if="${seguidores != null and !seguidores.isEmpty()}">
+                    <div class="usuario-seguimiento-card" th:each="user : ${seguidores}">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
+                        <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
+                        <div class="seguimiento-acciones">
+                            <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" th:if="${siguiendo != null and siguiendo.contains(user)}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" th:unless="${siguiendo != null and siguiendo.contains(user)}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p th:if="${seguidores == null or seguidores.isEmpty()}" style="color:#aaa;">Aún no tienes seguidores.</p>
+            </div>
+
+        </div> <!-- FIN SECCION SEGUIMIENTO -->
+        </div> <!-- FIN VIDRIO CONTENEDOR PERFIL -->
     </main>
 
     <div id="toast" class="toast"></div>
@@ -199,6 +306,57 @@
             // Oculta el botón de MENOS y muestra el de MÁS
             document.getElementById('btn-menos-techs').style.display = 'none';
             document.getElementById('btn-mas-techs').style.display = 'inline-flex';
+        }
+
+        // --- LÓGICA DE PESTAÑAS (TABS) ---
+        function mostrarSeccion(seccion) {
+            document.getElementById('seccion-personalizacion').style.display = (seccion === 'personalizacion') ? 'flex' : 'none';
+            document.getElementById('seccion-seguimiento').style.display = (seccion === 'seguimiento') ? 'flex' : 'none';
+
+            document.getElementById('btn-tab-personalizacion').classList.toggle('active', seccion === 'personalizacion');
+            document.getElementById('btn-tab-seguimiento').classList.toggle('active', seccion === 'seguimiento');
+        }
+
+        // --- LÓGICA DE SEGUIMIENTO (SWEETALERT2) ---
+        function toggleFollowUserSeguimiento(btn, event) {
+            event.stopPropagation();
+            const targetId = btn.getAttribute('data-id');
+            const targetName = btn.getAttribute('data-username');
+            
+            // Asumimos que si estamos en la vista de seguimiento (amigos o siguiendo), ya los seguimos.
+            // Para "seguidores", el color del icono indica si los seguimos o no.
+            const icon = btn.querySelector('i');
+            const isFollowing = icon.classList.contains('fas');
+
+            if (isFollowing) {
+                // Confirmación para dejar de seguir
+                mostrarModalUnfollowGlobal(targetName).then((result) => {
+                    if (result.isConfirmed) {
+                        ejecutarToggleFollow(targetId, btn, false);
+                    }
+                });
+            } else {
+                // Seguir sin confirmación
+                ejecutarToggleFollow(targetId, btn, true);
+            }
+        }
+
+        function ejecutarToggleFollow(targetId, btn, isFollowingNow) {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => {
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Error al seguir/dejar de seguir");
+                }
+            })
+            .catch(err => console.error(err));
         }
     </script>
 
@@ -710,6 +868,23 @@ function toggleTechs(id) {
         extra.style.flexWrap = "wrap";
     }
 }
+
+document.addEventListener("click", function (e) {
+    const card = e.target.closest(".proyecto-card");
+    if (!card) return;
+
+    // Evita que clics en botones internos disparen la navegación
+    if (e.target.closest("button, a, .tag-tech, .tag-mas, .tech-extra-proyecto")) {
+        return;
+    }
+
+    const id = card.dataset.id;
+    if (id) {
+        window.location.href = "/proyectos/proyecto/" + id;
+    }
+});
+
+    //adadadadadd
     </script>
 </body>
 </html>

@@ -3,56 +3,69 @@ package com.programmer.backend.controller;
 import com.programmer.backend.domain.Proyecto;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.ProyectoRepository;
+import com.programmer.backend.service.ProyectoService;
 import jakarta.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/proyectos")
 public class ProyectoController {
 
     private final ProyectoRepository proyectoRepository;
+    private final ProyectoService proyectoService;
+    private final com.programmer.backend.repository.UsuarioRepository usuarioRepository;
 
-    public ProyectoController(ProyectoRepository proyectoRepository) {
+    public ProyectoController(ProyectoRepository proyectoRepository,
+                              ProyectoService proyectoService,
+                              com.programmer.backend.repository.UsuarioRepository usuarioRepository) {
         this.proyectoRepository = proyectoRepository;
+        this.proyectoService = proyectoService;
+        this.usuarioRepository = usuarioRepository;
     }
 
+    // =========================================================
+    // CREAR PROYECTO
+    // =========================================================
     @PostMapping("/crear")
     public String crearProyecto(@ModelAttribute Proyecto proyecto,
                                 @RequestParam("imagenes") MultipartFile[] imagenes,
                                 HttpSession session) {
-    
+
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-    
+
         if (usuario == null) {
             return "redirect:/login";
         }
-    
+
         proyecto.setAutor(usuario);
-    
+
         String uploadDir = System.getProperty("user.dir") + "/uploads/projects/";
-    
+
         try {
             for (int i = 0; i < imagenes.length; i++) {
-    
+
                 MultipartFile file = imagenes[i];
-    
-                if (!file.isEmpty()) {
-    
+
+                if (file != null && !file.isEmpty()) {
+
                     String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                     File dest = new File(uploadDir + fileName);
-    
+
                     dest.getParentFile().mkdirs();
                     file.transferTo(dest);
-    
+
                     String ruta = "/uploads/projects/" + fileName;
-    
+
                     switch (i) {
                         case 0 -> proyecto.setFoto1(ruta);
                         case 1 -> proyecto.setFoto2(ruta);
@@ -61,22 +74,141 @@ public class ProyectoController {
                     }
                 }
             }
-    
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
+
         proyectoRepository.save(proyecto);
-    
+
         return "redirect:/ownProfile";
     }
 
+    // =========================================================
+    // VER PROYECTO
+    // =========================================================
+    @GetMapping("/proyecto/{id}")
+    public String verProyecto(@PathVariable Long id, Model model) {
+
+        Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
+
+        if (proyecto == null) {
+            return "redirect:/ownProfile";
+        }
+
+        model.addAttribute("proyecto", proyecto);
+        model.addAttribute("autor", proyecto.getAutor());
+
+        List<String> imagenes = Stream.of(
+                proyecto.getFoto1(),
+                proyecto.getFoto2(),
+                proyecto.getFoto3(),
+                proyecto.getFoto4()
+        )
+        .filter(Objects::nonNull)
+        .filter(f -> !f.isBlank())
+        .toList();
+
+        model.addAttribute("imagenes", imagenes);
+
+        return "UI/projectView/projectView";
+    }
+
+    // =========================================================
+    // LISTA PROYECTOS
+    // =========================================================
+    @GetMapping("/projectList")
+    public String projectList(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+        return "redirect:/proyectos/projectList/" + usuario.getId();
+    }
+
+    @GetMapping("/projectList/{id}")
+    public String projectListUser(@PathVariable Long id, HttpSession session, Model model) {
+        Usuario targetUser = usuarioRepository.findById(id).orElse(null);
+        
+        if (targetUser == null) {
+            return "redirect:/login";
+        }
+
+        List<Proyecto> proyectos = proyectoRepository.findByAutorId(targetUser.getId());
+
+        model.addAttribute("usuario", targetUser);
+        model.addAttribute("proyectos", proyectos);
+
+        model.addAttribute("usuarioHeader", session.getAttribute("usuarioLogueado") != null ? session.getAttribute("usuarioLogueado") : targetUser);
+
+        String cvUrl = targetUser.getCurriculum();
+        String cvNombre = extraerNombreCV(cvUrl);
+
+        model.addAttribute("cvUrl", cvUrl);
+        model.addAttribute("cvNombre", cvNombre);
+
+        return "UI/projectlist/projectlist";
+    }
+
+    private String extraerNombreCV(String ruta) {
+        if (ruta == null || ruta.isEmpty()) return null;
+    
+        // Nos quedamos con lo que hay después del último "/"
+        String nombre = ruta.substring(ruta.lastIndexOf("/") + 1);
+    
+        // Opcional: quitar prefijos tipo timestamps si los usas
+        // Ej: 17123456789_cv_david.pdf → cv_david.pdf
+        if (nombre.contains("_")) {
+            nombre = nombre.substring(nombre.indexOf("_") + 1);
+        }
+    
+        return nombre;
+    }
+
+    // =========================================================
+    // BORRAR PROYECTO (POST + FETCH FRIENDLY)
+    // =========================================================
+    @PostMapping("/delete/{id}")
+    @ResponseBody
+    public String eliminarProyecto(@PathVariable Long id, HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            return "NO_LOGIN";
+        }
+
+        Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
+
+        if (proyecto == null) {
+            return "NOT_FOUND";
+        }
+
+        boolean isOwner = proyecto.getAutor().getId().equals(usuario.getId());
+        boolean isAdmin = usuario.getRol() != null && ("ADMIN".equalsIgnoreCase(usuario.getRol().getNombre()) || usuario.getRol().getId() == 1L);
+        boolean isProjectOwnerAdmin = proyecto.getAutor().getRol() != null && ("ADMIN".equalsIgnoreCase(proyecto.getAutor().getRol().getNombre()) || proyecto.getAutor().getRol().getId() == 1L);
+
+        if (!isOwner) {
+            if (isAdmin && !isProjectOwnerAdmin) {
+                // permitted: Admin deleting non-admin's project
+            } else {
+                return "UNAUTHORIZED";
+            }
+        }
+
+        proyectoService.eliminarProyecto(proyecto);
+
+        return "OK";
+    }
+
+    // =========================================================
+    // HANDLER
+    // =========================================================
     @ControllerAdvice
-    public class GlobalExceptionHandler {
+    public static class GlobalExceptionHandler {
 
         @ExceptionHandler(MaxUploadSizeExceededException.class)
         public String handleMaxSizeException(RedirectAttributes redirectAttributes) {
-
             redirectAttributes.addFlashAttribute("error", "FILE_TOO_LARGE");
             return "redirect:/proyectos/crear";
         }

@@ -254,30 +254,98 @@ html, body {
 }
 
 /* =========================================================
-   5. RESPONSIVE Y ESTADO ACTIVO HEADER
+   5. RESPONSIVE Y ESTADO ACTIVO HEADER (AQUÍ ESTÁ LA MAGIA)
    ========================================================= */
-@media (max-width: 768px) {
-    .cabecera-filtros {
-        flex-direction: column-reverse;
-        gap: 20px;
-    }
-    .tarjeta-oferta {
-        flex-direction: column;
-    }
-    .acciones-oferta {
-        width: 100%;
-        border-left: none;
-        border-top: 1px solid #333;
-        padding-top: 15px;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-}
-
 .activo, 
 header a.activo i, 
 header a.activo span {
     color: #FFCC00 !important;
     text-shadow: 0 0 10px #FFCC00 !important;
     opacity: 1 !important;
+}
+
+/* --- Ajustes para Tablets (hasta 768px) --- */
+@media (max-width: 768px) {
+    .cabecera-filtros {
+        flex-direction: column-reverse;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .filtro-contenedor {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .acciones-superiores {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .boton-ofertas-propias {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tarjeta-oferta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .logo-empresa {
+        align-self: center;
+        width: 75px;
+        height: 75px;
+        margin-bottom: 5px;
+    }
+
+    .acciones-oferta {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #333;
+        padding-left: 0;
+        padding-top: 15px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+    }
+}
+
+/* --- Ajustes para Móviles (hasta 480px) --- */
+@media (max-width: 480px) {
+    .contenedor-volver {
+        margin: 15px auto 0 auto;
+    }
+
+    .contenedor-principal-ofertas {
+        padding: 15px 15px 30px 15px;
+    }
+
+    .btn-filtro {
+        flex: 1 1 calc(50% - 10px);
+        text-align: center;
+        padding: 8px 5px;
+        font-size: 0.75rem;
+    }
+
+    .acciones-oferta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .estado-oferta {
+        justify-content: center;
+    }
+
+    .boton-postular {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    
+    .acciones-oferta > div {
+        width: 100% !important; 
+    }
 }

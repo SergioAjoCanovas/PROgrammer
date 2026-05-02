@@ -65,7 +65,7 @@ body.fondo-oscuro-neon::before {
 }
 
 .foto-perfil-contenedor { position: relative; width: 140px; height: 140px; margin: 0 auto 20px auto; }
-.circulo-foto { width: 100%; height: 100%; border-radius: 50%; background-color: #222; border: 3px solid #FFCC00; }
+.circulo-foto { width: 100%; height: 100%; border-radius: 50%; background-color: #222; border: 3px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
 .icono-corazon { 
     position: absolute; bottom: 5px; right: 5px; 
     color: #FFCC00; background: #333; padding: 8px; 
@@ -218,4 +218,143 @@ body.fondo-oscuro-neon::before {
     .columna-perfil { width: 100%; max-width: 600px; }
     .galeria-capturas { flex-direction: column; align-items: center; }
     .marco-captura { width: 100%; max-width: 500px; height: 250px; }
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.contenedor-principal {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.texto-parrafo {
+    white-space: pre-wrap;       
+    overflow-wrap: anywhere;     
+    word-break: break-word;    
+    max-width: 100%;
+}
+
+.tarjeta-proyecto-detalle * {
+    max-width: 100%;
+}
+
+.btn-eliminar {
+    border: 2px solid #ff3b3b !important;
+    color: #ff3b3b !important;
+    background-color: #0e0e0e !important;
+}
+
+.btn-eliminar:hover {
+    background-color: #ff3b3b !important;
+    color: #111 !important;
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.8) !important;
+    transform: scale(1.06) translateY(-2px);
+}
+
+/* =========================
+   MODAL ELIMINAR - MEJORADO
+   ========================= */
+
+   .contenido-modal-confirmacion {
+    background-color: #1a1a1a;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 35px 40px;
+    min-width: 420px;
+    max-width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+/* Texto del modal */
+.contenido-modal-confirmacion p {
+    font-size: 1.3rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Contenedor botones */
+.botones-confirmacion {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Botones dentro del modal */
+.botones-confirmacion .btn-accion-neon {
+    flex: 1;
+    padding: 12px;
+    font-size: 0.95rem;
+}
+
+.botones-confirmacion .btn-eliminar {
+    background-color: #0e0e0e;
+    border: 2px solid #ff3b3b !important;
+    color: #ff3b3b !important;
+}
+
+.botones-confirmacion .btn-eliminar:hover {
+    background-color: #ff3b3b !important;
+    color: #111 !important;
+}
+
+/* =========================================================
+   LISTA DOTTED (REDES + CV ESTILO UNIFICADO)
+   ========================================================= */
+
+   .lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+/* ITEM */
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+
+    color: #ccc;
+    text-decoration: none;
+
+    background-color: transparent;
+
+    transition: all 0.35s ease;
+}
+
+/* ICONO */
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+/* HOVER */
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
 }

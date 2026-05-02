@@ -1,5 +1,5 @@
-/* ============================================================
-    1. VARIABLES Y CONFIGURACIÓN GLOBAL
+﻿/* ============================================================
+    1. VARIABLES Y CONFIGURACIÃ“N GLOBAL
    ============================================================ */
 :root {
     --amarillo-neon: #FFCC00;
@@ -24,8 +24,7 @@ body.fondo-oscuro-neon {
 /* ============================================================
     2. ESTRUCTURA Y CONTENEDORES
    ============================================================ */
-.contenedor-principal {
-    display: flex;
+.contenedor-principal { display: flex; flex-direction: column;
     max-width: 1550px;
     width: 95%;
     margin: 30px auto;
@@ -50,7 +49,7 @@ body.fondo-oscuro-neon {
 }
 
 /* ============================================================
-    3. TARJETAS (ACORDEÓN / PANEL)
+    3. TARJETAS (ACORDEÃ“N / PANEL)
    ============================================================ */
 .tarjeta-acordeon {
     background-color: var(--negro-tarjeta) !important;
@@ -384,7 +383,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    6. BOTONES NEÓN
+    6. BOTONES NEÃ“N
    ============================================================ */
 .boton-amarillo-solido {
     background-color: var(--negro-input) !important;
@@ -428,7 +427,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    7. TECNOLOGÍAS (TAGS)
+    7. TECNOLOGÃAS (TAGS)
    ============================================================ */
 .tags-tecnologias {
     display: flex;
@@ -460,12 +459,12 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
-/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÍAS */
+/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÃAS */
 .tech-oculta {
     display: none !important;
 }
 
-/* ESTILOS PARA LOS BOTONES MÁS Y MENOS */
+/* ESTILOS PARA LOS BOTONES MÃS Y MENOS */
 .tag-mas, .tag-menos {
     background-color: transparent !important;
     border: 1px dashed var(--amarillo-neon) !important;
@@ -480,7 +479,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    8. DISEÑO INFERIOR Y RESPONSIVE
+    8. DISEÃ‘O INFERIOR Y RESPONSIVE
    ============================================================ */
 .fila-inferior {
     display: grid;
@@ -497,7 +496,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    9. LÓGICA DE ESTADO ACTIVO Y RESEÑAS
+    9. LÃ“GICA DE ESTADO ACTIVO Y RESEÃ‘AS
    ============================================================ */
 .activo-neon, .activo-neon i {
     color: var(--amarillo-neon) !important;
@@ -596,7 +595,7 @@ p, span, div, h1, h2, h3, h4 {
     min-height: 260px;
 }
 
-/* DESCRIPCIÓN CON SCROLL COMO BIO */
+/* DESCRIPCIÃ“N CON SCROLL COMO BIO */
 .proyecto-desc {
     max-height: 70px;
     overflow-y: auto;
@@ -615,7 +614,7 @@ p, span, div, h1, h2, h3, h4 {
     border-radius: 10px;
 }
 
-/* CARRUSEL PEQUEÑO */
+/* CARRUSEL PEQUEÃ‘O */
 .carousel-proyecto {
     width: 100%;
     height: 80px;
@@ -635,7 +634,7 @@ p, span, div, h1, h2, h3, h4 {
     display: block;
 }
 
-/* TECNOLOGÍAS PROYECTO */
+/* TECNOLOGÃAS PROYECTO */
 .tech-proyecto {
     display: flex;
     flex-wrap: wrap;
@@ -651,3 +650,180 @@ p, span, div, h1, h2, h3, h4 {
 .tech-extra-proyecto {
     display: none;
 }
+
+.icono-grid-top {
+    cursor: pointer;
+    color: var(--amarillo-neon);
+    transition: all 0.3s ease;
+}
+
+/* Hover estilo neÃ³n como el resto */
+.icono-grid-top:hover {
+    transform: scale(1.2);
+    color: #ffffff;
+    text-shadow: 0 0 10px var(--amarillo-neon),
+                 0 0 20px var(--amarillo-neon);
+}
+
+.icono-lapiz {
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.icono-lapiz:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px #ffffff,
+                 0 0 18px rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
+}
+
+.icono-papelera {
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.icono-papelera:hover {
+    color: #ff3b3b !important;
+    text-shadow: 0 0 8px #ff3b3b,
+                 0 0 18px rgba(255, 59, 59, 0.6);
+    transform: scale(1.2);
+}
+/* ============================================================
+    PESTAÑAS (TABS) EN OWN PROFILE
+   ============================================================ */
+.tabs-neon {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.tab-btn {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #555;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.tab-btn:hover {
+    border-color: var(--amarillo-neon);
+    color: var(--amarillo-neon);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+
+.tab-btn.active {
+    background-color: var(--amarillo-neon);
+    color: #111;
+    border-color: var(--amarillo-neon);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+}
+
+/* ============================================================
+    SECCIÓN SEGUIMIENTO (CARDS DE USUARIOS)
+   ============================================================ */
+.seccion-seguimiento-grupo {
+    margin-bottom: 40px;
+}
+
+.grid-usuarios-seguimiento {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.usuario-seguimiento-card {
+    background-color: #1a1a1a;
+    border: 2px solid var(--amarillo-neon);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.usuario-seguimiento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.5);
+}
+
+.seguimiento-foto {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--amarillo-neon);
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.seguimiento-nombre {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.seguimiento-acciones {
+    display: flex;
+    gap: 15px;
+}
+
+.seguimiento-acciones i {
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.seguimiento-acciones .icono-ojo {
+    color: #00f3ff;
+}
+.seguimiento-acciones .icono-ojo:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #00f3ff;
+    transform: scale(1.2);
+}
+
+.seguimiento-acciones .btn-follow-heart {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #ff4444;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.seguimiento-acciones .btn-follow-heart:hover i {
+    color: #fff;
+    text-shadow: 0 0 10px #ff4444;
+    transform: scale(1.2);
+}
+
+
+/* ============================================================
+    CONTENEDOR VIDRIO (Como en Admin)
+   ============================================================ */
+.vidrio-contenedor-perfil {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid #FFCC00;
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+}
+

@@ -47,6 +47,44 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
+
+        .foto-perfil-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 5px;
+            right: 0px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 1px solid #ff4444;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-follow-heart i.fas {
+            color: #ff4444;
+        }
+        .btn-follow-heart:hover i.fas {
+            color: white;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -97,23 +135,23 @@
                 th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'">
             </h2>
             
-            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !developers.empty}" class="contador-resultados-azul">
+            <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !#lists.isEmpty(developers)}" class="contador-resultados-azul">
                 <div class="contenedor-texto-contador">
                     <span class="texto-etiqueta">PROGRAMADORES ENCONTRADOS:</span>
                     <div class="caja-numero">
-                        <span class="numero" th:text="${developers.size()}">0</span>
+                        <span class="numero" th:text="${#lists.size(developers)}">0</span>
                     </div>
                 </div>
             </div>
 
-            <div th:if="${developers.empty}" class="no-resultados-container">
+            <div th:if="${#lists.isEmpty(developers)}" class="no-resultados-container">
                 <i class="fas fa-user-slash"></i>
                 <p th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} 
                             ? 'No se ha encontrado a nadie que coincida con tu búsqueda' 
                             : 'No se han encontrado perfiles destacados'"></p>
             </div>
 
-            <div th:unless="${developers.empty}" 
+            <div th:unless="${#lists.isEmpty(developers)}" 
                  th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados'">
                 
                 <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav prev" onclick="moverCarrusel(-1)">
@@ -129,8 +167,22 @@
                                      esLarga=${#strings.length(fullBio) > 60}">
                             
                             <div class="contenido-perfil">
-                                <img th:src="${developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
-                                <h3 th:text="${developer.usuario.username}"></h3>
+                                <div class="foto-perfil-wrapper">
+                                    <img th:src="${developer.usuario != null and developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
+                                    <button th:if="${session.usuarioLogueado != null and developer.usuario != null and session.usuarioLogueado.id != developer.usuario.id}"
+                                            class="btn-follow-heart" 
+                                            th:attr="data-id=${developer.usuario.id}" 
+                                            onclick="toggleFollowUser(this, event)">
+                                        <i class="fa-heart" th:classappend="${developer.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                                    </button>
+                                </div>
+                                <h3>
+                                    <span th:text="${developer.usuario != null ? developer.usuario.username : 'Usuario'}"></span>
+                                    <i th:if="${developer.usuario != null and (developer.usuario.estado == 'VERIFICADO' or (developer.usuario.rol != null and (developer.usuario.rol.nombre == 'ADMIN' or developer.usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </h3>
+                                <div style="text-align: center; margin-top: 2px; margin-bottom: 10px; color: #FFCC00; font-size: 0.8em; font-weight: bold;">
+                                    <i class="fas fa-users"></i> <span th:text="${developer.usuario != null ? developer.usuario.followersCountFormatted : '0'}">0</span> <span th:text="${developer.usuario != null and developer.usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                                </div>
                                 
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
                                      th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
@@ -141,9 +193,9 @@
                                     <div class="tags">
                                         <span th:each="tech, iterStat : ${developer.tecnologias}" th:if="${iterStat.index < 3}" th:text="${tech.nombre}"></span>
                                     </div>
-                                    <i th:if="${developer.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
+                                    <i th:if="${#lists.size(developer.tecnologias) > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
                                 </div>
-                                <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${developer.usuario.id}|">Ver Perfil</button>
+                                <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${developer.usuario != null ? developer.usuario.id : 0}|">Ver Perfil</button>
                             </div>
 
                             <div class="vista-todas-techs">
@@ -247,18 +299,32 @@
 
     const track = document.getElementById('track');
     let index = 0;
-    const cardStep = 290; 
     let autoPlayInterval;
 
     function actualizarCarrusel() {
         if(!track) return;
-        const totalCards = track.querySelectorAll('.tarjeta-perfil-neon').length;
-        if (totalCards === 0) return;
-        const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
-        const maxIndex = Math.max(0, totalCards - visibleCards);
+        
+        // Si estamos en móvil, apagamos el JS para que el CSS nativo haga el trabajo suave
+        if (window.innerWidth <= 768) {
+            track.style.transform = 'none';
+            return;
+        }
+
+        const tarjetas = track.querySelectorAll('.tarjeta-perfil-neon');
+        if (tarjetas.length === 0) return;
+        
+        const visibleCards = window.innerWidth <= 1050 ? 2 : 3;
+        const maxIndex = Math.max(0, tarjetas.length - visibleCards);
+        
         if (index > maxIndex) index = 0;
         if (index < 0) index = maxIndex;
-        track.style.transform = `translateX(-${index * cardStep}px)`;
+
+        // Calculo Dinámico del tamaño de la tarjeta (ancho real + el espacio de separación que es 30)
+        const cardWidth = tarjetas[0].offsetWidth;
+        const gap = 30; 
+        const cardStep = cardWidth + gap;
+
+        track.style.transform = `translateX(${-index * cardStep}px)`;
     }
 
     function moverCarrusel(direccion) {
@@ -268,7 +334,7 @@
     }
 
     function startAutoPlay() {
-        if(!track) return;
+        if(!track || window.innerWidth <= 768) return; // No auto-reproducir en móviles (molesta el scroll táctil)
         autoPlayInterval = setInterval(() => {
             index++;
             actualizarCarrusel();
@@ -287,6 +353,49 @@
         startAutoPlay();
         actualizarEstadoBotonesGlobales();
     });
+
+    async function toggleFollowUser(btn, event) {
+        event.stopPropagation();
+        const targetId = btn.getAttribute('data-id');
+        const icon = btn.querySelector('i');
+        const isFollowing = icon.classList.contains('fas');
+
+        if (isFollowing) {
+            const targetName = btn.getAttribute('data-username') || 'este usuario';
+            const result = await mostrarModalUnfollowGlobal(targetName);
+
+            if (!result.isConfirmed) {
+                return;
+            }
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            const response = await fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            
+            if (result === 'OK') {
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            } else if (result === 'NOT_LOGGED') {
+                window.location.href = '/login';
+            } else {
+                alert('Error al seguir al usuario: ' + result);
+            }
+        } catch (error) {
+            console.error('Error toggling follow:', error);
+        }
+    }
     </script>
 </body>
 </html>

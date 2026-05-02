@@ -27,6 +27,7 @@ body.fondo-oscuro-neon {
     padding: 0 20px;
     display: flex;
     justify-content: flex-start;
+    box-sizing: border-box;
 }
 
 .enlace-volver {
@@ -57,6 +58,7 @@ body.fondo-oscuro-neon {
     padding: 0 20px;
     gap: 40px; 
     align-items: flex-start;
+    box-sizing: border-box;
     
     /* ESTO EMPUJA EL FOOTER HACIA ABAJO */
     flex: 1 0 auto; 
@@ -140,6 +142,7 @@ body.fondo-oscuro-neon {
     border-radius: 50%;
     background-color: #222;
     border: 3px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }
 
 .circulo-foto img {
@@ -350,29 +353,14 @@ header .nav-enlaces a.activo span {
     flex: 1; 
     min-height: 280px; 
     height: auto;
+    box-sizing: border-box;
 }
 
-/* CONTENEDOR CON SCROLL PARA RESEÑAS LARGAS */
+/* CONTENEDOR PARA BOTÓN "VER MÁS" */
 .contenido-inferior {
-    max-height: 400px;
-    overflow-y: auto;
+    height: auto; /* Quitamos el max-height y el scroll */
     padding-right: 10px;
-}
-
-.contenido-inferior::-webkit-scrollbar {
-    width: 8px;
-}
-.contenido-inferior::-webkit-scrollbar-track {
-    background: #1a1a1a;
-    border-radius: 10px;
-}
-.contenido-inferior::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #FFCC00, #b38f00);
-    border-radius: 10px;
-    border: 2px solid #1a1a1a;
-}
-.contenido-inferior::-webkit-scrollbar-thumb:hover {
-    background: #FFCC00;
+    transition: all 0.3s ease;
 }
 
 /* Estilos para el selector de estrellas */
@@ -405,7 +393,14 @@ header .nav-enlaces a.activo span {
     border-bottom: 1px solid rgba(255,255,255,0.1);
     padding: 10px 0;
     margin-bottom: 10px;
+    animation: fadeIn 0.4s ease; /* Transición suave al aparecer */
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .resena-header {
     display: flex; 
     justify-content: space-between; 
@@ -424,39 +419,84 @@ header .nav-enlaces a.activo span {
     color: #ccc; 
 }
 
-.resena-reciente-item {
-    background: #000;
-    border: 1px solid rgba(255, 204, 0, 0.3);
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    animation: fadeIn 0.5s ease;
+/* =========================================================
+   MEDIA QUERIES (RESPONSIVE PARA MÓVILES Y TABLETS)
+   ========================================================= */
+
+/* Tablets y pantallas medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .contenedor-principal {
+        flex-direction: column; 
+        align-items: stretch;
+    }
+    
+    .columna-perfil {
+        flex: auto;
+        width: 100%;
+    }
+    
+    .tarjeta-mini-proyecto {
+        width: calc(50% - 15px); 
+    }
 }
 
-.resena-reciente-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
+/* Móviles (hasta 768px) */
+@media (max-width: 768px) {
+    .contenedor-principal {
+        padding: 0 10px; 
+        gap: 20px;
+    }
+
+    .contenedor-inferior-derecha {
+        flex-direction: column; 
+        gap: 20px;
+    }
+
+    .tarjeta-inferior {
+        width: 100%;
+        min-height: auto; 
+    }
+
+    .contenido-inferior {
+        padding-right: 0; 
+    }
+
+    .tarjeta-mini-proyecto {
+        width: 100%; 
+        min-width: auto;
+    }
+
+    .rejilla-proyectos {
+        gap: 15px;
+    }
+    
+    .tarjeta-resenas-izq,
+    .tarjeta-proyectos-contenedor,
+    .tarjeta-inferior,
+    .perfil-inferior {
+        padding: 20px; 
+    }
 }
 
-.resena-reciente-estrellas {
-    color: #FFCC00;
-    font-size: 0.9rem;
-}
-
-.resena-reciente-usuario {
-    font-weight: bold;
-    font-size: 0.85rem;
-    color: #fff;
-}
-
-.resena-reciente-texto {
-    font-size: 0.9rem;
-    color: #ccc;
-    line-height: 1.4;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+    .foto-perfil-contenedor {
+        width: 110px; 
+        height: 110px;
+    }
+    
+    .nombre-usuario {
+        font-size: 1.4rem;
+    }
+    
+    .cabecera-proyectos h2 {
+        font-size: 1.4rem;
+        flex-direction: column; 
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .estrellas i {
+        font-size: 1.3rem; 
+    }
 }

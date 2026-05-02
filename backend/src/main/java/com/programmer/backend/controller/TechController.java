@@ -105,7 +105,7 @@ public class TechController {
 
         String rol = user.getRol().getNombre();
 
-        if ("DEVELOPER".equals(rol)) {
+        if ("DEVELOPER".equals(rol) || "ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)) {
 
             PerfilDesarrollador perfil = perfilRepo.findByUsuarioId(user.getId())
                     .orElseGet(() -> {
@@ -113,10 +113,10 @@ public class TechController {
                         p.setUsuario(user);
                         return perfilRepo.save(p);
                     });
-
+        
             perfil.setTecnologias(nuevas);
             perfilRepo.save(perfil);
-
+    
         } else if ("COMPANY".equals(rol)) {
 
             PerfilEmpresa perfil = empresaRepo.findByUsuarioId(user.getId())

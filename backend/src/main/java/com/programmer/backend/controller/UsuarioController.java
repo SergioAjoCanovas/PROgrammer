@@ -173,4 +173,34 @@ public class UsuarioController {
 
         return "OK";
     }
+
+    // =========================
+    // SEGUIR
+    // =========================
+    @PostMapping("/usuario/toggleFollow")
+    @ResponseBody
+    public String toggleFollow(@RequestParam("targetId") Long targetId,
+                               HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) return "NOT_LOGGED";
+
+        if (usuario.getId().equals(targetId)) return "CANNOT_FOLLOW_SELF";
+
+        java.util.Optional<Usuario> targetOpt = usuarioRepository.findById(targetId);
+        if (targetOpt.isEmpty()) return "NOT_FOUND";
+
+        Usuario target = targetOpt.get();
+        Usuario me = usuarioRepository.findById(usuario.getId()).get();
+        
+        boolean isFollowing = target.getSeguidores().stream().anyMatch(u -> u.getId().equals(me.getId()));
+        
+        if (isFollowing) {
+            target.getSeguidores().removeIf(u -> u.getId().equals(me.getId()));
+        } else {
+            target.getSeguidores().add(me);
+        }
+        
+        usuarioRepository.save(target);
+        return "OK";
+    }
 }

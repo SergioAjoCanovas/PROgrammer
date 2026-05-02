@@ -2,6 +2,12 @@
    ESTILO GLOBAL: ATMÓSFERA NEÓN AMARILLA (SIN CUADRÍCULA)
    ========================================================= */
 
+/* Bloqueo vital de scroll horizontal en todo el sitio web para móviles */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
@@ -11,8 +17,6 @@ body.fondo-oscuro-neon {
     position: relative;
     overflow-x: hidden;
     z-index: 0;
-    
-    /* ¡Animación inicial eliminada! */
 }
 
 /* Transparencia total de contenedores para no tapar el fondo */
@@ -40,7 +44,7 @@ body.fondo-oscuro-neon::before {
     width: 500px;
     height: 500px;
     background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, rgba(255, 204, 0, 0.05) 50%, rgba(0, 0, 0, 0) 80%);
-    filter: blur(90px); /* Desenfoque extremo */
+    filter: blur(90px); 
     top: -15%;
     left: -15%;
 
@@ -69,6 +73,24 @@ body.fondo-oscuro-neon::after {
     animation: viajeLateral 35s ease-in-out infinite alternate !important;
 }
 
+/* Ajuste de orbs para móviles (Mejora el rendimiento y evita bugs visuales) */
+@media (max-width: 768px) {
+    body.fondo-oscuro-neon::before {
+        width: 300px;
+        height: 300px;
+        filter: blur(50px);
+        box-shadow: 
+            300px 200px 100px rgba(255, 204, 0, 0.1), 
+            100px 400px 100px rgba(255, 204, 0, 0.08) !important;
+    }
+    body.fondo-oscuro-neon::after {
+        width: 150px;
+        height: 150px;
+        filter: blur(30px);
+        box-shadow: -200px 200px 50px rgba(255, 204, 0, 0.1) !important;
+    }
+}
+
 /* =========================================================
    ANIMACIONES (Suavizadas)
    ========================================================= */
@@ -86,7 +108,7 @@ body.fondo-oscuro-neon::after {
 }
 
 /* =========================================================
-   BOTONES NEÓN (Amarillo #FFCC00)
+   BOTONES NEÓN GLOBALES (Amarillo #FFCC00)
    ========================================================= */
 .boton-curriculum, .boton-anadir, .boton-ver {
     background-color: #1a1a1a !important;
@@ -107,3 +129,103 @@ body.fondo-oscuro-neon::after {
     box-shadow: 0 0 30px #FFCC00 !important;
     transform: translateY(-5px) scale(1.05);
 }
+/* Animaci�n de Coraz�n Roto */
+@keyframes romperCorazon {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3) rotate(-15deg); color: #ff8888; }
+    100% { transform: scale(1) rotate(0deg); color: #ff4444; }
+}
+
+.corazon-roto {
+    animation: romperCorazon 0.4s ease-out forwards;
+}
+
+/* Efecto hover CSS puro para dejar de seguir */
+.btn-follow-heart:hover i.fas.fa-heart::before {
+    content: "\f7a9"; /* Unicode para fa-heart-crack en FontAwesome 6 */
+}
+.btn-follow-heart:hover i.fas.fa-heart {
+    animation: romperCorazon 0.4s ease-out forwards;
+    color: #ff4444; /* Asegura el color rojo */
+}
+
+/* ============================================================
+   ESTILOS GLOBALES PARA MODAL (ej: Confirmaciones)
+   ============================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+.modal-overlay.mostrar {
+    display: flex;
+}
+.modal-box {
+    background: #111;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 2px solid transparent;
+    box-shadow: 0 0 20px transparent;
+    transition: all 0.3s ease;
+}
+.modal-box h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+.modal-box p {
+    color: #ddd;
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+.modal-botones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.btn-cancelar-modal {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: bold;
+}
+.btn-cancelar-modal:hover { background: #555; }
+.btn-confirmar-modal {
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+/* Tema Eliminar / Dejar de seguir (Rojo Ne�n) */
+.modal-eliminar {
+    border-color: #ff003c;
+    box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
+}
+.modal-eliminar h3 { color: #ff003c; text-shadow: 0 0 10px #ff003c; }
+.modal-eliminar .btn-confirmar-modal { background: rgba(255, 0, 60, 0.1); border: 1px solid #ff003c; color: #ff003c; }
+.modal-eliminar .btn-confirmar-modal:hover { background: #ff003c; color: #fff; box-shadow: 0 0 15px #ff003c; }
+
+/* Tema Verificar (Azul Ne�n) */
+.modal-verificar {
+    border-color: #00f2ff;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+}
+.modal-verificar h3 { color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
+.modal-verificar .btn-confirmar-modal { background: rgba(0, 242, 255, 0.1); border: 1px solid #00f2ff; color: #00f2ff; }
+.modal-verificar .btn-confirmar-modal:hover { background: #00f2ff; color: #000; box-shadow: 0 0 15px #00f2ff; }

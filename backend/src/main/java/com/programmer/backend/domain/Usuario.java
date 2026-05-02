@@ -44,7 +44,48 @@ public class Usuario {
     @Column(name = "fecha_registro", updatable = false)
     private LocalDateTime fechaRegistro;
 
+    @Column(name = "estado", length = 20)
+    private String estado = "LOGUEADO";
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol")
     private Rol rol;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "usuario_seguidores",
+        joinColumns = @JoinColumn(name = "seguido_id"),
+        inverseJoinColumns = @JoinColumn(name = "seguidor_id")
+    )
+    private java.util.Set<Usuario> seguidores = new java.util.HashSet<>();
+
+    @ManyToMany(mappedBy = "seguidores", fetch = FetchType.LAZY)
+    private java.util.Set<Usuario> siguiendo = new java.util.HashSet<>();
+
+    public int getFollowersCount() {
+        return this.seguidores != null ? this.seguidores.size() : 0;
+    }
+
+    public String getFollowersCountFormatted() {
+        int count = this.seguidores != null ? this.seguidores.size() : 0;
+        if (count >= 1000000) {
+            return String.format(java.util.Locale.US, "%.1f Mill", count / 1000000.0);
+        } else if (count >= 1000) {
+            return String.format(java.util.Locale.US, "%.1f K", count / 1000.0);
+        }
+        return String.valueOf(count);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return id != null && id.equals(usuario.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

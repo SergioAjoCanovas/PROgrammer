@@ -18,6 +18,44 @@
             text-shadow: 0 0 10px #FFCC00 !important;
             opacity: 1 !important;
         }
+
+        .foto-perfil-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 5px;
+            right: 0px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 1px solid #ff4444;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-follow-heart i.fas {
+            color: #ff4444;
+        }
+        .btn-follow-heart:hover i.fas {
+            color: white;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -107,8 +145,20 @@
                                 <div class="foto-perfil-container">
                                     <img th:src="${company.usuario.fotoPerfil != null ? company.usuario.fotoPerfil : '/Img/stock/default-company.png'}" 
                                          class="foto-perfil-img" alt="Logo">
+                                    <button th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != company.usuario.id}"
+                                            class="btn-follow-heart" 
+                                            th:attr="data-id=${company.usuario.id}" 
+                                            onclick="toggleFollowUser(this, event)">
+                                        <i class="fa-heart" th:classappend="${company.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                                    </button>
                                 </div>
-                                <h3 th:text="${company.usuario.username}"></h3>
+                                <h3>
+                                    <span th:text="${company.usuario.username}"></span>
+                                    <i th:if="${company.usuario != null and (company.usuario.estado == 'VERIFICADO' or (company.usuario.rol != null and (company.usuario.rol.nombre == 'ADMIN' or company.usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </h3>
+                                <div style="text-align: center; margin-top: 2px; margin-bottom: 10px; color: #FFCC00; font-size: 0.8em; font-weight: bold;">
+                                    <i class="fas fa-users"></i> <span th:text="${company.usuario.followersCountFormatted}">0</span> <span th:text="${company.usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                                </div>
                                 <p th:text="${company.sector != null ? company.sector : 'Sector Tecnológico'}" class="sector-texto"></p>
                                 
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
@@ -219,16 +269,31 @@
 
         const track = document.getElementById('track');
         let index = 0;
-        const cardStep = 310;
 
         function actualizarCarrusel() {
             if(!track) return;
+            
+            // Si estamos en móvil, apagamos el JS para que el CSS nativo haga el trabajo suave
+            if (window.innerWidth <= 768) {
+                track.style.transform = 'none';
+                return;
+            }
+
             const tarjetas = track.querySelectorAll('.tarjeta-perfil-neon');
             if (tarjetas.length === 0) return;
-            const visibleCards = window.innerWidth <= 1050 ? 1 : 3;
+            
+            // Calculamos cuántas caben en pantalla
+            const visibleCards = window.innerWidth <= 1050 ? 2 : 3;
+            
             const maxIndex = Math.max(0, tarjetas.length - visibleCards);
             if (index > maxIndex) index = 0;
             if (index < 0) index = maxIndex;
+
+            // Calculo Dinámico del tamaño de la tarjeta (ancho real + el espacio de separación que es 30)
+            const cardWidth = tarjetas[0].offsetWidth;
+            const gap = 30; 
+            const cardStep = cardWidth + gap;
+
             track.style.transform = `translateX(${-index * cardStep}px)`;
         }
 
@@ -243,6 +308,49 @@
             actualizarCarrusel();
             actualizarBotonesGlobales();
         });
+
+        async function toggleFollowUser(btn, event) {
+            event.stopPropagation();
+            const targetId = btn.getAttribute('data-id');
+            const icon = btn.querySelector('i');
+            const isFollowing = icon.classList.contains('fas');
+
+            if (isFollowing) {
+                const targetName = btn.getAttribute('data-username') || 'esta empresa';
+                const result = await mostrarModalUnfollowGlobal(targetName);
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('targetId', targetId);
+                
+                const response = await fetch('/usuario/toggleFollow', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                
+                if (result === 'OK') {
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+                } else if (result === 'NOT_LOGGED') {
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al seguir al usuario: ' + result);
+                }
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+            }
+        }
     </script>
 </body>
 </html>

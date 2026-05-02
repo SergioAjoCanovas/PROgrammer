@@ -43,6 +43,8 @@ body.fondo-oscuro-neon {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* SECCIÓN BUSCADOR */
@@ -56,6 +58,7 @@ body.fondo-oscuro-neon {
     font-size: 2.5rem;
     margin-bottom: 30px;
     text-align: center;
+    transition: font-size 0.3s ease;
 }
 
 .titulo-neon .resaltado {
@@ -72,6 +75,8 @@ body.fondo-oscuro-neon {
     display: flex;
     flex-direction: column;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input-wrapper {
@@ -79,16 +84,18 @@ body.fondo-oscuro-neon {
     align-items: center;
     width: 100%;
     padding: 5px;
+    box-sizing: border-box;
 }
 
 .caja-busqueda-neon input {
     flex: 1;
     background: transparent;
     border: none;
-    padding: 12px 20px;
+    padding: 12px 15px;
     color: #fff;
     outline: none;
     font-size: 1rem;
+    width: 100%;
 }
 
 /* FILTROS */
@@ -113,6 +120,7 @@ body.fondo-oscuro-neon {
     padding: 20px;
     display: none; 
     box-sizing: border-box;
+    border-radius: 0 0 25px 25px;
 }
 .tech-dropdown.show { display: block; }
 
@@ -121,6 +129,7 @@ body.fondo-oscuro-neon {
     gap: 10px;
     margin-bottom: 15px;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .btn-control {
@@ -131,6 +140,7 @@ body.fondo-oscuro-neon {
     border-radius: 10px;
     font-size: 0.75rem;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-control.btn-active {
@@ -154,6 +164,7 @@ body.fondo-oscuro-neon {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: all 0.2s ease;
 }
 
 .item-tech.selected { background: rgba(255, 204, 0, 0.1); border-color: #FFCC00; }
@@ -179,6 +190,8 @@ body.fondo-oscuro-neon {
     border-radius: 40px;
     font-weight: bold;
     cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
 }
 .btn-buscar-neon:hover {
     background: #FFCC00; color: #000; box-shadow: 0 0 20px #FFCC00;
@@ -201,6 +214,7 @@ body.fondo-oscuro-neon {
     letter-spacing: 1px;
     text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .contador-resultados-azul .numero {
@@ -220,12 +234,14 @@ body.fondo-oscuro-neon {
 
 .no-resultados-container-azul {
     text-align: center;
-    padding: 40px;
+    padding: 40px 20px;
     background: rgba(0, 210, 255, 0.05);
     border-radius: 20px;
     border: 1px dashed rgba(0, 210, 255, 0.3);
     margin: 20px auto;
+    width: 100%;
     max-width: 600px;
+    box-sizing: border-box;
 }
 
 .no-resultados-box-azul {
@@ -236,21 +252,9 @@ body.fondo-oscuro-neon {
 }
 
 /* ICONO ROJO */
-.icon-city { 
-    color: #ff004c; 
-    text-shadow: 0 0 20px rgba(255, 0, 76, 0.5); 
-}
+.icon-city { color: #ff004c; text-shadow: 0 0 20px rgba(255, 0, 76, 0.5); }
+.icono-overlay-rojo { position: absolute; top: -10px; right: -15px; color: #ff004c; font-size: 2.5rem; text-shadow: 0 0 15px rgba(255, 0, 76, 0.6); }
 
-.icono-overlay-rojo {
-    position: absolute;
-    top: -10px;
-    right: -15px;
-    color: #ff004c;
-    font-size: 2.5rem;
-    text-shadow: 0 0 15px rgba(255, 0, 76, 0.6);
-}
-
-/* TEXTO BLANCO */
 .no-resultados-container-azul p {
     color: #ffffff;
     font-size: 1.2rem;
@@ -258,20 +262,12 @@ body.fondo-oscuro-neon {
 }
 
 .linea-decorativa-azul {
-    width: 60px;
-    height: 3px;
-    background: #00d2ff;
-    margin: 15px auto 0;
-    border-radius: 2px;
-    box-shadow: 0 0 10px #00d2ff;
+    width: 60px; height: 3px; background: #00d2ff; margin: 15px auto 0; border-radius: 2px; box-shadow: 0 0 10px #00d2ff;
 }
 
 /* CARRUSEL Y GRID */
-.seccion-carrusel { width: 100%; max-width: 1000px; }
-.subtitulo-neon {
-    color: #fff; margin-bottom: 30px; font-size: 1.8rem;
-    border-left: 5px solid #FFCC00; padding-left: 15px;
-}
+.seccion-carrusel { width: 100%; max-width: 1000px; box-sizing: border-box; }
+.subtitulo-neon { color: #fff; margin-bottom: 30px; font-size: 1.8rem; border-left: 5px solid #FFCC00; padding-left: 15px; }
 
 .carrusel-wrapper { position: relative; width: 100%; }
 .carrusel-contenedor { overflow: hidden; width: 100%; }
@@ -285,15 +281,17 @@ body.fondo-oscuro-neon {
     justify-items: center;
 }
 
-/* TARJETAS */
+/* TARJETAS - CAMBIO CLAVE A WIDTH 100% PARA RESPONSIVE */
 .tarjeta-perfil-neon {
     background: #111; 
     border: 1px solid rgba(255, 204, 0, 0.3);
     border-radius: 20px;
-    width: 280px; 
+    width: 100%; 
+    max-width: 280px; 
     min-height: 450px;
     transition: 0.3s;
     position: relative;
+    box-sizing: border-box;
 }
 
 .contenido-perfil {
@@ -314,22 +312,13 @@ body.fondo-oscuro-neon {
 }
 
 .foto-perfil-img {
-    width: 85px; 
-    height: 85px;
-    border-radius: 50%;
-    border: 2px solid #FFCC00;
-    object-fit: cover;
-    margin-bottom: 15px;
+    width: 85px; height: 85px; border-radius: 50%; border: 2px solid #FFCC00; object-fit: cover; margin-bottom: 15px;
 }
 
 .sector-texto { color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; margin-bottom: 10px; }
 
 .bio-recortada {
-    font-size: 0.85rem;
-    color: #ccc;
-    height: 60px;
-    margin-bottom: 15px;
-    overflow: hidden;
+    font-size: 0.85rem; color: #ccc; height: 60px; margin-bottom: 15px; overflow: hidden; width: 100%;
 }
 .bio-recortada.interactiva:hover { color: #FFCC00; cursor: pointer; }
 
@@ -349,45 +338,20 @@ body.fondo-oscuro-neon {
     display: inline-block;
 }
 
-.tags span:hover {
-    background: #FFCC00;
-    color: #000;
-    box-shadow: 0 0 20px #FFCC00;
-    border-color: #FFCC00;
-    transform: translateY(-5px);
+.tags span:hover, .grid-techs-3 span:hover {
+    background: #FFCC00; color: #000; box-shadow: 0 0 20px #FFCC00; border-color: #FFCC00;
 }
+.tags span:hover { transform: translateY(-5px); }
 
-.grid-techs-3 span:hover {
-    background: #FFCC00;
-    color: #000;
-    box-shadow: 0 0 20px #FFCC00;
-    border-color: #FFCC00;
-    transform: none;
-}
-
-.tech-toggle { 
-    cursor: pointer; 
-    color: #fff; 
-    margin-top: 10px; 
-    font-size: 1.2rem; 
-    transition: 0.3s;
-}
+.tech-toggle { cursor: pointer; color: #fff; margin-top: 10px; font-size: 1.2rem; transition: 0.3s; }
 .tech-toggle:hover { color: #FFCC00; transform: scale(1.2); }
 
 .btn-perfil {
-    background: transparent; 
-    border: 2px solid #FFCC00; 
-    color: #FFCC00;
+    background: transparent; border: 2px solid #FFCC00; color: #FFCC00;
     padding: 10px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer;
-    transition: 0.3s;
-    text-transform: uppercase;
-    margin-top: auto;
+    transition: 0.3s; text-transform: uppercase; margin-top: auto;
 }
-.btn-perfil:hover { 
-    background: #FFCC00; 
-    color: #000; 
-    box-shadow: 0 0 20px #FFCC00; 
-}
+.btn-perfil:hover { background: #FFCC00; color: #000; box-shadow: 0 0 20px #FFCC00; }
 
 /* FLECHAS */
 .btn-nav {
@@ -402,14 +366,9 @@ body.fondo-oscuro-neon {
 
 /* OVERLAYS */
 .vista-todas-techs, .vista-bio-completa {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #111;
-    z-index: 15;
-    padding: 20px;
-    display: none; 
-    flex-direction: column;
-    border-radius: 20px;
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: #111; z-index: 15; padding: 20px; display: none; 
+    flex-direction: column; border-radius: 20px;
 }
 
 .tarjeta-perfil-neon.tech-expanded .contenido-perfil,
@@ -417,45 +376,69 @@ body.fondo-oscuro-neon {
 .tarjeta-perfil-neon.tech-expanded .vista-todas-techs { display: flex; }
 .tarjeta-perfil-neon.bio-expanded .vista-bio-completa { display: flex; }
 
-.close-overlay {
-    align-self: flex-end;
-    color: #FFCC00;
-    font-size: 1.4rem;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
+.close-overlay { align-self: flex-end; color: #FFCC00; font-size: 1.4rem; cursor: pointer; margin-bottom: 10px; }
+.titulo-overlay { color: #fff; font-size: 1rem; text-transform: uppercase; border-bottom: 1px solid #FFCC00; padding-bottom: 8px; margin-bottom: 30px; text-align: center; }
+.grid-techs-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow-y: auto; }
+.grid-techs-3 span { padding: 8px 5px; font-size: 0.7rem; text-align: center; }
+.caja-bio-full { overflow-y: auto; color: #ccc; font-size: 0.9rem; line-height: 1.5; text-align: left; }
 
-.titulo-overlay {
-    color: #fff;
-    font-size: 1rem;
-    text-transform: uppercase;
-    border-bottom: 1px solid #FFCC00;
-    padding-bottom: 8px;
-    margin-bottom: 30px; 
-    text-align: center;
-}
-
-.grid-techs-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    overflow-y: auto;
-}
-
-.grid-techs-3 span {
-    padding: 8px 5px;
-    font-size: 0.7rem;
-    text-align: center;
-}
-
-.caja-bio-full {
-    overflow-y: auto;
-    color: #ccc;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    text-align: left;
-}
+/* =========================================
+   DISEÑO RESPONSIVE Y MÓVIL
+   ========================================= */
 
 @media (max-width: 1150px) { 
-    .btn-nav { display: none; } 
+    .btn-nav { display: none !important; } 
+}
+
+@media (max-width: 768px) {
+    /* Barra de búsqueda adaptada */
+    .titulo-neon { font-size: 2rem; }
+    .input-wrapper { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
+    .caja-busqueda-neon input { padding: 8px 10px; text-align: center; font-size: 0.9rem; }
+    .btn-buscar-neon { width: 100%; padding: 12px; font-size: 1rem; }
+    .funnel-icon { position: absolute; top: -45px; right: 0; background: rgba(0,0,0,0.5); border-radius: 50%; border: 1px solid #FFCC00; }
+    
+    .grid-checkboxes { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    .controles-globales { flex-direction: column; align-items: stretch; }
+    .btn-control { text-align: center; padding: 10px; }
+
+    /* Forzar a que la cuadrícula se ponga en 1 sola columna centrada */
+    .grid-inner-empresas {
+        grid-template-columns: 1fr;
+    }
+    .grid-inner-empresas .tarjeta-perfil-neon {
+        margin: 0 auto; /* Centrar la tarjeta */
+    }
+
+    /* Magia para el carrusel en móvil: Desactiva el JS y usa Scroll táctil nativo */
+    .carrusel-contenedor {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 20px; /* Espacio para barra de scroll */
+        width: 100vw; /* Ocupa todo el ancho */
+        margin-left: -20px; /* Compensa el padding del contenedor general */
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .carrusel-track {
+        transform: none !important; /* Mata el cálculo de JavaScript */
+        width: max-content;
+        gap: 15px;
+    }
+    
+    .carrusel-track .tarjeta-perfil-neon {
+        width: 80vw; /* La tarjeta ocupa el 80% de la pantalla para que asome la siguiente */
+        scroll-snap-align: center;
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-neon { font-size: 1.6rem; }
+    .subtitulo-neon { font-size: 1.4rem; }
+    .carrusel-track .tarjeta-perfil-neon { width: 85vw; }
+    .no-resultados-box-azul { font-size: 3rem; }
+    .icono-overlay-rojo { font-size: 2rem; top: -5px; right: -10px; }
 }

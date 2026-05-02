@@ -45,6 +45,9 @@ body.fondo-oscuro-neon {
 
 .seccion-derecha-dinamica {
     flex: 1;
+
+    min-width: 0;
+    overflow-x: hidden;
 }
 
 /* =========================================================
@@ -57,7 +60,7 @@ body.fondo-oscuro-neon {
     border: 2px solid #FFCC00 !important;
     border-radius: 20px !important;
     box-shadow: 0 0 25px rgba(255, 204, 0, 0.2) !important;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .tarjeta-resenas-izq, .tarjeta-acordeon-contenedor { 
@@ -182,8 +185,8 @@ body.fondo-oscuro-neon .boton-ver-proyecto {
 /* Ajuste específico para el de ver proyecto (No ocupa todo el ancho) */
 body.fondo-oscuro-neon .boton-ver-proyecto {
     margin-top: 25px;
-    width: auto !important; 
-    padding: 12px 40px !important;
+    max-width: 100%;
+    white-space: normal;
 }
 
 /* Hover de los botones */
@@ -244,11 +247,17 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
     outline: none;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+
+    font-size: 1rem !important;
+    padding: 12px 18px !important;
+    margin: 10px 0 !important;
+    line-height: 1.2 !important;
+    box-sizing: border-box;
 }
 
 /* Animación Hover: Solo se aplica si NO tiene la clase active */
 #acordeon-proyectos .ui-accordion-header:not(.ui-accordion-header-active):hover {
-    transform: translateY(-5px) scale(1.01);
+    transform: translateY(-5px) scaleY(1.02);
     background-color: #292929 !important;
     box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
 }
@@ -299,4 +308,259 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
     line-height: 1.8;
     margin: 0;
     font-size: 1.1rem;
+}
+
+.ui-accordion {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.ui-accordion-content {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.inner-content p {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   FIX ACORDEÓN UI JQUERY
+   ========================= */
+
+   #acordeon-proyectos {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: visible;
+}
+
+/* HEADER DEL ACORDEÓN */
+.ui-accordion .ui-accordion-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100% !important;
+    max-width: 100%;
+
+    padding: 10px 14px !important;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    box-sizing: border-box;
+
+    transform-origin: center;
+}
+
+/* CONTENIDO */
+.ui-accordion .ui-accordion-content {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* =========================
+   BOTÓN BORRAR PROYECTO (IGUAL AL DE VER PROYECTO)
+   ========================= */
+
+   body.fondo-oscuro-neon .boton-eliminar-proyecto {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+
+    background-color: #050505 !important;
+    color: #ff3b3b !important;
+
+    border: 2px solid #ff3b3b !important;
+    border-radius: 10px !important;
+
+    font-weight: bold !important;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+
+    margin-top: 25px;
+
+    height: auto;
+    min-height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+}
+
+body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
+    background-color: #ff3b3b !important;
+    color: #050505 !important;
+
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.6) !important;
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   MODAL ELIMINAR - FIX REAL
+   ========================= */
+
+   .contenido-modal-confirmacion {
+    background-color: #1a1a1a;
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 35px 40px;
+
+    min-width: 420px;
+    max-width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
+.contenido-modal-confirmacion p {
+    font-size: 1.3rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* CONTENEDOR BOTONES */
+.botones-confirmacion {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* 🔥 FORZAMOS TODOS LOS BOTONES DEL MODAL */
+#modal-eliminar button {
+    flex: 1;
+
+    padding: 12px;
+    font-size: 0.95rem;
+
+    border-radius: 10px !important;
+    cursor: pointer;
+
+    text-transform: uppercase;
+    font-weight: bold;
+
+    transition: all 0.25s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #050505;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+}
+
+/* BOTÓN ELIMINAR */
+#modal-eliminar .btn-eliminar {
+    border: 2px solid #ff3b3b !important;
+    color: #ff3b3b !important;
+}
+
+/* HOVER ELIMINAR */
+#modal-eliminar .btn-eliminar:hover {
+    background-color: #ff3b3b !important;
+    color: #111 !important;
+    box-shadow: 0 0 15px rgba(255, 59, 59, 0.6);
+    transform: translateY(-2px);
+}
+
+/* HOVER CANCELAR */
+#modal-eliminar button:not(.btn-eliminar):hover {
+    background-color: #FFCC00;
+    color: #050505;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   OVERLAY OSCURECIDO MODAL
+   ========================= */
+#modal-eliminar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    /* 🔥 CASI NEGRO (como quieres) */
+    background: rgba(0, 0, 0, 0.96);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.clicable-red {
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(255, 204, 0, 0.8);
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.clicable-red:hover {
+    border-bottom: 1px dotted #FFCC00;
+    text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+    color: white;
+}
+
+.lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+
+    color: #ccc;
+    text-decoration: none;
+
+    transition: all 0.35s ease;
+}
+
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
 }

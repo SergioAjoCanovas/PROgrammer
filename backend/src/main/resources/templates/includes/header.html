@@ -5,14 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer Header</title>
 
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        /* --- ESTILOS PRINCIPALES DEL HEADER (CORRECCIÓN FLUIDA) --- */
+        .encabezado-principal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            background-color: rgba(26, 26, 26, 0.95); /* Color de fondo por si acaso */
+            border-bottom: 2px solid #FFCC00;
+        }
+
+        .seccion-izquierda, .seccion-derecha {
+            flex-shrink: 0; /* Evita que el logo o el menú derecho se aplasten */
+        }
+
+        /* --- MAGIA DINÁMICA AQUÍ --- */
+        .navegacion-central {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly; 
+            align-items: center;
+            flex: 1; 
+            margin: 0 1vw; /* Margen reducido para que el Admin tenga más sitio */
+            gap: clamp(5px, 1vw, 15px); /* Espacio extra elástico */
+            min-width: 0; /* Previene desbordamientos en flexbox */
+        }
+
+        .icono-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+
+        .icono-nav i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .texto-icono {
+            white-space: nowrap; /* Evita que las palabras se partan */
+            font-size: clamp(10px, 0.75vw, 13px); /* Letra adaptable */
+            font-weight: bold;
+        }
+
+        .icono-nav:hover, .icono-nav:hover i, .icono-nav:hover .texto-icono {
+            color: #FFCC00;
+            transform: scale(1.05);
+        }
+
         .activo-btn, .activo-btn i, .activo-btn span {
             color: #FFCC00 !important;
             text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
         }
 
+        /* --- NOTIFICACIONES --- */
         .contenedor-avisos {
             position: relative;
             display: inline-block;
@@ -65,11 +123,61 @@
             display: block;
         }
 
+        /* --- SECCIÓN DERECHA (PERFIL Y LOGOUT) --- */
         .seccion-derecha {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: clamp(10px, 1.5vw, 20px);
             margin-left: auto;
+        }
+
+        .info-texto-usuario {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Reforzamos que se alineen a la derecha y en columna */
+            text-align: right;
+            justify-content: center;
+            line-height: 1.2;
+        }
+        
+        .avatar-usuario img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FFCC00;
+            object-fit: cover;
+        }
+
+        .avatar-usuario i {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .item-derecha {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn-menu-movil {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFCC00;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Adaptación para pantallas más pequeñas / tablets */
+        @media (max-width: 900px) {
+            .navegacion-central {
+                margin: 0 1vw;
+            }
+            .info-texto-usuario {
+                display: none; /* Ocultar nombre en pantallas estrechas para dar espacio al menú */
+            }
         }
     </style>
 </head>
@@ -81,12 +189,12 @@
     <div class="seccion-izquierda">
         <div class="contenedor-logotipo">
             <a href="/main">
-                <img src="/Img/SILLARUEDASFONDOGRIS.png" class="imagen-logotipo">
+                <img src="/Img/SILLARUEDASFONDOGRIS.png" class="imagen-logotipo" style="height: 70px; width: auto;">
             </a>
         </div>
     </div>
 
-    <nav class="navegacion-central">
+    <nav class="navegacion-central" id="nav-central">
 
         <a href="/main" class="icono-nav" id="nav-inicio">
             <i class="fas fa-home"></i>
@@ -105,7 +213,7 @@
 
         <a href="/publishOffer"
            class="icono-nav"
-           th:if="${usuarioHeader != null and usuarioHeader.rol.nombre == 'COMPANY'}"
+           th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'COMPANY' or usuarioHeader.rol.nombre == '3' or usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}"
            id="nav-publicar-oferta">
             <i class="fas fa-plus-circle"></i>
             <span class="texto-icono">Publicar</span>
@@ -120,17 +228,15 @@
             <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
                 <i class="fas fa-bell"></i>
                 <span class="texto-icono">Avisos</span>
-                <span class="globo-notificacion">2</span>
+                <span class="globo-notificacion" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 0; right: 5px;">2</span>
             </a>
 
             <div id="panel-notificaciones" class="panel-notificaciones">
                 <span class="titulo-panel">Notificaciones recientes</span>
-
                 <div class="notificacion-item">
                     <i class="fas fa-briefcase"></i>
                     <span>Nueva oferta de TechSolutions</span>
                 </div>
-
                 <div class="notificacion-item">
                     <i class="fas fa-user-plus"></i>
                     <span>Juan ha visto tu perfil</span>
@@ -143,126 +249,182 @@
             <span class="texto-icono">Menú</span>
         </a>
 
+        <a href="/adminPanel" 
+           class="icono-nav" 
+           th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}" 
+           id="nav-admin">
+            <i class="fas fa-shield-alt"></i>
+            <span class="texto-icono">Admin</span>
+        </a>
+
     </nav>
 
     <div class="seccion-derecha">
 
         <a href="/login" class="btn-logout" onclick="cerrarSesionLocal(event)" 
-           style="text-decoration: none; display: flex; flex-direction: row; align-items: center; gap: 8px; margin-right: 30px;">
-            
+           style="text-decoration: none; display: flex; flex-direction: row; align-items: center; gap: 8px;">
             <i class="fas fa-sign-out-alt btn-logout-icon"></i>
             <span class="texto-icono btn-logout-texto">Cerrar Sesión</span>
 
             <style>
-                .btn-logout-icon {
-                    color: #ffffff; 
-                    font-size: 1.2rem;
-                    transition: all 0.3s ease;
-                }
-                .btn-logout-texto {
-                    color: #ffffff; 
-                    transition: all 0.3s ease;
-                    white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
-                }
-
-                /* Hover: Icono y Texto cambian a rojo */
-                .btn-logout:hover .btn-logout-icon {
-                    color: #ff0000 !important;
-                    text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-                    transform: scale(1.1);
-                }
-                
-                .btn-logout:hover .btn-logout-texto {
-                    color: #ff0000 !important;
-                }
+                .btn-logout-icon { color: #ffffff; font-size: 1.2rem; transition: all 0.3s ease; }
+                .btn-logout-texto { color: #ffffff; transition: all 0.3s ease; white-space: nowrap; }
+                .btn-logout:hover .btn-logout-icon, .btn-logout:hover .btn-logout-texto { color: #ff0000 !important; }
             </style>
         </a>
 
-        <div th:if="${usuarioHeader != null}" class="info-texto-usuario">
-            <div style="display:flex;flex-direction:column;text-align:right;line-height:1.2;margin-right:10px;">
-                <span style="color:white;font-weight:bold;font-size:0.85em;"
-                      th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
-
-                <span style="color:#FFCC00;font-size:0.65em;font-weight:600;"
-                      th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
-            </div>
+        <div th:if="${usuarioHeader != null}" class="info-texto-usuario" id="info-usuario-db">
+            <span style="color:white;font-weight:bold;font-size:0.85em; display: block;" th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
+            <span style="color:#FFCC00;font-size:0.65em;font-weight:600; display: block;" th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
         </div>
+        
+        <div th:unless="${usuarioHeader != null}" id="info-usuario" class="info-texto-usuario"></div>
 
         <a href="/ownProfile" class="item-derecha">
-            <div class="avatar-usuario">
-                <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}"
-                     th:src="@{${usuarioHeader.fotoPerfil}}"/>
+            <div class="avatar-usuario" style="position: relative; display: inline-block;">
+                <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}" th:src="@{${usuarioHeader.fotoPerfil}}"/>
+                <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}" class="fas fa-user-circle"></i>
 
-                <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}"
-                   class="fas fa-user"></i>
             </div>
-            <span class="texto-icono">Perfil</span>
+            <span class="texto-icono texto-perfil-movil" style="font-size: 0.7em; margin-top:3px;">Perfil</span>
         </a>
+
+        <button class="btn-menu-movil" onclick="toggleMenuMovil()">
+            <i class="fas fa-bars"></i>
+        </button>
 
     </div>
 
-</header>
+    <script th:inline="javascript">
+        window.toggleMenuMovil = function() {
+            const nav = document.getElementById('nav-central');
+            if (nav) nav.classList.toggle('mostrar-menu');
+        };
 
-<script>
-function toggleAvisos(event) {
-    event.preventDefault();
-    document.getElementById('panel-notificaciones').classList.toggle('mostrar');
-    document.getElementById('link-avisos').classList.toggle('activo-btn');
-}
+        window.toggleAvisos = function(event) {
+            event.preventDefault();
+            document.getElementById('panel-notificaciones').classList.toggle('mostrar');
+            document.getElementById('link-avisos').classList.toggle('activo-btn');
+        };
 
-function cerrarPanel() {
-    const panel = document.getElementById('panel-notificaciones');
-    const link = document.getElementById('link-avisos');
-    if(panel) panel.classList.remove('mostrar');
-    if(link) link.classList.remove('activo-btn');
-}
+        window.cerrarPanel = function() {
+            const panel = document.getElementById('panel-notificaciones');
+            const link = document.getElementById('link-avisos');
+            if(panel) panel.classList.remove('mostrar');
+            if(link) link.classList.remove('activo-btn');
+        };
 
-function cerrarSesionLocal(event) {
-    event.preventDefault();
-    localStorage.removeItem('usuarioLogueado');
-    localStorage.removeItem('rolUsuario');
-    window.location.href = "/login";
-}
+        window.cerrarSesionLocal = function(event) {
+            event.preventDefault();
+            localStorage.removeItem('usuarioLogueado');
+            localStorage.removeItem('rolUsuario');
+            window.location.href = "/login";
+        };
 
-document.addEventListener("DOMContentLoaded", function () {
-    const path = window.location.pathname;
-    if (path === '/main') {
-        document.getElementById('nav-inicio')?.classList.add('activo-btn');
-    }
-});
+        document.addEventListener("DOMContentLoaded", function () {
+            const path = window.location.pathname;
+            if (path === '/main') {
+                document.getElementById('nav-inicio')?.classList.add('activo-btn');
+            } else if (path.startsWith('/adminPanel')) {
+                document.getElementById('nav-admin')?.classList.add('activo-btn');
+            }
+        });
 
-(function configurarHeader() {
-    const params = new URLSearchParams(window.location.search);
-    const username = params.get('user') || localStorage.getItem('usuarioLogueado');
-    const rol = params.get('rol') || localStorage.getItem('rolUsuario');
+        (function configurarHeader() {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('user') || localStorage.getItem('usuarioLogueado');
+            window.rol = params.get('rol') || localStorage.getItem('rolUsuario');
 
-    if (params.get('user')) {
-        localStorage.setItem('usuarioLogueado', params.get('user'));
-        localStorage.setItem('rolUsuario', params.get('rol') || '2'); 
-    }
+            if (params.get('user')) {
+                localStorage.setItem('usuarioLogueado', params.get('user'));
+                localStorage.setItem('rolUsuario', window.rol || '2'); 
+            }
 
-    const btnPublicar = document.getElementById('nav-publicar-oferta');
-    if (rol && btnPublicar) {
-        const r = String(rol).trim().toUpperCase();
-        btnPublicar.style.display = (r === 'COMPANY' || r === '3') ? 'flex' : 'none';
-    }
+            const btnPublicar = document.getElementById('nav-publicar-oferta');
+            if (window.rol && btnPublicar) {
+                const r = String(window.rol).trim().toUpperCase();
+                if (r === 'COMPANY' || r === '3' || r === 'ADMIN' || r === '1') {
+                    btnPublicar.style.setProperty('display', 'flex', 'important');
+                } else {
+                    btnPublicar.style.setProperty('display', 'none', 'important');
+                }
+            }
 
-    const contenedorInfo = document.getElementById('info-usuario');
-    if (username && contenedorInfo) {
-        let nombreRol = rol;
-        if (rol == '1') nombreRol = 'ADMIN';
-        if (rol == '2') nombreRol = 'DEVELOPER';
-        if (rol == '3') nombreRol = 'COMPANY';
+            const btnAdmin = document.getElementById('nav-admin');
+            if (window.rol && btnAdmin) {
+                const r = String(window.rol).trim().toUpperCase();
+                if (r === 'ADMIN' || r === '1') {
+                    btnAdmin.style.setProperty('display', 'flex', 'important');
+                } else {
+                    btnAdmin.style.setProperty('display', 'none', 'important');
+                }
+            }
 
-        contenedorInfo.innerHTML = `
-            <div style="display: flex; flex-direction: column; text-align: right; margin-right: 12px; justify-content: center; line-height: 1.2;">
-                <span style="color: white; font-weight: bold; font-size: 0.85em;">${username.toUpperCase()}</span>
-                <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600;">${nombreRol}</span>
+            const contenedorInfo = document.getElementById('info-usuario');
+            const contenedorDb = document.getElementById('info-usuario-db');
+            
+            if (username && contenedorInfo && !contenedorDb) {
+                let nombreRol = window.rol;
+                if (window.rol == '1') nombreRol = 'ADMIN';
+                if (window.rol == '2') nombreRol = 'DEVELOPER';
+                if (window.rol == '3') nombreRol = 'COMPANY';
+
+                /* display: block; en los span para forzar el salto de línea en JavaScript */
+                contenedorInfo.innerHTML = `
+                    <span style="color: white; font-weight: bold; font-size: 0.85em; display: block;">${username.toUpperCase()}</span>
+                    <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600; display: block;">${nombreRol}</span>
+                `;
+            }
+        })();
+    </script>
+
+    <!-- MODAL GLOBAL DE UNFOLLOW (Dejar de Seguir) -->
+    <div id="modalUnfollowGlobal" class="modal-overlay">
+        <div class="modal-box modal-eliminar" id="modalBoxUnfollow">
+            <h3><i class="fas fa-heart-crack"></i> Dejar de Seguir</h3>
+            <p id="modalUnfollowMessage">¿Seguro que quieres dejar de seguir a este usuario?</p>
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar-modal" id="btnCancelarUnfollow">Cancelar</button>
+                <button type="button" class="btn-confirmar-modal" id="btnConfirmarUnfollow"><i class="fas fa-heart-crack"></i> Sí, dejar de seguir</button>
             </div>
-        `;
-    }
-})();
-</script>
+        </div>
+    </div>
+
+    <script>
+        function mostrarModalUnfollowGlobal(targetName) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('modalUnfollowGlobal');
+                const btnConfirmar = document.getElementById('btnConfirmarUnfollow');
+                const btnCancelar = document.getElementById('btnCancelarUnfollow');
+                const modalMessage = document.getElementById('modalUnfollowMessage');
+                
+                modalMessage.innerText = `¿Seguro que quieres dejar de seguir a este usuario (${targetName})?`;
+
+                modal.classList.add('mostrar');
+
+                const onConfirm = () => {
+                    modal.classList.remove('mostrar');
+                    cleanup();
+                    resolve({ isConfirmed: true });
+                };
+                
+                const onCancel = () => {
+                    modal.classList.remove('mostrar');
+                    cleanup();
+                    resolve({ isConfirmed: false });
+                };
+
+                const cleanup = () => {
+                    btnConfirmar.removeEventListener('click', onConfirm);
+                    btnCancelar.removeEventListener('click', onCancel);
+                };
+
+                btnConfirmar.addEventListener('click', onConfirm);
+                btnCancelar.addEventListener('click', onCancel);
+            });
+        }
+    </script>
+</header>
 
 </body>
 </html>

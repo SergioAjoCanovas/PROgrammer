@@ -5,6 +5,7 @@ import com.programmer.backend.domain.Tecnologia;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.ProyectoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +20,35 @@ public class ProyectoService {
         this.proyectoRepository = proyectoRepository;
     }
 
-    /**
-     * DTO interno (NO es tabla, solo objeto para la vista)
-     */
+    // ==========================================
+    // BORRADO REAL (FIX DEFINITIVO)
+    // ==========================================
+    @Transactional
+    public void eliminarProyecto(Proyecto proyecto) {
+    
+        System.out.println("TX ACTIVE: " + 
+            org.springframework.transaction.support.TransactionSynchronizationManager.isActualTransactionActive()
+        );
+    
+        Long id = proyecto.getId();
+    
+        System.out.println("INICIO BORRADO PROYECTO ID: " + id);
+    
+        int deleted = proyectoRepository.deleteTecnologiasByProyectoId(id);
+        System.out.println("RELACIONES BORRADAS: " + deleted);
+    
+        try {
+            proyectoRepository.deleteById(id);
+            System.out.println("PROYECTO BORRADO");
+        } catch (Exception e) {
+            System.out.println("ERROR BORRANDO PROYECTO:");
+            e.printStackTrace();
+        }
+    }
+
+    // ==========================================
+    // DTO
+    // ==========================================
     public static class ProyectoDTO {
 
         private Long id;
@@ -29,45 +56,31 @@ public class ProyectoService {
         private String descripcion;
         private List<String> imagenes;
         private List<Tecnologia> tecnologias;
+        private Boolean estaValidado;
 
         public ProyectoDTO(Long id,
                            String nombre,
                            String descripcion,
                            List<String> imagenes,
-                           List<Tecnologia> tecnologias) {
+                           List<Tecnologia> tecnologias,
+                           Boolean estaValidado) {
             this.id = id;
             this.nombre = nombre;
             this.descripcion = descripcion;
             this.imagenes = imagenes;
             this.tecnologias = tecnologias;
+            this.estaValidado = estaValidado;
         }
 
-        public Long getId() {
-            return id;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public String getDescripcion() {
-            return descripcion;
-        }
-
-        public List<String> getImagenes() {
-            return imagenes;
-        }
-
-        public List<Tecnologia> getTecnologias() {
-            return tecnologias;
-        }
+        public Long getId() { return id; }
+        public String getNombre() { return nombre; }
+        public String getDescripcion() { return descripcion; }
+        public List<String> getImagenes() { return imagenes; }
+        public List<Tecnologia> getTecnologias() { return tecnologias; }
+        public Boolean getEstaValidado() { return estaValidado; }
     }
 
-    /**
-     * Devuelve los 2 proyectos más recientes YA adaptados para la vista
-     */
     public List<ProyectoDTO> obtenerUltimosProyectos(Usuario usuario) {
-
         return proyectoRepository
                 .findTop2ByAutorOrderByIdDesc(usuario)
                 .stream()
@@ -75,29 +88,20 @@ public class ProyectoService {
                 .toList();
     }
 
-    /**
-     * Convierte entidad → DTO
-     */
     private ProyectoDTO mapToDTO(Proyecto p) {
-
-        if (p == null) {
-            return null; // protección extra (no debería pasar, pero evita crashes)
-        }
+        if (p == null) return null;
 
         return new ProyectoDTO(
                 p.getId(),
                 p.getTitulo(),
                 p.getDescripcion(),
                 mapImagenes(p),
-                p.getTecnologias() != null ? p.getTecnologias() : List.of()
+                p.getTecnologias() != null ? p.getTecnologias() : List.of(),
+                p.getEstaValidado()
         );
     }
 
-    /**
-     * Convierte foto_1..foto_4 → List<String> (sin nulls)
-     */
     private List<String> mapImagenes(Proyecto p) {
-
         if (p == null) return List.of();
 
         return Stream.of(

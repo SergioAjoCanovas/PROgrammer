@@ -136,67 +136,76 @@ body.fondo-oscuro-neon {
 }
 
 /* =========================================================
-   RESEÑAS (INPUT)
+   BOTONES UNIFICADOS
    ========================================================= */
-.input-resena {
-    width: 100%; 
-    height: 80px;
-    background-color: #222; 
-    color: #FFFFFF;
-    border: 1px solid #555; 
-    border-radius: 10px;
-    padding: 12px; 
-    margin-top: 15px; 
-    margin-bottom: 20px;
-    font-family: inherit; 
-    resize: none; 
-    outline: none; 
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+   body.fondo-oscuro-neon .boton-anadir,
+   body.fondo-oscuro-neon .boton-ver-proyecto,
+   body.fondo-oscuro-neon .boton-editar-proyecto { 
+       display: inline-flex;
+       align-items: center; 
+       justify-content: center; 
+       padding: 12px;
+       background-color: #050505 !important;
+       color: #FFCC00 !important;
+       border: 2px solid #FFCC00 !important;
+       border-radius: 10px !important;
+       font-weight: bold !important; 
+       cursor: pointer; 
+       text-transform: uppercase;
+       text-align: center;
+       text-decoration: none;
+       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+       box-sizing: border-box;
+       height: 46px;
+       white-space: nowrap;
+   }
+
+   body.fondo-oscuro-neon .botones-proyecto {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+
+    align-items: stretch;
 }
 
-.input-resena:focus { 
-    border: 1px solid #FFCC00; 
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); 
+body.fondo-oscuro-neon .botones-proyecto > a,
+body.fondo-oscuro-neon .botones-proyecto > button {
+    margin-top: 0 !important;
 }
 
-/* =========================================================
-   BOTONES UNIFICADOS (FONDO #050505 FORZADO)
-   ========================================================= */
-body.fondo-oscuro-neon .boton-curriculum, 
-body.fondo-oscuro-neon .boton-anadir,
 body.fondo-oscuro-neon .boton-ver-proyecto {
-    display: inline-block;
-    width: 100%; 
-    padding: 12px;
-    background-color: #050505 !important;
+    white-space: normal;
+    width: 50%;
+}
+
+body.fondo-oscuro-neon .boton-editar-proyecto {
+    width: 25%;
     color: #FFCC00 !important;
     border: 2px solid #FFCC00 !important;
-    border-radius: 10px !important;
-    font-weight: bold !important; 
-    cursor: pointer; 
-    text-transform: uppercase;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-sizing: border-box;
-}
-
-/* Ajuste específico para el de ver proyecto (No ocupa todo el ancho) */
-body.fondo-oscuro-neon .boton-ver-proyecto {
-    margin-top: 25px;
-    max-width: 100%;
-    white-space: normal;
+    align-self: center !important;
 }
 
 /* Hover de los botones */
 body.fondo-oscuro-neon .boton-curriculum:hover, 
 body.fondo-oscuro-neon .boton-anadir:hover,
-body.fondo-oscuro-neon .boton-ver-proyecto:hover { 
+body.fondo-oscuro-neon .boton-ver-proyecto:hover, 
+body.fondo-oscuro-neon .boton-editar-proyecto:hover { 
     background-color: #FFCC00 !important; 
     color: #050505 !important; 
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
     transform: translateY(-3px);
+}
+
+body.fondo-oscuro-neon .botones-proyecto .boton-ver-proyecto {
+    flex: 3;
+}
+
+body.fondo-oscuro-neon .botones-proyecto .boton-editar-proyecto {
+    flex: 1;
+}
+
+body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
+    flex: 1;
 }
 
 /* =========================================================
@@ -372,7 +381,7 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
 
    body.fondo-oscuro-neon .boton-eliminar-proyecto {
     display: inline-block;
-    width: 100%;
+    width: 25%;
     padding: 12px;
 
     background-color: #050505 !important;
@@ -389,8 +398,6 @@ body.fondo-oscuro-neon .boton-ver-proyecto:hover {
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
-
-    margin-top: 25px;
 
     height: auto;
     min-height: 46px;

@@ -41,8 +41,12 @@ public class ProfileController {
     @GetMapping("/ownProfile")
     public String ownProfile(HttpSession session, Model model) {
 
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Usuario usuarioSession = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuarioSession == null) {
+            return "redirect:/login";
+        }
 
+        Usuario usuario = usuarioRepo.findById(usuarioSession.getId()).orElse(null);
         if (usuario == null) {
             return "redirect:/login";
         }
@@ -66,6 +70,17 @@ public class ProfileController {
                 proyectoService.obtenerUltimosProyectos(usuario);
 
         model.addAttribute("ultimosProyectos", ultimosProyectos);
+
+        // SEGUIMIENTO
+        Set<Usuario> seguidores = usuario.getSeguidores() != null ? usuario.getSeguidores() : new HashSet<>();
+        Set<Usuario> siguiendo = usuario.getSiguiendo() != null ? usuario.getSiguiendo() : new HashSet<>();
+        
+        Set<Usuario> amigos = new HashSet<>(seguidores);
+        amigos.retainAll(siguiendo);
+
+        model.addAttribute("seguidores", seguidores);
+        model.addAttribute("siguiendo", siguiendo);
+        model.addAttribute("amigos", amigos);
 
         String rol = usuario.getRol().getNombre();
 

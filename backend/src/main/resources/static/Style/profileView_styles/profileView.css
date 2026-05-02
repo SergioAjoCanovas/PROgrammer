@@ -142,6 +142,7 @@ body.fondo-oscuro-neon {
     border-radius: 50%;
     background-color: #222;
     border: 3px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
 }
 
 .circulo-foto img {

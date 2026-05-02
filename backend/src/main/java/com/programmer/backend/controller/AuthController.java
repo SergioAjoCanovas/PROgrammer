@@ -65,7 +65,7 @@ public class AuthController {
                 || usuarioRepository.existsByUsername(username)
                 || usuarioRepository.existsByEmail(email)) {
 
-            response.sendRedirect("/signup?error=true");
+            response.sendRedirect("/signUp?error=true");
             return;
         }
 

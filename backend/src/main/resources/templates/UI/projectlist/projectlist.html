@@ -57,6 +57,23 @@
             flex: 1;
         }
 
+        .tech-tag-proyecto {
+            background: rgba(0,243,255,0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,243,255,0.3);
+            color: #00f3ff;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .tech-tag-proyecto:hover {
+            background: rgba(0,243,255,0.2);
+            box-shadow: 0 0 8px rgba(0,243,255,0.5);
+            transform: translateY(-2px);
+            color: white;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -67,12 +84,49 @@
             z-index: 9999;
         }
 
-        /* FIX FOTO */
         .circulo-foto img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
+        }
+
+        .foto-perfil-contenedor {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 5px;
+            right: 0px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 1px solid #ff4444;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-follow-heart i.fas {
+            color: #ff4444;
+        }
+        .btn-follow-heart:hover i.fas {
+            color: white;
         }
     </style>
 </head>
@@ -90,7 +144,6 @@
 
             <div class="perfil-superior">
                 <div class="foto-perfil-contenedor">
-
                     <div class="circulo-foto">
                         <img th:if="${usuario.fotoPerfil != null}" 
                              th:src="${usuario.fotoPerfil}" 
@@ -99,12 +152,19 @@
                         <i th:if="${usuario.fotoPerfil == null}" 
                            class="fas fa-user"></i>
                     </div>
-
+                    <button th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != usuario.id}"
+                            class="btn-follow-heart" 
+                            th:attr="data-id=${usuario.id}" 
+                            onclick="toggleFollowUser(this, event)">
+                        <i class="fa-heart" th:classappend="${usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                    </button>
                 </div>
-
                 <h2 class="nombre-usuario"
                     th:text="${usuario.username}">
                 </h2>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
+                    <i class="fas fa-users"></i> <span th:text="${usuario.followersCountFormatted}">0</span> <span th:text="${usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                </div>
 
                 <div th:if="${media > 0}" 
                      style="margin-top: 10px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
@@ -159,7 +219,7 @@
 
             <div class="cabecera-acordeon">
                 <h2>PROYECTOS</h2>
-                <a href="/ownProfile" class="boton-volver-circular">
+                <a href="javascript:void(0)" onclick="volverDesdeProjectList()" class="boton-volver-circular">
                     <i class="fas fa-undo"></i>
                 </a>
             </div>
@@ -175,6 +235,11 @@
 
                             <p th:text="${p.descripcion}"></p>
 
+                            <div th:if="${p.tecnologias != null and !p.tecnologias.isEmpty()}" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span th:each="tech : ${p.tecnologias}" th:text="${tech.nombre}" class="tech-tag-proyecto">
+                                </span>
+                            </div>
+
                             <div class="botones-proyecto">
 
                                 <button class="boton-ver-proyecto"
@@ -182,7 +247,8 @@
                                     VER PROYECTO
                                 </button>
 
-                                <button class="boton-eliminar-proyecto"
+                                <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == usuario.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and usuario.rol.id != 1 and usuario.rol.nombre != 'ADMIN'))}"
+                                        class="boton-eliminar-proyecto"
                                         th:attr="data-id=${p.id}"
                                         onclick="abrirModalEliminarLista(this)">
                                     BORRAR PROYECTO
@@ -279,9 +345,60 @@ function eliminarProyecto() {
     .then(res => res.text())
     .then(data => {
         if (data === "OK") {
-            window.location.href = "/proyectos/projectList";
+            window.location.href = "/proyectos/projectList/" + "[[${session.usuarioLogueado != null ? session.usuarioLogueado.id : ''}]]";
         }
     });
+}
+
+async function toggleFollowUser(btn, event) {
+    event.stopPropagation();
+    const targetId = btn.getAttribute('data-id');
+    const icon = btn.querySelector('i');
+    const isFollowing = icon.classList.contains('fas');
+
+    if (isFollowing) {
+        const targetName = btn.getAttribute('data-username') || 'este usuario';
+        const result = await mostrarModalUnfollowGlobal(targetName);
+
+        if (!result.isConfirmed) {
+            return;
+        }
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append('targetId', targetId);
+        
+        const response = await fetch('/usuario/toggleFollow', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        
+        if (result === 'OK') {
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        } else if (result === 'NOT_LOGGED') {
+            window.location.href = '/login';
+        } else {
+            alert('Error al seguir al usuario: ' + result);
+        }
+    } catch (error) {
+        console.error('Error toggling follow:', error);
+    }
+}
+
+function volverDesdeProjectList() {
+    if (document.referrer.includes("/ownProfile")) {
+        window.location.href = "/ownProfile";
+    } else {
+        window.location.href = "/profileView/[[${usuario.id}]]";
+    }
 }
 </script>
 

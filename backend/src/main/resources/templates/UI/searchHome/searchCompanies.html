@@ -18,6 +18,44 @@
             text-shadow: 0 0 10px #FFCC00 !important;
             opacity: 1 !important;
         }
+
+        .foto-perfil-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 5px;
+            right: 0px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 1px solid #ff4444;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-follow-heart i.fas {
+            color: #ff4444;
+        }
+        .btn-follow-heart:hover i.fas {
+            color: white;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -107,8 +145,17 @@
                                 <div class="foto-perfil-container">
                                     <img th:src="${company.usuario.fotoPerfil != null ? company.usuario.fotoPerfil : '/Img/stock/default-company.png'}" 
                                          class="foto-perfil-img" alt="Logo">
+                                    <button th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != company.usuario.id}"
+                                            class="btn-follow-heart" 
+                                            th:attr="data-id=${company.usuario.id}" 
+                                            onclick="toggleFollowUser(this, event)">
+                                        <i class="fa-heart" th:classappend="${company.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                                    </button>
                                 </div>
                                 <h3 th:text="${company.usuario.username}"></h3>
+                                <div style="text-align: center; margin-top: 2px; margin-bottom: 10px; color: #FFCC00; font-size: 0.8em; font-weight: bold;">
+                                    <i class="fas fa-users"></i> <span th:text="${company.usuario.followersCountFormatted}">0</span> <span th:text="${company.usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                                </div>
                                 <p th:text="${company.sector != null ? company.sector : 'Sector Tecnológico'}" class="sector-texto"></p>
                                 
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
@@ -258,6 +305,49 @@
             actualizarCarrusel();
             actualizarBotonesGlobales();
         });
+
+        async function toggleFollowUser(btn, event) {
+            event.stopPropagation();
+            const targetId = btn.getAttribute('data-id');
+            const icon = btn.querySelector('i');
+            const isFollowing = icon.classList.contains('fas');
+
+            if (isFollowing) {
+                const targetName = btn.getAttribute('data-username') || 'esta empresa';
+                const result = await mostrarModalUnfollowGlobal(targetName);
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('targetId', targetId);
+                
+                const response = await fetch('/usuario/toggleFollow', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                
+                if (result === 'OK') {
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+                } else if (result === 'NOT_LOGGED') {
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al seguir al usuario: ' + result);
+                }
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+            }
+        }
     </script>
 </body>
 </html>

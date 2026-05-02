@@ -112,7 +112,7 @@ public class AuthController {
         session.setAttribute("usuarioLogueado", usuarioGuardado);
         session.setAttribute("rolUsuario", rolNombre);
 
-        response.sendRedirect("/main?user=" + username + "&rol=" + rolNombre);
+        response.sendRedirect("/main?user=" + java.net.URLEncoder.encode(username, "UTF-8") + "&rol=" + java.net.URLEncoder.encode(rolNombre, "UTF-8"));
     }
 
     // =========================
@@ -144,6 +144,6 @@ public class AuthController {
         session.setAttribute("usuarioLogueado", usuario);
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-        response.sendRedirect("/main?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
+        response.sendRedirect("/main?user=" + java.net.URLEncoder.encode(usuario.getUsername(), "UTF-8") + "&rol=" + java.net.URLEncoder.encode(usuario.getRol().getNombre(), "UTF-8"));
     }
 }

@@ -103,6 +103,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         session.setAttribute("usuarioLogueado", usuario);
         session.setAttribute("rolUsuario", usuario.getRol().getNombre());
 
-        response.sendRedirect("/main?user=" + usuario.getUsername() + "&rol=" + usuario.getRol().getNombre());
+        response.sendRedirect("/main?user=" + java.net.URLEncoder.encode(usuario.getUsername(), "UTF-8") + "&rol=" + java.net.URLEncoder.encode(usuario.getRol().getNombre(), "UTF-8"));
     }
 }

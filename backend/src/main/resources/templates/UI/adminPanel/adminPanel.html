@@ -96,6 +96,17 @@
         .modal-eliminar h3 { color: #ff003c; text-shadow: 0 0 10px #ff003c; }
         .modal-eliminar .btn-confirmar-modal { background: rgba(255, 0, 60, 0.1); border: 1px solid #ff003c; color: #ff003c; }
         .modal-eliminar .btn-confirmar-modal:hover { background: #ff003c; color: #fff; box-shadow: 0 0 15px #ff003c; }
+
+        /* Hover de Proyectos */
+        .proyecto-item {
+            transition: all 0.3s ease;
+        }
+        .proyecto-item:hover {
+            background: rgba(255, 204, 0, 0.1) !important;
+            border-color: #FFCC00 !important;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.2);
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon cuerpo-flexible">
@@ -199,7 +210,7 @@
 
             <div id="proyectos-pendientes" class="tab-content-proyectos activo" style="display: block;">
                 <div class="grid-usuarios">
-                    <div class="card-usuario" th:each="entry : ${proyectosNoValidados}">
+                    <div class="card-usuario" th:each="entry : ${proyectosNoValidados}" style="align-self: start;">
                         <!-- Info del usuario (desplegable) -->
                         <div class="usuario-proyectos-header" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #333;" th:onclick="'toggleUserProjects(' + ${entry.key.id} + ')'">
                             <div style="display: flex; align-items: center; gap: 15px;">
@@ -220,9 +231,9 @@
 
                         <!-- Lista de proyectos del usuario -->
                         <div th:id="'proyectos-user-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
-                            <div th:each="p : ${entry.value}" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444;">
-                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00;"></h4>
-                                <div class="botones-accion" style="margin-top: 10px; justify-content: flex-start;">
+                            <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; text-align: center;">
+                                <h4 th:text="${p.titulo}" style="margin: 0 0 10px 0; color: #FFCC00; text-align: center;"></h4>
+                                <div class="botones-accion" style="margin-top: 10px; justify-content: center;">
                                     <a th:href="@{/proyectos/proyecto/{id}(id=${p.id})}" target="_blank" class="btn-perfil" title="Ver Proyecto"><i class="fas fa-eye"></i></a>
                                     <form th:action="@{/adminPanel/verificarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'verificarProyecto');">
                                         <button type="submit" class="btn-verificar" title="Verificar Proyecto"><i class="fas fa-check"></i></button>
@@ -243,7 +254,7 @@
 
             <div id="proyectos-verificados" class="tab-content-proyectos" style="display: none;">
                 <div class="grid-usuarios">
-                    <div class="card-usuario" th:each="entry : ${proyectosValidados}">
+                    <div class="card-usuario" th:each="entry : ${proyectosValidados}" style="align-self: start;">
                         <div class="usuario-proyectos-header" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #333;" th:onclick="'toggleUserProjectsValidados(' + ${entry.key.id} + ')'">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div style="position: relative; display: inline-block;">
@@ -262,14 +273,16 @@
                         </div>
 
                         <div th:id="'proyectos-user-validados-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
-                            <div th:each="p : ${entry.value}" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; position: relative;">
-                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; display: inline-block;"></h4>
+                            <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; position: relative; text-align: center;">
+                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; text-align: center;"></h4>
                                 <!-- Div azulito de verificado -->
-                                <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 8px; vertical-align: middle;">
-                                    <i class="fas fa-check-circle"></i> VERIFICADO
-                                </span>
+                                <div style="margin-bottom: 10px; text-align: center;">
+                                    <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block;">
+                                        <i class="fas fa-check-circle"></i> VERIFICADO
+                                    </span>
+                                </div>
                                 
-                                <div class="botones-accion" style="margin-top: 10px; justify-content: flex-start;">
+                                <div class="botones-accion" style="margin-top: 10px; justify-content: center;">
                                     <a th:href="@{/proyectos/proyecto/{id}(id=${p.id})}" target="_blank" class="btn-perfil" title="Ver Proyecto"><i class="fas fa-eye"></i></a>
                                     <form th:action="@{/adminPanel/desverificarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'desverificarProyecto');">
                                         <button type="submit" class="btn-eliminar" title="Quitar Verificación"><i class="fas fa-times"></i></button>
@@ -366,6 +379,47 @@
                 formActual.submit();
             }
         });
+
+        // Restaurar pestañas
+        const mainTab = localStorage.getItem('adminMainTab');
+        if (mainTab) mostrarMainTab(mainTab);
+        
+        const subTabCuentas = localStorage.getItem('adminSubTabCuentas');
+        if (subTabCuentas) mostrarTabCuentas(subTabCuentas);
+        
+        const subTabProyectos = localStorage.getItem('adminSubTabProyectos');
+        if (subTabProyectos) mostrarTabProyectos(subTabProyectos);
+
+        // Restaurar acordeones abiertos
+        const openUser = localStorage.getItem('adminOpenUser');
+        if (openUser) {
+            const el = document.getElementById('proyectos-user-' + openUser);
+            if (el) {
+                el.style.display = 'block';
+                const icon = document.getElementById('icon-user-' + openUser);
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            } else {
+                localStorage.removeItem('adminOpenUser');
+            }
+        }
+
+        const openUserValidados = localStorage.getItem('adminOpenUserValidados');
+        if (openUserValidados) {
+            const el = document.getElementById('proyectos-user-validados-' + openUserValidados);
+            if (el) {
+                el.style.display = 'block';
+                const icon = document.getElementById('icon-user-validados-' + openUserValidados);
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            } else {
+                localStorage.removeItem('adminOpenUserValidados');
+            }
+        }
     });
 
     function mostrarMainTab(tabId) {
@@ -373,7 +427,10 @@
         document.querySelectorAll('.main-tab-btn').forEach(el => el.classList.remove('activo'));
         
         document.getElementById(tabId).style.display = 'block';
-        event.target.classList.add('activo');
+        const btn = Array.from(document.querySelectorAll('.main-tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+        if (btn) btn.classList.add('activo');
+
+        localStorage.setItem('adminMainTab', tabId);
     }
 
     function mostrarTabCuentas(tabId) {
@@ -381,7 +438,10 @@
         document.querySelectorAll('.sub-tab-cuentas').forEach(el => el.classList.remove('activo'));
         
         document.getElementById(tabId).style.display = 'block';
-        event.target.classList.add('activo');
+        const btn = Array.from(document.querySelectorAll('.sub-tab-cuentas')).find(b => b.getAttribute('onclick').includes(tabId));
+        if (btn) btn.classList.add('activo');
+
+        localStorage.setItem('adminSubTabCuentas', tabId);
     }
 
     function mostrarTabProyectos(tabId) {
@@ -389,34 +449,67 @@
         document.querySelectorAll('.sub-tab-proyectos').forEach(el => el.classList.remove('activo'));
         
         document.getElementById(tabId).style.display = 'block';
-        event.target.classList.add('activo');
+        const btn = Array.from(document.querySelectorAll('.sub-tab-proyectos')).find(b => b.getAttribute('onclick').includes(tabId));
+        if (btn) btn.classList.add('activo');
+
+        localStorage.setItem('adminSubTabProyectos', tabId);
     }
 
     function toggleUserProjects(userId) {
+        // Cierra los demás
+        document.querySelectorAll('[id^="proyectos-user-"]').forEach(el => {
+            if (el.id !== 'proyectos-user-' + userId && !el.id.includes('validados')) {
+                el.style.display = 'none';
+                const iconId = el.id.replace('proyectos-user-', 'icon-user-');
+                const icon = document.getElementById(iconId);
+                if (icon) {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            }
+        });
+
         const div = document.getElementById('proyectos-user-' + userId);
         const icon = document.getElementById('icon-user-' + userId);
         if (div.style.display === 'none') {
             div.style.display = 'block';
             icon.classList.remove('fa-chevron-down');
             icon.classList.add('fa-chevron-up');
+            localStorage.setItem('adminOpenUser', userId);
         } else {
             div.style.display = 'none';
             icon.classList.remove('fa-chevron-up');
             icon.classList.add('fa-chevron-down');
+            localStorage.removeItem('adminOpenUser');
         }
     }
 
     function toggleUserProjectsValidados(userId) {
+        // Cierra los demás
+        document.querySelectorAll('[id^="proyectos-user-validados-"]').forEach(el => {
+            if (el.id !== 'proyectos-user-validados-' + userId) {
+                el.style.display = 'none';
+                const iconId = el.id.replace('proyectos-user-validados-', 'icon-user-validados-');
+                const icon = document.getElementById(iconId);
+                if (icon) {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            }
+        });
+
         const div = document.getElementById('proyectos-user-validados-' + userId);
         const icon = document.getElementById('icon-user-validados-' + userId);
         if (div.style.display === 'none') {
             div.style.display = 'block';
             icon.classList.remove('fa-chevron-down');
             icon.classList.add('fa-chevron-up');
+            localStorage.setItem('adminOpenUserValidados', userId);
         } else {
             div.style.display = 'none';
             icon.classList.remove('fa-chevron-up');
             icon.classList.add('fa-chevron-down');
+            localStorage.removeItem('adminOpenUserValidados');
         }
     }
 

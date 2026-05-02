@@ -125,8 +125,10 @@
             if (urlParams.has('error')) {
                 const errorType = urlParams.get('error');
                 
-                // Personalización del mensaje según el valor (opcional)
-                if (errorType === 'invalid') {
+                // Personalización del mensaje
+                if (errorType === 'auth' || errorType === 'true') {
+                    document.getElementById('toast-error-mensaje').innerText = "Credenciales incorrectas. Si te registraste con Google, por favor usa el botón de 'Iniciar sesión con Google'.";
+                } else if (errorType === 'invalid') {
                     document.getElementById('toast-error-mensaje').innerText = "Las credenciales no son válidas.";
                 } else if (errorType === 'locked') {
                     document.getElementById('toast-error-mensaje').innerText = "Tu cuenta está bloqueada temporalmente.";

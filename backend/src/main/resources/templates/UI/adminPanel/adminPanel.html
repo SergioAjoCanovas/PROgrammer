@@ -123,8 +123,8 @@
                 <div class="card-usuario" th:each="u : ${logueados}">
                     <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
                     <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
-                    
                     <h3 th:text="${u.username}">Nombre</h3>
+                    <div style="font-size: 0.8rem; color: #FFCC00; margin-top: 5px; margin-bottom: 5px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${u.followersCountFormatted}">0</span> <span th:text="${u.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                     <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
                     <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
 
@@ -139,7 +139,10 @@
                     </div>
                 </div>
             </div>
-            <p th:if="${#lists.isEmpty(logueados)}" class="mensaje-vacio">No hay usuarios logueados pendientes.</p>
+            <div th:if="${#lists.isEmpty(logueados)}" class="mensaje-vacio">
+                <i class="fas fa-user-slash"></i>
+                <p>No hay usuarios logueados pendientes.</p>
+            </div>
         </div>
 
         <div id="verificados" class="tab-content">
@@ -147,11 +150,11 @@
                 <div class="card-usuario" th:each="u : ${verificados}">
                     <img th:if="${u.fotoPerfil != null and u.fotoPerfil != ''}" th:src="@{${u.fotoPerfil}}" class="foto-perfil" alt="Foto">
                     <i th:if="${u.fotoPerfil == null or u.fotoPerfil == ''}" class="fas fa-user-circle icono-perfil-default"></i>
-                    
                     <h3>
                         <span th:text="${u.username}">Nombre</span>
                         <i class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                     </h3>
+                    <div style="font-size: 0.8rem; color: #FFCC00; margin-top: 5px; margin-bottom: 5px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${u.followersCountFormatted}">0</span> <span th:text="${u.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                     <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
                     <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
 
@@ -163,7 +166,10 @@
                     </div>
                 </div>
             </div>
-            <p th:if="${#lists.isEmpty(verificados)}" class="mensaje-vacio">No hay usuarios verificados.</p>
+            <div th:if="${#lists.isEmpty(verificados)}" class="mensaje-vacio">
+                <i class="fas fa-user-slash"></i>
+                <p>No hay usuarios verificados.</p>
+            </div>
         </div>
     </div>
 </main>

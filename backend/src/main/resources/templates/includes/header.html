@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProGrammer Header</title>
 
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         /* --- ESTILOS PRINCIPALES DEL HEADER (CORRECCIÓN FLUIDA) --- */
@@ -372,6 +375,53 @@
                 `;
             }
         })();
+    </script>
+
+    <!-- MODAL GLOBAL DE UNFOLLOW (Dejar de Seguir) -->
+    <div id="modalUnfollowGlobal" class="modal-overlay">
+        <div class="modal-box modal-eliminar" id="modalBoxUnfollow">
+            <h3><i class="fas fa-heart-crack"></i> Dejar de Seguir</h3>
+            <p id="modalUnfollowMessage">¿Seguro que quieres dejar de seguir a este usuario?</p>
+            <div class="modal-botones">
+                <button type="button" class="btn-cancelar-modal" id="btnCancelarUnfollow">Cancelar</button>
+                <button type="button" class="btn-confirmar-modal" id="btnConfirmarUnfollow"><i class="fas fa-heart-crack"></i> Sí, dejar de seguir</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mostrarModalUnfollowGlobal(targetName) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('modalUnfollowGlobal');
+                const btnConfirmar = document.getElementById('btnConfirmarUnfollow');
+                const btnCancelar = document.getElementById('btnCancelarUnfollow');
+                const modalMessage = document.getElementById('modalUnfollowMessage');
+                
+                modalMessage.innerText = `¿Seguro que quieres dejar de seguir a este usuario (${targetName})?`;
+
+                modal.classList.add('mostrar');
+
+                const onConfirm = () => {
+                    modal.classList.remove('mostrar');
+                    cleanup();
+                    resolve({ isConfirmed: true });
+                };
+                
+                const onCancel = () => {
+                    modal.classList.remove('mostrar');
+                    cleanup();
+                    resolve({ isConfirmed: false });
+                };
+
+                const cleanup = () => {
+                    btnConfirmar.removeEventListener('click', onConfirm);
+                    btnCancelar.removeEventListener('click', onCancel);
+                };
+
+                btnConfirmar.addEventListener('click', onConfirm);
+                btnCancelar.addEventListener('click', onCancel);
+            });
+        }
     </script>
 </header>
 

@@ -47,6 +47,44 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
+
+        .foto-perfil-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 5px;
+            right: 0px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 1px solid #ff4444;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-follow-heart i.fas {
+            color: #ff4444;
+        }
+        .btn-follow-heart:hover i.fas {
+            color: white;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -129,8 +167,19 @@
                                      esLarga=${#strings.length(fullBio) > 60}">
                             
                             <div class="contenido-perfil">
-                                <img th:src="${developer.usuario != null and developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
+                                <div class="foto-perfil-wrapper">
+                                    <img th:src="${developer.usuario != null and developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
+                                    <button th:if="${session.usuarioLogueado != null and developer.usuario != null and session.usuarioLogueado.id != developer.usuario.id}"
+                                            class="btn-follow-heart" 
+                                            th:attr="data-id=${developer.usuario.id}" 
+                                            onclick="toggleFollowUser(this, event)">
+                                        <i class="fa-heart" th:classappend="${developer.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                                    </button>
+                                </div>
                                 <h3 th:text="${developer.usuario != null ? developer.usuario.username : 'Usuario'}"></h3>
+                                <div style="text-align: center; margin-top: 2px; margin-bottom: 10px; color: #FFCC00; font-size: 0.8em; font-weight: bold;">
+                                    <i class="fas fa-users"></i> <span th:text="${developer.usuario != null ? developer.usuario.followersCountFormatted : '0'}">0</span> <span th:text="${developer.usuario != null and developer.usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                                </div>
                                 
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
                                      th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
@@ -301,6 +350,49 @@
         startAutoPlay();
         actualizarEstadoBotonesGlobales();
     });
+
+    async function toggleFollowUser(btn, event) {
+        event.stopPropagation();
+        const targetId = btn.getAttribute('data-id');
+        const icon = btn.querySelector('i');
+        const isFollowing = icon.classList.contains('fas');
+
+        if (isFollowing) {
+            const targetName = btn.getAttribute('data-username') || 'este usuario';
+            const result = await mostrarModalUnfollowGlobal(targetName);
+
+            if (!result.isConfirmed) {
+                return;
+            }
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            const response = await fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            
+            if (result === 'OK') {
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            } else if (result === 'NOT_LOGGED') {
+                window.location.href = '/login';
+            } else {
+                alert('Error al seguir al usuario: ' + result);
+            }
+        } catch (error) {
+            console.error('Error toggling follow:', error);
+        }
+    }
     </script>
 </body>
 </html>

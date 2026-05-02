@@ -11,6 +11,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <title>Registro - PROgrammer</title>
+    <style>
+        /* ESTILO DEL TOAST DE ERROR NEÓN */
+        .toast-error-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(15, 5, 5, 0.98); /* Fondo muy oscuro con tinte rojizo */
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #ff4444; /* Rojo neón */
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); /* Resplandor rojo */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+
+        .toast-error-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-error-neon i {
+            color: #ff4444;
+            font-size: 2rem;
+        }
+
+        .toast-error-neon strong {
+            display: block;
+            color: #ff4444;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+    </style>
 </head>
 <body class="fondo-oscuro-neon">
 
@@ -75,6 +114,14 @@
         </div>
     </main>
 
+    <div id="toast-signup-error" class="toast-error-neon">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong id="toast-error-titulo">Error de registro</strong>
+            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">El usuario o email ya existen.</span>
+        </div>
+    </div>
+
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
@@ -104,6 +151,27 @@
             if (pass !== confirm) {
                 e.preventDefault();
                 alert("Las contraseñas no coinciden. Por favor, verifica.");
+            }
+        });
+
+        // --- 3. LÓGICA PARA DETECTAR ERRORES EN LA URL Y MOSTRAR EL TOAST ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toast = document.getElementById('toast-signup-error');
+            
+            if (urlParams.has('error')) {
+                // Mostrar el toast
+                setTimeout(() => {
+                    toast.classList.add('mostrar');
+                }, 100);
+
+                // Limpiar la URL para que no vuelva a salir al recargar
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Ocultar automáticamente tras 5 segundos
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                }, 5000);
             }
         });
     </script>

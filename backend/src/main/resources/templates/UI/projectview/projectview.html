@@ -19,6 +19,85 @@
             color: #FFCC00 !important;
             text-shadow: 0 0 10px #FFCC00 !important;
         }
+
+        .foto-perfil-contenedor {
+            position: relative;
+            display: block;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+        }
+
+        .circulo-foto {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #FFCC00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+            overflow: hidden;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circulo-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 5px;
+            right: 0px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 1px solid #ff4444;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-follow-heart i.fas {
+            color: #ff4444;
+        }
+        .btn-follow-heart:hover i.fas {
+            color: white;
+        }
+
+        .tech-tag-azul {
+            background: rgba(0,243,255,0.05);
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,243,255,0.2);
+            color: white;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .tech-tag-azul:hover {
+            background: rgba(0,243,255,0.15);
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0,243,255,0.4);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -38,16 +117,20 @@
                 <div class="foto-perfil-contenedor">
                     <div class="circulo-foto">
                         <img th:if="${autor.fotoPerfil != null}"
-                            th:src="${autor.fotoPerfil}"
-                            style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                            th:src="${autor.fotoPerfil}">
+                        <i th:unless="${autor.fotoPerfil != null}" class="fas fa-user" style="font-size: 3rem; color: #aaa;"></i>
                     </div>
 
-                    <div class="icono-corazon">
-                        <i class="fas fa-heart"></i>
-                    </div>
+                    <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != autor.id}" 
+                         th:attr="data-id=${autor.id}" 
+                         onclick="toggleFollowUser(this, event)">
+                         <i class="fa-heart" th:classappend="${autor.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                    </button>
                 </div>
-
                 <h2 class="nombre-usuario" th:text="${autor.username}">Autor</h2>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
+                    <i class="fas fa-users"></i> <span th:text="${autor.followersCountFormatted}">0</span> <span th:text="${autor.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                </div>
             </div>
 
             <div class="cuerpo-tarjeta">
@@ -95,9 +178,9 @@
             <div class="cabecera-proyecto">
                 <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
 
-                <a th:href="@{/ownProfile}"
+                <a href="javascript:void(0)" onclick="volverDesdeProyecto()"
                    class="boton-volver-circular"
-                   title="Volver al Perfil">
+                   title="Volver">
                     <i class="fas fa-undo"></i>
                 </a>
             </div>
@@ -130,7 +213,8 @@
                     </a>
 
                     <!-- BOTÓN ELIMINAR -->
-                    <button class="btn-accion-neon btn-eliminar"
+                    <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == autor.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and autor.rol.id != 1 and autor.rol.nombre != 'ADMIN'))}"
+                            class="btn-accion-neon btn-eliminar"
                             th:attr="data-id=${proyecto.id}"
                             onclick="abrirModalEliminar(this)">
                         <i class="fas fa-trash"></i> BORRAR PROYECTO
@@ -139,9 +223,9 @@
                 </div>
 
                 <!-- TECNOLOGÍAS -->
-                <div class="fila-botones-neon" th:if="${#lists.size(proyecto.tecnologias) > 0}">
-                    <span th:each="tec : ${proyecto.tecnologias}" class="badge">
-                        <i th:class="${tec.icono}"></i>
+                <div class="fila-botones-neon" th:if="${#lists.size(proyecto.tecnologias) > 0}" style="gap: 10px; flex-wrap: wrap;">
+                    <span th:each="tec : ${proyecto.tecnologias}" class="tech-tag-azul">
+                        <i th:class="${tec.icono}" style="color: #00f3ff;"></i>
                         <span th:text="${tec.nombre}"></span>
                     </span>
                 </div>
@@ -259,7 +343,7 @@ function eliminarProyecto() {
     .then(res => res.text())
     .then(response => {
         if (response === "OK") {
-            window.location.href = "/proyectos/projectList";
+            window.location.href = "/proyectos/projectList/" + "[[${session.usuarioLogueado != null ? session.usuarioLogueado.id : ''}]]";
         } else {
             alert("Error: " + response);
         }
@@ -268,6 +352,57 @@ function eliminarProyecto() {
         console.error(err);
         alert("Error eliminando proyecto");
     });
+}
+
+async function toggleFollowUser(btn, event) {
+    event.stopPropagation();
+    const targetId = btn.getAttribute('data-id');
+    const icon = btn.querySelector('i');
+    const isFollowing = icon.classList.contains('fas');
+
+    if (isFollowing) {
+        const targetName = btn.getAttribute('data-username') || document.querySelector('.creador-info h3')?.innerText || 'este usuario';
+        const result = await mostrarModalUnfollowGlobal(targetName);
+
+        if (!result.isConfirmed) {
+            return;
+        }
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append('targetId', targetId);
+        
+        const response = await fetch('/usuario/toggleFollow', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        
+        if (result === 'OK') {
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        } else if (result === 'NOT_LOGGED') {
+            window.location.href = '/login';
+        } else {
+            alert('Error al seguir al usuario: ' + result);
+        }
+    } catch (error) {
+        console.error('Error toggling follow:', error);
+    }
+}
+
+function volverDesdeProyecto() {
+    if (document.referrer.includes("/ownProfile")) {
+        window.location.href = "/ownProfile";
+    } else {
+        window.location.href = "/profileView/[[${autor.id}]]";
+    }
 }
 </script>
 

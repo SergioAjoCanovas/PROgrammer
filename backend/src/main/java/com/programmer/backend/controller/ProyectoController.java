@@ -23,11 +23,14 @@ public class ProyectoController {
 
     private final ProyectoRepository proyectoRepository;
     private final ProyectoService proyectoService;
+    private final com.programmer.backend.repository.UsuarioRepository usuarioRepository;
 
     public ProyectoController(ProyectoRepository proyectoRepository,
-                              ProyectoService proyectoService) {
+                              ProyectoService proyectoService,
+                              com.programmer.backend.repository.UsuarioRepository usuarioRepository) {
         this.proyectoRepository = proyectoRepository;
         this.proyectoService = proyectoService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     // =========================================================
@@ -116,22 +119,29 @@ public class ProyectoController {
     // =========================================================
     @GetMapping("/projectList")
     public String projectList(HttpSession session, Model model) {
-
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
         if (usuario == null) {
             return "redirect:/login";
         }
+        return "redirect:/proyectos/projectList/" + usuario.getId();
+    }
 
-        List<Proyecto> proyectos =
-                proyectoRepository.findByAutorId(usuario.getId());
+    @GetMapping("/projectList/{id}")
+    public String projectListUser(@PathVariable Long id, HttpSession session, Model model) {
+        Usuario targetUser = usuarioRepository.findById(id).orElse(null);
+        
+        if (targetUser == null) {
+            return "redirect:/login";
+        }
 
-        model.addAttribute("usuario", usuario);
+        List<Proyecto> proyectos = proyectoRepository.findByAutorId(targetUser.getId());
+
+        model.addAttribute("usuario", targetUser);
         model.addAttribute("proyectos", proyectos);
 
-        model.addAttribute("usuarioHeader", usuario);
+        model.addAttribute("usuarioHeader", session.getAttribute("usuarioLogueado") != null ? session.getAttribute("usuarioLogueado") : targetUser);
 
-        String cvUrl = usuario.getCurriculum();
+        String cvUrl = targetUser.getCurriculum();
         String cvNombre = extraerNombreCV(cvUrl);
 
         model.addAttribute("cvUrl", cvUrl);
@@ -174,8 +184,16 @@ public class ProyectoController {
             return "NOT_FOUND";
         }
 
-        if (!proyecto.getAutor().getId().equals(usuario.getId())) {
-            return "UNAUTHORIZED";
+        boolean isOwner = proyecto.getAutor().getId().equals(usuario.getId());
+        boolean isAdmin = usuario.getRol() != null && ("ADMIN".equalsIgnoreCase(usuario.getRol().getNombre()) || usuario.getRol().getId() == 1L);
+        boolean isProjectOwnerAdmin = proyecto.getAutor().getRol() != null && ("ADMIN".equalsIgnoreCase(proyecto.getAutor().getRol().getNombre()) || proyecto.getAutor().getRol().getId() == 1L);
+
+        if (!isOwner) {
+            if (isAdmin && !isProjectOwnerAdmin) {
+                // permitted: Admin deleting non-admin's project
+            } else {
+                return "UNAUTHORIZED";
+            }
         }
 
         proyectoService.eliminarProyecto(proyecto);

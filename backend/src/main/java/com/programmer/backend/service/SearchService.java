@@ -39,7 +39,7 @@ public class SearchService {
     private TecnologiaRepository tecnologiaRepository;
 
     public List<PerfilDesarrollador> getAllDevelopers() {
-        List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
+        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
         return developers.stream()
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
@@ -49,7 +49,7 @@ public class SearchService {
     }
 
         public List<PerfilDesarrollador> getFeaturedDevelopers(Long currentUserId) {
-        List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
+        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
         return developers.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .limit(10)
@@ -61,7 +61,7 @@ public class SearchService {
     }
 
     public List<PerfilDesarrollador> searchDevelopers(String query, List<Long> techIds, Long currentUserId) {
-        List<Usuario> developers = usuarioRepository.findByRolNombre("DEVELOPER");
+        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
         return developers.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))

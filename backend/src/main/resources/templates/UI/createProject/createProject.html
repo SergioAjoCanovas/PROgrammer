@@ -83,54 +83,85 @@
     <main class="contenedor-principal-edicion">
         <section class="tarjeta-edicion">
             <div class="cabecera-edicion">
-                <h2><i class="fas fa-plus-circle"></i> Nuevo Proyecto</h2>
+                <h2>
+                    <i class="fas"
+                       th:classappend="${proyecto != null} ? 'fa-edit' : 'fa-plus-circle'"></i>
+                
+                    <span th:text="${proyecto != null} ? 'Editar Proyecto' : 'Nuevo Proyecto'">
+                        Nuevo Proyecto
+                    </span>
+                </h2>
                 <button class="boton-volver" onclick="window.history.back()" title="Cancelar">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
 
-            <form id="formProyecto" action="/proyectos/crear" method="post" enctype="multipart/form-data">
+            <form id="formProyecto" th:action="${proyecto != null} ? @{/proyectos/editar} : @{/proyectos/crear}" method="post" enctype="multipart/form-data">
+                <!-- Campo oculto para el ID del proyecto (en caso de que estemos editando) -->
+                <input type="hidden" name="id" th:value="${proyecto != null ? proyecto.id : ''}">
 
                 <div class="campo">
                     <label>Imágenes del Proyecto</label>
                 
                     <div class="grid-imagenes">
-                
+
                         <div class="img-box">
                             <div class="img-placeholder" id="ph1"><i class="fas fa-plus"></i></div>
-                            <img id="preview1">
-                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview1', 'ph1')">
+                    
+                            <img id="preview1"
+                                 th:src="${proyecto?.foto1}"
+                                 th:style="${proyecto?.foto1 != null ? 'display:block' : 'display:none'}">
+                    
+                            <input type="file" name="imagenes" accept="image/*"
+                                   onchange="previewImg(event, 'preview1', 'ph1')">
                         </div>
-                
+                    
                         <div class="img-box">
                             <div class="img-placeholder" id="ph2"><i class="fas fa-plus"></i></div>
-                            <img id="preview2">
-                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview2', 'ph2')">
+                    
+                            <img id="preview2"
+                                 th:src="${proyecto?.foto2}"
+                                 th:style="${proyecto?.foto2 != null ? 'display:block' : 'display:none'}">
+                    
+                            <input type="file" name="imagenes" accept="image/*"
+                                   onchange="previewImg(event, 'preview2', 'ph2')">
                         </div>
-                
+                    
                         <div class="img-box">
                             <div class="img-placeholder" id="ph3"><i class="fas fa-plus"></i></div>
-                            <img id="preview3">
-                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview3', 'ph3')">
+                    
+                            <img id="preview3"
+                                 th:src="${proyecto?.foto3}"
+                                 th:style="${proyecto?.foto3 != null ? 'display:block' : 'display:none'}">
+                    
+                            <input type="file" name="imagenes" accept="image/*"
+                                   onchange="previewImg(event, 'preview3', 'ph3')">
                         </div>
-                
+                    
                         <div class="img-box">
                             <div class="img-placeholder" id="ph4"><i class="fas fa-plus"></i></div>
-                            <img id="preview4">
-                            <input type="file" name="imagenes" accept="image/*" onchange="previewImg(event, 'preview4', 'ph4')">
+                    
+                            <img id="preview4"
+                                 th:src="${proyecto?.foto4}"
+                                 th:style="${proyecto?.foto4 != null ? 'display:block' : 'display:none'}">
+                    
+                            <input type="file" name="imagenes" accept="image/*"
+                                   onchange="previewImg(event, 'preview4', 'ph4')">
                         </div>
-                
+                    
                     </div>
                 </div>
 
                 <div class="campo">
                     <label>Título del Proyecto</label>
-                    <input type="text" name="titulo" placeholder="Ej. Sistema de Gestión de Inventarios" required>
+                    <input type="text" name="titulo" placeholder="Ej. Sistema de Gestión de Inventarios" 
+                           th:value="${proyecto != null ? proyecto.titulo : ''}" required>
                 </div>
-
+                
                 <div class="campo">
                     <label>Descripción del Proyecto</label>
-                    <textarea name="descripcion" placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" required></textarea>
+                    <textarea name="descripcion" placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" 
+                              th:text="${proyecto != null ? proyecto.descripcion : ''}" required></textarea>
                 </div>
 
                 <div class="campo">
@@ -144,17 +175,15 @@
                 <div class="fila-doble">
                     <div class="campo">
                         <label><i class="fab fa-github"></i> Enlace al Repositorio</label>
-                        <input type="url" name="repoUrl" placeholder="https://github.com/tu-usuario/repo">
-                    </div>
-                    <div class="campo">
-                        <label><i class="fas fa-globe"></i> Enlace a la Demo</label>
-                        <input type="url" name="demoUrl" placeholder="https://tu-proyecto.vercel.app">
+                        <input type="url" name="repoUrl" placeholder="https://github.com/tu-usuario/repo" 
+                               th:value="${proyecto != null && proyecto.repoUrl != null ? proyecto.repoUrl : ''}">
                     </div>
                 </div>
 
                 <div class="contenedor-botones">
                     <button type="submit" class="btn-guardar" id="btnSubmit">
-                        <i class="fas fa-rocket"></i> Publicar Proyecto
+                        <i class="fas fa-rocket"></i>
+                        Publicar Proyecto
                     </button>
                 </div>
             </form>
@@ -167,67 +196,78 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
+    <script th:inline="javascript">
         let enviando = false;
-        
+    
+        // IMPORTANTE: Thymeleaf puede inyectar null si es create
+        const seleccionadas = /*[[${tecnologiasSeleccionadas}]]*/ [];
+        const techSeleccionadasSafe = Array.isArray(seleccionadas) ? seleccionadas : [];
+    
         // -------------------- INIT --------------------
-        $(document).ready(function() {
+        $(document).ready(function () {
+    
             if (typeof actualizarMiUsuarioEnHeader === "function") {
                 actualizarMiUsuarioEnHeader();
             }
+    
             cargarTecnologiasAgrupadas();
+    
+            // Si vienes de editar y hay imágenes ya cargadas
+            if (typeof mostrarImagenesExistentes === "function") {
+                mostrarImagenesExistentes();
+            }
         });
-        
+    
         // -------------------- TOAST --------------------
         function mostrarToast(msg, tipo = "success") {
             const toast = document.getElementById("toast");
-        
+    
             toast.className = "toast";
             toast.classList.add(tipo === "error" ? "toast-error" : "toast-success");
-        
+    
             toast.innerText = msg;
             toast.classList.add("show");
-        
+    
             setTimeout(() => toast.classList.remove("show"), 4000);
         }
-        
+    
         // -------------------- VALIDACIÓN IMAGEN --------------------
         function validarImagen(file) {
             if (!file) return true;
-        
+    
             const maxSize = 2 * 1024 * 1024; // 2MB
             const allowed = ["image/jpeg", "image/png", "image/webp"];
-        
+    
             if (!allowed.includes(file.type)) {
                 mostrarToast("Formato de imagen no permitido", "error");
                 return false;
             }
-        
+    
             if (file.size > maxSize) {
                 mostrarToast("Una imagen supera los 2MB", "error");
                 return false;
             }
-        
+    
             return true;
         }
-        
+    
         // -------------------- SUBMIT CONTROLADO --------------------
-        document.getElementById("formProyecto").addEventListener("submit", function(e) {
+        document.getElementById("formProyecto").addEventListener("submit", function (e) {
+    
             if (enviando) {
                 e.preventDefault();
                 return;
             }
-        
+    
             const titulo = document.querySelector("[name='titulo']").value.trim();
             const desc = document.querySelector("[name='descripcion']").value.trim();
-        
+    
             if (!titulo || !desc) {
                 e.preventDefault();
                 mostrarToast("Rellena título y descripción", "error");
                 return;
             }
-        
-            // validar imágenes
+    
             const inputs = document.querySelectorAll("input[type='file']");
             for (let input of inputs) {
                 if (input.files[0] && !validarImagen(input.files[0])) {
@@ -235,109 +275,117 @@
                     return;
                 }
             }
-        
+    
             enviando = true;
             document.getElementById("btnSubmit").disabled = true;
             mostrarToast("Publicando proyecto...", "success");
         });
-        
+    
         // -------------------- TECNOLOGÍAS --------------------
         function cargarTecnologiasAgrupadas() {
+    
             $.ajax({
                 url: '/api/categorias/todas',
                 type: 'GET',
-                success: function(categorias) {
-        
+                success: function (categorias) {
+    
                     const contenedor = $('#contenedor-tecnologias');
                     contenedor.empty();
-        
-                    categorias.forEach(function(categoria) {
-        
+    
+                    categorias.forEach(function (categoria) {
+    
                         if (!categoria.tecnologias?.length) return;
-        
+    
                         let html = `
                             <div class="grupo-categoria">
                                 <div class="titulo-categoria">${categoria.nombre}</div>
                                 <div class="grid-tecnologias">
                         `;
-        
-                        categoria.tecnologias.forEach(function(tech) {
-        
+    
+                        categoria.tecnologias.forEach(function (tech) {
+    
                             const icon = tech.icono
                                 ? `<i class="${tech.icono} tech-icon"></i>`
                                 : `<i class="fas fa-code tech-icon"></i>`;
-        
+    
+                            const checked = techSeleccionadasSafe.includes(tech.id)
+                                ? "checked"
+                                : "";
+    
                             html += `
                                 <label class="item-check">
-                                    <input type="checkbox" name="tecnologias" value="${tech.id}">
+                                    <input type="checkbox" name="tecnologias" value="${tech.id}" ${checked}>
                                     ${icon}
                                     <span>${tech.nombre}</span>
                                 </label>
                             `;
                         });
-        
+    
                         html += `</div></div>`;
                         contenedor.append(html);
                     });
                 },
-                error: function() {
+                error: function () {
                     mostrarToast("Error al cargar tecnologías", "error");
                 }
             });
         }
-        
+    
         // -------------------- PREVIEW IMAGEN --------------------
         function previewImg(event, imgId, placeholderId) {
+
             const file = event.target.files[0];
-        
+
+            if (!file) return;
+
             if (!validarImagen(file)) {
                 event.target.value = "";
                 return;
             }
-        
-            if (!file) return;
-        
+
+            const img = document.getElementById(imgId);
+            if (!img) return; // 👈 AQUÍ VA ESTE CHECK
+
             const reader = new FileReader();
-        
-            reader.onload = function() {
-                const img = document.getElementById(imgId);
+
+            reader.onload = function () {
                 img.src = reader.result;
                 img.style.display = "block";
-        
+
                 document.getElementById(placeholderId).style.display = "none";
             };
-        
+
             reader.readAsDataURL(file);
         }
-        
+    
         // -------------------- DRAG & DROP --------------------
         document.querySelectorAll(".img-box").forEach(box => {
-        
+    
             box.addEventListener("dragover", e => {
                 e.preventDefault();
                 box.style.border = "2px solid #FFCC00";
             });
-        
+    
             box.addEventListener("dragleave", () => {
                 box.style.border = "2px dashed #FFCC00";
             });
-        
+    
             box.addEventListener("drop", e => {
                 e.preventDefault();
-        
+    
                 const file = e.dataTransfer.files[0];
                 const input = box.querySelector("input[type='file']");
-        
+    
                 if (!file || !validarImagen(file)) return;
-        
+    
                 const dt = new DataTransfer();
                 dt.items.add(file);
                 input.files = dt.files;
-        
+    
                 input.dispatchEvent(new Event("change"));
             });
         });
-        </script>
+    </script>
 
     <script th:if="${error != null}">
         document.addEventListener("DOMContentLoaded", function () {
@@ -350,6 +398,34 @@
 
             mostrarToast(mensaje, "error");
         });
+
+        function mostrarImagenesExistentes() {
+
+            const img1 = document.getElementById("preview1");
+            const img2 = document.getElementById("preview2");
+            const img3 = document.getElementById("preview3");
+            const img4 = document.getElementById("preview4");
+
+            if (img1.src && img1.src.length > 0) {
+                img1.style.display = "block";
+                document.getElementById("ph1").style.display = "none";
+            }
+
+            if (img2.src && img2.src.length > 0) {
+                img2.style.display = "block";
+                document.getElementById("ph2").style.display = "none";
+            }
+
+            if (img3.src && img3.src.length > 0) {
+                img3.style.display = "block";
+                document.getElementById("ph3").style.display = "none";
+            }
+
+            if (img4.src && img4.src.length > 0) {
+                img4.style.display = "block";
+                document.getElementById("ph4").style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>

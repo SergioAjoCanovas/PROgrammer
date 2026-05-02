@@ -99,6 +99,10 @@ body.fondo-oscuro-neon::before {
     transform: scale(1.06) translateY(-2px); 
 }
 
+a {
+    text-decoration: none;
+}
+
 /* =========================================================
    5. SECCIÓN DERECHA (DETALLES)
    ========================================================= */
@@ -248,7 +252,6 @@ img {
 .btn-eliminar {
     border: 2px solid #ff3b3b !important;
     color: #ff3b3b !important;
-    background-color: #0e0e0e !important;
 }
 
 .btn-eliminar:hover {
@@ -256,6 +259,23 @@ img {
     color: #111 !important;
     box-shadow: 0 0 20px rgba(255, 59, 59, 0.8) !important;
     transform: scale(1.06) translateY(-2px);
+}
+
+.btn-accion-neon {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    font: inherit;
+    line-height: 1;
+
+    box-sizing: border-box;
+
+    display: inline-flex; 
+    align-items: center;
+    justify-content: center;
+
+    vertical-align: middle;
 }
 
 /* =========================

@@ -254,6 +254,12 @@
                                 </button>
 
                                 <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == usuario.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and usuario.rol.id != 1 and usuario.rol.nombre != 'ADMIN'))}"
+                                 class="boton-editar-proyecto" 
+                                 th:onclick="'window.location.href=\'/proyectos/editar/' + ${p.id} + '\';'">
+                                 EDITAR PROYECTO
+                                </button>
+
+                                <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == usuario.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and usuario.rol.id != 1 and usuario.rol.nombre != 'ADMIN'))}"
                                         class="boton-eliminar-proyecto"
                                         th:attr="data-id=${p.id}"
                                         onclick="abrirModalEliminarLista(this)">

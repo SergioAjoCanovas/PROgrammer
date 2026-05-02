@@ -57,7 +57,7 @@
 
                 <div class="input-group">
                     <label for="username">Usuario o Email</label>
-                    <input type="text" id="username" name="username" placeholder="Introduce tu usuario" required/>
+                    <input type="text" id="username" name="username" placeholder="Introduce tu usuario o email" required/>
                 </div>
 
                 <div class="input-group">
@@ -77,6 +77,15 @@
                 </div>
 
                 <button type="submit" class="boton-ver">Entrar</button>
+
+                <div class="divisor">
+                    <span>o</span>
+                </div>
+                
+                <a href="/oauth2/authorization/google" class="boton-google">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google logo" width="20" height="20">
+                    Iniciar sesión con Google
+                </a>
 
                 <div class="registro-link">
                     <p>¿No tienes cuenta? <a href="/signUp">Registrarme aquí</a></p>
@@ -116,8 +125,10 @@
             if (urlParams.has('error')) {
                 const errorType = urlParams.get('error');
                 
-                // Personalización del mensaje según el valor (opcional)
-                if (errorType === 'invalid') {
+                // Personalización del mensaje
+                if (errorType === 'auth' || errorType === 'true') {
+                    document.getElementById('toast-error-mensaje').innerText = "Credenciales incorrectas. Si te registraste con Google, por favor usa el botón de 'Iniciar sesión con Google'.";
+                } else if (errorType === 'invalid') {
                     document.getElementById('toast-error-mensaje').innerText = "Las credenciales no son válidas.";
                 } else if (errorType === 'locked') {
                     document.getElementById('toast-error-mensaje').innerText = "Tu cuenta está bloqueada temporalmente.";

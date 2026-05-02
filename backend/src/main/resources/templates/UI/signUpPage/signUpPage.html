@@ -73,7 +73,10 @@
 
                 <div class="input-group">
                     <label for="foto">Foto de Perfil (Opcional)</label>
-                    <input type="file" id="foto" name="foto" accept="image/*" />
+                    <div class="file-input-wrapper" id="file-wrapper">
+                        <input type="file" id="foto" name="foto" accept="image/*" />
+                        <i class="fas fa-check-circle check-file" id="file-check"></i>
+                    </div>
                 </div>
 
                 <div class="input-group">
@@ -94,6 +97,20 @@
                         <input type="password" id="password" name="password" placeholder="Crea una contraseña segura" required>
                         <i class="far fa-eye toggle-password" data-target="password"></i>
                     </div>
+                    <!-- CONTENEDOR MEDIDOR NEÓN -->
+                    <div class="password-strength">
+                        <div id="strength-bar" class="strength-bar"></div>
+                    </div>
+                    <span id="strength-text" class="strength-text"></span>
+                    
+                    <ul class="password-requirements">
+                        <li id="req-length" class="invalid"><i class="fas fa-times"></i> Min: 8 caracteres</li>
+                        <li id="req-start" class="invalid"><i class="fas fa-times"></i> Que no empiece en número</li>
+                        <li id="req-upper" class="invalid"><i class="fas fa-times"></i> Mínimo 1 mayúscula (A-Z)</li>
+                        <li id="req-lower" class="invalid"><i class="fas fa-times"></i> Mínimo 1 minúscula (a-z)</li>
+                        <li id="req-number" class="invalid"><i class="fas fa-times"></i> Mínimo 1 número (0-9)</li>
+                        <li id="req-special" class="invalid"><i class="fas fa-times"></i> Opcional 1 carácter especial (ej. @,#,$,%)</li>
+                    </ul>
                 </div>
 
                 <div class="input-group">
@@ -142,15 +159,180 @@
             });
         });
 
-        // --- 2. VALIDACIÓN BÁSICA (Opcional) ---
+        // --- 1.5 LOGICA DE FOTO DE PERFIL ---
+        const fileInput = document.getElementById('foto');
+        const fileWrapper = document.getElementById('file-wrapper');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileWrapper.classList.add('file-selected');
+            } else {
+                fileWrapper.classList.remove('file-selected');
+            }
+        });
+
+        // --- 2. VALIDACIÓN Y FUERZA DE CONTRASEÑA ---
         const form = document.querySelector('.login-form');
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strength-bar');
+        const strengthText = document.getElementById('strength-text');
+
+        // Elementos de la lista de requisitos
+        const reqLength = document.getElementById('req-length');
+        const reqStart = document.getElementById('req-start');
+        const reqUpper = document.getElementById('req-upper');
+        const reqLower = document.getElementById('req-lower');
+        const reqNumber = document.getElementById('req-number');
+        const reqSpecial = document.getElementById('req-special');
+
+        // Requisitos mínimos
+        const minLength = 8;
+        const hasUpper = /[A-Z]/;
+        const hasLower = /[a-z]/;
+        const hasNumber = /[0-9]/;
+        const hasSpecial = /[^A-Za-z0-9]/;
+        const startsWithNumber = /^[0-9]/;
+
+        let passwordIsValid = false;
+
+        function updateReq(el, isValid) {
+            if (isValid) {
+                el.classList.remove('invalid');
+                el.classList.add('valid');
+                el.querySelector('i').className = 'fas fa-check';
+            } else {
+                el.classList.remove('valid');
+                el.classList.add('invalid');
+                el.querySelector('i').className = 'fas fa-times';
+            }
+        }
+
+        passwordInput.addEventListener('input', function() {
+            const val = this.value;
+            let level = 0;
+            
+            if (val.length > 0) {
+                const meetsMinLength = val.length >= minLength;
+                const meetsUpper = hasUpper.test(val);
+                const meetsLower = hasLower.test(val);
+                const meetsNumber = hasNumber.test(val);
+                const meetsSpecial = hasSpecial.test(val);
+                const doesntStartWithNumber = !startsWithNumber.test(val);
+                
+                updateReq(reqLength, meetsMinLength);
+                updateReq(reqStart, doesntStartWithNumber);
+                updateReq(reqUpper, meetsUpper);
+                updateReq(reqLower, meetsLower);
+                updateReq(reqNumber, meetsNumber);
+                updateReq(reqSpecial, meetsSpecial);
+                
+                let rulesMet = 0;
+                if (meetsUpper) rulesMet++;
+                if (meetsLower) rulesMet++;
+                if (meetsNumber) rulesMet++;
+                if (meetsSpecial) rulesMet++;
+                
+                // Determinamos el nivel
+                if (val.length < 6) {
+                    level = 1; // Muy débil (Rojo)
+                } else if (!meetsMinLength || rulesMet < 3 || !doesntStartWithNumber) {
+                    level = 2; // Débil (Naranja)
+                } else if (meetsMinLength && meetsUpper && meetsLower && meetsNumber && doesntStartWithNumber) {
+                    level = 3; // Normal (Amarillo) - Cumple lo mínimo requerido
+                    
+                    if (meetsSpecial || val.length >= 10) {
+                        level = 4; // Buena (Pistacho)
+                    }
+                    if (meetsSpecial && val.length >= 12) {
+                        level = 5; // Muy Buena (Verde Oscuro)
+                    }
+                } else {
+                    level = 1;
+                }
+                
+                // Actualizamos validez
+                passwordIsValid = meetsMinLength && meetsUpper && meetsLower && meetsNumber && doesntStartWithNumber;
+            } else {
+                level = 0;
+                passwordIsValid = false;
+                
+                updateReq(reqLength, false);
+                updateReq(reqStart, false);
+                updateReq(reqUpper, false);
+                updateReq(reqLower, false);
+                updateReq(reqNumber, false);
+                updateReq(reqSpecial, false);
+            }
+
+            // Actualizar UI
+            strengthBar.className = 'strength-bar'; // Reset classes
+            strengthText.className = 'strength-text';
+            
+            switch(level) {
+                case 1:
+                    strengthBar.classList.add('strength-1');
+                    strengthText.classList.add('text-1');
+                    strengthText.textContent = 'Nivel: Muy débil';
+                    break;
+                case 2:
+                    strengthBar.classList.add('strength-2');
+                    strengthText.classList.add('text-2');
+                    strengthText.textContent = 'Nivel: Débil';
+                    break;
+                case 3:
+                    strengthBar.classList.add('strength-3');
+                    strengthText.classList.add('text-3');
+                    strengthText.textContent = 'Nivel: Normal';
+                    break;
+                case 4:
+                    strengthBar.classList.add('strength-4');
+                    strengthText.classList.add('text-4');
+                    strengthText.textContent = 'Nivel: Buena';
+                    break;
+                case 5:
+                    strengthBar.classList.add('strength-5');
+                    strengthText.classList.add('text-5');
+                    strengthText.textContent = 'Nivel: Muy Buena';
+                    break;
+                default:
+                    strengthText.textContent = '';
+                    break;
+            }
+        });
+
+        function showToast(title, message) {
+            const toast = document.getElementById('toast-signup-error');
+            document.getElementById('toast-error-titulo').textContent = title;
+            document.getElementById('toast-error-mensaje').textContent = message;
+            
+            toast.classList.add('mostrar');
+            
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+            }, 5000);
+        }
+
         form.addEventListener('submit', (e) => {
-            const pass = document.getElementById('password').value;
+            const pass = passwordInput.value;
             const confirm = document.getElementById('confirm_password').value;
+            const rolSelect = document.getElementById('id_rol');
+
+            if (!rolSelect.value) {
+                e.preventDefault();
+                showToast("Faltan campos", "Por favor, selecciona qué tipo de perfil buscas.");
+                return;
+            }
+
+            if (!passwordIsValid) {
+                e.preventDefault();
+                showToast("Contraseña no válida", "La contraseña no cumple con los requisitos mínimos.");
+                return;
+            }
 
             if (pass !== confirm) {
                 e.preventDefault();
-                alert("Las contraseñas no coinciden. Por favor, verifica.");
+                showToast("Contraseñas no coinciden", "Las contraseñas que has introducido son diferentes.");
             }
         });
 
@@ -160,18 +342,11 @@
             const toast = document.getElementById('toast-signup-error');
             
             if (urlParams.has('error')) {
-                // Mostrar el toast
-                setTimeout(() => {
-                    toast.classList.add('mostrar');
-                }, 100);
+                // El error que viene de la URL (si ya existe el email, etc.)
+                showToast("Error de registro", "El usuario o email ya existen.");
 
                 // Limpiar la URL para que no vuelva a salir al recargar
                 window.history.replaceState({}, document.title, window.location.pathname);
-
-                // Ocultar automáticamente tras 5 segundos
-                setTimeout(() => {
-                    toast.classList.remove('mostrar');
-                }, 5000);
             }
         });
     </script>

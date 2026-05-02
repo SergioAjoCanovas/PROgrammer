@@ -129,7 +129,30 @@ public class ProyectoController {
         model.addAttribute("usuario", usuario);
         model.addAttribute("proyectos", proyectos);
 
+        model.addAttribute("usuarioHeader", usuario);
+
+        String cvUrl = usuario.getCurriculum();
+        String cvNombre = extraerNombreCV(cvUrl);
+
+        model.addAttribute("cvUrl", cvUrl);
+        model.addAttribute("cvNombre", cvNombre);
+
         return "UI/projectlist/projectlist";
+    }
+
+    private String extraerNombreCV(String ruta) {
+        if (ruta == null || ruta.isEmpty()) return null;
+    
+        // Nos quedamos con lo que hay después del último "/"
+        String nombre = ruta.substring(ruta.lastIndexOf("/") + 1);
+    
+        // Opcional: quitar prefijos tipo timestamps si los usas
+        // Ej: 17123456789_cv_david.pdf → cv_david.pdf
+        if (nombre.contains("_")) {
+            nombre = nombre.substring(nombre.indexOf("_") + 1);
+        }
+    
+        return nombre;
     }
 
     // =========================================================

@@ -495,7 +495,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
 /* =========================
    OVERLAY OSCURECIDO MODAL
    ========================= */
-   #modal-eliminar {
+#modal-eliminar {
     position: fixed;
     top: 0;
     left: 0;
@@ -511,4 +511,56 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     align-items: center;
 
     z-index: 9999;
+}
+
+.clicable-red {
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(255, 204, 0, 0.8);
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.clicable-red:hover {
+    border-bottom: 1px dotted #FFCC00;
+    text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
+    color: white;
+}
+
+.lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+
+    color: #ccc;
+    text-decoration: none;
+
+    transition: all 0.35s ease;
+}
+
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
 }

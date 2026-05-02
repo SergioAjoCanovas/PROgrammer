@@ -34,34 +34,53 @@
     <aside class="columna-perfil">
         <div class="tarjeta-perfil tarjeta-neon-estatica">
             <div class="cabecera-tarjeta">
+
                 <div class="foto-perfil-contenedor">
                     <div class="circulo-foto">
                         <img th:if="${autor.fotoPerfil != null}"
-                             th:src="${autor.fotoPerfil}"
-                             style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                            th:src="${autor.fotoPerfil}"
+                            style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
                     </div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+
+                    <div class="icono-corazon">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
 
                 <h2 class="nombre-usuario" th:text="${autor.username}">Autor</h2>
             </div>
 
             <div class="cuerpo-tarjeta">
-                <ul class="redes-sociales">
-                    <li th:if="${autor.github}">
-                        <i class="fab fa-github"></i> GitHub
-                    </li>
-                    <li th:if="${autor.linkedin}">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </li>
-                </ul>
 
-                <a th:if="${autor.curriculum != null}"
-                   th:href="${autor.curriculum}"
-                   target="_blank"
-                   class="btn-accion-neon">
-                    CURRICULUM
-                </a>
+                <!-- REDES (DOTTED + CLICABLES) -->
+                <div class="lista-dotted">
+
+                    <a th:if="${autor.github}"
+                    th:href="${autor.github}"
+                    target="_blank"
+                    class="item-dotted">
+                        <i class="fab fa-github"></i>
+                        <span>Mi GitHub</span>
+                    </a>
+
+                    <a th:if="${autor.linkedin}"
+                    th:href="${autor.linkedin}"
+                    target="_blank"
+                    class="item-dotted">
+                        <i class="fab fa-linkedin"></i>
+                        <span>Mi LinkedIn</span>
+                    </a>
+
+                    <a th:if="${autor.curriculum != null}"
+                    th:href="${autor.curriculum}"
+                    target="_blank"
+                    class="item-dotted">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mi CV</span>
+                    </a>
+
+                </div>
+
             </div>
         </div>
     </aside>

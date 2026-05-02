@@ -21,13 +21,8 @@
             text-shadow: 0 0 10px #FFCC00 !important;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            overflow-x: hidden;
-        }
+        * { box-sizing: border-box; }
+        body { overflow-x: hidden; }
 
         #acordeon-proyectos {
             width: 100%;
@@ -51,7 +46,6 @@
             word-wrap: break-word;
         }
 
-        /* BOTONES EN FILA */
         .botones-proyecto {
             display: flex;
             gap: 12px;
@@ -63,7 +57,6 @@
             flex: 1;
         }
 
-        /* MODAL (por si acaso no lo tienes en CSS global) */
         .modal {
             display: none;
             position: fixed;
@@ -72,6 +65,14 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+        }
+
+        /* FIX FOTO */
+        .circulo-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -82,40 +83,71 @@
 
 <main class="contenedor-principal">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (MISMAS CLASES QUE EL ORIGINAL) -->
     <aside class="columna-perfil">
 
         <div class="tarjeta-perfil">
 
             <div class="perfil-superior">
                 <div class="foto-perfil-contenedor">
-                    <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+
+                    <div class="circulo-foto">
+                        <img th:if="${usuario.fotoPerfil != null}" 
+                             th:src="${usuario.fotoPerfil}" 
+                             alt="foto perfil">
+
+                        <i th:if="${usuario.fotoPerfil == null}" 
+                           class="fas fa-user"></i>
+                    </div>
+
                 </div>
 
-                <h2 class="nombre-usuario">
-                    <span th:if="${usuario != null}" th:text="${usuario.username}"></span>
+                <h2 class="nombre-usuario"
+                    th:text="${usuario.username}">
                 </h2>
+
+                <div th:if="${media > 0}" 
+                     style="margin-top: 10px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
+                    Valoración: <span th:text="${media}"></span> ⭐
+                </div>
             </div>
 
             <div class="perfil-inferior">
-                <ul class="redes-sociales">
-                    <li><i class="fab fa-instagram"></i> Instagram</li>
-                    <li><i class="fab fa-twitter"></i> Twitter</li>
-                    <li><i class="fas fa-phone"></i> Teléfono</li>
-                </ul>
 
-                <button class="boton-curriculum">CURRICULUM</button>
+                <!-- REDES + CV (DOTTED UNIFICADO) -->
+            <div class="lista-dotted">
+
+                <a th:if="${usuario.github != null}"
+                th:href="${usuario.github}"
+                target="_blank"
+                class="item-dotted">
+
+                    <i class="fab fa-github"></i>
+                    <span>Mi GitHub</span>
+                </a>
+
+                <a th:if="${usuario.linkedin != null}"
+                th:href="${usuario.linkedin}"
+                target="_blank"
+                class="item-dotted">
+
+                    <i class="fab fa-linkedin"></i>
+                    <span>Mi LinkedIn</span>
+                </a>
+
+                <a th:if="${cvUrl != null}"
+                th:href="${cvUrl}"
+                target="_blank"
+                class="item-dotted">
+
+                    <i class="fas fa-file-alt"></i>
+                    <span th:text="${cvNombre}">Mi CV</span>
+                </a>
+
             </div>
 
-        </div>
+            </div>
 
-        <div class="tarjeta-resenas-izq">
-            <h3>RESEÑAS</h3>
-            <textarea class="input-resena" placeholder="Escribe aquí..."></textarea>
-            <button class="boton-anadir" onclick="window.location.href='/newreview'">
-                Añadir reseña
-            </button>
         </div>
 
     </aside>
@@ -196,12 +228,9 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <script>
-
 let proyectoIdEliminar = null;
 
-// ACCORDION
 $(function () {
-
     const $acc = $("#acordeon-proyectos");
 
     if ($acc.hasClass("ui-accordion")) {
@@ -218,7 +247,6 @@ $(function () {
     inicializarHeaderProyectos();
 });
 
-// HEADER
 function inicializarHeaderProyectos() {
     document.querySelectorAll('header a').forEach(l => {
         if (l.href.includes('projectlist')) {
@@ -227,49 +255,34 @@ function inicializarHeaderProyectos() {
     });
 }
 
-// EVITAR CLICK ACCORDION
 $(document).on("click", ".boton-ver-proyecto, .boton-eliminar-proyecto", function (e) {
     e.stopPropagation();
 });
 
-// MODAL OPEN
 function abrirModalEliminarLista(btn) {
     proyectoIdEliminar = btn.getAttribute("data-id");
     $("#modal-eliminar").css("display", "flex").hide().fadeIn(200);
     document.body.style.overflow = "hidden";
 }
 
-// MODAL CLOSE
 function cerrarModalEliminar() {
     $("#modal-eliminar").fadeOut(200);
     document.body.style.overflow = "auto";
 }
 
-// DELETE
 function eliminarProyecto() {
-
     if (!proyectoIdEliminar) return;
 
     fetch("/proyectos/delete/" + proyectoIdEliminar, {
         method: "POST"
     })
-    .then(res => {
-        if (!res.ok) throw new Error("Error HTTP");
-        return res.text();
-    })
+    .then(res => res.text())
     .then(data => {
         if (data === "OK") {
             window.location.href = "/proyectos/projectList";
-        } else {
-            alert("Error: " + data);
         }
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error eliminando proyecto");
     });
 }
-
 </script>
 
 </body>

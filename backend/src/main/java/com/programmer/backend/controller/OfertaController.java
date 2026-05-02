@@ -8,7 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile; // <-- NUEVA IMPORTACIÓN
 
+import java.io.IOException; // <-- NUEVA IMPORTACIÓN
+import java.nio.file.Files; // <-- NUEVA IMPORTACIÓN
+import java.nio.file.Path; // <-- NUEVA IMPORTACIÓN
+import java.nio.file.Paths; // <-- NUEVA IMPORTACIÓN
+import java.nio.file.StandardCopyOption; // <-- NUEVA IMPORTACIÓN
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -107,7 +113,6 @@ public class OfertaController {
         }
 
         ofertaRepository.save(oferta);
-        // Redirigimos con parámetros distintos para diferenciar el Toast de éxito
         return "redirect:/jobsearching?" + (esEdicion ? "ofertaEditada=true" : "ofertaPublicada=true"); 
     }
 
@@ -152,7 +157,6 @@ public class OfertaController {
                 usuarioRepository.findByUsername(username).ifPresent(usr -> {
                     model.addAttribute("usuarioLogueado", usr);
                     model.addAttribute("proyectos", proyectoRepository.findByAutorId(usr.getId()));
-                    // Buscamos si el usuario ya tiene una postulación para cargarla y permitir edición
                     postulacionRepository.findByDesarrolladorId(usr.getId()).stream()
                         .filter(p -> p.getOferta().getId().equals(id)).findFirst()
                         .ifPresent(p -> model.addAttribute("postulacionExistente", p));
@@ -163,21 +167,66 @@ public class OfertaController {
         return "redirect:/jobsearching";
     }
 
+    // --- AQUÍ ESTÁ LA MAGIA PARA EL CV ---
     @PostMapping("/api/postular")
-    public String enviarPostulacion(@RequestParam("ofertaId") Long ofertaId, @RequestParam("username") String username,
+    public String enviarPostulacion(@RequestParam("ofertaId") Long ofertaId, 
+                                    @RequestParam("username") String username,
                                     @RequestParam(value = "proyectoId", required = false) Long proyectoId,
-                                    @RequestParam(value = "mensaje", required = false) String mensaje) {
+                                    @RequestParam(value = "mensaje", required = false) String mensaje,
+                                    @RequestParam(value = "opcion_cv", required = false) String opcionCv,
+                                    @RequestParam(value = "archivo_cv", required = false) MultipartFile archivoCv) {
+        
         boolean esActualizacion = false;
         Optional<OfertaEmpleo> o = ofertaRepository.findById(ofertaId);
         Optional<Usuario> u = usuarioRepository.findByUsername(username);
 
         if (o.isPresent() && u.isPresent()) {
-            Postulacion p = postulacionRepository.findByDesarrolladorId(u.get().getId()).stream()
+            Usuario usuario = u.get();
+            Postulacion p = postulacionRepository.findByDesarrolladorId(usuario.getId()).stream()
                 .filter(post -> post.getOferta().getId().equals(ofertaId)).findFirst().orElse(new Postulacion());
             
             esActualizacion = (p.getId() != null);
-            p.setOferta(o.get()); p.setDesarrollador(u.get()); p.setMensajeAdjunto(mensaje);
-            if (proyectoId != null) proyectoRepository.findById(proyectoId).ifPresent(p::setProyectoVinculado);
+            p.setOferta(o.get()); 
+            p.setDesarrollador(usuario); 
+            p.setMensajeAdjunto(mensaje);
+            
+            if (proyectoId != null) {
+                proyectoRepository.findById(proyectoId).ifPresent(p::setProyectoVinculado);
+            }
+
+            // GESTIÓN DEL ARCHIVO CV SUBIDO
+            if ("nuevo".equals(opcionCv) && archivoCv != null && !archivoCv.isEmpty()) {
+                try {
+                    // Crea la carpeta si no existe (ajusta la ruta según tu estructura)
+                    String uploadDir = "uploads/cvs/"; 
+                    Path uploadPath = Paths.get(uploadDir);
+                    if (!Files.exists(uploadPath)) {
+                        Files.createDirectories(uploadPath);
+                    }
+                    
+                    // Nombra el archivo de forma única
+                    String fileName = System.currentTimeMillis() + "_" + archivoCv.getOriginalFilename().replaceAll("\\s+", "_");
+                    Path filePath = uploadPath.resolve(fileName);
+                    
+                    // Guarda el archivo
+                    Files.copy(archivoCv.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                    String rutaCV = "/" + uploadDir + fileName;
+                    
+                    // 1. Guardamos el CV adjunto específicamente en la postulación
+                    p.setCvAdjunto(rutaCV);
+                    
+                    // 2. Si el usuario NO tenía un CV en su perfil, le guardamos este como predeterminado
+                    if (usuario.getCurriculum() == null || usuario.getCurriculum().isEmpty()) {
+                        usuario.setCurriculum(rutaCV);
+                        usuarioRepository.save(usuario);
+                    }
+                    
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Aquí podrías manejar el error de subida si quisieras
+                }
+            }
+
             postulacionRepository.save(p);
         }
         return "redirect:/jobsearching?" + (esActualizacion ? "actualizado=true" : "postulado=true");

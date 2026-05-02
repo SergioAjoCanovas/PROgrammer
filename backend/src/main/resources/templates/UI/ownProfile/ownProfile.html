@@ -41,8 +41,9 @@
                             <i th:if="${usuarioHeader.fotoPerfil == null}" class="fas fa-camera icono-camera"></i>
                         </div>
                         <div class="contenedor-nombre-usuario">
-                            <div class="nombre-wrapper">
-                                <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}"></h2>
+                            <div class="nombre-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                                <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}" style="margin: 0;"></h2>
+                                <i th:if="${usuarioHeader != null and (usuarioHeader.estado == 'VERIFICADO' or (usuarioHeader.rol != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                                 <input type="text" id="nombre-perfil-input" class="input-nombre-perfil" style="display:none;" onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }">
                             </div>
                             <i class="fas fa-pencil-alt icono-editar-nombre icono-lapiz" onclick="activarEdicionNombre()"></i>
@@ -113,10 +114,15 @@
                     <!-- PROYECTOS (2 ÚLTIMOS) -->
                     <div th:each="p : ${ultimosProyectos}"
                         class="tarjeta-mini-proyecto proyecto-card"
-                        th:attr="data-id=${p.id}">
+                        th:attr="data-id=${p.id}" style="position: relative; padding-top: 40px;">
+                        <span th:if="${p.estaValidado}" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 242, 255, 0.9); color: black; border-radius: 4px; padding: 3px 8px; font-size: 0.65em; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.5);">
+                            <i class="fas fa-check-circle"></i> VERIFICADO
+                        </span>
                 
                         <!-- NOMBRE -->
-                        <h3 th:text="${p.nombre}">Nombre proyecto</h3>
+                        <h3>
+                            <span th:text="${p.nombre}">Nombre proyecto</span>
+                        </h3>
                 
                         <!-- DESCRIPCIÓN CON SCROLL -->
                         <div class="proyecto-desc" th:text="${p.descripcion}">
@@ -185,7 +191,10 @@
 
                         <div th:each="r : ${reviews}" class="resena-item-own">
                             <div class="resena-header-own">
-                                <span class="resena-autor-own" th:text="${r.autor.username}">Usuario</span>
+                                <span class="resena-autor-own">
+                                    <span th:text="${r.autor.username}">Usuario</span>
+                                    <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </span>
                                 <span class="resena-estrellas-own">
                                     <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                 </span>
@@ -206,7 +215,10 @@
                 <div class="grid-usuarios-seguimiento" th:if="${amigos != null and !amigos.isEmpty()}">
                     <div class="usuario-seguimiento-card" th:each="user : ${amigos}">
                         <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
-                        <span th:text="${user.username}" class="seguimiento-nombre" style="margin-top: 5px;"></span>
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
                         <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                         <div class="seguimiento-acciones">
                             <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
@@ -225,7 +237,10 @@
                 <div class="grid-usuarios-seguimiento" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
                     <div class="usuario-seguimiento-card" th:each="user : ${siguiendo}">
                         <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
-                        <span th:text="${user.username}" class="seguimiento-nombre" style="margin-top: 5px;"></span>
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
                         <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                         <div class="seguimiento-acciones">
                             <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
@@ -244,7 +259,10 @@
                 <div class="grid-usuarios-seguimiento" th:if="${seguidores != null and !seguidores.isEmpty()}">
                     <div class="usuario-seguimiento-card" th:each="user : ${seguidores}">
                         <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
-                        <span th:text="${user.username}" class="seguimiento-nombre" style="margin-top: 5px;"></span>
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
                         <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                         <div class="seguimiento-acciones">
                             <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>

@@ -152,7 +152,10 @@
                                         <i class="fa-heart" th:classappend="${company.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
                                     </button>
                                 </div>
-                                <h3 th:text="${company.usuario.username}"></h3>
+                                <h3>
+                                    <span th:text="${company.usuario.username}"></span>
+                                    <i th:if="${company.usuario != null and (company.usuario.estado == 'VERIFICADO' or (company.usuario.rol != null and (company.usuario.rol.nombre == 'ADMIN' or company.usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </h3>
                                 <div style="text-align: center; margin-top: 2px; margin-bottom: 10px; color: #FFCC00; font-size: 0.8em; font-weight: bold;">
                                     <i class="fas fa-users"></i> <span th:text="${company.usuario.followersCountFormatted}">0</span> <span th:text="${company.usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
                                 </div>

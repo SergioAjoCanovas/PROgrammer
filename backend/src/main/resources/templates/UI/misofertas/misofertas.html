@@ -69,12 +69,17 @@
 
         <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
             <div class="logo-empresa">
-                <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
-                     alt="Logo Empresa">
+                <div style="position: relative; display: inline-block;">
+                    <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
+                         alt="Logo Empresa">
+                </div>
             </div>
             
             <div class="info-oferta">
-                <h3 class="nombre-empresa" th:text="${oferta.empresa?.username ?: 'Mi Empresa'}">Nombre de la Empresa</h3>
+                <h3 class="nombre-empresa">
+                    <span th:text="${oferta.empresa?.username ?: 'Mi Empresa'}">Nombre de la Empresa</span>
+                    <i th:if="${oferta.empresa != null and (oferta.empresa.estado == 'VERIFICADO' or (oferta.empresa.rol != null and (oferta.empresa.rol.nombre == 'ADMIN' or oferta.empresa.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                </h3>
                 <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
                 <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
                 

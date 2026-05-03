@@ -196,4 +196,20 @@ public class ViewController {
         model.addAttribute("usuarioLogueado", usuario);
         return "UI/nosotros/nosotros"; 
     }
+
+
+    // =======================================
+    // PERFIL LIMITADO PARA USUARIO
+    // =======================================
+    @GetMapping("/limitedProfile")
+    public String limitedProfile(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        
+        if (usuario == null || !"VISITOR".equals(usuario.getRol().getNombre())) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("usuarioHeader", usuario);
+        return "UI/ownProfile/ownProfileLimited";
+    }
 }

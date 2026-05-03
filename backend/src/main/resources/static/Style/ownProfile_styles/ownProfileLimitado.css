@@ -1,0 +1,118 @@
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+============================================================ */
+
+.contenedor-limitado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+/* ============================================================
+   TARJETA CENTRAL (MISMO ESTILO QUE TU APP)
+============================================================ */
+
+.tarjeta-limitada {
+    background-color: #1a1a1a;
+    border: 1px solid #FFCC00;
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+
+    box-shadow:
+        0 0 20px rgba(255, 204, 0, 0.2),
+        inset 0 0 10px rgba(255, 204, 0, 0.05);
+
+    animation: fadeIn 0.6s ease;
+}
+
+/* ============================================================
+   ICONO
+============================================================ */
+
+.icono-lock {
+    font-size: 3rem;
+    color: #FFCC00;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+}
+
+/* ============================================================
+   TEXTOS
+============================================================ */
+
+.tarjeta-limitada h2 {
+    color: #FFFDDF;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.tarjeta-limitada p {
+    color: #ccc;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.mensaje-secundario {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    color: #aaa;
+}
+
+/* ============================================================
+   BOTÓN NEÓN
+============================================================ */
+
+.btn-contacto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    background-color: #050505;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+
+    padding: 12px 20px;
+    border-radius: 12px;
+
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+}
+
+.btn-contacto:hover {
+    background-color: #FFCC00;
+    color: #000;
+
+    box-shadow:
+        0 0 20px #FFCC00,
+        0 0 40px rgba(255, 204, 0, 0.6);
+
+    transform: scale(1.05);
+}
+
+/* ============================================================
+   ANIMACIÓN
+============================================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

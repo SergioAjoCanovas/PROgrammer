@@ -32,6 +32,8 @@ public class OfertaController {
     private PostulacionRepository postulacionRepository;
     @Autowired
     private ProyectoRepository proyectoRepository; 
+    @Autowired
+    private NotificacionRepository notificacionRepository;
 
     @GetMapping("/jobsearching")
     public String verOfertas(Model model) {
@@ -113,6 +115,22 @@ public class OfertaController {
         }
 
         ofertaRepository.save(oferta);
+
+        if (!esEdicion && oferta.getEmpresa() != null) {
+            for (Usuario seguidor : oferta.getEmpresa().getSeguidores()) {
+                if (!seguidor.isSilenciarNotificaciones()) {
+                    Notificacion n = new Notificacion();
+                    n.setUsuario(seguidor);
+                    n.setTipo("NUEVA_OFERTA");
+                    n.setMensaje("La empresa " + oferta.getEmpresa().getUsername() + " ha publicado una nueva oferta: " + oferta.getTitulo());
+                    // Enlace a jobview usando POST puede ser un problema, pero la url básica se puede armar
+                    // Usualmente las ofertas se ven al buscar, pero dejemos la redireccion al search profile
+                    n.setEnlace("/profileView/" + oferta.getEmpresa().getId());
+                    notificacionRepository.save(n);
+                }
+            }
+        }
+
         return "redirect:/jobsearching?" + (esEdicion ? "ofertaEditada=true" : "ofertaPublicada=true"); 
     }
 

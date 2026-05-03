@@ -73,7 +73,7 @@
                         <input type="checkbox" name="remember"/>
                         <span class="checkmark">Recordarme</span>
                     </label>
-                    <a href="#" class="link-olvido">¿Olvidaste tu contraseña?</a>
+                    <a href="/forgotPassword" class="link-olvido">¿Olvidaste tu contraseña?</a>
                 </div>
 
                 <button type="submit" class="boton-ver">Entrar</button>
@@ -102,6 +102,14 @@
         </div>
     </div>
 
+    <div id="toast-login-success" class="toast-error-neon" style="border-left-color: #00ffaa; box-shadow: 0 8px 32px rgba(0, 255, 170, 0.3);" th:if="${success != null}">
+        <i class="fas fa-check-circle" style="color: #00ffaa;"></i>
+        <div>
+            <strong style="color: #00ffaa;">Éxito</strong>
+            <span style="font-size: 0.9rem; color: #eee;" th:text="${success}"></span>
+        </div>
+    </div>
+
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
@@ -119,7 +127,17 @@
         // LÓGICA PARA DETECTAR ERRORES EN LA URL Y MOSTRAR EL TOAST
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const toast = document.getElementById('toast-login-error');
+            const toastError = document.getElementById('toast-login-error');
+            const toastSuccess = document.getElementById('toast-login-success');
+            
+            if (toastSuccess) {
+                setTimeout(() => {
+                    toastSuccess.classList.add('mostrar');
+                }, 100);
+                setTimeout(() => {
+                    toastSuccess.classList.remove('mostrar');
+                }, 5000);
+            }
             
             // Si la URL tiene ?error o ?error=true
             if (urlParams.has('error')) {
@@ -138,7 +156,7 @@
                 
                 // Mostrar el toast
                 setTimeout(() => {
-                    toast.classList.add('mostrar');
+                    toastError.classList.add('mostrar');
                 }, 100);
 
                 // Limpiar la URL para que no vuelva a salir al recargar
@@ -146,7 +164,7 @@
 
                 // Ocultar automáticamente tras 5 segundos
                 setTimeout(() => {
-                    toast.classList.remove('mostrar');
+                    toastError.classList.remove('mostrar');
                 }, 5000);
             }
         });

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avisos - ProGrammer</title>
+    
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .contenedor-avisos-page {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .header-avisos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #FFCC00;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .titulo-avisos {
+            margin: 0;
+            font-size: 2rem;
+            color: #FFCC00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .controles-avisos {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-control {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-control:hover {
+            transform: translateY(-2px);
+            border-color: #FFCC00;
+        }
+
+        .btn-borrar:hover { border-color: #ff4444; color: #ff4444; }
+        
+        .btn-silenciar { color: #00ffaa; border-color: #00ffaa; }
+        .btn-silenciar.silenciado { color: #ff4444; border-color: #ff4444; }
+
+        .lista-avisos {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .aviso-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: white;
+        }
+
+        .aviso-item:hover {
+            border-color: #FFCC00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.15);
+            transform: translateX(5px);
+        }
+
+        .aviso-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #FFCC00;
+            box-shadow: 0 0 10px #FFCC00;
+        }
+
+        .aviso-icono {
+            background: rgba(255, 204, 0, 0.1);
+            color: #FFCC00;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .aviso-icono.tipo-seguidor { color: #00f2ff; background: rgba(0, 242, 255, 0.1); }
+        .aviso-item.tipo-seguidor::before { background: #00f2ff; box-shadow: 0 0 10px #00f2ff; }
+
+        .aviso-icono.tipo-oferta { color: #ff00aa; background: rgba(255, 0, 170, 0.1); }
+        .aviso-item.tipo-oferta::before { background: #ff00aa; box-shadow: 0 0 10px #ff00aa; }
+
+        .aviso-contenido {
+            flex: 1;
+        }
+
+        .aviso-mensaje {
+            font-size: 1.1rem;
+            margin: 0 0 5px 0;
+            line-height: 1.4;
+        }
+
+        .aviso-fecha {
+            color: #888;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .aviso-vacio {
+            text-align: center;
+            padding: 50px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            border: 1px dashed #333;
+            color: #888;
+        }
+
+        .aviso-vacio i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .btn-borrar-individual {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+            z-index: 2; /* Para que sea clickeable por encima del link */
+        }
+
+        .btn-borrar-individual:hover {
+            background: #ff4444;
+            color: white;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="body-layout fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-avisos-page">
+        <div class="header-avisos">
+            <h1 class="titulo-avisos">
+                <i class="fas fa-bell"></i> Mis Avisos
+            </h1>
+            <div class="controles-avisos">
+                <button class="btn-control btn-silenciar" th:classappend="${isSilenciado ? 'silenciado' : ''}" onclick="toggleSilenciarPage()" id="btn-silenciar-page">
+                    <i class="fas" th:classappend="${isSilenciado ? 'fa-bell-slash' : 'fa-bell'}"></i>
+                    <span th:text="${isSilenciado ? 'Reactivar Avisos' : 'Silenciar Avisos'}">Silenciar</span>
+                </button>
+                <button class="btn-control btn-borrar" onclick="borrarTodosAvisos()">
+                    <i class="fas fa-trash"></i> Borrar Todo
+                </button>
+            </div>
+        </div>
+
+        <div class="lista-avisos" th:if="${notificaciones != null and notificaciones.size() > 0}">
+            <a th:each="aviso : ${notificaciones}" 
+               th:href="${aviso.enlace != null ? aviso.enlace : '#'}"
+               class="aviso-item"
+               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+                
+                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 'fa-briefcase'}"></i>
+                </div>
+                
+                <div class="aviso-contenido">
+                    <p class="aviso-mensaje" th:text="${aviso.mensaje}"></p>
+                    <p class="aviso-fecha" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                </div>
+                
+                <i class="fas fa-chevron-right" style="color: #444;" th:if="${aviso.enlace != null}"></i>
+
+                <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </a>
+        </div>
+
+        <div class="aviso-vacio" th:if="${notificaciones == null or notificaciones.size() == 0}">
+            <i class="fas fa-box-open"></i>
+            <h3>No tienes avisos nuevos</h3>
+            <p>Aquí aparecerán las notificaciones cuando alguien te siga o publique una oferta.</p>
+        </div>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script th:inline="javascript">
+        window.addEventListener('load', () => {
+            const linkAvisos = document.getElementById('link-avisos');
+            if (linkAvisos) {
+                linkAvisos.classList.add('activo');
+            }
+        });
+
+        let pageIsSilenciado = [[${isSilenciado}]];
+
+        function toggleSilenciarPage() {
+            fetch('/api/notificaciones/toggle-silence', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                pageIsSilenciado = data.silenciado;
+                const btn = document.getElementById('btn-silenciar-page');
+                const icon = btn.querySelector('i');
+                const span = btn.querySelector('span');
+
+                if (pageIsSilenciado) {
+                    btn.classList.add('silenciado');
+                    icon.classList.remove('fa-bell');
+                    icon.classList.add('fa-bell-slash');
+                    span.innerText = 'Reactivar Avisos';
+                    Swal.fire({
+                        toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000,
+                        icon: 'info', title: 'Avisos silenciados', background: '#1a1a1a', color: '#fff'
+                    });
+                } else {
+                    btn.classList.remove('silenciado');
+                    icon.classList.remove('fa-bell-slash');
+                    icon.classList.add('fa-bell');
+                    span.innerText = 'Silenciar Avisos';
+                    Swal.fire({
+                        toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000,
+                        icon: 'success', title: 'Avisos activados', background: '#1a1a1a', color: '#fff'
+                    });
+                }
+            }).catch(e => console.error(e));
+        }
+
+        function borrarTodosAvisos() {
+            Swal.fire({
+                title: '¿Borrar todos los avisos?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4444',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Sí, borrar todo',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/api/notificaciones', { method: 'DELETE' })
+                    .then(() => {
+                        window.location.reload();
+                    });
+                }
+            });
+        }
+
+        function borrarUnAviso(event, id, btn) {
+            event.preventDefault(); // Evitar que el clic abra el enlace
+            event.stopPropagation(); // Evitar propagación al padre
+            
+            fetch('/api/notificaciones/' + id, { method: 'DELETE' })
+            .then(res => {
+                if(res.ok) {
+                    const item = btn.closest('.aviso-item');
+                    // Animación de salida
+                    item.style.transition = 'all 0.3s ease';
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateX(50px)';
+                    
+                    setTimeout(() => {
+                        item.remove();
+                        // Si ya no quedan elementos, recargamos para mostrar el "Aviso vacío"
+                        if (document.querySelectorAll('.aviso-item').length === 0) {
+                            window.location.reload();
+                        }
+                    }, 300);
+                }
+            }).catch(e => console.error(e));
+        }
+    </script>
+</body>
+</html>

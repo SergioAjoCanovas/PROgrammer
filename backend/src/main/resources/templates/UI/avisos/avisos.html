@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -257,26 +257,56 @@
             </div>
         </div>
 
-        <div class="lista-avisos" th:if="${notificaciones != null and notificaciones.size() > 0}">
+        <!-- SECCIÓN DE PARCHES (ACTUALIZACIONES) -->
+        <div class="lista-avisos" style="margin-bottom: 30px;" th:if="${notificaciones != null}">
+            <h2 style="color: #39FF14; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                <i class="fas fa-bullhorn"></i> Mensajes de Actualización
+            </h2>
             <a th:each="aviso : ${notificaciones}" 
-               th:href="${aviso.tipo == 'NUEVO_PARCHE' ? 'javascript:void(0);' : (aviso.enlace != null ? aviso.enlace : '#')}"
-               th:onclick="${aviso.tipo == 'NUEVO_PARCHE' ? 'mostrarMensajeParche(event, this)' : null}"
-               class="aviso-item"
-               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : (aviso.tipo == 'NUEVO_PARCHE' ? 'tipo-parche' : null))}">
+               th:if="${aviso.tipo == 'NUEVO_PARCHE'}"
+               href="javascript:void(0);"
+               onclick="mostrarMensajeParche(event, this)"
+               class="aviso-item tipo-parche">
                 
-                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : (aviso.tipo == 'NUEVO_PARCHE' ? 'tipo-parche' : null))}">
-                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : (aviso.tipo == 'NUEVO_PARCHE' ? 'fa-bullhorn' : 'fa-briefcase')}"></i>
+                <div class="aviso-icono tipo-parche">
+                    <i class="fas fa-bullhorn"></i>
                 </div>
                 
                 <div class="aviso-contenido">
-                    <p class="aviso-mensaje" th:if="${aviso.tipo != 'NUEVO_PARCHE'}" th:text="${aviso.mensaje}"></p>
-                    <p class="aviso-mensaje" th:if="${aviso.tipo == 'NUEVO_PARCHE'}"><strong>NUEVA ACTUALIZACIÓN DE PROGRAMMER</strong><br><span style="font-size: 0.85em; color: #bbb;">Haz clic para ver los detalles.</span></p>
-                    <div style="display:none;" class="parche-texto-oculto" th:if="${aviso.tipo == 'NUEVO_PARCHE'}" th:text="${aviso.mensaje}"></div>
-                    
-                    <p class="aviso-fecha" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-mensaje"><strong>ACTUALIZACIÓN DEL SISTEMA</strong><br><span style="font-size: 0.85em; color: #bbb;">Haz clic para ver los detalles.</span></p>
+                    <div style="display:none;" class="parche-texto-oculto" th:text="${aviso.mensaje}"></div>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion != null}" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion == null}">Hace un momento</p>
                 </div>
                 
-                <i class="fas fa-chevron-right" style="color: #444;" th:if="${aviso.enlace != null and aviso.tipo != 'NUEVO_PARCHE'}"></i>
+                <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </a>
+        </div>
+
+        <!-- SECCIÓN DE NOTIFICACIONES NORMALES -->
+        <div class="lista-avisos" th:if="${notificaciones != null}">
+            <h2 style="color: white; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                <i class="fas fa-bell"></i> Notificaciones
+            </h2>
+            <a th:each="aviso : ${notificaciones}" 
+               th:if="${aviso.tipo != 'NUEVO_PARCHE'}"
+               th:href="${aviso.enlace != null ? aviso.enlace : '#'}"
+               class="aviso-item"
+               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+                
+                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 'fa-briefcase'}"></i>
+                </div>
+                
+                <div class="aviso-contenido">
+                    <p class="aviso-mensaje" th:text="${aviso.mensaje}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion != null}" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion == null}">Hace un momento</p>
+                </div>
+                
+                <i class="fas fa-chevron-right" style="color: #444;" th:if="${aviso.enlace != null}"></i>
 
                 <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
                     <i class="fas fa-trash"></i>
@@ -445,6 +475,7 @@ function borrarTodosAvisos() {
     </script>
 </body>
 </html>
+
 
 
 

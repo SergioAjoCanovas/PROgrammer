@@ -195,10 +195,13 @@ CREATE TABLE evaluaciones(
 
 -- Tabla de reseñas
 CREATE TABLE resenas_proyectos(
-	id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     proyecto_id BIGINT,
     usuario_id BIGINT,
-	comentario TEXT NOT NULL,
+    arquitectura INT,
+    limpieza INT,
+    documentacion INT,
+    comentario TEXT NOT NULL,
     fecha_resena TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (proyecto_id) REFERENCES proyectos(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)

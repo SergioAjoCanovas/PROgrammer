@@ -74,34 +74,123 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================================
-   2. PERFIL (IZQUIERDA)
+   TARJETA PERFIL
    ========================================================= */
-.columna-perfil { flex: 0 0 300px; }
 
+   .tarjeta-perfil {
+    background-color: #1a1a1a !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabecera igual */
 .cabecera-tarjeta {
-    border-bottom: 2px solid rgba(170, 170, 170, 0.2);
-    padding-bottom: 25px; 
-    margin-bottom: 30px; 
+    border-bottom: 2px solid #aaaaaa;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
-.foto-perfil-contenedor { position: relative; width: 110px; height: 110px; margin: 0 auto 15px auto; }
-.circulo-foto { width: 100%; height: 100%; border-radius: 50%; background: #222; border: 3px solid #FFCC00; }
-.icono-corazon { 
-    position: absolute; bottom: 5px; right: 5px; 
-    color: #FFCC00; background: #1a1a1a; padding: 8px; 
-    border-radius: 50%; border: 1px solid #FFCC00; 
+/* Foto perfil (idéntico comportamiento) */
+.foto-perfil-contenedor {
+    position: relative;
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px auto;
 }
 
-.nombre-usuario { font-size: 1.4rem; color: #FFF; font-weight: bold; margin: 0; }
-
-.redes-sociales { list-style: none; padding: 0; margin: 0 0 30px 10px; }
-.redes-sociales li { 
-    display: flex; align-items: center; gap: 15px; 
-    padding: 12px 0; 
-    color: #BBBBBB; font-size: 1.1rem; 
+.circulo-foto {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    overflow: hidden;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.redes-sociales li i { font-size: 1.4rem; width: 25px; text-align: center; color: #DDDDDD; }
+
+.circulo-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Icono corazón igual */
+.icono-corazon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #FFCC00;
+    background: #1a1a1a;
+    padding: 8px;
+    border-radius: 50%;
+    border: 1px solid #FFCC00;
+}
+
+/* Nombre usuario */
+.nombre-usuario {
+    font-size: 1.6rem;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+}
+
+/* =========================================================
+   LISTA DOTTED
+   ========================================================= */
+
+.lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+/* ITEM */
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+
+    color: #ccc;
+    text-decoration: none;
+
+    background-color: transparent;
+
+    transition: all 0.35s ease;
+}
+
+/* ICONO */
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+/* HOVER */
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
+}
 
 /* =========================================================
    3. BOTONES
@@ -335,4 +424,53 @@ textarea:focus {
 .estrellas i:hover ~ i {
     opacity: 0.5;
     transform: scale(0.9);
+}
+
+/* =========================================================
+   TECNOLOGÍAS (MISMO ESTILO QUE DESCRIPCIÓN)
+   ========================================================= */
+
+   .tecnologias {
+    margin-bottom: 50px;
+}
+
+.tecnologias h3 {
+    color: #FFCC00;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-transform: none;
+    border-left: 5px solid #FFCC00;
+    padding-left: 15px;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+
+/* contenedor de tags */
+.tecnologias .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-left: 5px; /* mismo “aire” que descripción */
+}
+
+/* chips de tecnología */
+.tech-tag-proyecto {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    color: #00f3ff;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tech-tag-proyecto:hover {
+    background: rgba(0, 243, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    transform: translateY(-2px);
+    color: #ffffff;
 }

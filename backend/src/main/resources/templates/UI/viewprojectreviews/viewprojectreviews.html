@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,14 +19,24 @@
 
 <main class="contenedor-principal">
 
+    <!-- PERFIL -->
     <aside class="columna-perfil">
         <div class="tarjeta-perfil">
+
             <div class="cabecera-tarjeta">
+
                 <div class="foto-perfil-contenedor">
                     <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                    <div class="icono-corazon">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
-                <h2 class="nombre-usuario">Autor</h2>
+
+                <h2 class="nombre-usuario"
+                    th:text="${autor != null ? autor.username : 'Usuario'}">
+                    Usuario
+                </h2>
+
             </div>
 
             <div class="cuerpo-tarjeta">
@@ -36,46 +47,75 @@
                 </ul>
                 <button class="boton-curriculum">VER CV</button>
             </div>
+
         </div>
     </aside>
 
+    <!-- PROYECTO -->
     <section class="seccion-central">
 
         <div class="tarjeta-proyecto-detalle">
 
             <div class="cabecera-proyecto">
-                <h2>Nombre del Proyecto</h2>
-                <a href="/projectview" class="boton-volver-circular">
+                <h2 th:text="${proyecto != null ? proyecto.titulo : 'Proyecto'}">Proyecto</h2>
+
+                <a th:if="${proyecto != null}"
+                   th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}"
+                   class="boton-volver-circular">
                     <i class="fas fa-undo"></i>
                 </a>
             </div>
 
             <p class="autor-texto">
-                <strong>Desarrollado por:</strong> David Alcázar
+                <strong>Desarrollado por:</strong>
+                <span th:text="${autor != null ? autor.username : 'Usuario'}">Usuario</span>
             </p>
 
+            <!-- MEDIAS -->
             <div class="medias-reseñas-ver">
-                <div class="media-stat"><span>Arquitectura:</span><span>4.5</span></div>
-                <div class="media-stat"><span>Limpieza:</span><span>4.0</span></div>
-                <div class="media-stat"><span>Documentación:</span><span>5.0</span></div>
-                <div class="media-total"><span>TOTAL:</span><span>4.5</span></div>
+
+                <div class="media-stat">
+                    <span>Arquitectura:</span>
+                    <span th:text="${mediaArq != null ? mediaArq : 0}">0</span>
+                </div>
+
+                <div class="media-stat">
+                    <span>Limpieza:</span>
+                    <span th:text="${mediaLim != null ? mediaLim : 0}">0</span>
+                </div>
+
+                <div class="media-stat">
+                    <span>Documentación:</span>
+                    <span th:text="${mediaDoc != null ? mediaDoc : 0}">0</span>
+                </div>
+
+                <div class="media-total">
+                    <span>TOTAL:</span>
+                    <span th:text="${mediaTotal != null ? mediaTotal : 0}">0</span>
+                </div>
+
             </div>
 
+            <!-- GALERÍA -->
             <div class="galeria-capturas">
                 <div class="marco-captura">
-                    <img src="/Img/stock/ejemplo1.jpg">
+                    <img src="/Img/stock/ejemplo1.jpg" alt="Captura del proyecto">
                 </div>
             </div>
 
+            <!-- DESCRIPCIÓN -->
             <div class="bloque-texto-informativo">
                 <h3>Descripción técnica</h3>
-                <p>Descripción del proyecto...</p>
+                <p th:text="${proyecto != null ? proyecto.descripcion : ''}">
+                    Descripción del proyecto...
+                </p>
             </div>
 
         </div>
 
     </section>
 
+    <!-- REVIEWS -->
     <aside class="zona-derecha">
 
         <div class="tarjeta-reseñas-ver">
@@ -86,19 +126,57 @@
 
             <div class="contenedor-reseñas">
 
-                <div class="reseña-item">
+                <div th:if="${reviews == null || #lists.isEmpty(reviews)}"
+                     class="reseña-item">
+                    <p style="text-align:center; color:#aaa;">
+                        Todavía no hay reseñas para este proyecto.
+                    </p>
+                </div>
+
+                <div class="reseña-item"
+                     th:each="r : ${reviews}">
+
                     <div class="reseña-user">
                         <i class="fas fa-user-circle"></i>
-                        Usuario1
+                        <span th:text="${r.autor != null ? r.autor.username : 'Usuario'}">Usuario</span>
                     </div>
 
+                    <!-- ⭐⭐⭐⭐⭐ ESTRELLAS (FUNCIONAL Y ESTILO ANTIGUO RESTAURADO) -->
                     <div class="reseña-scores">
-                        <div>Arq: ⭐⭐⭐⭐</div>
-                        <div>Lim: ⭐⭐⭐⭐</div>
-                        <div>Doc: ⭐⭐⭐⭐⭐</div>
+
+                        <div class="score-line">
+                            <span>Arq:</span>
+                            <span class="estrellas">
+                                <i class="fas fa-star"
+                                   th:each="i : ${#numbers.sequence(1,5)}"
+                                   th:classappend="${i <= r.arquitectura} ? 'gold' : 'empty'"></i>
+                            </span>
+                        </div>
+
+                        <div class="score-line">
+                            <span>Lim:</span>
+                            <span class="estrellas">
+                                <i class="fas fa-star"
+                                   th:each="i : ${#numbers.sequence(1,5)}"
+                                   th:classappend="${i <= r.limpieza} ? 'gold' : 'empty'"></i>
+                            </span>
+                        </div>
+
+                        <div class="score-line">
+                            <span>Doc:</span>
+                            <span class="estrellas">
+                                <i class="fas fa-star"
+                                   th:each="i : ${#numbers.sequence(1,5)}"
+                                   th:classappend="${i <= r.documentacion} ? 'gold' : 'empty'"></i>
+                            </span>
+                        </div>
+
                     </div>
 
-                    <p>Muy buen proyecto</p>
+                    <p class="reseña-texto"
+                       th:text="${r.comentario}">
+                    </p>
+
                 </div>
 
             </div>

@@ -15,110 +15,217 @@
     <link rel="stylesheet" href="/Style/projectview_styles/images-modals.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="fondo-oscuro-neon">
 
-    <div th:replace="~{includes/header :: header}"></div>
+<div th:replace="~{includes/header :: header}"></div>
 
 <main class="contenedor-principal">
 
+    <!-- ========================= -->
+    <!-- PERFIL LATERAL -->
+    <!-- ========================= -->
     <aside class="columna-perfil">
-        <div class="tarjeta-perfil">
+        <div class="tarjeta-perfil tarjeta-neon-estatica">
+    
             <div class="cabecera-tarjeta">
+    
                 <div class="foto-perfil-contenedor">
-                    <div class="circulo-foto"></div>
-                    <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+                    <div class="circulo-foto">
+                        <img th:if="${session.usuarioLogueado.fotoPerfil != null}"
+                             th:src="${session.usuarioLogueado.fotoPerfil}">
+                        <i th:unless="${session.usuarioLogueado.fotoPerfil != null}"
+                           class="fas fa-user"
+                           style="font-size: 3rem; color: #aaa;"></i>
+                    </div>
+    
+                    <div class="icono-corazon">
+                        <i class="fas fa-heart"></i>
+                    </div>
                 </div>
-                <h2 class="nombre-usuario" id="nombre-mi-perfil">Cargando...</h2>
+    
+                <h2 class="nombre-usuario"
+                    th:text="${session.usuarioLogueado.username}">
+                    Usuario
+                </h2>
+    
             </div>
-
-            <div class="perfil-inferior">
-                <ul class="redes-sociales">
-                    <li><i class="fab fa-instagram"></i> Instagram</li>
-                    <li><i class="fab fa-twitter"></i> Twitter</li>
-                    <li><i class="fas fa-phone-alt"></i> Teléfono</li>
-                </ul>
-                <button class="boton-curriculum">CURRICULUM</button>
+    
+            <div class="cuerpo-tarjeta">
+    
+                <div class="lista-dotted">
+    
+                    <a th:if="${session.usuarioLogueado.github}"
+                       th:href="${session.usuarioLogueado.github}"
+                       target="_blank"
+                       class="item-dotted">
+                        <i class="fab fa-github"></i>
+                        <span>Mi GitHub</span>
+                    </a>
+    
+                    <a th:if="${session.usuarioLogueado.linkedin}"
+                       th:href="${session.usuarioLogueado.linkedin}"
+                       target="_blank"
+                       class="item-dotted">
+                        <i class="fab fa-linkedin"></i>
+                        <span>Mi LinkedIn</span>
+                    </a>
+    
+                    <a th:if="${session.usuarioLogueado.curriculum != null}"
+                       th:href="${session.usuarioLogueado.curriculum}"
+                       target="_blank"
+                       class="item-dotted">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mi CV</span>
+                    </a>
+    
+                </div>
+    
             </div>
+    
         </div>
     </aside>
 
+    <!-- ========================= -->
+    <!-- PROYECTO -->
+    <!-- ========================= -->
     <section class="seccion-derecha-dinamica">
+
         <div class="tarjeta-proyecto-detalle">
+
             <div class="cabecera-proyecto">
-                <h2>Nombre del Proyecto</h2>
-                <a href="/projectview" class="boton-volver-curvo">
+                <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
+
+                <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}"
+                   class="boton-volver-curvo">
                     <i class="fas fa-undo"></i>
                 </a>
             </div>
 
             <div class="info-superior">
-                <p><strong>Autor:</strong> David Alcázar</p>
+                <p>
+                    <strong>Autor:</strong>
+                    <span th:text="${proyecto.autor.username}">Autor</span>
+                </p>
+
                 <div class="estado-proyecto">
-                    <span class="badge validado"><i class="fas fa-check-circle"></i> Validado</span>
-                    <button class="boton-descargar"><i class="fas fa-download"></i> Descargar</button>
+                    <span class="badge validado"
+                          th:if="${proyecto.estaValidado}">
+                        <i class="fas fa-check-circle"></i> Validado
+                    </span>
+
+                    <a class="boton-descargar"
+                       th:if="${proyecto.repoUrl != null}"
+                       th:href="${proyecto.repoUrl}"
+                       target="_blank">
+                        <i class="fab fa-github"></i> Repositorio
+                    </a>
                 </div>
             </div>
 
+            <!-- ========================= -->
+            <!-- IMÁGENES -->
+            <!-- ========================= -->
             <div class="galeria-proyecto">
-                <img src="/Img/stock/ejemplo1.jpg" class="img-proyecto" alt="Captura 1">
-                <img src="/Img/stock/ejemplo2.jpg" class="img-proyecto" alt="Captura 2">
-                <img src="/Img/stock/ejemplo3.jpg" class="img-proyecto" alt="Captura 3">
-                <img src="/Img/stock/ejemplo4.jpg" class="img-proyecto" alt="Captura 4">
+
+                <img th:if="${proyecto.foto1}"
+                     th:src="@{${proyecto.foto1}}"
+                     class="img-proyecto" />
+
+                <img th:if="${proyecto.foto2}"
+                     th:src="@{${proyecto.foto2}}"
+                     class="img-proyecto" />
+
+                <img th:if="${proyecto.foto3}"
+                     th:src="@{${proyecto.foto3}}"
+                     class="img-proyecto" />
+
+                <img th:if="${proyecto.foto4}"
+                     th:src="@{${proyecto.foto4}}"
+                     class="img-proyecto" />
             </div>
 
+            <!-- ========================= -->
+            <!-- DESCRIPCIÓN -->
+            <!-- ========================= -->
             <div class="descripcion-proyecto">
                 <h3>Descripción</h3>
-                <p>Este proyecto consiste en una plataforma para conectar desarrolladores...</p>
+                <p th:text="${proyecto.descripcion}"></p>
             </div>
 
-            <div class="repo">
-                <h3>Repositorio</h3>
-                <a href="#" target="_blank"><i class="fab fa-github"></i> https://github.com/proyecto</a>
+            <!-- ========================= -->
+            <!-- TECNOLOGÍAS -->
+            <!-- ========================= -->
+            <div class="descripcion-proyecto tecnologias">
+
+                <h3>Tecnologías</h3>
+
+                <div class="tags" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+
+                    <span th:each="tech : ${proyecto.tecnologias}"
+                        class="tech-tag-proyecto"
+                        th:text="${tech.nombre}">
+                    </span>
+
+                </div>
+
             </div>
+
         </div>
     </section>
 
+    <!-- ========================= -->
+    <!-- FORMULARIO REVIEW -->
+    <!-- ========================= -->
     <aside class="zona-derecha">
+
         <div class="tarjeta-formulario">
+
             <h2><i class="fas fa-star"></i> Valorar proyecto</h2>
-    
+
             <form action="/project-reviews/crear" method="post">
 
-                <!-- HARDCODE TEMPORAL -->
-                <input type="hidden" name="proyectoId" value="1">
-            
+                <input type="hidden" name="proyectoId"
+                       th:value="${proyecto.id}">
+
                 <div class="campo">
                     <label>Arquitectura</label>
                     <div class="estrellas" data-tipo="arquitectura"></div>
                     <input type="hidden" name="arquitectura" id="input-arquitectura">
                 </div>
-            
+
                 <div class="campo">
                     <label>Limpieza de código</label>
                     <div class="estrellas" data-tipo="limpieza"></div>
                     <input type="hidden" name="limpieza" id="input-limpieza">
                 </div>
-            
+
                 <div class="campo">
                     <label>Documentación</label>
                     <div class="estrellas" data-tipo="documentacion"></div>
                     <input type="hidden" name="documentacion" id="input-documentacion">
                 </div>
-            
+
                 <div class="campo">
                     <label>Comentario</label>
-                    <textarea name="comentario" placeholder="Escribe tu reseña..." required></textarea>
+                    <textarea name="comentario"
+                              placeholder="Escribe tu reseña..."
+                              required></textarea>
                 </div>
-            
+
                 <button type="submit" class="boton-ver">
                     <i class="fas fa-paper-plane"></i> Publicar reseña
                 </button>
             </form>
         </div>
+
     </aside>
 
 </main>
 
+<!-- ========================= -->
+<!-- MODAL IMÁGENES -->
+<!-- ========================= -->
 <div id="miModal" class="modal">
     <img class="contenido-modal" id="imagenFull">
     <div id="caption-modal"></div>
@@ -127,22 +234,21 @@
 <div th:replace="~{includes/footer :: footer}"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
         inicializarIdentidadYEventos();
     });
 
     function inicializarIdentidadYEventos() {
+
         const username = localStorage.getItem('usuarioLogueado');
-        const rol = localStorage.getItem('rolUsuario') || 'USER';
-        
-        // 2. Inyectar en la tarjeta lateral (porque eres TÚ quien escribe la reseña)
+
         const nombreLateral = document.getElementById('nombre-mi-perfil');
         if (username && nombreLateral) {
             nombreLateral.innerText = username;
         }
 
-        // 3. Lógica de Estrellas
         document.querySelectorAll(".estrellas").forEach(container => {
             const tipo = container.dataset.tipo;
             const input = document.getElementById("input-" + tipo);
@@ -152,20 +258,25 @@
                 estrella.classList.add("far", "fa-star");
                 container.appendChild(estrella);
 
-                estrella.addEventListener("click", function() {
+                estrella.addEventListener("click", function () {
                     input.value = i;
-                    const estrellas = container.querySelectorAll("i");
-                    estrellas.forEach((s, index) => {
-                        s.classList.toggle("fas", index < i);
-                        s.classList.toggle("far", index >= i);
-                        s.classList.toggle("activa", index < i);
+
+                    container.querySelectorAll("i").forEach((s, index) => {
+                        if (index < i) {
+                            s.classList.remove("far");
+                            s.classList.add("fas");
+                            s.classList.add("activa");
+                        } else {
+                            s.classList.remove("fas");
+                            s.classList.add("far");
+                            s.classList.remove("activa");
+                        }
                     });
                 });
             }
         });
     }
 
-    // Lógica del Modal de imágenes
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");
@@ -175,16 +286,17 @@
             modal.style.display = "block";
             modalImg.src = this.src;
             captionText.innerHTML = this.alt;
-            document.body.style.overflow = "hidden"; 
+            document.body.style.overflow = "hidden";
         }
     });
 
     window.onclick = function(event) {
-        if (event.target == modal) { 
-            modal.style.display = "none"; 
-            document.body.style.overflow = "auto"; 
+        if (event.target == modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
         }
     }
 </script>
+
 </body>
 </html>

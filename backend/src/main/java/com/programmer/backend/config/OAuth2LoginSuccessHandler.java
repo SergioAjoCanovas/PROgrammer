@@ -62,33 +62,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         Usuario usuario;
 
         if (usuarioOpt.isEmpty()) {
-            // Generar un username único si ya existe
-            String username = name;
-            int counter = 1;
-            while (usuarioRepository.existsByUsername(username)) {
-                username = name + counter;
-                counter++;
-            }
-
-            // Asignamos por defecto el rol DESARROLLADOR
-            Rol rol = rolRepository.findByNombre("DESARROLLADOR")
-                    .orElseThrow(() -> new RuntimeException("Rol DESARROLLADOR no encontrado"));
-
-            usuario = new Usuario();
-            usuario.setUsername(username);
-            usuario.setEmail(email);
-            // Contraseña aleatoria ya que entran con Google
-            usuario.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-            usuario.setRol(rol);
-            if (picture != null) {
-                usuario.setFotoPerfil(picture);
-            }
-
-            usuario = registroService.registrarUsuario(usuario);
-
-            PerfilDesarrollador perfil = new PerfilDesarrollador();
-            perfil.setUsuario(usuario);
-            perfilDesarrolladorRepository.save(perfil);
+            // Si el usuario no existe en la base de datos, no lo registramos automáticamente.
+            // Invalidamos la sesión de Spring Security y redirigimos al login con error.
+            request.getSession().invalidate();
+            response.sendRedirect("/login?error=not_registered");
+            return;
         } else {
             usuario = usuarioOpt.get();
             // Actualizar foto de perfil si no tiene una

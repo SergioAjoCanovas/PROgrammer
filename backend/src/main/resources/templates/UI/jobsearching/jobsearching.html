@@ -36,8 +36,14 @@
         </div>
 
         <div class="tarjeta-oferta" th:each="oferta : ${ofertas}" th:data-id="${oferta.id}" th:data-empresa="${oferta.empresa?.username}">
-            <div class="logo-empresa">
+            <div class="logo-empresa foto-perfil-wrapper">
                 <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" alt="Logo Empresa">
+                <button th:if="${session.usuarioLogueado != null and oferta.empresa != null and session.usuarioLogueado.id != oferta.empresa.id}"
+                        class="btn-follow-heart" 
+                        th:attr="data-id=${oferta.empresa.id}, data-username=${oferta.empresa.username}" 
+                        onclick="toggleFollowUser(this, event)">
+                    <i class="fa-heart" th:classappend="${oferta.empresa.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                </button>
             </div>
             <div class="info-oferta">
                 <h3 class="nombre-empresa">
@@ -68,7 +74,6 @@
         .toast-neon-exito i { color: #00e676; font-size: 2rem; }
         .toast-neon-exito strong { display: block; color: #00e676; font-size: 1.1rem; margin-bottom: 2px; }
         .badge-propia { background: #FFCC00; color: black; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 5px; display: inline-block; text-transform: uppercase; }
-        .btn-empresa-editar { background: transparent !important; border: 1px solid #FFCC00 !important; color: #FFCC00 !important; }
     </style>
 
     <div id="toast-postulacion" class="toast-neon-exito">
@@ -156,6 +161,49 @@
             setTimeout(() => { t.classList.remove('mostrar'); }, 4500);
         }
     });
+
+    async function toggleFollowUser(btn, event) {
+        event.stopPropagation();
+        const targetId = btn.getAttribute('data-id');
+        const icon = btn.querySelector('i');
+        const isFollowing = icon.classList.contains('fas');
+
+        if (isFollowing) {
+            const targetName = btn.getAttribute('data-username') || 'este usuario';
+            const result = await mostrarModalUnfollowGlobal(targetName);
+
+            if (!result.isConfirmed) {
+                return;
+            }
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            const response = await fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            
+            if (result === 'OK') {
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            } else if (result === 'NOT_LOGGED') {
+                window.location.href = '/login';
+            } else {
+                alert('Error al seguir al usuario: ' + result);
+            }
+        } catch (error) {
+            console.error('Error toggling follow:', error);
+        }
+    }
 </script>
 </body>
 </html>

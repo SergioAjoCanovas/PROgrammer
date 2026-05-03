@@ -174,7 +174,7 @@
                     <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto icono-lapiz" onclick="activarEdicionBio()"></i></div>
                     <div id="bio-view"><p id="bio-texto" th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) ? usuarioHeader.biografia : 'Cuéntale al mundo más acerca de ti'}"></p></div>
                     <div id="bio-edit" style="display:none;">
-                        <textarea id="bio-textarea" maxlength="500"></textarea>
+                        <textarea id="bio-textarea" maxlength="500" oninput="actualizarContadorBio()"></textarea>
                         <div class="bio-footer"><span id="bio-counter"></span><button class="boton-amarillo-solido" onclick="guardarBio()">GUARDAR</button></div>
                     </div>
                 </div>
@@ -212,8 +212,8 @@
             <!-- SECCION: AMIGOS -->
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-handshake"></i> Amigos (<span th:text="${amigos != null ? amigos.size() : 0}">0</span>)</h2>
-                <div class="grid-usuarios-seguimiento" th:if="${amigos != null and !amigos.isEmpty()}">
-                    <div class="usuario-seguimiento-card" th:each="user : ${amigos}">
+                <div class="grid-usuarios-seguimiento" id="grid-amigos" th:if="${amigos != null and !amigos.isEmpty()}">
+                    <div class="usuario-seguimiento-card item-amigo" style="display: none;" th:each="user : ${amigos}">
                         <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
                         <span class="seguimiento-nombre" style="margin-top: 5px;">
                             <span th:text="${user.username}"></span>
@@ -226,6 +226,9 @@
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
+                    </div>
+                    <div class="contenedor-btn-mas" style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 15px; width: 100%;">
+                        <button class="boton-amarillo-solido btn-load-more" onclick="loadMoreSeguimiento('item-amigo', this)" style="display: none;"></button>
                     </div>
                 </div>
                 <p th:if="${amigos == null or amigos.isEmpty()}" style="color:#aaa;">No tienes amigos mutuamente seguidos.</p>
@@ -234,8 +237,8 @@
             <!-- SECCION: SIGUIENDO -->
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-user-plus"></i> Usuarios que Sigues (<span th:text="${siguiendo != null ? siguiendo.size() : 0}">0</span>)</h2>
-                <div class="grid-usuarios-seguimiento" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
-                    <div class="usuario-seguimiento-card" th:each="user : ${siguiendo}">
+                <div class="grid-usuarios-seguimiento" id="grid-siguiendo" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
+                    <div class="usuario-seguimiento-card item-siguiendo" style="display: none;" th:each="user : ${siguiendo}">
                         <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
                         <span class="seguimiento-nombre" style="margin-top: 5px;">
                             <span th:text="${user.username}"></span>
@@ -249,6 +252,9 @@
                             </button>
                         </div>
                     </div>
+                    <div class="contenedor-btn-mas" style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 15px; width: 100%;">
+                        <button class="boton-amarillo-solido btn-load-more" onclick="loadMoreSeguimiento('item-siguiendo', this)" style="display: none;"></button>
+                    </div>
                 </div>
                 <p th:if="${siguiendo == null or siguiendo.isEmpty()}" style="color:#aaa;">No sigues a ningún usuario aún.</p>
             </div>
@@ -256,8 +262,8 @@
             <!-- SECCION: SEGUIDORES -->
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-users"></i> Tus Seguidores (<span th:text="${seguidores != null ? seguidores.size() : 0}">0</span>)</h2>
-                <div class="grid-usuarios-seguimiento" th:if="${seguidores != null and !seguidores.isEmpty()}">
-                    <div class="usuario-seguimiento-card" th:each="user : ${seguidores}">
+                <div class="grid-usuarios-seguimiento" id="grid-seguidores" th:if="${seguidores != null and !seguidores.isEmpty()}">
+                    <div class="usuario-seguimiento-card item-seguidores" style="display: none;" th:each="user : ${seguidores}">
                         <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
                         <span class="seguimiento-nombre" style="margin-top: 5px;">
                             <span th:text="${user.username}"></span>
@@ -273,6 +279,9 @@
                                 <i class="far fa-heart"></i>
                             </button>
                         </div>
+                    </div>
+                    <div class="contenedor-btn-mas" style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 15px; width: 100%;">
+                        <button class="boton-amarillo-solido btn-load-more" onclick="loadMoreSeguimiento('item-seguidores', this)" style="display: none;"></button>
                     </div>
                 </div>
                 <p th:if="${seguidores == null or seguidores.isEmpty()}" style="color:#aaa;">Aún no tienes seguidores.</p>
@@ -358,6 +367,62 @@
             })
             .catch(err => console.error(err));
         }
+
+        // --- LÓGICA DE PAGINACIÓN SEGUIMIENTO (6 en 6) ---
+        function initSeguimientoGrid(claseItem) {
+            const items = document.querySelectorAll('.' + claseItem);
+            if(items.length === 0) return;
+            
+            let btn = items[0].parentElement.querySelector('.btn-load-more');
+            if(!btn) return;
+
+            let mostrados = 0;
+            items.forEach((item, index) => {
+                if(index < 6) {
+                    item.style.display = 'flex';
+                    mostrados++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            actualizarBotonSeguimiento(items, mostrados, btn);
+        }
+
+        function loadMoreSeguimiento(claseItem, btn) {
+            const items = document.querySelectorAll('.' + claseItem);
+            let ocultos = [];
+            items.forEach(item => {
+                if(item.style.display === 'none') {
+                    ocultos.push(item);
+                }
+            });
+
+            let aMostrar = Math.min(6, ocultos.length);
+            for(let i=0; i<aMostrar; i++) {
+                ocultos[i].style.display = 'flex';
+            }
+
+            const mostradosTotal = items.length - (ocultos.length - aMostrar);
+            actualizarBotonSeguimiento(items, mostradosTotal, btn);
+        }
+
+        function actualizarBotonSeguimiento(items, mostrados, btn) {
+            const restantes = items.length - mostrados;
+            if(restantes > 0) {
+                const num = Math.min(6, restantes);
+                btn.innerHTML = `+ Otras ${num} persona${num !== 1 ? 's' : ''}`;
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        window.addEventListener('load', () => {
+            initSeguimientoGrid('item-amigo');
+            initSeguimientoGrid('item-siguiendo');
+            initSeguimientoGrid('item-seguidores');
+        });
     </script>
 
     <script>

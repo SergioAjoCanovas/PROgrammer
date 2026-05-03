@@ -145,10 +145,13 @@ public class SearchService {
         List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
         return companies.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
-                .limit(10)
                 .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .sorted((p1, p2) -> Integer.compare(
+                        p2.getUsuario().getFollowersCount(),
+                        p1.getUsuario().getFollowersCount()))
+                .limit(10)
                 .collect(Collectors.toList());
     }
 

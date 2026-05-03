@@ -55,7 +55,8 @@ body.fondo-oscuro-neon::before {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    margin: 40px auto;
+    /* Reducido el margen superior de 40px a 15px para acercarlo al botón de volver */
+    margin: 15px auto 40px auto;
     padding: 0 20px;
     gap: 45px; 
     align-items: flex-start;

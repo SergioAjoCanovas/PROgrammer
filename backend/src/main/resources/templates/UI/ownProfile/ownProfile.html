@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .icono-grid-top:hover {
             color: #FFCC00 !important;
@@ -54,7 +55,52 @@
                          0 0 40px rgba(255, 204, 0, 0.6) !important;
             transform: scale(1.15) !important;
         }
-    </style>
+            /* ESTILO DEL TOAST NEÓN */
+        .toast-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-neon.error {
+            border-left-color: #ff4444;
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+            background-color: rgba(15, 5, 5, 0.98);
+        }
+        .toast-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-neon.error i {
+            color: #ff4444;
+        }
+        .toast-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+        .toast-neon.error strong {
+            color: #ff4444;
+        }
+</style>
 </head>
 <body class="fondo-oscuro-neon">
     <div th:replace="~{includes/header :: header}"></div>
@@ -998,6 +1044,30 @@ function iniciarCarruseles() {
 window.addEventListener("load", iniciarCarruseles);
 
 // EXPANDIR TECNOLOGÍAS PROYECTO
+        function mostrarToast(mensaje, tipo = "success") {
+            const toast = document.getElementById('toast-neon-box');
+            const icon = document.getElementById('toast-neon-icon');
+            const title = document.getElementById('toast-neon-title');
+            const msg = document.getElementById('toast-neon-msg');
+            
+            msg.innerText = mensaje;
+            
+            if (tipo === 'error') {
+                toast.classList.add('error');
+                icon.className = 'fas fa-exclamation-circle';
+                title.innerText = 'Error';
+            } else {
+                toast.classList.remove('error');
+                icon.className = 'fas fa-check-circle';
+                title.innerText = 'Éxito';
+            }
+            
+            toast.classList.add('mostrar');
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+            }, 3000);
+        }
+
 function toggleTechs(id) {
     const extra = document.getElementById("tech-extra-" + id);
     if (!extra) return;
@@ -1094,5 +1164,14 @@ document.addEventListener("click", function (e) {
 
     //adadadadadd
     </script>
+    <div id="toast-neon-box" class="toast-neon">
+        <i id="toast-neon-icon" class="fas fa-check-circle"></i>
+        <div>
+            <strong id="toast-neon-title">Éxito</strong>
+            <span id="toast-neon-msg" style="font-size: 0.9rem; color: #eee;"></span>
+        </div>
+    </div>
 </body>
 </html>
+
+

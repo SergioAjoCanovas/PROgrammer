@@ -98,8 +98,14 @@ public class NotificacionController {
     @PostMapping("/broadcast-patch")
     @Transactional
     public ResponseEntity<?> broadcastPatch(@RequestParam("mensaje") String mensaje, HttpSession session) {
-        Usuario admin = (Usuario) session.getAttribute("usuarioLogueado");
-        if (admin == null || admin.getRol() == null || !("ADMIN".equals(admin.getRol().getNombre()) || "1".equals(admin.getRol().getNombre()))) {
+        Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
+        if (sessionUser == null) {
+            return ResponseEntity.status(401).body("No logueado");
+        }
+
+        Usuario admin = usuarioRepository.findById(sessionUser.getId()).orElse(null);
+
+        if (admin == null || admin.getRol() == null || !("ADMIN".equalsIgnoreCase(admin.getRol().getNombre()) || "1".equals(admin.getRol().getNombre()))) {
             return ResponseEntity.status(403).body("Acceso denegado");
         }
 
@@ -109,14 +115,14 @@ public class NotificacionController {
 
         List<Usuario> todosLosUsuarios = usuarioRepository.findAll();
         for (Usuario u : todosLosUsuarios) {
-            if (!u.isSilenciarNotificaciones()) {
-                Notificacion n = new Notificacion();
-                n.setUsuario(u);
-                n.setMensaje(mensaje);
-                n.setTipo("NUEVO_PARCHE");
-                n.setEnlace("#"); // El frontend manejarÃ¡ el clic para mostrar el modal
-                notificacionRepository.save(n);
-            }
+            // Se envía a TODOS los usuarios, sin importar si tienen las notificaciones silenciadas
+            Notificacion n = new Notificacion();
+            n.setUsuario(u);
+            n.setMensaje(mensaje);
+            n.setTipo("NUEVO_PARCHE");
+            n.setEnlace("#"); // El frontend manejará el clic para mostrar el modal
+            n.setFechaCreacion(new java.util.Date()); // ¡CRUCIAL PARA QUE THYMELEAF NO PETE AL FORMATEAR LA FECHA!
+            notificacionRepository.save(n);
         }
 
         return ResponseEntity.ok("OK");

@@ -336,7 +336,7 @@
     function startAutoPlay() {
         if(!track || window.innerWidth <= 768) return; // No auto-reproducir en móviles (molesta el scroll táctil)
         autoPlayInterval = setInterval(() => {
-            index++;
+            index--;
             actualizarCarrusel();
         }, 4000);
     }

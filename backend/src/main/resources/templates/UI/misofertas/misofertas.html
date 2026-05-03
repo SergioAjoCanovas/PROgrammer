@@ -15,16 +15,18 @@
     <style>
         /* Estilos para los botones de creación */
         .boton-crear-oferta {
-            background: transparent;
+            background: #050505;
             color: #FFCC00;
-            border: 1px solid #FFCC00;
-            padding: 8px 15px;
-            border-radius: 5px;
+            border: 2px solid #FFCC00;
+            padding: 12px 20px;
+            border-radius: 10px;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
             transition: all 0.3s ease;
             display: inline-flex;
+            justify-content: center;
             align-items: center;
             gap: 8px;
         }
@@ -32,7 +34,8 @@
         .boton-crear-oferta:hover {
             background: #FFCC00;
             color: #000;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+            box-shadow: 0 0 20px #FFCC00;
+            transform: scale(1.02);
         }
 
         .boton-crear-primera {
@@ -69,10 +72,8 @@
 
         <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
             <div class="logo-empresa">
-                <div style="position: relative; display: inline-block;">
-                    <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
-                         alt="Logo Empresa">
-                </div>
+                <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
+                     alt="Logo Empresa">
             </div>
             
             <div class="info-oferta">
@@ -107,7 +108,6 @@
                 </div>
                 
                 <button class="boton-postular" 
-                        style="border-color: #FFCC00 !important; color: #FFCC00 !important; font-size: 0.75rem;" 
                         th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">
                     VER POSTULACIONES
                 </button>

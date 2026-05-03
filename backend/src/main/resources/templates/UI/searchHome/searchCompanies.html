@@ -270,6 +270,8 @@
         const track = document.getElementById('track');
         let index = 0;
 
+        let autoPlayInterval;
+
         function actualizarCarrusel() {
             if(!track) return;
             
@@ -300,12 +302,27 @@
         function moverCarrusel(dir) { 
             index += dir; 
             actualizarCarrusel(); 
+            reiniciarAutoPlay();
+        }
+
+        function startAutoPlay() {
+            if(!track || window.innerWidth <= 768) return; 
+            autoPlayInterval = setInterval(() => {
+                index--;
+                actualizarCarrusel();
+            }, 4000);
+        }
+
+        function reiniciarAutoPlay() {
+            clearInterval(autoPlayInterval);
+            startAutoPlay();
         }
 
         window.addEventListener('resize', actualizarCarrusel);
         window.addEventListener('load', () => {
             inicializarHeader();
             actualizarCarrusel();
+            startAutoPlay();
             actualizarBotonesGlobales();
         });
 

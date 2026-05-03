@@ -132,6 +132,8 @@
                     document.getElementById('toast-error-mensaje').innerText = "Las credenciales no son válidas.";
                 } else if (errorType === 'locked') {
                     document.getElementById('toast-error-mensaje').innerText = "Tu cuenta está bloqueada temporalmente.";
+                } else if (errorType === 'not_registered') {
+                    document.getElementById('toast-error-mensaje').innerText = "Esa cuenta de Google no está registrada en nuestra base de datos. Por favor, regístrate primero.";
                 }
                 
                 // Mostrar el toast

@@ -167,7 +167,7 @@ select.input-neon option {
 /* --- Botones de Acción --- */
 .acciones-formulario {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 20px;
     margin-top: 20px;
@@ -187,24 +187,27 @@ select.input-neon option {
 }
 
 .btn-publicar-neon {
-    background-color: #FFCC00;
-    color: #111;
-    border: none;
+    background: #050505;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
     padding: 12px 25px;
-    border-radius: 8px;
-    font-weight: bold;
+    border-radius: 10px;
+    font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 8px;
+    text-transform: uppercase;
 }
 
 .btn-publicar-neon:hover {
-    background-color: #ffd633;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
-    transform: translateY(-2px);
+    background: #FFCC00;
+    color: #000;
+    box-shadow: 0 0 20px #FFCC00;
+    transform: scale(1.02);
 }
 
 .seccion-categoria {

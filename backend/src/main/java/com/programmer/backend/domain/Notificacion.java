@@ -23,8 +23,9 @@ public class Notificacion {
     @com.fasterxml.jackson.annotation.JsonIgnore
     private Usuario usuario; // El usuario que recibe la notificacion
 
+    @Column(length = 2500)
     private String mensaje;
-    private String tipo; // "NUEVO_SEGUIDOR", "NUEVA_OFERTA"
+    private String tipo; // "NUEVO_SEGUIDOR", "NUEVA_OFERTA", "NUEVO_PARCHE"
     private boolean leida = false;
     private Date fechaCreacion;
     private String enlace; // Opcional, para redirigir al perfil o a la oferta

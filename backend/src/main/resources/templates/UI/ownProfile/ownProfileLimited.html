@@ -46,7 +46,40 @@
 
 </main>
 
+<style>
+    /* Estilos para iluminar el icono de perfil en el header */
+    .item-derecha.activo .avatar-usuario {
+        box-shadow: 0 0 20px #FFCC00 !important;
+        transform: scale(1.1) !important;
+        border-color: #FFCC00 !important;
+    }
+
+    /* Si no tiene foto y muestra el fa-user-circle, iluminarlo también */
+    .item-derecha.activo .avatar-usuario i {
+        color: #FFCC00 !important;
+        text-shadow: 0 0 10px #FFCC00 !important;
+    }
+
+    .item-derecha.activo .texto-icono {
+        color: #FFCC00 !important;
+        text-shadow: 0 0 10px #FFCC00, 
+                     0 0 20px #FFCC00, 
+                     0 0 40px rgba(255, 204, 0, 0.6) !important;
+        transform: scale(1.15) !important;
+    }
+</style>
+
 <div th:replace="~{includes/footer :: footer}"></div>
+
+<script>
+    window.addEventListener('load', () => {
+        // Iluminamos el icono de Perfil en el header
+        const btnPerfil = document.getElementById('link-perfil');
+        if (btnPerfil) {
+            btnPerfil.classList.add('activo');
+        }
+    });
+</script>
 
 </body>
 </html>

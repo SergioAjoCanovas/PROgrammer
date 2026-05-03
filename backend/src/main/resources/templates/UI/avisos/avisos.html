@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        .activo, 
+        header a.activo i, 
+        header a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+            opacity: 1 !important;
+        }
+
         body {
             background-color: #0f0f0f;
             color: #ffffff;
@@ -137,6 +145,9 @@
         .aviso-icono.tipo-oferta { color: #ff00aa; background: rgba(255, 0, 170, 0.1); }
         .aviso-item.tipo-oferta::before { background: #ff00aa; box-shadow: 0 0 10px #ff00aa; }
 
+        .aviso-icono.tipo-parche { color: #39FF14; background: rgba(57, 255, 20, 0.1); }
+        .aviso-item.tipo-parche::before { background: #39FF14; box-shadow: 0 0 10px #39FF14; }
+
         .aviso-contenido {
             flex: 1;
         }
@@ -190,7 +201,41 @@
             box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
             transform: scale(1.1);
         }
-    </style>
+            /* ESTILO DEL TOAST DE EXITO NEÓN (COPIA DE LOGIN) */
+        .toast-success-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-success-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-success-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-success-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+</style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
@@ -214,20 +259,24 @@
 
         <div class="lista-avisos" th:if="${notificaciones != null and notificaciones.size() > 0}">
             <a th:each="aviso : ${notificaciones}" 
-               th:href="${aviso.enlace != null ? aviso.enlace : '#'}"
+               th:href="${aviso.tipo == 'NUEVO_PARCHE' ? 'javascript:void(0);' : (aviso.enlace != null ? aviso.enlace : '#')}"
+               th:onclick="${aviso.tipo == 'NUEVO_PARCHE' ? 'mostrarMensajeParche(event, this)' : null}"
                class="aviso-item"
-               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : (aviso.tipo == 'NUEVO_PARCHE' ? 'tipo-parche' : null))}">
                 
-                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
-                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 'fa-briefcase'}"></i>
+                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : (aviso.tipo == 'NUEVO_PARCHE' ? 'tipo-parche' : null))}">
+                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : (aviso.tipo == 'NUEVO_PARCHE' ? 'fa-bullhorn' : 'fa-briefcase')}"></i>
                 </div>
                 
                 <div class="aviso-contenido">
-                    <p class="aviso-mensaje" th:text="${aviso.mensaje}"></p>
+                    <p class="aviso-mensaje" th:if="${aviso.tipo != 'NUEVO_PARCHE'}" th:text="${aviso.mensaje}"></p>
+                    <p class="aviso-mensaje" th:if="${aviso.tipo == 'NUEVO_PARCHE'}"><strong>NUEVA ACTUALIZACIÓN DE PROGRAMMER</strong><br><span style="font-size: 0.85em; color: #bbb;">Haz clic para ver los detalles.</span></p>
+                    <div style="display:none;" class="parche-texto-oculto" th:if="${aviso.tipo == 'NUEVO_PARCHE'}" th:text="${aviso.mensaje}"></div>
+                    
                     <p class="aviso-fecha" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
                 </div>
                 
-                <i class="fas fa-chevron-right" style="color: #444;" th:if="${aviso.enlace != null}"></i>
+                <i class="fas fa-chevron-right" style="color: #444;" th:if="${aviso.enlace != null and aviso.tipo != 'NUEVO_PARCHE'}"></i>
 
                 <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
                     <i class="fas fa-trash"></i>
@@ -238,18 +287,37 @@
         <div class="aviso-vacio" th:if="${notificaciones == null or notificaciones.size() == 0}">
             <i class="fas fa-box-open"></i>
             <h3>No tienes avisos nuevos</h3>
-            <p>Aquí aparecerán las notificaciones cuando alguien te siga o publique una oferta.</p>
+            <p>AquÃ­ aparecerÃ¡n las notificaciones cuando alguien te siga o publique una oferta.</p>
         </div>
     </main>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-    <script th:inline="javascript">
-        window.addEventListener('load', () => {
-            const linkAvisos = document.getElementById('link-avisos');
-            if (linkAvisos) {
-                linkAvisos.classList.add('activo');
+        <div id="toast-aviso-success" class="toast-success-neon">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Éxito</strong>
+            <span id="toast-aviso-mensaje" style="font-size: 0.9rem; color: #eee;"></span>
+        </div>
+    </div>
+
+<script th:inline="javascript">
+        function inicializarHeader() {
+            const navAvisos = document.getElementById('link-avisos'); 
+            if (navAvisos) {
+                navAvisos.classList.add('activo');
+            } else {
+                const links = document.querySelectorAll('header a');
+                links.forEach(link => {
+                    if (link.getAttribute('href')?.includes('avisos')) {
+                        link.classList.add('activo');
+                    }
+                });
             }
+        }
+
+        window.addEventListener('load', () => {
+            inicializarHeader();
         });
 
         let pageIsSilenciado = [[${isSilenciado}]];
@@ -285,7 +353,16 @@
             }).catch(e => console.error(e));
         }
 
-        function borrarTodosAvisos() {
+                function mostrarToastAviso(mensaje) {
+            const toast = document.getElementById('toast-aviso-success');
+            document.getElementById('toast-aviso-mensaje').innerText = mensaje;
+            toast.classList.add('mostrar');
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+            }, 3000);
+        }
+
+function borrarTodosAvisos() {
             Swal.fire({
                 title: '¿Borrar todos los avisos?',
                 text: "Esta acción no se puede deshacer.",
@@ -301,35 +378,73 @@
                 if (result.isConfirmed) {
                     fetch('/api/notificaciones', { method: 'DELETE' })
                     .then(() => {
-                        window.location.reload();
+                        mostrarToastAviso('Se han borrado todos los avisos correctamente');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
                     });
                 }
             });
         }
 
         function borrarUnAviso(event, id, btn) {
-            event.preventDefault(); // Evitar que el clic abra el enlace
-            event.stopPropagation(); // Evitar propagación al padre
+            event.preventDefault(); 
+            event.stopPropagation(); 
             
-            fetch('/api/notificaciones/' + id, { method: 'DELETE' })
-            .then(res => {
-                if(res.ok) {
-                    const item = btn.closest('.aviso-item');
-                    // Animación de salida
-                    item.style.transition = 'all 0.3s ease';
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateX(50px)';
-                    
-                    setTimeout(() => {
-                        item.remove();
-                        // Si ya no quedan elementos, recargamos para mostrar el "Aviso vacío"
-                        if (document.querySelectorAll('.aviso-item').length === 0) {
-                            window.location.reload();
+            Swal.fire({
+                title: '¿Seguro que quieres borrar esta notificación?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4444',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Sí, borrar',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/api/notificaciones/' + id, { method: 'DELETE' })
+                    .then(res => {
+                        if(res.ok) {
+                            mostrarToastAviso('Se ha borrado la notificación correctamente');
+                            
+                            const item = btn.closest('.aviso-item');
+                            item.style.transition = 'all 0.3s ease';
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateX(50px)';
+                            
+                            setTimeout(() => {
+                                item.remove();
+                                if (document.querySelectorAll('.aviso-item').length === 0) {
+                                    setTimeout(() => window.location.reload(), 1500);
+                                }
+                            }, 300);
                         }
-                    }, 300);
+                    }).catch(e => console.error(e));
                 }
-            }).catch(e => console.error(e));
+            });
+        }
+
+        function mostrarMensajeParche(event, el) {
+            event.preventDefault();
+            const textoOculto = el.querySelector('.parche-texto-oculto');
+            if (!textoOculto) return;
+            
+            Swal.fire({
+                title: '<span style="color:#39FF14;"><i class="fas fa-bullhorn"></i> Novedades del Parche</span>',
+                html: `<div style="text-align: left; font-size: 1.1rem; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding: 10px; color: #ddd; white-space: pre-wrap;">${textoOculto.innerText}</div>`,
+                background: '#1a1a1a',
+                color: '#fff',
+                confirmButtonColor: '#39FF14',
+                confirmButtonText: '<span style="color:black; font-weight:bold;">Entendido</span>',
+                customClass: {
+                    popup: 'swal-parche'
+                }
+            });
         }
     </script>
 </body>
 </html>
+
+
+

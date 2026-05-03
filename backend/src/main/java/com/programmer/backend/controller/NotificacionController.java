@@ -95,4 +95,31 @@ public class NotificacionController {
         }
         return ResponseEntity.badRequest().build();
     }
+    @PostMapping("/broadcast-patch")
+    @Transactional
+    public ResponseEntity<?> broadcastPatch(@RequestParam("mensaje") String mensaje, HttpSession session) {
+        Usuario admin = (Usuario) session.getAttribute("usuarioLogueado");
+        if (admin == null || admin.getRol() == null || !("ADMIN".equals(admin.getRol().getNombre()) || "1".equals(admin.getRol().getNombre()))) {
+            return ResponseEntity.status(403).body("Acceso denegado");
+        }
+
+        if (mensaje == null || mensaje.trim().isEmpty() || mensaje.length() > 2000) {
+            return ResponseEntity.badRequest().body("Mensaje inválido o demasiado largo.");
+        }
+
+        List<Usuario> todosLosUsuarios = usuarioRepository.findAll();
+        for (Usuario u : todosLosUsuarios) {
+            if (!u.isSilenciarNotificaciones()) {
+                Notificacion n = new Notificacion();
+                n.setUsuario(u);
+                n.setMensaje(mensaje);
+                n.setTipo("NUEVO_PARCHE");
+                n.setEnlace("#"); // El frontend manejarÃ¡ el clic para mostrar el modal
+                notificacionRepository.save(n);
+            }
+        }
+
+        return ResponseEntity.ok("OK");
+    }
 }
+

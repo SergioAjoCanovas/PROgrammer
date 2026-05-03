@@ -105,10 +105,15 @@
 <body class="fondo-oscuro-neon">
     <div th:replace="~{includes/header :: header}"></div>
 
+    <div class="contenedor-volver">
+        <a href="/main" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> <span id="texto-volver-dinamico">Volver a inicio</span>
+        </a>
+    </div>
+
     <main class="contenedor-principal" style="align-items: center; justify-content: flex-start;">
         <div class="vidrio-contenedor-perfil">
-            <!-- Pestañas de Navegación -->
-        <div class="tabs-neon">
+            <div class="tabs-neon">
             <button class="tab-btn active" id="btn-tab-personalizacion" onclick="mostrarSeccion('personalizacion')">Personalización de Perfil</button>
             <button class="tab-btn" id="btn-tab-seguimiento" onclick="mostrarSeccion('seguimiento')">Seguimiento</button>
             <button th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}" class="tab-btn" id="btn-tab-mensajes" onclick="mostrarSeccion('mensajes')">Mensajes Actu</button>
@@ -187,7 +192,6 @@
                 </div>
                 <div class="rejilla-proyectos">
 
-                    <!-- TARJETA CREAR PROYECTO -->
                     <div class="tarjeta-mini-proyecto tarjeta-anadir">
                         <i class="fas fa-plus-circle"></i>
                         <h3>Nuevo Proyecto</h3>
@@ -197,7 +201,6 @@
                         </button>
                     </div>
                 
-                    <!-- PROYECTOS (2 ÚLTIMOS) -->
                     <div th:each="p : ${ultimosProyectos}"
                         class="tarjeta-mini-proyecto proyecto-card"
                         th:attr="data-id=${p.id}" style="position: relative; padding-top: 40px;">
@@ -205,17 +208,14 @@
                             <i class="fas fa-check-circle"></i> VERIFICADO
                         </span>
                 
-                        <!-- NOMBRE -->
                         <h3>
                             <span th:text="${p.nombre}">Nombre proyecto</span>
                         </h3>
                 
-                        <!-- DESCRIPCIÓN CON SCROLL -->
                         <div class="proyecto-desc" th:text="${p.descripcion}">
                             Descripción proyecto...
                         </div>
                 
-                        <!-- CARRUSEL IMÁGENES -->
                         <div class="carousel-proyecto"
                                 th:if="${p.imagenes != null and !p.imagenes.isEmpty()}"
                                 th:attr="data-id=${p.id}">
@@ -225,7 +225,6 @@
                                     class="carousel-img">
                         </div>
                 
-                        <!-- TECNOLOGÍAS -->
                         <div class="tech-proyecto">
                             <span th:each="t,iter : ${p.tecnologias}"
                                   th:if="${iter.index < 3}"
@@ -233,14 +232,12 @@
                                   th:text="${t.nombre}">
                             </span>
                 
-                            <!-- BOTÓN +N (igual que tu sistema actual) -->
                             <span th:if="${#lists.size(p.tecnologias) > 3}"
                                   class="tag-tech tag-mas"
                                   th:attr="onclick=|toggleTechs(${p.id})|">
                                 +<span th:text="${#lists.size(p.tecnologias) - 3}"></span>
                             </span>
                 
-                            <!-- OCULTAS -->
                             <div th:id="'tech-extra-' + ${p.id}" class="tech-extra-proyecto">
                                 <span th:each="t,iter : ${p.tecnologias}"
                                       th:if="${iter.index >= 3}"
@@ -291,11 +288,8 @@
                 </div>
             </div>
         </div> 
-        </div> <!-- FIN SECCION PERSONALIZACION -->
-
-        <div id="seccion-seguimiento" style="display: none; width: 100%; flex-direction: column;">
+        </div> <div id="seccion-seguimiento" style="display: none; width: 100%; flex-direction: column;">
             
-            <!-- SECCION: AMIGOS -->
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-handshake"></i> Amigos (<span th:text="${amigos != null ? amigos.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-amigos" th:if="${amigos != null and !amigos.isEmpty()}">
@@ -320,7 +314,6 @@
                 <p th:if="${amigos == null or amigos.isEmpty()}" style="color:#aaa;">No tienes amigos mutuamente seguidos.</p>
             </div>
 
-            <!-- SECCION: SIGUIENDO -->
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-user-plus"></i> Usuarios que Sigues (<span th:text="${siguiendo != null ? siguiendo.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-siguiendo" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
@@ -345,7 +338,6 @@
                 <p th:if="${siguiendo == null or siguiendo.isEmpty()}" style="color:#aaa;">No sigues a ningún usuario aún.</p>
             </div>
 
-            <!-- SECCION: SEGUIDORES -->
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-users"></i> Tus Seguidores (<span th:text="${seguidores != null ? seguidores.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-seguidores" th:if="${seguidores != null and !seguidores.isEmpty()}">
@@ -373,9 +365,7 @@
                 <p th:if="${seguidores == null or seguidores.isEmpty()}" style="color:#aaa;">Aún no tienes seguidores.</p>
             </div>
 
-        </div> <!-- FIN SECCION SEGUIMIENTO -->
-
-        <div id="seccion-mensajes" style="display: none; width: 100%; flex-direction: column;">
+        </div> <div id="seccion-mensajes" style="display: none; width: 100%; flex-direction: column;">
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-bullhorn"></i> Enviar Mensaje de Actualización (Parche)</h2>
                 <div class="tarjeta-acordeon info-half-card" style="margin-top: 20px; width: 100%;">
@@ -389,10 +379,7 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- FIN SECCION MENSAJES -->
-
-        </div> <!-- FIN VIDRIO CONTENEDOR PERFIL -->
-    </main>
+        </div> </div> </main>
 
     <div id="toast" class="toast"></div>
     <div th:replace="~{includes/footer :: footer}"></div>
@@ -1173,5 +1160,3 @@ document.addEventListener("click", function (e) {
     </div>
 </body>
 </html>
-
-

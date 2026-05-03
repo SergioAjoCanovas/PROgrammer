@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -31,9 +30,37 @@
             min-height: 100vh;
         }
 
+        /* --- BOTÓN VOLVER (Ajustado a la izquierda como en el resto de vistas) --- */
+        .contenedor-volver {
+            max-width: 1800px; 
+            width: 98%;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+
+        .enlace-volver {
+            color: #888888; 
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .enlace-volver:hover {
+            color: #FFCC00; 
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+            transform: translateX(-5px); 
+        }
+
         .contenedor-avisos-page {
             max-width: 800px;
-            margin: 40px auto;
+            margin: 20px auto 40px auto;
             padding: 20px;
             flex: 1;
             width: 100%;
@@ -235,11 +262,17 @@
             font-size: 1.1rem;
             margin-bottom: 2px;
         }
-</style>
+    </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="/main" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver a Inicio
+        </a>
+    </div>
 
     <main class="contenedor-avisos-page">
         <div class="header-avisos">
@@ -257,7 +290,6 @@
             </div>
         </div>
 
-        <!-- SECCIÓN DE PARCHES (ACTUALIZACIONES) -->
         <div class="lista-avisos" style="margin-bottom: 30px;" th:if="${notificaciones != null}">
             <h2 style="color: #39FF14; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
                 <i class="fas fa-bullhorn"></i> Mensajes de Actualización
@@ -285,7 +317,6 @@
             </a>
         </div>
 
-        <!-- SECCIÓN DE NOTIFICACIONES NORMALES -->
         <div class="lista-avisos" th:if="${notificaciones != null}">
             <h2 style="color: white; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
                 <i class="fas fa-bell"></i> Notificaciones
@@ -317,13 +348,13 @@
         <div class="aviso-vacio" th:if="${notificaciones == null or notificaciones.size() == 0}">
             <i class="fas fa-box-open"></i>
             <h3>No tienes avisos nuevos</h3>
-            <p>AquÃ­ aparecerÃ¡n las notificaciones cuando alguien te siga o publique una oferta.</p>
+            <p>Aquí aparecerán las notificaciones cuando alguien te siga o publique una oferta.</p>
         </div>
     </main>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-        <div id="toast-aviso-success" class="toast-success-neon">
+    <div id="toast-aviso-success" class="toast-success-neon">
         <i class="fas fa-check-circle"></i>
         <div>
             <strong>Éxito</strong>
@@ -331,7 +362,7 @@
         </div>
     </div>
 
-<script th:inline="javascript">
+    <script th:inline="javascript">
         function inicializarHeader() {
             const navAvisos = document.getElementById('link-avisos'); 
             if (navAvisos) {
@@ -383,7 +414,7 @@
             }).catch(e => console.error(e));
         }
 
-                function mostrarToastAviso(mensaje) {
+        function mostrarToastAviso(mensaje) {
             const toast = document.getElementById('toast-aviso-success');
             document.getElementById('toast-aviso-mensaje').innerText = mensaje;
             toast.classList.add('mostrar');
@@ -392,7 +423,7 @@
             }, 3000);
         }
 
-function borrarTodosAvisos() {
+        function borrarTodosAvisos() {
             Swal.fire({
                 title: '¿Borrar todos los avisos?',
                 text: "Esta acción no se puede deshacer.",
@@ -475,7 +506,3 @@ function borrarTodosAvisos() {
     </script>
 </body>
 </html>
-
-
-
-

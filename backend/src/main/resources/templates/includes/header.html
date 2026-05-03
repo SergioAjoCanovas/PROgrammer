@@ -280,11 +280,10 @@
         
         <div th:unless="${usuarioHeader != null}" id="info-usuario" class="info-texto-usuario"></div>
 
-        <a href="/ownProfile" class="item-derecha">
+        <a th:href="@{${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR' ? '/limitedProfile' : '/ownProfile'}}" class="item-derecha">
             <div class="avatar-usuario" style="position: relative; display: inline-block;">
                 <img th:if="${usuarioHeader != null and usuarioHeader.fotoPerfil != null and usuarioHeader.fotoPerfil != ''}" th:src="@{${usuarioHeader.fotoPerfil}}"/>
                 <i th:if="${usuarioHeader == null or usuarioHeader.fotoPerfil == null or usuarioHeader.fotoPerfil == ''}" class="fas fa-user-circle"></i>
-
             </div>
             <span class="texto-icono texto-perfil-movil" style="font-size: 0.7em; margin-top:3px;">Perfil</span>
         </a>

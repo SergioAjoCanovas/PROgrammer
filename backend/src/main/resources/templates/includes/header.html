@@ -180,6 +180,11 @@
             }
         }
     </style>
+
+    <style th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'USUARIO' or usuarioHeader.rol.nombre == '4')}">
+        /* Ocultar botones de seguir para el rol USUARIO en toda la web */
+        .btn-follow-heart { display: none !important; }
+    </style>
 </head>
 
 <body>
@@ -224,24 +229,12 @@
             <span class="texto-icono">Chats</span>
         </a>
 
-        <div class="contenedor-avisos" onmouseleave="cerrarPanel()">
-            <a href="#" class="icono-nav" id="link-avisos" onclick="toggleAvisos(event)">
+        <div class="contenedor-avisos">
+            <a href="/avisos" class="icono-nav" id="link-avisos">
                 <i class="fas fa-bell"></i>
                 <span class="texto-icono">Avisos</span>
-                <span class="globo-notificacion" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 0; right: 5px;">2</span>
+                <span class="globo-notificacion" id="badge-avisos" style="display: none; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 0; right: 5px;">0</span>
             </a>
-
-            <div id="panel-notificaciones" class="panel-notificaciones">
-                <span class="titulo-panel">Notificaciones recientes</span>
-                <div class="notificacion-item">
-                    <i class="fas fa-briefcase"></i>
-                    <span>Nueva oferta de TechSolutions</span>
-                </div>
-                <div class="notificacion-item">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Juan ha visto tu perfil</span>
-                </div>
-            </div>
         </div>
 
         <a href="/menu" class="icono-nav">
@@ -300,18 +293,25 @@
             if (nav) nav.classList.toggle('mostrar-menu');
         };
 
-        window.toggleAvisos = function(event) {
-            event.preventDefault();
-            document.getElementById('panel-notificaciones').classList.toggle('mostrar');
-            document.getElementById('link-avisos').classList.toggle('activo-btn');
-        };
-
-        window.cerrarPanel = function() {
-            const panel = document.getElementById('panel-notificaciones');
-            const link = document.getElementById('link-avisos');
-            if(panel) panel.classList.remove('mostrar');
-            if(link) link.classList.remove('activo-btn');
-        };
+        // LÓGICA DE NOTIFICACIONES AJAX (SOLO GLOBO ROJO)
+        function cargarNotificaciones() {
+            fetch('/api/notificaciones')
+            .then(res => {
+                if(!res.ok) throw new Error("No logueado");
+                return res.json();
+            })
+            .then(data => {
+                const badge = document.getElementById('badge-avisos');
+                
+                if (data.noLeidas > 0) {
+                    badge.innerText = data.noLeidas > 99 ? '99+' : data.noLeidas;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            })
+            .catch(e => { /* Ignorar error de no logueado */ });
+        }
 
         window.cerrarSesionLocal = function(event) {
             event.preventDefault();
@@ -327,6 +327,11 @@
             } else if (path.startsWith('/adminPanel')) {
                 document.getElementById('nav-admin')?.classList.add('activo-btn');
             }
+            
+            // Iniciar notificaciones
+            cargarNotificaciones();
+            // Refrescar avisos cada 30 segundos
+            setInterval(cargarNotificaciones, 30000);
         });
 
         (function configurarHeader() {

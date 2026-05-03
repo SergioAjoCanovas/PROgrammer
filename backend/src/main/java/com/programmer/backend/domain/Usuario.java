@@ -47,6 +47,9 @@ public class Usuario {
     @Column(name = "estado", length = 20)
     private String estado = "LOGUEADO";
 
+    @Column(name = "silenciar_notificaciones", columnDefinition = "boolean default false")
+    private Boolean silenciarNotificaciones = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol")
     private Rol rol;
@@ -61,6 +64,14 @@ public class Usuario {
 
     @ManyToMany(mappedBy = "seguidores", fetch = FetchType.LAZY)
     private java.util.Set<Usuario> siguiendo = new java.util.HashSet<>();
+
+    public boolean isSilenciarNotificaciones() {
+        return this.silenciarNotificaciones != null ? this.silenciarNotificaciones : false;
+    }
+
+    public void setSilenciarNotificaciones(Boolean silenciarNotificaciones) {
+        this.silenciarNotificaciones = silenciarNotificaciones;
+    }
 
     public int getFollowersCount() {
         return this.seguidores != null ? this.seguidores.size() : 0;

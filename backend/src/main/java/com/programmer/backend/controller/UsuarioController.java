@@ -1,6 +1,8 @@
 package com.programmer.backend.controller;
 
+import com.programmer.backend.domain.Notificacion;
 import com.programmer.backend.domain.Usuario;
+import com.programmer.backend.repository.NotificacionRepository;
 import com.programmer.backend.repository.UsuarioRepository;
 import com.programmer.backend.service.RegistroService;
 import jakarta.servlet.http.HttpSession;
@@ -15,11 +17,14 @@ public class UsuarioController {
 
     private final RegistroService registroService;
     private final UsuarioRepository usuarioRepository;
+    private final NotificacionRepository notificacionRepository;
 
     public UsuarioController(RegistroService registroService,
-                             UsuarioRepository usuarioRepository) {
+                             UsuarioRepository usuarioRepository,
+                             NotificacionRepository notificacionRepository) {
         this.registroService = registroService;
         this.usuarioRepository = usuarioRepository;
+        this.notificacionRepository = notificacionRepository;
     }
 
     // =========================
@@ -198,6 +203,15 @@ public class UsuarioController {
             target.getSeguidores().removeIf(u -> u.getId().equals(me.getId()));
         } else {
             target.getSeguidores().add(me);
+            // Create notification if target doesn't have silenced notifications
+            if (!target.isSilenciarNotificaciones()) {
+                Notificacion n = new Notificacion();
+                n.setUsuario(target);
+                n.setTipo("NUEVO_SEGUIDOR");
+                n.setMensaje(me.getUsername() + " ha comenzado a seguirte.");
+                n.setEnlace("/profileView/" + me.getId());
+                notificacionRepository.save(n);
+            }
         }
         
         usuarioRepository.save(target);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProGrammer - Perfil de <span th:text="${usuario.username}">Usuario</span></title>
+    <title th:text="'ProGrammer - Perfil de ' + ${usuario.username}">ProGrammer - Perfil de Usuario</title>
     
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
@@ -173,8 +173,8 @@
     <div th:replace="~{includes/header :: header}"></div>
 
     <div class="contenedor-volver">
-        <a href="javascript:history.back()" class="enlace-volver">
-            <i class="fas fa-arrow-left"></i> Volver
+        <a id="btn-dinamico-volver" href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> <span id="texto-btn-volver">Volver</span>
         </a>
     </div>
 
@@ -386,6 +386,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // --- NUEVO SCRIPT DEL BOTON VOLVER ---
+            const urlAnterior = document.referrer || "";
+            const btnVolver = document.getElementById('btn-dinamico-volver');
+            const textoVolver = document.getElementById('texto-btn-volver');
+
+            if (urlAnterior.includes('/ver-postulaciones')) {
+                textoVolver.textContent = 'Volver a Postulaciones';
+                // Mantiene el javascript:history.back() para volver a la página exacta de la que viene
+            } else {
+                // Cualquier otra página o acceso directo te lleva a conectar programadores
+                textoVolver.textContent = 'Conectar con más PROgramadores';
+                btnVolver.href = '/searchProgrammer'; // Fuerza la ruta a searchProgrammer
+            }
+            // -------------------------------------
+
             // 1. Selector de estrellas
             const estrellas = document.querySelectorAll("#estrellas-selector i");
             const inputRating = document.getElementById("rating-value");

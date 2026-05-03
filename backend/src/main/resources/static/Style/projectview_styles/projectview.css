@@ -24,6 +24,33 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
+/* --- BOTÓN VOLVER (Añadido estilo grisáceo) --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-principal {
     display: flex;
     max-width: 1800px;

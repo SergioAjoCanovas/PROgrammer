@@ -29,8 +29,8 @@
     <div th:replace="~{includes/header :: header}"></div>
 
     <div class="contenedor-volver">
-        <a href="javascript:history.back()" class="enlace-volver">
-            <i class="fas fa-arrow-left"></i> Volver
+        <a id="btn-dinamico-volver" href="/main" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> <span id="texto-btn-volver">Volver a inicio</span>
         </a>
     </div>
 
@@ -109,6 +109,23 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+
+            // --- NUEVO SCRIPT DEL BOTON VOLVER ---
+            const urlAnterior = document.referrer || "";
+            const btnVolver = document.getElementById('btn-dinamico-volver');
+            const textoVolver = document.getElementById('texto-btn-volver');
+
+            // Si venimos de la vista de mis ofertas, modificamos el botón
+            if (urlAnterior.toLowerCase().includes('misofertas') || urlAnterior.toLowerCase().includes('mis-ofertas')) {
+                textoVolver.textContent = 'Volver a mis ofertas';
+                btnVolver.href = 'javascript:history.back()'; // Para que vuelva exactamente a donde estaba
+            } else {
+                // Si viene de otro lado, se queda como está (vuelve a /main)
+                textoVolver.textContent = 'Volver a inicio';
+                btnVolver.href = '/main';
+            }
+            // -------------------------------------
+
             const n = localStorage.getItem('usuarioLogueado'); 
             if (n) document.getElementById('username_empresa').value = n;
             

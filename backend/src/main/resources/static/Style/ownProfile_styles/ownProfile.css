@@ -21,6 +21,34 @@ body.fondo-oscuro-neon {
     font-family: Arial, sans-serif;
 }
 
+/* --- BOTÓN VOLVER A INICIO --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;       
+    margin: 30px auto 0 auto;
+    padding: 0 20px;  
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 /* ============================================================
     2. ESTRUCTURA Y CONTENEDORES
    ============================================================ */
@@ -427,7 +455,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    7. TECNOLOGÃAS (TAGS)
+    7. TECNOLOGÃ AS (TAGS)
    ============================================================ */
 .tags-tecnologias {
     display: flex;
@@ -459,12 +487,12 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
-/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÃAS */
+/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÃ AS */
 .tech-oculta {
     display: none !important;
 }
 
-/* ESTILOS PARA LOS BOTONES MÃS Y MENOS */
+/* ESTILOS PARA LOS BOTONES MÃ S Y MENOS */
 .tag-mas, .tag-menos {
     background-color: transparent !important;
     border: 1px dashed var(--amarillo-neon) !important;
@@ -634,7 +662,7 @@ p, span, div, h1, h2, h3, h4 {
     display: block;
 }
 
-/* TECNOLOGÃAS PROYECTO */
+/* TECNOLOGÃ AS PROYECTO */
 .tech-proyecto {
     display: flex;
     flex-wrap: wrap;
@@ -826,4 +854,3 @@ p, span, div, h1, h2, h3, h4 {
     flex-direction: column;
     min-height: 80vh;
 }
-

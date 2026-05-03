@@ -22,11 +22,24 @@
                 <div class="tarjeta-proyecto-detalle tarjeta-oferta">
                     <div class="cabecera-proyecto">
                         <h2 th:text="${oferta.titulo}">Título del Puesto</h2>
-                        <span class="categoria" th:if="${!oferta.tecnologias.isEmpty()}" th:text="${oferta.tecnologias[0].nombre}">Tecnología</span>
+                        <div class="tags-container" th:if="${!oferta.tecnologias.isEmpty()}">
+                            <div class="tech-tags">
+                                <span th:each="tech, iterStat : ${oferta.tecnologias}" th:if="${iterStat.index < 3}" th:text="${tech.nombre}"></span>
+                            </div>
+                            <i th:if="${#lists.size(oferta.tecnologias) > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
+                        </div>
                     </div>
 
                     <div class="info-superior">
-                        <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="logo-empresa" alt="Logo Empresa">
+                        <div class="foto-perfil-wrapper">
+                            <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="logo-empresa" alt="Logo Empresa">
+                            <button th:if="${session.usuarioLogueado != null and oferta.empresa != null and session.usuarioLogueado.id != oferta.empresa.id}"
+                                    class="btn-follow-heart" 
+                                    th:attr="data-id=${oferta.empresa.id}, data-username=${oferta.empresa.username}" 
+                                    onclick="toggleFollowUser(this, event)">
+                                <i class="fa-heart" th:classappend="${oferta.empresa.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                            </button>
+                        </div>
                         <p style="display: flex; align-items: center; gap: 5px;"><strong>Empresa:</strong> 
                             <span th:text="${oferta.empresa?.username ?: 'Empresa Confidencial'}"></span>
                             <i th:if="${oferta.empresa != null and (oferta.empresa.estado == 'VERIFICADO' or (oferta.empresa.rol != null and (oferta.empresa.rol.nombre == 'ADMIN' or oferta.empresa.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; font-size: 0.85em;" title="Usuario Verificado"></i>
@@ -51,6 +64,14 @@
                     <div class="descripcion-proyecto">
                         <h3><i class="fas fa-euro-sign"></i> Rango salarial</h3>
                         <p th:text="${oferta.rangoSalarial}">Rango no especificado</p>
+                    </div>
+
+                    <div class="vista-todas-techs">
+                        <i class="fas fa-times close-overlay" onclick="toggleTechExpansion(this)"></i>
+                        <h4 class="titulo-overlay">Tecnologías de la Oferta</h4>
+                        <div class="grid-techs-3">
+                            <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -109,8 +130,9 @@
                             </div>
 
                             <div id="contenedor-input-cv" class="input-archivo-animado" 
-                                 th:style="${usuarioLogueado != null && usuarioLogueado.curriculum != null && !usuarioLogueado.curriculum.isEmpty()} ? 'display: none;' : 'display: block;'">
-                                <input type="file" class="input-file-custom" name="archivo_cv" accept=".pdf,.doc,.docx">
+                                 th:style="${usuarioLogueado != null && usuarioLogueado.curriculum != null && !usuarioLogueado.curriculum.isEmpty()} ? 'display: none; position: relative;' : 'display: block; position: relative;'">
+                                <input type="file" class="input-file-custom" name="archivo_cv" id="input-archivo-cv" accept=".pdf,.doc,.docx" style="width: 100%; padding-right: 40px;" onchange="marcarArchivoSubido(this)">
+                                <i id="icono-tick-archivo" class="fas fa-check-circle" style="display: none; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #00e676; font-size: 1.5rem; text-shadow: 0 0 10px #00e676; pointer-events: none;"></i>
                             </div>
                         </div>
 
@@ -183,7 +205,7 @@
             const mensajeNoDev = document.getElementById('mensaje-no-dev');
 
             // LÓGICA DE BLOQUEO VISUAL
-            if (miRol === 'DEVELOPER' || miRol === '2') {
+            if (miRol === 'DEVELOPER' || miRol === '2' || miRol === 'ADMIN' || miRol === '1') {
                 if (formPostulacion) formPostulacion.classList.remove('candidatura-bloqueada');
                 if (mensajeNoDev) mensajeNoDev.style.display = 'none';
             } else {
@@ -217,6 +239,67 @@
                 contenedorInput.style.display = 'block';
             } else {
                 contenedorInput.style.display = 'none';
+            }
+        }
+
+        function marcarArchivoSubido(input) {
+            const icon = document.getElementById('icono-tick-archivo');
+            if (input.files && input.files.length > 0) {
+                input.classList.add('archivo-subido-verde');
+                if (icon) icon.style.display = 'block';
+            } else {
+                input.classList.remove('archivo-subido-verde');
+                if (icon) icon.style.display = 'none';
+            }
+        }
+
+        function toggleTechExpansion(element) {
+            const tarjeta = element.closest('.tarjeta-oferta');
+            if (tarjeta) {
+                tarjeta.classList.toggle('tech-expanded');
+            }
+        }
+
+        async function toggleFollowUser(btn, event) {
+            event.stopPropagation();
+            const targetId = btn.getAttribute('data-id');
+            const icon = btn.querySelector('i');
+            const isFollowing = icon.classList.contains('fas');
+
+            if (isFollowing) {
+                const targetName = btn.getAttribute('data-username') || 'este usuario';
+                const result = await mostrarModalUnfollowGlobal(targetName);
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('targetId', targetId);
+                
+                const response = await fetch('/usuario/toggleFollow', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                
+                if (result === 'OK') {
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+                } else if (result === 'NOT_LOGGED') {
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al seguir al usuario: ' + result);
+                }
+            } catch (error) {
+                console.error('Error toggling follow:', error);
             }
         }
     </script>

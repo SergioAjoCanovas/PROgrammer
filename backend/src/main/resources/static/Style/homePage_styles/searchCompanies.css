@@ -276,7 +276,7 @@ body.fondo-oscuro-neon {
 .grid-resultados-empresas { width: 100%; }
 .grid-inner-empresas {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 30px;
     justify-items: center;
 }
@@ -287,8 +287,9 @@ body.fondo-oscuro-neon {
     border: 1px solid rgba(255, 204, 0, 0.3);
     border-radius: 20px;
     width: 100%; 
-    max-width: 280px; 
-    min-height: 450px;
+    max-width: 290px; 
+    min-height: 430px;
+    flex-shrink: 0;
     transition: 0.3s;
     position: relative;
     box-sizing: border-box;

@@ -19,6 +19,8 @@ public class ViewController {
 
     @Autowired
     private SearchService searchService;
+    @Autowired
+    private com.programmer.backend.repository.NotificacionRepository notificacionRepository;
 
     // =========================
     // HOME / AUTH
@@ -31,6 +33,24 @@ public class ViewController {
     @GetMapping("/main")
     public String main() {
         return "UI/main";
+    }
+
+    @GetMapping("/avisos")
+    public String avisos(jakarta.servlet.http.HttpSession session, org.springframework.ui.Model model) {
+        com.programmer.backend.domain.Usuario usuario = (com.programmer.backend.domain.Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) return "redirect:/login";
+
+        java.util.List<com.programmer.backend.domain.Notificacion> notificaciones = notificacionRepository.findByUsuarioOrderByFechaCreacionDesc(usuario);
+        model.addAttribute("notificaciones", notificaciones);
+        model.addAttribute("isSilenciado", usuario.isSilenciarNotificaciones());
+
+        // Marcar todas como leídas al entrar a la página
+        for (com.programmer.backend.domain.Notificacion n : notificaciones) {
+            if (!n.isLeida()) n.setLeida(true);
+        }
+        notificacionRepository.saveAll(notificaciones);
+
+        return "UI/avisos/avisos";
     }
 
     @GetMapping("/login")
@@ -195,5 +215,21 @@ public class ViewController {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
         model.addAttribute("usuarioLogueado", usuario);
         return "UI/nosotros/nosotros"; 
+    }
+
+
+    // =======================================
+    // PERFIL LIMITADO PARA USUARIO
+    // =======================================
+    @GetMapping("/limitedProfile")
+    public String limitedProfile(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        
+        if (usuario == null || !"VISITOR".equals(usuario.getRol().getNombre())) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("usuarioHeader", usuario);
+        return "UI/ownProfile/ownProfileLimited";
     }
 }

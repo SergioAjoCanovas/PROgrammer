@@ -1,0 +1,287 @@
+/* =========================================================
+   GENERAL Y LAYOUT
+   ========================================================= */
+.activo, 
+header a.activo i, 
+header a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+    opacity: 1 !important;
+}
+
+body {
+    background-color: #0f0f0f;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* =========================================================
+   BOTÓN VOLVER
+   ========================================================= */
+.contenedor-volver {
+    max-width: 1800px; 
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL Y HEADER DE SECCIÓN
+   ========================================================= */
+.contenedor-avisos-page {
+    max-width: 800px;
+    margin: 20px auto 40px auto;
+    padding: 20px;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-avisos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #FFCC00;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.titulo-avisos {
+    margin: 0;
+    font-size: 2rem;
+    color: #FFCC00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* =========================================================
+   CONTROLES Y BOTONES
+   ========================================================= */
+.controles-avisos {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-control {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid #333;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-control:hover {
+    transform: translateY(-2px);
+    border-color: #FFCC00;
+}
+
+.btn-borrar:hover { 
+    border-color: #ff4444; 
+    color: #ff4444; 
+}
+
+.btn-silenciar { 
+    color: #00ffaa; 
+    border-color: #00ffaa; 
+}
+
+.btn-silenciar.silenciado { 
+    color: #ff4444; 
+    border-color: #ff4444; 
+}
+
+.btn-borrar-individual {
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    z-index: 2;
+}
+
+.btn-borrar-individual:hover {
+    background: #ff4444;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+    transform: scale(1.1);
+}
+
+/* =========================================================
+   LISTA DE AVISOS E ITEMS
+   ========================================================= */
+.lista-avisos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.aviso-item {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
+}
+
+.aviso-item:hover {
+    border-color: #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.15);
+    transform: translateX(5px);
+}
+
+.aviso-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #FFCC00;
+    box-shadow: 0 0 10px #FFCC00;
+}
+
+/* Tipos de avisos */
+.aviso-icono {
+    background: rgba(255, 204, 0, 0.1);
+    color: #FFCC00;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.aviso-icono.tipo-seguidor { color: #00f2ff; background: rgba(0, 242, 255, 0.1); }
+.aviso-item.tipo-seguidor::before { background: #00f2ff; box-shadow: 0 0 10px #00f2ff; }
+
+.aviso-icono.tipo-oferta { color: #ff00aa; background: rgba(255, 0, 170, 0.1); }
+.aviso-item.tipo-oferta::before { background: #ff00aa; box-shadow: 0 0 10px #ff00aa; }
+
+.aviso-icono.tipo-parche { color: #39FF14; background: rgba(57, 255, 20, 0.1); }
+.aviso-item.tipo-parche::before { background: #39FF14; box-shadow: 0 0 10px #39FF14; }
+
+.aviso-icono.tipo-resena { color: #FFCC00; background: rgba(255, 204, 0, 0.1); }
+.aviso-item.tipo-resena::before { background: #FFCC00; box-shadow: 0 0 10px #FFCC00; }
+
+.aviso-contenido {
+    flex: 1;
+}
+
+.aviso-mensaje {
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    line-height: 1.4;
+}
+
+.aviso-fecha {
+    color: #888;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+.aviso-vacio {
+    text-align: center;
+    padding: 50px;
+    background: #1a1a1a;
+    border-radius: 10px;
+    border: 1px dashed #333;
+    color: #888;
+}
+
+.aviso-vacio i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+/* =========================================================
+   TOAST Y FEEDBACK
+   ========================================================= */
+.toast-success-neon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(5, 15, 5, 0.98);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 8px;
+    border-left: 6px solid #39FF14;
+    box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
+
+.toast-success-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-success-neon i {
+    color: #39FF14;
+    font-size: 2rem;
+}
+
+.toast-success-neon strong {
+    display: block;
+    color: #39FF14;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}

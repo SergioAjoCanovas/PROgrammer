@@ -14,6 +14,6 @@ public interface NewReviewRepository extends JpaRepository<NewReview, Long> {
 
     Optional<NewReview> findByAutorAndReceptor(Usuario autor, Usuario receptor);
 
-    @Query("SELECT AVG(r.rating) FROM NewReview r WHERE r.receptor = :receptor")
+    @Query("SELECT AVG(r.rating) FROM NewReview r WHERE r.receptor = :receptor AND r.rating > 0")
     Double getAverageRating(Usuario receptor);
 }

@@ -23,13 +23,16 @@ public class ProjectReviewController {
     private final ProjectReviewRepository reviewRepository;
     private final ProyectoRepository proyectoRepository;
     private final ProjectReviewService projectReviewService;
+    private final com.programmer.backend.service.NotificacionService notificacionService;
 
     public ProjectReviewController(ProjectReviewRepository reviewRepository,
                                    ProyectoRepository proyectoRepository,
-                                   ProjectReviewService projectReviewService) {
+                                   ProjectReviewService projectReviewService,
+                                   com.programmer.backend.service.NotificacionService notificacionService) {
         this.reviewRepository = reviewRepository;
         this.proyectoRepository = proyectoRepository;
-        this.projectReviewService = projectReviewService; // 🔥 ESTO FALTABA
+        this.projectReviewService = projectReviewService;
+        this.notificacionService = notificacionService;
     }
 
     // =========================
@@ -122,6 +125,10 @@ public class ProjectReviewController {
             reviewRepository.save(review);
             redirectAttributes.addAttribute("success", "created");
         }
+
+        // Enviar notificación al autor del proyecto
+        String mensajeNotif = autor.getUsername() + " ha valorado tu proyecto '" + proyecto.getTitulo() + "': " + review.getComentario();
+        notificacionService.enviarNotificacion(proyecto.getAutor(), mensajeNotif, "NUEVA_RESEÑA_PROYECTO", "/project-reviews/" + proyectoId);
 
         return "redirect:/project-reviews/" + proyectoId;
     }

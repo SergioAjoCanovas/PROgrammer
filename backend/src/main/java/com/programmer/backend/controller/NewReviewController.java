@@ -18,11 +18,14 @@ public class NewReviewController {
 
     private final NewReviewRepository reviewRepository;
     private final UsuarioRepository usuarioRepository;
+    private final com.programmer.backend.service.NotificacionService notificacionService;
 
     public NewReviewController(NewReviewRepository reviewRepository,
-                                UsuarioRepository usuarioRepository) {
+                                UsuarioRepository usuarioRepository,
+                                com.programmer.backend.service.NotificacionService notificacionService) {
         this.reviewRepository = reviewRepository;
         this.usuarioRepository = usuarioRepository;
+        this.notificacionService = notificacionService;
     }
 
     // El método verPerfil se mantiene por compatibilidad, 
@@ -60,9 +63,8 @@ public class NewReviewController {
             return "redirect:/profileView/" + receptorId + "?error=duplicated";
         }
 
-        // 4. Validar datos mínimos
-        if (newReview.getRating() <= 0 || newReview.getComentario() == null
-                || newReview.getComentario().trim().isEmpty()) {
+        // 4. Validar datos mínimos (Permitimos 0 estrellas, pero el comentario es obligatorio)
+        if (newReview.getComentario() == null || newReview.getComentario().trim().isEmpty()) {
             return "redirect:/profileView/" + receptorId + "?error=invalid";
         }
 
@@ -70,6 +72,15 @@ public class NewReviewController {
         newReview.setAutor(autor);
         newReview.setReceptor(receptor);
         reviewRepository.save(newReview);
+
+        // 6. Enviar notificación
+        String mensajeNotif = autor.getUsername() + " te ha dejado una reseña";
+        if (newReview.getRating() > 0) {
+            mensajeNotif += " de " + newReview.getRating() + " estrellas";
+        }
+        mensajeNotif += ": " + newReview.getComentario();
+        
+        notificacionService.enviarNotificacion(receptor, mensajeNotif, "NUEVA_RESEÑA_PERFIL", "/profileView/" + receptor.getId());
 
         return "redirect:/profileView/" + receptorId + "?success=created";
     }
@@ -86,8 +97,8 @@ public class NewReviewController {
         NewReview review = reviewRepository.findById(reviewId).orElse(null);
         
         if (review != null && review.getAutor().getId().equals(autor.getId())) {
-            // Validar y actualizar campos
-            if (rating >= 1 && rating <= 5 && comentario != null && !comentario.trim().isEmpty()) {
+            // Validar y actualizar campos (Permitimos rating 0 en edición)
+            if (rating >= 0 && rating <= 5 && comentario != null && !comentario.trim().isEmpty()) {
                 
                 review.setRating(rating);
                 review.setComentario(comentario);

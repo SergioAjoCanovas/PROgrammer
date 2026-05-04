@@ -33,8 +33,18 @@
         </div>
 
         <p class="subtitulo-stack">
-            Define tu arsenal tÃ©cnico para destacar en la comunidad.
+            Define tu arsenal técnico para destacar en la comunidad.
         </p>
+
+        <!-- BOTONES GLOBALES -->
+        <div style="display: flex; gap: 15px; margin-bottom: 25px; justify-content: center;">
+            <button type="button" id="btn-global-marcar" class="btn-tech-toggle btn-tech-marcar" onclick="toggleAllTechs(true)">
+                <i class="fas fa-check-double"></i> Marcar todas
+            </button>
+            <button type="button" id="btn-global-desmarcar" class="btn-tech-toggle btn-tech-desmarcar" onclick="toggleAllTechs(false)">
+                <i class="fas fa-times"></i> Desmarcar todas
+            </button>
+        </div>
 
         <form id="form-stack"
               class="formulario-stack"
@@ -44,9 +54,19 @@
             <fieldset class="grupo-tecnologico"
                       th:each="entry : ${tecnologiasPorCategoria}">
 
-                <legend>
-                    <i class="fas fa-layer-group"></i>
-                    <span th:text="${entry.key}">CategorÃ­a</span>
+                <legend style="display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; margin-bottom: 15px;">
+                    <div>
+                        <i class="fas fa-layer-group"></i>
+                        <span th:text="${entry.key}">Categoría</span>
+                    </div>
+                    <div class="botones-categoria-tech">
+                        <button type="button" class="btn-tech-toggle btn-tech-marcar btn-cat-marcar" onclick="toggleCategory(this, true)">
+                            <i class="fas fa-check"></i> Todos
+                        </button>
+                        <button type="button" class="btn-tech-toggle btn-tech-desmarcar btn-cat-desmarcar" onclick="toggleCategory(this, false)">
+                            <i class="fas fa-times"></i> Ninguno
+                        </button>
+                    </div>
                 </legend>
 
                 <div class="grid-checkboxes">
@@ -88,5 +108,73 @@
 
 <div th:replace="~{includes/footer :: footer}"></div>
 
+<script>
+    function updateButtonStates() {
+        const allCheckboxes = document.querySelectorAll('.grupo-tecnologico input[type="checkbox"]');
+        const allCheckedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+        const totalCount = allCheckboxes.length;
+        
+        const btnGlobalMarcar = document.getElementById('btn-global-marcar');
+        const btnGlobalDesmarcar = document.getElementById('btn-global-desmarcar');
+        
+        if (btnGlobalMarcar && btnGlobalDesmarcar) {
+            if (totalCount > 0 && allCheckedCount === totalCount) {
+                btnGlobalMarcar.classList.add('activo');
+                btnGlobalDesmarcar.classList.remove('activo');
+            } else {
+                btnGlobalMarcar.classList.remove('activo');
+                btnGlobalDesmarcar.classList.add('activo');
+            }
+        }
+
+        document.querySelectorAll('fieldset.grupo-tecnologico').forEach(fieldset => {
+            const checkboxes = fieldset.querySelectorAll('input[type="checkbox"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            
+            const btnMarcar = fieldset.querySelector('.btn-cat-marcar');
+            const btnDesmarcar = fieldset.querySelector('.btn-cat-desmarcar');
+            
+            if (btnMarcar && btnDesmarcar) {
+                if (total > 0 && checkedCount === total) {
+                    btnMarcar.classList.add('activo');
+                    btnDesmarcar.classList.remove('activo');
+                } else {
+                    btnMarcar.classList.remove('activo');
+                    btnDesmarcar.classList.add('activo');
+                }
+            }
+        });
+    }
+
+    function toggleAllTechs(check) {
+        document.querySelectorAll('.grupo-tecnologico input[type="checkbox"]').forEach(cb => {
+            cb.checked = check;
+        });
+        updateButtonStates();
+    }
+
+    function toggleCategory(btn, check) {
+        const fieldset = btn.closest('fieldset');
+        if (fieldset) {
+            fieldset.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = check;
+            });
+            updateButtonStates();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateButtonStates();
+        
+        document.querySelectorAll('.grupo-tecnologico input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', updateButtonStates);
+        });
+    });
+</script>
+
 </body>
 </html>
+
+
+

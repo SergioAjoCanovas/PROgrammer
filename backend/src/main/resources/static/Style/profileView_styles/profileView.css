@@ -396,9 +396,25 @@ header .nav-enlaces a.activo span {
 }
 
 .contenido-inferior {
-    height: auto;
-    padding-right: 10px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 15px;
     transition: all 0.3s ease;
+}
+
+.contenido-inferior::-webkit-scrollbar {
+    width: 8px;
+}
+.contenido-inferior::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+}
+.contenido-inferior::-webkit-scrollbar-thumb:hover {
+    background-color: #FFCC00;
+}
+.contenido-inferior::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+    border-radius: 10px;
 }
 
 /* FIX: Obliga a que los párrafos dentro rompan las palabras largas (tu "Sobre mí") */
@@ -451,9 +467,21 @@ header .nav-enlaces a.activo span {
 }
 
 .resena-item {
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding: 10px 0;
-    margin-bottom: 10px;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(255, 204, 0, 0.15);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.resena-item:hover {
+    border-color: #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+    transform: translateY(-4px);
+    background: rgba(30, 30, 30, 0.9);
 }
 
 .resena-header {
@@ -559,3 +587,76 @@ header .nav-enlaces a.activo span {
         font-size: 1.3rem; 
     }
 }
+/* TOAST DE ERROR PARA RESE�AS */
+.toast-error-neon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(20, 0, 0, 0.95);
+    border: 1px solid #330000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border-left: 6px solid #ff4444; 
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
+
+.toast-error-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-error-neon i {
+    color: #ff4444;
+    font-size: 2rem;
+}
+
+.toast-error-neon strong {
+    display: block;
+    color: #ff4444;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+
+/* BOTONES DE EDICI�N Y ELIMINACI�N DE RESE�AS */
+.btn-accion-resena-editar {
+    background: none;
+    border: none;
+    color: #00f3ff;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.btn-accion-resena-editar:hover {
+    background: rgba(0, 243, 255, 0.1);
+    color: #fff;
+    text-shadow: 0 0 5px #00f3ff;
+}
+
+.btn-accion-resena-eliminar {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.btn-accion-resena-eliminar:hover {
+    background: rgba(255, 68, 68, 0.1);
+    color: #fff;
+    text-shadow: 0 0 5px #ff4444;
+}
+

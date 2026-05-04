@@ -279,7 +279,6 @@ $(document).ready(function() {
     $(".marco-captura img").on("click", function() {
         $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
         $("#img-ampliada").attr("src", $(this).attr("src"));
-        $("#caption-modal").text($(this).attr("alt"));
         $("body").css("overflow", "hidden");
     });
 

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/viewprojectreviews/viewprojectreviews.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="fondo-oscuro-neon">
@@ -166,7 +167,7 @@
 
         <div class="tarjeta-reseñas-ver">
 
-            <div class="cabecera-tarjeta">
+            <div class="cabecera-tarjeta" style="margin-bottom: 25px;">
                 <h3>FEEDBACK</h3>
             </div>
 
@@ -180,8 +181,7 @@
                 </div>
 
                 <div class="reseña-item"
-                     th:each="r, iterStat : ${reviews}"
-                     th:if="${iterStat.index < 3}">
+                     th:each="r : ${reviews}">
 
                     <div class="reseña-user">
                         <i class="fas fa-user-circle"></i>
@@ -210,47 +210,19 @@
                     </div>
 
                     <p class="reseña-texto" th:text="${r.comentario}"></p>
-                </div>
-
-                <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 3}" class="resena-extra-wrapper">
-                    <div class="resena-extra-inner">
-                        <div class="reseña-item">
-                            <div class="reseña-user">
-                                <i class="fas fa-user-circle"></i>
-                                <span th:text="${r.autor != null ? r.autor.username : 'Usuario'}">Usuario</span>
-                            </div>
-
-                            <div class="reseña-scores">
-                                <div class="score-line">
-                                    <span>Arq:</span>
-                                    <span class="estrellas">
-                                        <i class="fas fa-star" th:each="i : ${#numbers.sequence(1,5)}" th:classappend="${i <= r.arquitectura} ? 'gold' : 'empty'"></i>
-                                    </span>
-                                </div>
-                                <div class="score-line">
-                                    <span>Lim:</span>
-                                    <span class="estrellas">
-                                        <i class="fas fa-star" th:each="i : ${#numbers.sequence(1,5)}" th:classappend="${i <= r.limpieza} ? 'gold' : 'empty'"></i>
-                                    </span>
-                                </div>
-                                <div class="score-line">
-                                    <span>Doc:</span>
-                                    <span class="estrellas">
-                                        <i class="fas fa-star" th:each="i : ${#numbers.sequence(1,5)}" th:classappend="${i <= r.documentacion} ? 'gold' : 'empty'"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <p class="reseña-texto" th:text="${r.comentario}"></p>
-                        </div>
+                    
+                    <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" 
+                         style="margin-top: 10px; display: flex; gap: 10px;">
+                        <a th:href="@{/project-reviews/crear/{pid}(pid=${proyecto.id}, edit='true')}" class="btn-accion-resena-editar">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <form th:action="@{/project-reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResenaProyecto(event, this);">
+                            <input type="hidden" name="reviewId" th:value="${r.id}"/>
+                            <button type="submit" class="btn-accion-resena-eliminar">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </form>
                     </div>
-                </div>
-
-                <div th:if="${reviews != null and #lists.size(reviews) > 3}" style="text-align: center; margin-top: 20px;">
-                    <button id="btn-toggle-resenas" data-state="more" class="btn-accion-neon" style="display: inline-flex; align-items: center; justify-content: center; width: 100%;">
-                        <span id="texto-toggle-resenas" style="margin-right: 8px;">Ver más reseñas</span>
-                        <i id="icono-toggle-resenas" class="fas fa-chevron-down" style="transition: transform 0.3s ease;"></i>
-                    </button>
                 </div>
 
             </div>
@@ -261,63 +233,14 @@
 
 </main>
 
+<div id="miModal" class="modal">
+    <img class="contenido-modal" id="imagenFull">
+    <div id="caption-modal"></div>
+</div>
+
 <div th:replace="~{includes/footer :: footer}"></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const btnToggleResenas = document.getElementById('btn-toggle-resenas');
-        const resenasExtra = document.querySelectorAll('.resena-extra-wrapper');
-        const textoToggle = document.getElementById('texto-toggle-resenas');
-        const iconoToggle = document.getElementById('icono-toggle-resenas');
-        
-        let indiceActual = 0;
-        const lote = 5; // Carga de 5 en 5
-
-        if (btnToggleResenas) {
-            btnToggleResenas.addEventListener('click', () => {
-                const estado = btnToggleResenas.getAttribute('data-state');
-
-                if (estado === 'more') {
-                    const finalLote = Math.min(indiceActual + lote, resenasExtra.length);
-                    
-                    for(let i = indiceActual; i < finalLote; i++) {
-                        const item = resenasExtra[i];
-                        item.classList.add('resena-visible');
-                        
-                        // Activación de la animación grid smoothie
-                        requestAnimationFrame(() => {
-                            item.classList.add('expandido');
-                        });
-                    }
-
-                    indiceActual = finalLote;
-
-                    if (indiceActual >= resenasExtra.length) {
-                        textoToggle.textContent = 'Ocultar reseñas';
-                        iconoToggle.style.transform = 'rotate(180deg)';
-                        btnToggleResenas.setAttribute('data-state', 'hide');
-                    }
-                } else {
-                    // Resetear suavemente hacia arriba
-                    resenasExtra.forEach(item => {
-                        item.classList.remove('expandido');
-                        setTimeout(() => {
-                            if (!item.classList.contains('expandido')) {
-                                item.classList.remove('resena-visible');
-                            }
-                        }, 500); 
-                    });
-                    indiceActual = 0;
-                    textoToggle.textContent = 'Ver más reseñas';
-                    iconoToggle.style.transform = 'rotate(0deg)';
-                    btnToggleResenas.setAttribute('data-state', 'more');
-                    
-                    document.getElementById('contenedor-resenas-padre').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        }
-    });
-
     // LÓGICA DE SEGUIR AL USUARIO
     async function toggleFollowUser(btn, event) {
         event.stopPropagation();
@@ -357,14 +280,106 @@
                 }
             } else if (result === 'NOT_LOGGED') {
                 window.location.href = '/login';
-            } else {
-                alert('Error al seguir al usuario: ' + result);
             }
         } catch (error) {
             console.error('Error toggling follow:', error);
         }
     }
+
+    // LÓGICA DEL MODAL DE IMÁGENES
+    const modal = document.getElementById("miModal");
+    const modalImg = document.getElementById("imagenFull");
+    const captionText = document.getElementById("caption-modal");
+
+    document.querySelectorAll(".marco-captura img").forEach(img => {
+        img.onclick = function() {
+            modal.style.display = "flex";
+            modalImg.src = this.src;
+            document.body.style.overflow = "hidden";
+        }
+    });
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
 </script>
 
+    <!-- Toasts de éxito y error -->
+    <div id="toast-success-resena" class="toast-success-neon">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Éxito</strong>
+            <span id="toast-mensaje-resena" style="font-size: 0.9rem; color: #eee;"></span>
+        </div>
+    </div>
+
+    <div id="toast-error-resena" class="toast-error-neon">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong>Error</strong>
+            <span id="toast-error-mensaje-resena" style="font-size: 0.9rem; color: #eee;"></span>
+        </div>
+    </div>
+
+    <style>
+        .toast-success-neon, .toast-error-neon {
+            position: fixed; bottom: 30px; right: 30px; padding: 18px 28px; border-radius: 8px;
+            display: flex; align-items: center; gap: 15px; font-family: sans-serif;
+            transform: translateX(120%); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 9999;
+        }
+        .toast-success-neon { background: rgba(5, 15, 5, 0.98); border-left: 6px solid #39FF14; box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3); }
+        .toast-error-neon { background: rgba(15, 5, 5, 0.98); border-left: 6px solid #ff4444; box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); }
+        .toast-success-neon.mostrar, .toast-error-neon.mostrar { transform: translateX(0); opacity: 1; }
+        .toast-success-neon i { color: #39FF14; font-size: 2rem; }
+        .toast-error-neon i { color: #ff4444; font-size: 2rem; }
+        .toast-success-neon strong { color: #39FF14; display: block; font-size: 1.1rem; }
+        .toast-error-neon strong { color: #ff4444; display: block; font-size: 1.1rem; }
+
+        .btn-accion-resena-editar { color: #00f3ff; text-decoration: none; font-size: 0.85rem; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; border: 1px solid transparent; }
+        .btn-accion-resena-editar:hover { background: rgba(0, 243, 255, 0.1); border-color: #00f3ff; }
+        .btn-accion-resena-eliminar { background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.85rem; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; border: 1px solid transparent; }
+        .btn-accion-resena-eliminar:hover { background: rgba(255, 68, 68, 0.1); border-color: #ff4444; }
+    </style>
+
+    <script>
+        function confirmarBorrarResenaProyecto(event, form) {
+            event.preventDefault();
+            Swal.fire({
+                title: '¿Borrar reseña de proyecto?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4444',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Sí, borrar',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+            return false;
+        }
+
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('success')) {
+                const type = urlParams.get('success');
+                const toast = document.getElementById('toast-success-resena');
+                const textSpan = document.getElementById('toast-mensaje-resena');
+                if (type === 'created') textSpan.innerText = '¡Reseña de proyecto publicada!';
+                else if (type === 'updated') textSpan.innerText = 'Se ha editado correctamente';
+                else if (type === 'deleted') textSpan.innerText = 'Ha eliminado la reseña correctamente';
+                toast.classList.add('mostrar');
+                setTimeout(() => { toast.classList.remove('mostrar'); }, 4000);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+    </script>
 </body>
 </html>

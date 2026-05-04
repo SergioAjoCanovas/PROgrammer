@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Controller
@@ -70,6 +71,52 @@ public class NewReviewController {
         newReview.setReceptor(receptor);
         reviewRepository.save(newReview);
 
-        return "redirect:/profileView/" + receptorId + "?success=true";
+        return "redirect:/profileView/" + receptorId + "?success=created";
+    }
+
+    @PostMapping("/editar")
+    public String editarReview(@RequestParam Long reviewId,
+                               @RequestParam int rating,
+                               @RequestParam String comentario,
+                               HttpSession session) {
+        Usuario autor = (Usuario) session.getAttribute("usuarioLogueado");
+        if (autor == null) return "redirect:/";
+
+        // Buscar la reseña original
+        NewReview review = reviewRepository.findById(reviewId).orElse(null);
+        
+        if (review != null && review.getAutor().getId().equals(autor.getId())) {
+            // Validar y actualizar campos
+            if (rating >= 1 && rating <= 5 && comentario != null && !comentario.trim().isEmpty()) {
+                
+                review.setRating(rating);
+                review.setComentario(comentario);
+                reviewRepository.save(review);
+                
+                return "redirect:/profileView/" + review.getReceptor().getId() + "?success=updated";
+            }
+        }
+        
+        if (review != null) {
+            return "redirect:/profileView/" + review.getReceptor().getId();
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/eliminar")
+    public String eliminarReview(@RequestParam Long reviewId, HttpSession session) {
+        Usuario autor = (Usuario) session.getAttribute("usuarioLogueado");
+        if (autor == null) return "redirect:/";
+        
+        NewReview review = reviewRepository.findById(reviewId).orElse(null);
+        if (review != null) {
+            boolean isAdmin = autor.getRol() != null && "ADMIN".equalsIgnoreCase(autor.getRol().getNombre());
+            if (review.getAutor().getId().equals(autor.getId()) || isAdmin) {
+                Long receptorId = review.getReceptor().getId();
+                reviewRepository.delete(review);
+                return "redirect:/profileView/" + receptorId + "?success=deleted";
+            }
+        }
+        return "redirect:/";
     }
 }

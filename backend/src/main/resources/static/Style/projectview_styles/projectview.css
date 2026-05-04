@@ -60,7 +60,7 @@ body.fondo-oscuro-neon::before {
     padding: 0 20px;
     gap: 45px; 
     align-items: flex-start;
-    flex: 1; /* Empuja el footer al fondo */
+    flex: 1 0 auto; /* Empuja el footer al fondo */
 }
 
 /* =========================================================
@@ -102,24 +102,25 @@ body.fondo-oscuro-neon::before {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    background-color: #333;
-    color: #FFCC00;
+    background: rgba(15, 5, 5, 0.8);
+    border: 1px solid #ff4444;
+    border-radius: 50%;
     width: 38px;
     height: 38px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #FFCC00;
     cursor: pointer;
+    color: #ff4444;
     font-size: 1rem;
     transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
     z-index: 10;
 }
 
 .btn-follow-heart:hover {
-    background-color: #FFCC00;
-    color: #333;
+    background-color: #ff4444;
+    color: #ffffff;
     transform: scale(1.1);
 }
 
@@ -128,11 +129,15 @@ body.fondo-oscuro-neon::before {
 }
 
 .btn-follow-heart i.far {
-    color: #FFCC00; 
+    color: #ff4444; 
 }
 
 .btn-follow-heart:hover i.far {
-    color: #333; 
+    color: #ffffff; 
+}
+
+.btn-follow-heart:hover i.fas {
+    color: #ffffff; 
 }
 
 .nombre-usuario { font-size: 1.6rem; color: #FFFFFF; font-weight: bold; text-align: center; margin: 0; }
@@ -264,7 +269,7 @@ a {
 }
 
 .contenido-modal {
-    display: block; width: 85%; max-width: 1100px;
+    display: block; width: 60%; max-width: 750px;
     border: 2px solid #FFCC00; border-radius: 15px;
     box-shadow: 0 0 40px rgba(255, 204, 0, 0.5);
     animation: zoomIn 0.3s ease; cursor: default;

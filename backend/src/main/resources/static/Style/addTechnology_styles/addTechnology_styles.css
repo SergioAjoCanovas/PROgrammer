@@ -258,3 +258,47 @@
     text-shadow: 0 0 8px var(--amarillo-brillo); 
     transform: translateX(-5px); 
 }
+/* BOTONES TOGGLE TECH (Marcar/Desmarcar) */
+.btn-tech-toggle {
+    background: transparent; /* Use transparent instead of var(--negro-input) to blend better in legends */
+    padding: 6px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* MARCAR (Cyan) */
+.btn-tech-marcar {
+    color: #00f3ff;
+    border: 2px solid #00f3ff;
+}
+.btn-tech-marcar:hover, .btn-tech-marcar.activo {
+    background: #00f3ff;
+    color: #000;
+    box-shadow: 0 0 20px #00f3ff;
+    transform: scale(1.05);
+}
+
+/* DESMARCAR (Rojo) */
+.btn-tech-desmarcar {
+    color: #ff4444;
+    border: 2px solid #ff4444;
+}
+.btn-tech-desmarcar:hover, .btn-tech-desmarcar.activo {
+    background: #ff4444;
+    color: #fff;
+    box-shadow: 0 0 20px #ff4444;
+    transform: scale(1.05);
+}
+
+.botones-categoria-tech {
+    display: flex;
+    gap: 10px;
+}
+

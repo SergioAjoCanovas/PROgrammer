@@ -85,6 +85,33 @@
         .btn-follow-heart:hover i.fas {
             color: white;
         }
+
+        .tarjeta-perfil-neon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .link-absoluto-tarjeta {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            text-decoration: none;
+        }
+
+        /* Aseguramos que los elementos interactivos estén por encima del link absoluto */
+        .btn-follow-heart, 
+        .bio-recortada, 
+        .tech-toggle, 
+        .btn-perfil,
+        .tags span,
+        .vista-todas-techs,
+        .vista-bio-completa {
+            z-index: 10;
+        }
+
+        .bio-recortada, .tech-toggle, .btn-perfil, .tags span, .vista-todas-techs, .vista-bio-completa {
+            position: relative;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -166,9 +193,11 @@
                              th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
                                      esLarga=${#strings.length(fullBio) > 60}">
                             
+                            <a th:href="@{/profileView/{id}(id=${developer.usuario != null ? developer.usuario.id : 0})}" class="link-absoluto-tarjeta"></a>
+                            
                             <div class="contenido-perfil">
                                 <div class="foto-perfil-wrapper">
-                                    <img th:src="${developer.usuario != null and developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de perfil" class="foto-perfil">
+                                    <img th:src="${developer.usuario != null and developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.svg'}" alt="Foto de perfil" class="foto-perfil">
                                     <button th:if="${session.usuarioLogueado != null and developer.usuario != null and session.usuarioLogueado.id != developer.usuario.id}"
                                             class="btn-follow-heart" 
                                             th:attr="data-id=${developer.usuario.id}" 

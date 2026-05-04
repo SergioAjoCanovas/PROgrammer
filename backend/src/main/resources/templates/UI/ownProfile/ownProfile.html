@@ -318,7 +318,7 @@
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-handshake"></i> Amigos (<span th:text="${amigos != null ? amigos.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-amigos" th:if="${amigos != null and !amigos.isEmpty()}">
                     <div class="usuario-seguimiento-card item-amigo" style="display: none;" th:each="user : ${amigos}">
-                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.svg'}" class="seguimiento-foto">
                         <span class="seguimiento-nombre" style="margin-top: 5px;">
                             <span th:text="${user.username}"></span>
                             <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
@@ -342,7 +342,7 @@
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-user-plus"></i> Usuarios que Sigues (<span th:text="${siguiendo != null ? siguiendo.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-siguiendo" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
                     <div class="usuario-seguimiento-card item-siguiendo" style="display: none;" th:each="user : ${siguiendo}">
-                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.svg'}" class="seguimiento-foto">
                         <span class="seguimiento-nombre" style="margin-top: 5px;">
                             <span th:text="${user.username}"></span>
                             <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
@@ -366,7 +366,7 @@
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-users"></i> Tus Seguidores (<span th:text="${seguidores != null ? seguidores.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-seguidores" th:if="${seguidores != null and !seguidores.isEmpty()}">
                     <div class="usuario-seguimiento-card item-seguidores" style="display: none;" th:each="user : ${seguidores}">
-                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.png'}" class="seguimiento-foto">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.svg'}" class="seguimiento-foto">
                         <span class="seguimiento-nombre" style="margin-top: 5px;">
                             <span th:text="${user.username}"></span>
                             <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
@@ -395,10 +395,10 @@
                 <div class="tarjeta-acordeon info-half-card" style="margin-top: 20px; width: 100%;">
                     <div class="cabecera-tarjeta"><h3>REDACCION DEL PARCHE</h3></div>
                     <div id="parche-edit">
-                        <textarea id="parche-textarea" maxlength="2000" oninput="actualizarContadorParche()" style="width: 100%; min-height: 150px; background: rgba(0,0,0,0.3); color: white; border: 1px solid #444; border-radius: 8px; padding: 10px; resize: vertical; box-sizing: border-box;"></textarea>
+                        <textarea id="parche-textarea" maxlength="10000" oninput="actualizarContadorParche()" style="width: 100%; min-height: 150px; background: rgba(0,0,0,0.3); color: white; border: 1px solid #444; border-radius: 8px; padding: 10px; resize: vertical; box-sizing: border-box;"></textarea>
                         <div class="bio-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                            <span id="parche-counter" style="color: #aaa; font-size: 0.9rem; font-weight: bold;">2000/2000</span>
-                            <button class="boton-amarillo-solido" onclick="enviarParche()">ENVIAR AVISO A TODOS</button>
+                            <span id="parche-counter" style="color: #aaa; font-size: 0.9rem; font-weight: bold;">10000/10000</span>
+                            <button class="boton-amarillo-solido" onclick="enviarParche()" style="padding: 8px 16px !important; font-size: 0.85rem !important; width: fit-content !important; max-width: 200px; display: inline-flex; justify-content: center; align-items: center; gap: 8px; margin: 0;"><i class="fas fa-paper-plane"></i> ENVIAR AVISO</button>
                         </div>
                     </div>
                 </div>
@@ -1098,7 +1098,7 @@ function actualizarContadorParche() {
     const counter = document.getElementById("parche-counter");
     if(!textarea || !counter) return;
 
-    const max = 2000;
+    const max = 10000;
     let valor = textarea.value;
 
     if (valor.length > max) {

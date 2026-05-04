@@ -213,11 +213,16 @@
                         <i class="fas fa-times-circle"></i> No validado
                     </span>
 
-                    <a href="/newprojectreview" class="btn-accion-neon">
-                        <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
-                    </a>
+                    <a th:if="${session.usuarioLogueado != null
+                        and session.usuarioLogueado.rol.nombre != 'VISITOR'
+                        and (session.usuarioLogueado.rol.nombre == 'ADMIN'
+                             or session.usuarioLogueado.id != proyecto.autor.id)}"
+                   th:href="@{/project-reviews/crear/{id}(id=${proyecto.id})}"
+                   class="btn-accion-neon">
+                    <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
+                </a>
 
-                    <a href="/viewprojectreviews" class="btn-accion-neon">
+                    <a th:href="@{/project-reviews/{id}(id=${proyecto.id})}" class="btn-accion-neon">
                         <i class="fas fa-comments"></i> VER RESEÑAS
                     </a>
 

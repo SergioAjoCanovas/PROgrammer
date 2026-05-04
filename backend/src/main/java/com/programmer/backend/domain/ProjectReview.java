@@ -17,7 +17,7 @@ public class ProjectReview {
 
     // 👤 Usuario que escribe la reseña
     @ManyToOne
-    @JoinColumn(name = "autor_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario autor;
 
     // 📦 Proyecto reseñado
@@ -33,5 +33,6 @@ public class ProjectReview {
     private String comentario;
 
     @CreationTimestamp
+    @Column(name = "fecha_resena")
     private LocalDateTime fecha;
 }

@@ -453,3 +453,22 @@ body.fondo-oscuro-neon::before {
         height: 150px;
     }
 }
+
+/* FIX ESTRELLAS (IMPORTANTE) */
+.estrellas {
+    display: flex;
+    gap: 3px;
+}
+
+.estrellas i {
+    font-size: 0.9rem;
+}
+
+.estrellas i.gold {
+    color: #FFCC00;
+    text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+}
+
+.estrellas i.empty {
+    color: #333;
+}

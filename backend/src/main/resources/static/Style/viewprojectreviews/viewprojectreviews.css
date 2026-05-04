@@ -28,11 +28,41 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
+/* =========================================================
+   BOTÓN VOLVER
+   ========================================================= */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.enlace-volver {
+    color: #888888;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
+}
+
 .contenedor-principal {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    margin: 60px auto;
+    margin: 30px auto 60px auto; 
     padding: 0 20px;
     gap: 30px;
     align-items: flex-start;
@@ -40,17 +70,17 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================================
-   2. TARJETAS NEÓN (ESTILO ORIGINAL)
+   2. TARJETAS NEÓN Y PERFIL
    ========================================================= */
 
 .tarjeta-perfil, 
 .tarjeta-proyecto-detalle, 
 .tarjeta-reseñas-ver {
     background-color: #1a1a1a !important;
-    border: 2px solid #FFCC00 !important;
+    border: 1px solid #FFCC00 !important; 
     border-radius: 20px;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
-    padding: 25px;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.25) !important; 
+    padding: 30px 25px; 
 }
 
 .columna-perfil {
@@ -65,16 +95,10 @@ body.fondo-oscuro-neon::before {
     flex: 0 0 450px;
 }
 
-.cabecera-tarjeta {
-    border-bottom: 2px solid #aaaaaa;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
 .foto-perfil-contenedor {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     margin: 0 auto 15px;
 }
 
@@ -84,38 +108,91 @@ body.fondo-oscuro-neon::before {
     border-radius: 50%;
     border: 3px solid #FFCC00;
     background: #222;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4); 
+    overflow: hidden;
 }
 
-.icono-corazon {
+.btn-follow-heart {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
+    bottom: -5px;
+    right: -5px;
+    background-color: #333;
     color: #FFCC00;
-    background: #333;
-    padding: 6px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    border: 1px solid #FFCC00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFCC00;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.btn-follow-heart:hover {
+    background-color: #FFCC00;
+    color: #333;
+    transform: scale(1.1);
 }
 
 .nombre-usuario {
     font-size: 1.4rem;
     text-align: center;
     font-weight: bold;
-    margin: 0;
+    margin: 0 0 5px 0;
 }
 
-.redes-sociales {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 20px;
-}
-
-.redes-sociales li {
-    padding: 8px 0;
-    color: #ccc;
+.seguidores-badge {
+    color: #FFCC00;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 5px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 8px;
+}
+
+.separador-perfil {
+    border: none;
+    border-top: 1px solid #555; 
+    width: 100%;
+    margin: 25px 0;
+}
+
+/* Enlaces Dotted */
+.lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0;
+}
+
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    background-color: #1a1a1a;
+    border: 1px dashed #FFCC00; 
+    border-radius: 12px;
+    color: #ddd;
+    text-decoration: none;
+    transition: 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.item-dotted i {
+    color: #FFCC00;
+    font-size: 1.2rem;
+}
+
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.05);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
 }
 
 /* =========================================================
@@ -141,7 +218,7 @@ body.fondo-oscuro-neon::before {
 .boton-curriculum {
     width: 100%;
     padding: 12px;
-    background: #0e0e0e !important; /* Negro igual que los otros botones */
+    background: #0e0e0e !important;
     color: #FFCC00;
     border: 2px solid #FFCC00;
     border-radius: 10px;
@@ -307,9 +384,7 @@ body.fondo-oscuro-neon::before {
 }
 
 .contenedor-reseñas {
-    max-height: 600px;
-    overflow-y: auto;
-    padding-right: 10px;
+    padding: 0;
 }
 
 .reseña-item {
@@ -355,17 +430,27 @@ body.fondo-oscuro-neon::before {
     font-size: 0.95rem;
 }
 
-.contenedor-reseñas::-webkit-scrollbar {
-    width: 6px;
+/* =========================================================
+   ANIMACIÓN SMOOTHIE CARGA POR LOTES
+   ========================================================= */
+
+.resena-extra-wrapper {
+    display: grid;
+    grid-template-rows: 0fr; /* Altura colapsada */
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden; /* Evita parpadeos antes de animar */
 }
 
-.contenedor-reseñas::-webkit-scrollbar-thumb {
-    background: #FFCC00;
-    border-radius: 10px;
+.resena-extra-wrapper.resena-visible {
+    visibility: visible;
 }
 
-.contenedor-reseñas::-webkit-scrollbar-track {
-    background: #111;
+.resena-extra-wrapper.expandido {
+    grid-template-rows: 1fr; /* Altura real del contenido */
+}
+
+.resena-extra-inner {
+    overflow: hidden;
 }
 
 /* =========================================================
@@ -454,7 +539,7 @@ body.fondo-oscuro-neon::before {
     }
 }
 
-/* FIX ESTRELLAS (IMPORTANTE) */
+/* FIX ESTRELLAS */
 .estrellas {
     display: flex;
     gap: 3px;

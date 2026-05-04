@@ -20,11 +20,14 @@
 
 <div th:replace="~{includes/header :: header}"></div>
 
+<div class="contenedor-volver">
+    <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a <span th:text="${proyecto.titulo}">Proyecto</span>
+    </a>
+</div>
+
 <main class="contenedor-principal">
 
-    <!-- ========================= -->
-    <!-- PERFIL LATERAL -->
-    <!-- ========================= -->
     <aside class="columna-perfil">
         <div class="tarjeta-perfil tarjeta-neon-estatica">
     
@@ -32,20 +35,23 @@
     
                 <div class="foto-perfil-contenedor">
                     <div class="circulo-foto">
-                        <img th:if="${session.usuarioLogueado.fotoPerfil != null}"
-                             th:src="${session.usuarioLogueado.fotoPerfil}">
-                        <i th:unless="${session.usuarioLogueado.fotoPerfil != null}"
+                        <img th:if="${proyecto.autor.fotoPerfil != null}"
+                             th:src="${proyecto.autor.fotoPerfil}"
+                             style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        <i th:unless="${proyecto.autor.fotoPerfil != null}"
                            class="fas fa-user"
-                           style="font-size: 3rem; color: #aaa;"></i>
+                           style="font-size: 3rem; color: #aaa; display: flex; justify-content: center; align-items: center; height: 100%;"></i>
                     </div>
     
-                    <div class="icono-corazon">
-                        <i class="fas fa-heart"></i>
+                    <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != proyecto.autor.id}" 
+                         th:attr="data-id=${proyecto.autor.id}" 
+                         onclick="toggleFollowUser(this, event)">
+                         <i class="fa-heart" th:classappend="${proyecto.autor.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                    </button>
                     </div>
-                </div>
     
                 <h2 class="nombre-usuario"
-                    th:text="${session.usuarioLogueado.username}">
+                    th:text="${proyecto.autor.username}">
                     Usuario
                 </h2>
     
@@ -54,29 +60,29 @@
             <div class="cuerpo-tarjeta">
     
                 <div class="lista-dotted">
-    
-                    <a th:if="${session.usuarioLogueado.github}"
-                       th:href="${session.usuarioLogueado.github}"
+                    
+                    <a th:if="${proyecto.autor.github}"
+                       th:href="${proyecto.autor.github}"
                        target="_blank"
                        class="item-dotted">
                         <i class="fab fa-github"></i>
-                        <span>Mi GitHub</span>
+                        <span>GitHub</span>
                     </a>
     
-                    <a th:if="${session.usuarioLogueado.linkedin}"
-                       th:href="${session.usuarioLogueado.linkedin}"
+                    <a th:if="${proyecto.autor.linkedin}"
+                       th:href="${proyecto.autor.linkedin}"
                        target="_blank"
                        class="item-dotted">
                         <i class="fab fa-linkedin"></i>
-                        <span>Mi LinkedIn</span>
+                        <span>LinkedIn</span>
                     </a>
     
-                    <a th:if="${session.usuarioLogueado.curriculum != null}"
-                       th:href="${session.usuarioLogueado.curriculum}"
+                    <a th:if="${proyecto.autor.curriculum != null}"
+                       th:href="${proyecto.autor.curriculum}"
                        target="_blank"
                        class="item-dotted">
                         <i class="fas fa-file-alt"></i>
-                        <span>Mi CV</span>
+                        <span>CV</span>
                     </a>
     
                 </div>
@@ -86,9 +92,6 @@
         </div>
     </aside>
 
-    <!-- ========================= -->
-    <!-- PROYECTO -->
-    <!-- ========================= -->
     <section class="seccion-derecha-dinamica">
 
         <div class="tarjeta-proyecto-detalle">
@@ -123,9 +126,6 @@
                 </div>
             </div>
 
-            <!-- ========================= -->
-            <!-- IMÁGENES -->
-            <!-- ========================= -->
             <div class="galeria-proyecto">
 
                 <img th:if="${proyecto.foto1}"
@@ -145,17 +145,11 @@
                      class="img-proyecto" />
             </div>
 
-            <!-- ========================= -->
-            <!-- DESCRIPCIÓN -->
-            <!-- ========================= -->
             <div class="descripcion-proyecto">
                 <h3>Descripción</h3>
                 <p th:text="${proyecto.descripcion}"></p>
             </div>
 
-            <!-- ========================= -->
-            <!-- TECNOLOGÍAS -->
-            <!-- ========================= -->
             <div class="descripcion-proyecto tecnologias">
 
                 <h3>Tecnologías</h3>
@@ -174,9 +168,6 @@
         </div>
     </section>
 
-    <!-- ========================= -->
-    <!-- FORMULARIO REVIEW -->
-    <!-- ========================= -->
     <aside class="zona-derecha">
 
         <div class="tarjeta-formulario">
@@ -223,9 +214,6 @@
 
 </main>
 
-<!-- ========================= -->
-<!-- MODAL IMÁGENES -->
-<!-- ========================= -->
 <div id="miModal" class="modal">
     <img class="contenido-modal" id="imagenFull">
     <div id="caption-modal"></div>
@@ -236,19 +224,71 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    // ============================================================
+    // LÓGICA DE SEGUIR AL USUARIO (Igual que en ProfileView)
+    // ============================================================
+    async function toggleFollowUser(btn, event) {
+        event.stopPropagation();
+        const targetId = btn.getAttribute('data-id');
+        const icon = btn.querySelector('i');
+        
+        const isFollowing = icon.classList.contains('fas');
+
+        if (isFollowing) {
+            const targetName = btn.getAttribute('data-username') || document.querySelector('.nombre-usuario').innerText;
+            // Asegúrate de que la función mostrarModalUnfollowGlobal exista de forma global o inclúyela si usas SweetAlert
+            if (typeof mostrarModalUnfollowGlobal === 'function') {
+                const result = await mostrarModalUnfollowGlobal(targetName);
+                if (!result.isConfirmed) {
+                    return;
+                }
+            } else {
+                // Fallback clásico si no detecta el modal global
+                if(!confirm(`¿Seguro que quieres dejar de seguir a ${targetName}?`)) return;
+            }
+        }
+        
+        try {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            const response = await fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            
+            if (result === 'OK') {
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            } else if (result === 'NOT_LOGGED') {
+                window.location.href = '/login';
+            } else {
+                alert('Error al seguir al usuario: ' + result);
+            }
+        } catch (error) {
+            console.error('Error toggling follow:', error);
+        }
+    }
+    // ============================================================
+
     $(document).ready(function() {
         inicializarIdentidadYEventos();
     });
 
     function inicializarIdentidadYEventos() {
-
         const username = localStorage.getItem('usuarioLogueado');
-
         const nombreLateral = document.getElementById('nombre-mi-perfil');
         if (username && nombreLateral) {
             nombreLateral.innerText = username;
         }
 
+        // --- Lógica de Estrellas (se mantiene igual) ---
         document.querySelectorAll(".estrellas").forEach(container => {
             const tipo = container.dataset.tipo;
             const input = document.getElementById("input-" + tipo);
@@ -260,7 +300,6 @@
 
                 estrella.addEventListener("click", function () {
                     input.value = i;
-
                     container.querySelectorAll("i").forEach((s, index) => {
                         if (index < i) {
                             s.classList.remove("far");
@@ -277,6 +316,7 @@
         });
     }
 
+    // --- Lógica del Modal (se mantiene igual) ---
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");

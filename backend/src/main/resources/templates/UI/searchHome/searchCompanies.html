@@ -56,6 +56,33 @@
         .btn-follow-heart:hover i.fas {
             color: white;
         }
+
+        .tarjeta-perfil-neon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .link-absoluto-tarjeta {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            text-decoration: none;
+        }
+
+        /* Aseguramos que los elementos interactivos estén por encima del link absoluto */
+        .btn-follow-heart, 
+        .bio-recortada, 
+        .tech-toggle, 
+        .btn-perfil,
+        .tags span,
+        .vista-todas-techs,
+        .vista-bio-completa {
+            z-index: 10;
+        }
+
+        .bio-recortada, .tech-toggle, .btn-perfil, .tags span, .vista-todas-techs, .vista-bio-completa {
+            position: relative;
+        }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
@@ -140,6 +167,8 @@
                         <div class="tarjeta-perfil-neon" th:each="company : ${companies}"
                              th:with="fullBio=${company.usuario.biografia != null and !#strings.isEmpty(company.usuario.biografia.trim()) ? company.usuario.biografia : 'Sin descripción'},
                                      esLarga=${#strings.length(fullBio) > 60}">
+                            
+                            <a th:href="@{/profileView/{id}(id=${company.usuario.id})}" class="link-absoluto-tarjeta"></a>
                             
                             <div class="contenido-perfil">
                                 <div class="foto-perfil-container">

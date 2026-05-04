@@ -73,8 +73,8 @@ public class AuthController {
         Rol rolElegido = rolRepository.findById(idRol)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
-        // Foto
-        String rutaFoto = null;
+        // Foto (por defecto usamos el icono estándar)
+        String rutaFoto = "/Img/stock/default-profile.svg";
         if (foto != null && !foto.isEmpty()) {
             rutaFoto = registroService.guardarFoto(foto);
         }

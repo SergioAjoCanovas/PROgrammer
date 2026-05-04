@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         .carrusel-proyecto {
@@ -25,32 +26,38 @@
 
         .btn-follow-heart {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background-color: #333;
-            color: #FFCC00;
-            width: 38px;
-            height: 38px;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 2px solid #ff4444;
             border-radius: 50%;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #FFCC00;
             cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            color: #ff4444;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
             z-index: 10;
         }
 
         .btn-follow-heart:hover {
-            background-color: #FFCC00;
-            color: #333;
-            transform: scale(1.1);
+            background: #ff4444;
+            color: white;
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
         }
 
-        .btn-follow-heart i.fas { color: #ff4444; }
-        .btn-follow-heart i.far { color: #FFCC00; }
-        .btn-follow-heart:hover i.far { color: #333; }
+        .btn-follow-heart i.fas, .btn-follow-heart i.far {
+            color: #ff4444;
+            transition: color 0.3s ease;
+        }
+        .btn-follow-heart:hover i.fas, .btn-follow-heart:hover i.far {
+            color: white;
+        }
 
         .carrusel-inner {
             display: flex;
@@ -194,6 +201,76 @@
         }
 
         .item-dotted:hover i { transform: scale(1.2); }
+
+        /* TOAST DE EXITO NEÓN */
+        .toast-success-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-success-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-success-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-success-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        /* TOAST DE ERROR NEÓN */
+        .toast-error-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(15, 5, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #ff4444;
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-error-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-error-neon i {
+            color: #ff4444;
+            font-size: 2rem;
+        }
+        .toast-error-neon strong {
+            display: block;
+            color: #ff4444;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -271,8 +348,9 @@
             <div class="tarjeta-resenas-izq" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != usuario.id}">
                 <h3>AÑADIR RESEÑA</h3>
                 
-                <form th:action="@{/reviews/crear}" method="post" th:object="${newReview}">
+                <form id="form-review" th:action="@{/reviews/crear}" method="post" th:object="${newReview}" onsubmit="return confirmarGuardadoResena(event, this);">
                     <input type="hidden" name="receptorId" th:value="${usuario.id}">
+                    <input type="hidden" name="reviewId" id="edit-review-id" value="">
                     
                     <div class="campo">
                         <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
@@ -283,12 +361,12 @@
                             <i class="far fa-star" data-value="4"></i>
                             <i class="far fa-star" data-value="5"></i>
                         </div>
-                        <input type="hidden" th:field="*{rating}" id="rating-value" value="0">
+                        <input type="hidden" th:field="*{rating}" value="0">
                     </div>
 
                     <textarea class="input-resena" th:field="*{comentario}" placeholder="Cuéntanos tu experiencia..." required></textarea>
                     
-                    <button type="submit" class="boton-anadir">
+                    <button type="submit" id="btn-submit-review" class="boton-anadir">
                         <i class="fas fa-paper-plane"></i> Publicar reseña
                     </button>
                 </form>
@@ -371,10 +449,10 @@
 
             <div class="contenedor-inferior-derecha">
                 
-                <div class="tarjeta-inferior">
+                <div class="tarjeta-inferior" style="border: 2px solid var(--amarillo-neon); box-shadow: 0 0 15px var(--amarillo-neon);">
                     <div class="cabecera-inferior"><h3>RESEÑAS RECIENTES</h3></div>
                     
-                    <div class="contenido-inferior" id="contenedor-resenas">
+                    <div class="contenido-inferior" id="contenedor-resenas" style="margin-top: 35px; padding-top: 15px;">
                         <div th:if="${#lists.isEmpty(reviews)}">
                             <p>No hay reseñas aún.</p>
                         </div>
@@ -388,6 +466,13 @@
                                 <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
                                     <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                 </span>
+                            </div>
+                            <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" style="margin-top: 5px; margin-bottom: 5px;">
+                                <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
+                                <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
+                                    <input type="hidden" name="reviewId" th:value="${r.id}"/>
+                                    <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
+                                </form>
                             </div>
                             <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                         </div>
@@ -403,6 +488,13 @@
                                         <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
                                             <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                         </span>
+                                    </div>
+                                    <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" style="margin-top: 5px; margin-bottom: 5px;">
+                                        <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
+                                        <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
+                                            <input type="hidden" name="reviewId" th:value="${r.id}"/>
+                                            <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
+                                        </form>
                                     </div>
                                     <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                                 </div>
@@ -471,7 +563,7 @@
 
             // Selector de estrellas
             const estrellas = document.querySelectorAll("#estrellas-selector i");
-            const inputRating = document.getElementById("rating-value");
+            const inputRating = document.getElementById("rating");
 
             estrellas.forEach(star => {
                 star.addEventListener("click", () => {
@@ -611,6 +703,159 @@
                 console.error('Error toggling follow:', error);
             }
         }
+    </script>
+<script>
+let estaEditandoResena = false;
+
+function editarResena(btn) {
+    const id = btn.getAttribute("data-id");
+    const rating = parseInt(btn.getAttribute("data-rating"));
+    const comentario = btn.getAttribute("data-comentario");
+
+    const form = document.getElementById("form-review");
+    const editIdInput = document.getElementById("edit-review-id");
+    const ratingInput = document.getElementById("rating");
+    const textarea = document.querySelector("#form-review textarea[name='comentario']");
+    const btnSubmit = document.getElementById("btn-submit-review");
+
+    if (!form || !editIdInput || !ratingInput || !textarea || !btnSubmit) return;
+
+    form.action = "/reviews/editar";
+    editIdInput.value = id;
+    ratingInput.value = rating;
+    textarea.value = comentario;
+    estaEditandoResena = true;
+
+    btnSubmit.innerHTML = "<i class=\"fas fa-save\"></i> Guardar edición";
+    btnSubmit.style.backgroundColor = "#FFCC00";
+    btnSubmit.style.color = "#000";
+
+    const estrellas = document.querySelectorAll("#estrellas-selector i");
+    estrellas.forEach(estrella => {
+        const val = parseInt(estrella.getAttribute("data-value"));
+        if (val <= rating) {
+            estrella.classList.remove("far");
+            estrella.classList.add("fas");
+            estrella.classList.add("activa");
+        } else {
+            estrella.classList.remove("fas");
+            estrella.classList.add("far");
+            estrella.classList.remove("activa");
+        }
+    });
+
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function confirmarGuardadoResena(event, form) {
+    if (estaEditandoResena) {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Seguro que quieres editar tu reseña?',
+            text: "Los cambios sobrescribirán tu comentario anterior.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FFCC00',
+            cancelButtonColor: '#333',
+            confirmButtonText: '<span style="color:black; font-weight:bold;">Sí, guardar</span>',
+            cancelButtonText: 'Cancelar',
+            background: '#1a1a1a',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false;
+    }
+    return true;
+}
+
+function confirmarBorrarResena(event, form) {
+    event.preventDefault();
+    Swal.fire({
+        title: '¿Seguro que quieres borrar tu reseña?',
+        text: "Podrás escribir una nueva reseña si lo deseas.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff4444',
+        cancelButtonColor: '#333',
+        confirmButtonText: 'Sí, borrar',
+        cancelButtonText: 'Cancelar',
+        background: '#1a1a1a',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+    return false;
+}
+</script>
+
+    <!-- Toast de éxito -->
+    <div id="toast-success-resena" class="toast-success-neon">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Éxito</strong>
+            <span id="toast-mensaje-resena" style="font-size: 0.9rem; color: #eee;">Operación realizada correctamente</span>
+        </div>
+    </div>
+
+    <!-- Toast de error -->
+    <div id="toast-error-resena" class="toast-error-neon">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong>Error</strong>
+            <span id="toast-error-mensaje-resena" style="font-size: 0.9rem; color: #eee;">Ocurrió un problema</span>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar toast si hay éxito o error en la URL
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.has('success')) {
+                const type = urlParams.get('success');
+                const toast = document.getElementById('toast-success-resena');
+                const textSpan = document.getElementById('toast-mensaje-resena');
+                
+                if (type === 'created') {
+                    textSpan.innerText = '¡Reseña publicada correctamente!';
+                } else if (type === 'updated') {
+                    textSpan.innerText = 'Se ha editado correctamente';
+                } else if (type === 'deleted') {
+                    textSpan.innerText = 'Ha eliminado la reseña correctamente';
+                } else {
+                    textSpan.innerText = 'Operación realizada correctamente';
+                }
+                
+                toast.classList.add('mostrar');
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                    const cleanUrl = window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }, 4000);
+            }
+            
+            if (urlParams.has('error')) {
+                const errorType = urlParams.get('error');
+                if (errorType === 'duplicated') {
+                    const toastError = document.getElementById('toast-error-resena');
+                    const errorSpan = document.getElementById('toast-error-mensaje-resena');
+                    
+                    errorSpan.innerText = 'Ya has puesto una reseña a este usuario';
+                    
+                    toastError.classList.add('mostrar');
+                    setTimeout(() => {
+                        toastError.classList.remove('mostrar');
+                        const cleanUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    }, 4000);
+                }
+            }
+        });
     </script>
 </body>
 </html>

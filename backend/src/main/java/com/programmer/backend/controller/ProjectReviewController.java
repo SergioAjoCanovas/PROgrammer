@@ -13,9 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 @RequestMapping("/project-reviews")
+@Transactional
 public class ProjectReviewController {
 
     private final ProjectReviewRepository reviewRepository;
@@ -34,12 +36,37 @@ public class ProjectReviewController {
     // VER FORMULARIO
     // =========================
     @GetMapping("/crear/{proyectoId}")
-    public String verFormulario(@PathVariable Long proyectoId, Model model) {
-
+    public String verFormulario(@PathVariable Long proyectoId, 
+                               @RequestParam(required = false) String edit,
+                               Model model, HttpSession session) {
         Proyecto proyecto = proyectoRepository.findById(proyectoId).orElseThrow();
+        Usuario autor = (Usuario) session.getAttribute("usuarioLogueado");
+        
+        ProjectReview reviewExistente = null;
+        boolean editMode = "true".equals(edit);
+        boolean isDuplicate = false;
 
+        if (autor != null) {
+            boolean isAdmin = autor.getRol() != null &&
+                    ("ADMIN".equalsIgnoreCase(autor.getRol().getNombre()) || autor.getRol().getId() == 1L);
+
+            if (proyecto.getAutor().getId().equals(autor.getId()) && !isAdmin) {
+                model.addAttribute("error", "autorreview");
+            }
+            
+            reviewExistente = reviewRepository.findByAutorAndProyecto(autor, proyecto).orElse(null);
+            
+            if (reviewExistente != null && !editMode) {
+                isDuplicate = true;
+                model.addAttribute("error", "duplicado");
+            }
+        }
+
+        // Si es duplicado y NO estamos editando, mandamos una review vacía para que el textarea esté limpio
         model.addAttribute("proyecto", proyecto);
-        model.addAttribute("review", new ProjectReview());
+        model.addAttribute("review", (reviewExistente != null && editMode) ? reviewExistente : new ProjectReview());
+        model.addAttribute("editMode", editMode);
+        model.addAttribute("isDuplicate", isDuplicate);
         model.addAttribute("proyectoId", proyectoId);
 
         return "UI/newprojectreview/newprojectreview";
@@ -79,20 +106,47 @@ public class ProjectReviewController {
             return "redirect:/project-reviews/" + proyectoId;
         }
 
-        // Duplicado
-        if (reviewRepository.findByAutorAndProyecto(autor, proyecto).isPresent()) {
-            redirectAttributes.addFlashAttribute("error", "duplicado");
-            return "redirect:/project-reviews/" + proyectoId;
-        }
-
         review.setAutor(autor);
         review.setProyecto(proyecto);
 
-        reviewRepository.save(review);
-
-        redirectAttributes.addFlashAttribute("success", "review_creada");
+        // Si ya existe una review del mismo autor para el mismo proyecto, la actualizamos
+        ProjectReview reviewExistente = reviewRepository.findByAutorAndProyecto(autor, proyecto).orElse(null);
+        if (reviewExistente != null) {
+            reviewExistente.setComentario(review.getComentario());
+            reviewExistente.setArquitectura(review.getArquitectura());
+            reviewExistente.setLimpieza(review.getLimpieza());
+            reviewExistente.setDocumentacion(review.getDocumentacion());
+            reviewRepository.save(reviewExistente);
+            redirectAttributes.addAttribute("success", "updated");
+        } else {
+            reviewRepository.save(review);
+            redirectAttributes.addAttribute("success", "created");
+        }
 
         return "redirect:/project-reviews/" + proyectoId;
+    }
+
+    // =========================
+    // ELIMINAR REVIEW
+    // =========================
+    @PostMapping("/eliminar")
+    public String eliminarReview(@RequestParam Long reviewId, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuarioLogueado == null) return "redirect:/login";
+
+        ProjectReview review = reviewRepository.findById(reviewId).orElse(null);
+        if (review != null) {
+            boolean isAdmin = usuarioLogueado.getRol() != null && 
+                             ("ADMIN".equalsIgnoreCase(usuarioLogueado.getRol().getNombre()) || usuarioLogueado.getRol().getId() == 1L);
+            
+            if (review.getAutor().getId().equals(usuarioLogueado.getId()) || isAdmin) {
+                Long proyectoId = review.getProyecto().getId();
+                reviewRepository.delete(review);
+                redirectAttributes.addAttribute("success", "deleted");
+                return "redirect:/project-reviews/" + proyectoId;
+            }
+        }
+        return "redirect:/proyectos";
     }
 
     // =========================

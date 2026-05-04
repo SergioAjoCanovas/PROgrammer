@@ -66,7 +66,7 @@ body.fondo-oscuro-neon::before {
     padding: 0 20px;
     gap: 30px;
     align-items: flex-start;
-    flex: 1;
+    flex: 1 0 auto;
 }
 
 /* =========================================================
@@ -124,25 +124,42 @@ body.fondo-oscuro-neon::before {
     position: absolute;
     bottom: -5px;
     right: -5px;
-    background-color: #333;
-    color: #FFCC00;
+    background: rgba(15, 5, 5, 0.8);
+    border: 1px solid #ff4444;
+    border-radius: 50%;
     width: 32px;
     height: 32px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #FFCC00;
     cursor: pointer;
+    color: #ff4444;
     font-size: 0.9rem;
     transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
     z-index: 10;
 }
 
 .btn-follow-heart:hover {
-    background-color: #FFCC00;
-    color: #333;
+    background-color: #ff4444;
+    color: #ffffff;
     transform: scale(1.1);
+}
+
+.btn-follow-heart i.fas {
+    color: #ff4444; 
+}
+
+.btn-follow-heart i.far {
+    color: #ff4444; 
+}
+
+.btn-follow-heart:hover i.far {
+    color: #ffffff; 
+}
+
+.btn-follow-heart:hover i.fas {
+    color: #ffffff; 
 }
 
 .nombre-usuario {
@@ -495,7 +512,8 @@ body.fondo-oscuro-neon::before {
 .contenido-modal {
     display: block;
     margin: auto;
-    max-width: 100%;
+    width: 60%;
+    max-width: 750px;
     max-height: 80vh;
     border: 2px solid #FFCC00;
     border-radius: 15px;
@@ -572,3 +590,25 @@ body.fondo-oscuro-neon::before {
 .estrellas i.empty {
     color: #333;
 }
+/* Estilo de scroll para contenedor de rese�as */
+.contenedor-rese�as {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.contenedor-rese�as::-webkit-scrollbar {
+    width: 8px;
+}
+.contenedor-rese�as::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+}
+.contenedor-rese�as::-webkit-scrollbar-thumb:hover {
+    background-color: #FFCC00;
+}
+.contenedor-rese�as::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+    border-radius: 10px;
+}
+

@@ -467,14 +467,14 @@
                                     <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                 </span>
                             </div>
-                            <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" style="margin-top: 5px; margin-bottom: 5px;">
+                            <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
+                            <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" class="resena-acciones-bottom">
                                 <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
                                 <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
                                     <input type="hidden" name="reviewId" th:value="${r.id}"/>
                                     <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
                                 </form>
                             </div>
-                            <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                         </div>
 
                         <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 2}" class="resena-extra-wrapper">
@@ -489,14 +489,14 @@
                                             <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
                                         </span>
                                     </div>
-                                    <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" style="margin-top: 5px; margin-bottom: 5px;">
+                                    <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
+                                    <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" class="resena-acciones-bottom">
                                         <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
                                         <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
                                             <input type="hidden" name="reviewId" th:value="${r.id}"/>
                                             <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
                                         </form>
                                     </div>
-                                    <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                                 </div>
                             </div>
                         </div>

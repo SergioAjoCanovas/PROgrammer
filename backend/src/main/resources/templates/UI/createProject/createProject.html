@@ -80,6 +80,12 @@
 
     <div th:replace="~{includes/header :: header}"></div>
 
+    <div class="contenedor-volver">
+        <a href="javascript:window.history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> <span id="texto-volver-dinamico">Volver</span>
+        </a>
+    </div>
+
     <main class="contenedor-principal-edicion">
         <section class="tarjeta-edicion">
             <div class="cabecera-edicion">
@@ -97,7 +103,6 @@
             </div>
 
             <form id="formProyecto" th:action="${proyecto != null} ? @{/proyectos/editar} : @{/proyectos/crear}" method="post" enctype="multipart/form-data">
-                <!-- Campo oculto para el ID del proyecto (en caso de que estemos editando) -->
                 <input type="hidden" name="id" th:value="${proyecto != null ? proyecto.id : ''}">
 
                 <div class="campo">
@@ -209,6 +214,24 @@
             if (typeof actualizarMiUsuarioEnHeader === "function") {
                 actualizarMiUsuarioEnHeader();
             }
+
+            // --- LÓGICA PARA EL TEXTO DEL BOTÓN VOLVER ---
+            const referrerURL = document.referrer.toLowerCase();
+            const textoVolver = document.getElementById("texto-volver-dinamico");
+            const inputTitulo = document.querySelector("input[name='titulo']").value.trim();
+
+            if (referrerURL.includes("profile") || referrerURL.includes("perfil")) {
+                textoVolver.innerText = "Volver a tu perfil";
+            } else if (referrerURL.includes("project") || referrerURL.includes("proyecto") || referrerURL.includes("view")) {
+                if (inputTitulo) {
+                    textoVolver.innerText = "Volver a " + inputTitulo;
+                } else {
+                    textoVolver.innerText = "Volver al proyecto";
+                }
+            } else {
+                textoVolver.innerText = "Volver";
+            }
+            // ---------------------------------------------
     
             cargarTecnologiasAgrupadas();
     

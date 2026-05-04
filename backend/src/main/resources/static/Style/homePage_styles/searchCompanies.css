@@ -1,4 +1,6 @@
-/* ESTRUCTURA BASE */
+/* =========================================
+   ESTRUCTURA BASE
+   ========================================= */
 body.fondo-oscuro-neon {
     background-color: #000 !important;
     color: #fff;
@@ -18,6 +20,7 @@ body.fondo-oscuro-neon {
     padding: 0 20px;
     display: flex;
     justify-content: flex-start;
+    box-sizing: border-box;
 }
 
 .enlace-volver {
@@ -47,7 +50,9 @@ body.fondo-oscuro-neon {
     box-sizing: border-box;
 }
 
-/* SECCIÓN BUSCADOR */
+/* =========================================
+   SECCIÓN BUSCADOR
+   ========================================= */
 .seccion-buscador-central {
     width: 100%;
     max-width: 750px;
@@ -197,7 +202,9 @@ body.fondo-oscuro-neon {
     background: #FFCC00; color: #000; box-shadow: 0 0 20px #FFCC00;
 }
 
-/* --- ESTILOS AZULES (CONTADOR Y NO RESULTADOS) --- */
+/* =========================================
+   ESTILOS AZULES (CONTADOR Y NO RESULTADOS)
+   ========================================= */
 
 .contador-resultados-azul {
     margin-bottom: 25px;
@@ -265,34 +272,41 @@ body.fondo-oscuro-neon {
     width: 60px; height: 3px; background: #00d2ff; margin: 15px auto 0; border-radius: 2px; box-shadow: 0 0 10px #00d2ff;
 }
 
-/* CARRUSEL Y GRID */
+/* =========================================
+   CARRUSEL Y GRID
+   ========================================= */
 .seccion-carrusel { width: 100%; max-width: 1000px; box-sizing: border-box; }
 .subtitulo-neon { color: #fff; margin-bottom: 30px; font-size: 1.8rem; border-left: 5px solid #FFCC00; padding-left: 15px; }
 
 .carrusel-wrapper { position: relative; width: 100%; }
 .carrusel-contenedor { overflow: hidden; width: 100%; }
-.carrusel-track { display: flex; gap: 30px; transition: transform 0.6s ease; padding: 20px 0; }
+.carrusel-track { display: flex; gap: 30px; transition: transform 0.6s ease; padding: 20px 5px; }
 
 .grid-resultados-empresas { width: 100%; }
 .grid-inner-empresas {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 30px;
-    justify-items: center;
+    width: 100%;
 }
 
-/* TARJETAS - CAMBIO CLAVE A WIDTH 100% PARA RESPONSIVE */
+/* ESTILO TARJETA FLUIDO */
 .tarjeta-perfil-neon {
     background: #111; 
     border: 1px solid rgba(255, 204, 0, 0.3);
     border-radius: 20px;
     width: 100%; 
-    max-width: 290px; 
     min-height: 430px;
     flex-shrink: 0;
-    transition: 0.3s;
+    transition: all 0.3s ease-out;
     position: relative;
     box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Limitamos el tamaño solo si está dentro de la vista carrusel */
+.carrusel-track .tarjeta-perfil-neon {
+    max-width: 290px;
 }
 
 .contenido-perfil {
@@ -384,7 +398,7 @@ body.fondo-oscuro-neon {
 .caja-bio-full { overflow-y: auto; color: #ccc; font-size: 0.9rem; line-height: 1.5; text-align: left; }
 
 /* =========================================
-   DISEÑO RESPONSIVE Y MÓVIL
+   DISEÑO RESPONSIVE Y MÓVIL (CORREGIDO)
    ========================================= */
 
 @media (max-width: 1150px) { 
@@ -392,45 +406,78 @@ body.fondo-oscuro-neon {
 }
 
 @media (max-width: 768px) {
-    /* Barra de búsqueda adaptada */
+    /* Ajustes generales de texto */
     .titulo-neon { font-size: 2rem; }
-    .input-wrapper { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px; }
-    .caja-busqueda-neon input { padding: 8px 10px; text-align: center; font-size: 0.9rem; }
-    .btn-buscar-neon { width: 100%; padding: 12px; font-size: 1rem; }
-    .funnel-icon { position: absolute; top: -45px; right: 0; background: rgba(0,0,0,0.5); border-radius: 50%; border: 1px solid #FFCC00; }
+    .subtitulo-neon { font-size: 1.5rem; text-align: center; border-left: none; padding-left: 0; }
+
+    /* Barra de búsqueda adaptada sin solapamientos */
+    .caja-busqueda-neon {
+        border-radius: 20px;
+        padding: 15px;
+    }
+    .input-wrapper { 
+        flex-direction: column; 
+        gap: 15px; 
+        padding: 0;
+    }
     
+    /* Centrar icono de embudo dentro del marco sin overflow */
+    .funnel-icon { 
+        position: relative;
+        background: rgba(255, 204, 0, 0.1); 
+        border-radius: 50%; 
+        border: 1px solid #FFCC00; 
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    .caja-busqueda-neon input { 
+        padding: 10px; 
+        text-align: center; 
+        font-size: 1rem; 
+        border-bottom: 1px solid rgba(255,204,0,0.3);
+    }
+    .btn-buscar-neon { width: 100%; padding: 12px; font-size: 1rem; }
+    
+    /* Filtros Dropdown */
     .grid-checkboxes { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
     .controles-globales { flex-direction: column; align-items: stretch; }
     .btn-control { text-align: center; padding: 10px; }
 
-    /* Forzar a que la cuadrícula se ponga en 1 sola columna centrada */
+    /* Cuadrícula Resultados (1-2 columnas fluidas) */
     .grid-inner-empresas {
-        grid-template-columns: 1fr;
-    }
-    .grid-inner-empresas .tarjeta-perfil-neon {
-        margin: 0 auto; /* Centrar la tarjeta */
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
     }
 
-    /* Magia para el carrusel en móvil: Desactiva el JS y usa Scroll táctil nativo */
+    /* Magia para el carrusel en móvil (Scroll táctil nativo y fluido) */
     .carrusel-contenedor {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        padding-bottom: 20px; /* Espacio para barra de scroll */
-        width: 100vw; /* Ocupa todo el ancho */
-        margin-left: -20px; /* Compensa el padding del contenedor general */
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-bottom: 20px; 
+        width: 100%; 
+        /* Custom scrollbar para móviles */
+        scrollbar-width: none; 
+    }
+    .carrusel-contenedor::-webkit-scrollbar {
+        display: none;
     }
     
     .carrusel-track {
-        transform: none !important; /* Mata el cálculo de JavaScript */
+        transform: none !important; 
         width: max-content;
-        gap: 15px;
+        gap: 20px;
+        padding: 10px;
     }
     
     .carrusel-track .tarjeta-perfil-neon {
-        width: 80vw; /* La tarjeta ocupa el 80% de la pantalla para que asome la siguiente */
+        width: 80vw; 
+        max-width: 300px;
         scroll-snap-align: center;
         margin: 0;
     }
@@ -438,8 +485,12 @@ body.fondo-oscuro-neon {
 
 @media (max-width: 480px) {
     .titulo-neon { font-size: 1.6rem; }
-    .subtitulo-neon { font-size: 1.4rem; }
+    .subtitulo-neon { font-size: 1.3rem; }
     .carrusel-track .tarjeta-perfil-neon { width: 85vw; }
     .no-resultados-box-azul { font-size: 3rem; }
     .icono-overlay-rojo { font-size: 2rem; top: -5px; right: -10px; }
+    
+    .grid-inner-empresas {
+        grid-template-columns: 1fr; /* Forzar 1 columna si la pantalla es muy pequeña */
+    }
 }

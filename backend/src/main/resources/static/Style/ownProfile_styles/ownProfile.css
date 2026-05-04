@@ -1,5 +1,5 @@
 ﻿/* ============================================================
-    1. VARIABLES Y CONFIGURACIÃ“N GLOBAL
+    1. VARIABLES Y CONFIGURACIÓN GLOBAL
    ============================================================ */
 :root {
     --amarillo-neon: #FFCC00;
@@ -77,7 +77,7 @@ body.fondo-oscuro-neon {
 }
 
 /* ============================================================
-    3. TARJETAS (ACORDEÃ“N / PANEL)
+    3. TARJETAS (ACORDEÓN / PANEL)
    ============================================================ */
 .tarjeta-acordeon {
     background-color: var(--negro-tarjeta) !important;
@@ -411,7 +411,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    6. BOTONES NEÃ“N
+    6. BOTONES NEÓN
    ============================================================ */
 .boton-amarillo-solido {
     background-color: var(--negro-input) !important;
@@ -455,7 +455,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    7. TECNOLOGÃ AS (TAGS)
+    7. TECNOLOGÍAS (TAGS)
    ============================================================ */
 .tags-tecnologias {
     display: flex;
@@ -487,12 +487,12 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
-/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÃ AS */
+/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÍAS */
 .tech-oculta {
     display: none !important;
 }
 
-/* ESTILOS PARA LOS BOTONES MÃ S Y MENOS */
+/* ESTILOS PARA LOS BOTONES MÁS Y MENOS */
 .tag-mas, .tag-menos {
     background-color: transparent !important;
     border: 1px dashed var(--amarillo-neon) !important;
@@ -507,7 +507,7 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 /* ============================================================
-    8. DISEÃ‘O INFERIOR Y RESPONSIVE
+    8. MEDIA QUERIES (RESPONSIVE MEJORADO)
    ============================================================ */
 .fila-inferior {
     display: grid;
@@ -516,15 +516,103 @@ p, span, div, h1, h2, h3, h4 {
     align-items: start; 
 }
 
-@media (max-width: 1000px) {
-    .contenedor-principal { flex-direction: column; align-items: center; }
-    .columna-perfil { width: 100%; flex: none; }
-    .rejilla-proyectos { grid-template-columns: repeat(2, 1fr); }
-    .fila-inferior { grid-template-columns: 1fr; }
+/* --- TABLETS Y PORTÁTILES PEQUEÑOS --- */
+@media (max-width: 1024px) {
+    .contenedor-principal { 
+        align-items: stretch; /* Permite que las columnas llenen el espacio */
+    }
+    
+    /* Forzamos que se apilen y ocupen el 100% */
+    .columna-perfil { 
+        flex: 1 1 100%; 
+        width: 100%; 
+    }
+    
+    .columna-derecha { 
+        flex: 1 1 100%; 
+        width: 100%; 
+    }
+    
+    .rejilla-proyectos { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    
+    .fila-inferior { 
+        grid-template-columns: 1fr; 
+    }
+}
+
+/* --- TABLETS VERTICALES Y MÓVILES GRANDES --- */
+@media (max-width: 768px) {
+    .contenedor-principal { 
+        margin: 15px auto;
+        padding: 0 10px;
+        width: 100%;
+    }
+
+    .vidrio-contenedor-perfil {
+        padding: 15px; /* Menos margen interno para aprovechar pantalla */
+        border-radius: 10px;
+    }
+
+    .rejilla-proyectos { 
+        grid-template-columns: 1fr; /* Una sola columna para proyectos */
+        gap: 15px;
+    }
+
+    .tabs-neon {
+        flex-wrap: wrap; /* Permite que los botones bajen si no caben */
+        gap: 10px;
+    }
+
+    .tab-btn {
+        flex: 1 1 calc(50% - 10px); /* Dos botones por fila */
+        font-size: 0.95rem;
+        padding: 10px 15px;
+        text-align: center;
+    }
+
+    .tarjeta-acordeon {
+        padding: 20px !important;
+    }
+}
+
+/* --- MÓVILES PEQUEÑOS --- */
+@media (max-width: 480px) {
+    .tabs-neon {
+        flex-direction: column; /* Apila todos los botones de las pestañas */
+    }
+
+    .tab-btn {
+        width: 100%;
+        flex: none;
+    }
+
+    .circulo-foto {
+        width: 110px;
+        height: 110px;
+    }
+
+    .nombre-usuario {
+        font-size: 1.4rem !important;
+    }
+
+    .cabecera-tarjeta h2, 
+    .cabecera-tarjeta h3 {
+        font-size: 1.15rem !important;
+    }
+
+    .tarjeta-acordeon {
+        padding: 15px !important;
+    }
+
+    .grid-usuarios-seguimiento {
+        grid-template-columns: 1fr; /* 1 sola columna para seguimiento */
+    }
 }
 
 /* ============================================================
-    9. LÃ“GICA DE ESTADO ACTIVO Y RESEÃ‘AS
+    9. LÓGICA DE ESTADO ACTIVO Y RESEÑAS
    ============================================================ */
 .activo-neon, .activo-neon i {
     color: var(--amarillo-neon) !important;
@@ -572,6 +660,22 @@ p, span, div, h1, h2, h3, h4 {
     font-size: 0.8rem;
     line-height: 1.4;
 }
+
+/* --- ANIMACIÓN GRID (SMOOTHIE) PARA RESEÑAS PROPIAS --- */
+.resena-extra-wrapper-own {
+    display: grid;
+    grid-template-rows: 0fr; /* Altura colapsada */
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resena-extra-wrapper-own.expandido {
+    grid-template-rows: 1fr; /* Altura real del contenido */
+}
+
+.resena-extra-inner-own {
+    overflow: hidden; /* Oculta el contenido mientras colapsa */
+}
+
 
 /* ============================================================
     10. TOAST DE AVISO
@@ -623,7 +727,7 @@ p, span, div, h1, h2, h3, h4 {
     min-height: 260px;
 }
 
-/* DESCRIPCIÃ“N CON SCROLL COMO BIO */
+/* DESCRIPCIÓN CON SCROLL COMO BIO */
 .proyecto-desc {
     max-height: 70px;
     overflow-y: auto;
@@ -642,7 +746,7 @@ p, span, div, h1, h2, h3, h4 {
     border-radius: 10px;
 }
 
-/* CARRUSEL PEQUEÃ‘O */
+/* CARRUSEL PEQUEÑO */
 .carousel-proyecto {
     width: 100%;
     height: 80px;
@@ -662,7 +766,7 @@ p, span, div, h1, h2, h3, h4 {
     display: block;
 }
 
-/* TECNOLOGÃ AS PROYECTO */
+/* TECNOLOGÍAS PROYECTO */
 .tech-proyecto {
     display: flex;
     flex-wrap: wrap;
@@ -685,7 +789,7 @@ p, span, div, h1, h2, h3, h4 {
     transition: all 0.3s ease;
 }
 
-/* Hover estilo neÃ³n como el resto */
+/* Hover estilo neón como el resto */
 .icono-grid-top:hover {
     transform: scale(1.2);
     color: #ffffff;

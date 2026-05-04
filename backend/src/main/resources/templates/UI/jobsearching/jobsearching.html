@@ -91,6 +91,11 @@
         f.appendChild(i); document.body.appendChild(f); f.submit();
     }
 
+    // Nueva función para unificar la redirección de editar
+    function irAEditarOferta(ofertaId) {
+        window.location.href = '/editOffer/' + ofertaId;
+    }
+
     function inicializarHeader() {
         const navEmpleos = document.getElementById('nav-empleos'); 
         if (navEmpleos) {
@@ -127,23 +132,46 @@
     function irAMisOfertas() { const u = localStorage.getItem('usuarioLogueado'); if (u) window.location.href = '/mis-ofertas?empresa=' + encodeURIComponent(u); }
 
     function adaptarBotonesPorRol() {
-        const u = localStorage.getItem('usuarioLogueado'); const r = (localStorage.getItem('rolUsuario') || '').trim().toUpperCase();
-        document.querySelectorAll('.tarjeta-oferta').forEach(t => {
-            const acc = t.querySelector('.acciones-oferta'); const emp = t.getAttribute('data-empresa');
-            const id = t.getAttribute('data-id'); const act = t.querySelector('.estado-oferta').classList.contains('activo');
+        const u = localStorage.getItem('usuarioLogueado'); 
+        const r = (localStorage.getItem('rolUsuario') || '').trim().toUpperCase();
+        const esAdmin = r === 'ADMIN' || r === '1';
 
-            if ((r === 'COMPANY' || r === '3') && emp === u) {
+        document.querySelectorAll('.tarjeta-oferta').forEach(t => {
+            const acc = t.querySelector('.acciones-oferta'); 
+            const emp = t.getAttribute('data-empresa');
+            const id = t.getAttribute('data-id'); 
+            const act = t.querySelector('.estado-oferta').classList.contains('activo');
+            const esSuOferta = (r === 'COMPANY' || r === '3') && emp === u;
+
+            // Aquí el frontend trata al Admin y a la Empresa propietaria de forma IDÉNTICA
+            if (esAdmin || esSuOferta) {
                 if (!t.querySelector('.badge-propia')) {
-                    const b = document.createElement('span'); b.className = 'badge-propia'; b.innerHTML = '<i class="fas fa-star"></i> Tu Oferta';
+                    const b = document.createElement('span'); 
+                    b.className = 'badge-propia'; 
+                    
+                    if (esSuOferta) {
+                        b.innerHTML = '<i class="fas fa-star"></i> Tu Oferta';
+                    } else if (esAdmin) {
+                        b.innerHTML = '<i class="fas fa-shield-alt"></i> Gestión Admin';
+                        b.style.background = '#00f2ff';
+                        b.style.color = 'black';
+                    }
+                    
                     t.querySelector('.info-oferta').prepend(b);
                 }
                 acc.innerHTML = `<span class="estado-oferta ${act?'activo':'inactivo'}"><i class="fas ${act?'fa-check-circle':'fa-times-circle'}"></i> <span>${act?'Activa':'Cerrada'}</span></span>
-                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;"><button class="boton-postular" onclick="irAJobView(${id})">VER INFO</button>
-                    <button class="boton-postular btn-empresa-editar" onclick="window.location.href='/editOffer/${id}'"><i class="fas fa-edit"></i> EDITAR</button></div>`;
+                    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                        <button class="boton-postular" onclick="irAJobView(${id})">VER INFO</button>
+                        <button class="boton-postular btn-empresa-editar" onclick="irAEditarOferta(${id})"><i class="fas fa-edit"></i> EDITAR</button>
+                    </div>`;
             } else if (act) {
                 const b = t.querySelector('.boton-postular');
-                if (r === 'DEVELOPER' || r === '2') { b.innerHTML = misPostulacionesIds.includes(parseInt(id)) ? '<i class="fas fa-edit"></i> EDITAR POSTULACIÓN' : 'POSTULAR'; }
-                else { b.innerHTML = 'VER INFORMACIÓN'; }
+                if (r === 'DEVELOPER' || r === '2') { 
+                    b.innerHTML = misPostulacionesIds.includes(parseInt(id)) ? '<i class="fas fa-edit"></i> EDITAR POSTULACIÓN' : 'POSTULAR'; 
+                }
+                else { 
+                    b.innerHTML = 'VER INFORMACIÓN'; 
+                }
             }
         });
     }

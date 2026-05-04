@@ -116,3 +116,143 @@
         transform: translateY(0);
     }
 }
+
+.tarjeta-edicion-rapida {
+    max-width: 320px;
+}
+
+/* ============================================================
+   TARJETA EDICIÓN PERFIL (ESTILO PRO)
+============================================================ */
+
+.tarjeta-edicion-rapida {
+    max-width: 360px;
+}
+
+/* bloque superior tipo perfil */
+.perfil-superior {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ============================================================
+   FOTO PERFIL (más pro)
+============================================================ */
+
+.circulo-foto {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 2px solid #FFCC00;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+}
+
+.circulo-foto:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
+}
+
+/* imagen dentro */
+.circulo-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* icono usuario */
+.circulo-foto i {
+    font-size: 2.5rem !important;
+    color: #FFCC00;
+}
+
+/* ============================================================
+   NOMBRE USUARIO (más elegante)
+============================================================ */
+
+.contenedor-nombre-usuario {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nombre-usuario {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #FFFDDF;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
+}
+
+/* icono editar */
+.icono-editar-nombre {
+    color: #FFCC00;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icono-editar-nombre:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px #FFCC00;
+}
+
+/* ============================================================
+   INPUT EDICIÓN (look moderno)
+============================================================ */
+
+.input-nombre-perfil {
+    width: 100%;
+    padding: 10px 12px;
+
+    border-radius: 10px;
+    border: 1px solid rgba(255, 204, 0, 0.4);
+
+    background-color: #111;
+    color: #FFFDDF;
+
+    outline: none;
+
+    text-align: center;
+    font-weight: 600;
+
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.input-nombre-perfil:focus {
+    border-color: #FFCC00;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+
+/* ============================================================
+   BOTÓN GUARDAR (más integrado)
+============================================================ */
+
+.boton-amarillo-solido {
+    margin-top: 10px;
+    width: 100%;
+
+    padding: 10px;
+    border-radius: 10px;
+
+    background: #FFCC00;
+    color: #000;
+
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.boton-amarillo-solido:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px #FFCC00;
+}

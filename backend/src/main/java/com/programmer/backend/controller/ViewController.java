@@ -224,12 +224,14 @@ public class ViewController {
     @GetMapping("/limitedProfile")
     public String limitedProfile(HttpSession session, Model model) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        
-        if (usuario == null || !"VISITOR".equals(usuario.getRol().getNombre())) {
+    
+        if (usuario == null) return "redirect:/login";
+    
+        if (usuario.getRol() == null || !"VISITOR".equals(usuario.getRol().getNombre())) {
             return "redirect:/login";
         }
-
-        model.addAttribute("usuarioHeader", usuario);
+    
+        model.addAttribute("usuarioLogueado", usuario);
         return "UI/ownProfile/ownProfileLimited";
     }
 }

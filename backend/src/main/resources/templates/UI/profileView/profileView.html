@@ -23,7 +23,6 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
-        /* ESTILO DEL CORAZÓN IGUAL A .icono-corazon DE proyectlist.css */
         .btn-follow-heart {
             position: absolute;
             bottom: 5px;
@@ -49,17 +48,9 @@
             transform: scale(1.1);
         }
 
-        .btn-follow-heart i.fas {
-            color: #ff4444; 
-        }
-        
-        .btn-follow-heart i.far {
-            color: #FFCC00; 
-        }
-        
-        .btn-follow-heart:hover i.far {
-            color: #333; 
-        }
+        .btn-follow-heart i.fas { color: #ff4444; }
+        .btn-follow-heart i.far { color: #FFCC00; }
+        .btn-follow-heart:hover i.far { color: #333; }
 
         .carrusel-inner {
             display: flex;
@@ -156,7 +147,7 @@
             background: rgba(0,243,255,0.1);
             padding: 3px 8px;
             border-radius: 4px;
-            border: 1px solid rgba(0,243,255,0.3);
+            border: 1px solid rgba(0, 243, 255, 0.3);
             color: #00f3ff;
             font-size: 0.75rem;
             transition: all 0.3s ease;
@@ -168,7 +159,6 @@
             color: white;
         }
         
-        /* ESTILOS DE LA LISTA DE ENLACES IGUALES A proyectlist.css */
         .lista-dotted {
             display: flex;
             flex-direction: column;
@@ -203,9 +193,7 @@
             box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
         }
 
-        .item-dotted:hover i {
-            transform: scale(1.2);
-        }
+        .item-dotted:hover i { transform: scale(1.2); }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -404,23 +392,25 @@
                             <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                         </div>
 
-                        <div id="contenedor-resenas-extra" style="display: none;">
-                            <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 2}" class="resena-item">
-                                <div class="resena-header">
-                                    <span class="resena-usuario">
-                                        <span th:text="${r.autor.username}">Usuario</span>
-                                        <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
-                                    </span>
-                                    <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
-                                        <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
-                                    </span>
+                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 2}" class="resena-extra-wrapper">
+                            <div class="resena-extra-inner">
+                                <div class="resena-item">
+                                    <div class="resena-header">
+                                        <span class="resena-usuario">
+                                            <span th:text="${r.autor.username}">Usuario</span>
+                                            <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                        </span>
+                                        <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
+                                            <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                        </span>
+                                    </div>
+                                    <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                                 </div>
-                                <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
                             </div>
                         </div>
 
                         <div th:if="${reviews != null and #lists.size(reviews) > 2}" style="text-align: center; margin-top: 15px;">
-                            <button id="btn-toggle-resenas" class="btn-ver-proyecto" style="display: inline-flex; align-items: center; justify-content: center;">
+                            <button id="btn-toggle-resenas" data-state="more" style="display: inline-flex; align-items: center; justify-content: center;">
                                 <span id="texto-toggle-resenas" style="margin-right: 8px;">Ver más reseñas</span>
                                 <i id="icono-toggle-resenas" class="fas fa-chevron-down" style="transition: transform 0.3s ease;"></i>
                             </button>
@@ -479,7 +469,7 @@
                 btnVolver.href = '/searchProgrammer';
             }
 
-            // 1. Selector de estrellas
+            // Selector de estrellas
             const estrellas = document.querySelectorAll("#estrellas-selector i");
             const inputRating = document.getElementById("rating-value");
 
@@ -500,22 +490,55 @@
                 });
             });
 
-            // 2. LÓGICA DEL BOTÓN DESPLEGABLE DE RESEÑAS
+            // Lógica de carga por lotes con expansión Grid Smoothie
             const btnToggleResenas = document.getElementById('btn-toggle-resenas');
-            const resenasExtra = document.getElementById('contenedor-resenas-extra');
+            const resenasExtra = document.querySelectorAll('.resena-extra-wrapper');
             const textoToggle = document.getElementById('texto-toggle-resenas');
             const iconoToggle = document.getElementById('icono-toggle-resenas');
+            
+            let indiceActual = 0;
+            const lote = 5;
 
-            if (btnToggleResenas && resenasExtra) {
+            if (btnToggleResenas) {
                 btnToggleResenas.addEventListener('click', () => {
-                    if (resenasExtra.style.display === 'none') {
-                        resenasExtra.style.display = 'block';
-                        textoToggle.textContent = 'Ocultar reseñas';
-                        iconoToggle.style.transform = 'rotate(180deg)';
+                    const estado = btnToggleResenas.getAttribute('data-state');
+
+                    if (estado === 'more') {
+                        const finalLote = Math.min(indiceActual + lote, resenasExtra.length);
+                        
+                        for(let i = indiceActual; i < finalLote; i++) {
+                            const item = resenasExtra[i];
+                            item.classList.add('resena-visible');
+                            
+                            // Activamos la expansión 0fr -> 1fr de forma fluida
+                            requestAnimationFrame(() => {
+                                item.classList.add('expandido');
+                            });
+                        }
+
+                        indiceActual = finalLote;
+
+                        if (indiceActual >= resenasExtra.length) {
+                            textoToggle.textContent = 'Ocultar reseñas';
+                            iconoToggle.style.transform = 'rotate(180deg)';
+                            btnToggleResenas.setAttribute('data-state', 'hide');
+                        }
                     } else {
-                        resenasExtra.style.display = 'none';
+                        // Resetear suavemente hacia arriba
+                        resenasExtra.forEach(item => {
+                            item.classList.remove('expandido');
+                            setTimeout(() => {
+                                if (!item.classList.contains('expandido')) {
+                                    item.classList.remove('resena-visible');
+                                }
+                            }, 500); 
+                        });
+                        indiceActual = 0;
                         textoToggle.textContent = 'Ver más reseñas';
                         iconoToggle.style.transform = 'rotate(0deg)';
+                        btnToggleResenas.setAttribute('data-state', 'more');
+                        
+                        document.getElementById('contenedor-resenas').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
                 });
             }

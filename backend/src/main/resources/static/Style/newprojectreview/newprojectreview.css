@@ -123,16 +123,44 @@ body.fondo-oscuro-neon::before {
     object-fit: cover;
 }
 
-/* Icono corazón igual */
-.icono-corazon {
+/* =========================================================
+   BOTÓN SEGUIR (CORAZÓN ESTILO PROFILEVIEW)
+   ========================================================= */
+.btn-follow-heart {
     position: absolute;
     bottom: 5px;
     right: 5px;
+    background-color: #333;
     color: #FFCC00;
-    background: #1a1a1a;
-    padding: 8px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 1px solid #FFCC00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFCC00;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.btn-follow-heart:hover {
+    background-color: #FFCC00;
+    color: #333;
+    transform: scale(1.1);
+}
+
+.btn-follow-heart i.fas {
+    color: #ff4444; 
+}
+
+.btn-follow-heart i.far {
+    color: #FFCC00; 
+}
+
+.btn-follow-heart:hover i.far {
+    color: #333; 
 }
 
 /* Nombre usuario */

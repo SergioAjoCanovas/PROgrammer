@@ -128,10 +128,6 @@ body.fondo-oscuro-neon {
     overflow: hidden;
 }
 
-.circulo-foto:hover { 
-    transform: scale(1.05); 
-}
-
 .circulo-foto img {
     width: 100%;
     height: 100%;
@@ -295,10 +291,11 @@ header .nav-enlaces a.activo span {
 }
 
 /* =========================================================
-   BOTONES
+   BOTONES NEÓN (ACTUALIZADOS)
    ========================================================= */
 .boton-anadir,
-.boton-ver {
+.boton-ver,
+#btn-toggle-resenas {
     width: 100%;
     padding: 12px;
     background-color: #0e0e0e !important; 
@@ -314,14 +311,16 @@ header .nav-enlaces a.activo span {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    text-decoration: none;
 }
 
 .boton-anadir:hover,
-.boton-ver:hover {
+.boton-ver:hover,
+#btn-toggle-resenas:hover {
     background-color: #FFCC00 !important;
     color: #111 !important;
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
-    transform: scale(1.06) translateY(-2px); 
+    transform: scale(1.05); 
 }
 
 
@@ -370,7 +369,7 @@ header .nav-enlaces a.activo span {
 }
 
 /* =========================================================
-   SECCIÓN INFERIOR Y RESEÑAS
+   SECCIÓN INFERIOR Y RESEÑAS (NUEVA ANIMACIÓN SMOOTHIE)
    ========================================================= */
 .contenedor-inferior-derecha {
     display: flex;
@@ -391,6 +390,21 @@ header .nav-enlaces a.activo span {
     height: auto;
     padding-right: 10px;
     transition: all 0.3s ease;
+}
+
+/* --- ANIMACIÓN GRID (SMOOTHIE TOTAL) --- */
+.resena-extra-wrapper {
+    display: grid;
+    grid-template-rows: 0fr; /* Altura colapsada */
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resena-extra-wrapper.expandido {
+    grid-template-rows: 1fr; /* Altura real del contenido */
+}
+
+.resena-extra-inner {
+    overflow: hidden; /* Oculta el contenido mientras colapsa */
 }
 
 /* Estilos para el selector de estrellas */
@@ -423,12 +437,6 @@ header .nav-enlaces a.activo span {
     border-bottom: 1px solid rgba(255,255,255,0.1);
     padding: 10px 0;
     margin-bottom: 10px;
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .resena-header {
@@ -478,11 +486,14 @@ header .nav-enlaces a.activo span {
     .contenedor-inferior-derecha {
         flex-direction: column; 
         gap: 20px;
+        align-items: stretch;
     }
 
     .tarjeta-inferior {
         width: 100%;
-        min-height: auto; 
+        min-height: unset !important; 
+        height: auto !important;      
+        flex: none !important;         
     }
 
     .contenido-inferior {

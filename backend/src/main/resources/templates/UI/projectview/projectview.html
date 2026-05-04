@@ -47,39 +47,6 @@
             object-fit: cover;
         }
 
-        .btn-follow-heart {
-            position: absolute;
-            bottom: 5px;
-            right: 0px;
-            background: rgba(15, 5, 5, 0.8);
-            border: 1px solid #ff4444;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #ff4444;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
-            z-index: 10;
-        }
-
-        .btn-follow-heart:hover {
-            background: #ff4444;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .btn-follow-heart i.fas {
-            color: #ff4444;
-        }
-        .btn-follow-heart:hover i.fas {
-            color: white;
-        }
-
         .tech-tag-azul {
             background: rgba(0,243,255,0.05);
             padding: 5px 12px;
@@ -115,7 +82,7 @@
     <a th:unless="${session.usuarioLogueado != null and session.usuarioLogueado.id == autor.id}" 
        th:href="'/profileView/' + ${autor.id}" 
        class="enlace-volver">
-        <i class="fas fa-arrow-left"></i> Ver perfil de <span th:text="${autor.username}">Autor</span>
+        <i class="fas fa-arrow-left"></i> Ver perfil de<span th:text="${autor.username}">Autor</span>
     </a>
 </div>
 

@@ -15,6 +15,12 @@
 
     <div th:replace="~{includes/header :: header}"></div>
 
+    <div class="contenedor-volver">
+        <a href="/jobsearching" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver a ofertas
+        </a>
+    </div>
+
     <main class="contenedor-principal">
         <section class="seccion-derecha-dinamica">
             <div class="contenedor-postulacion">
@@ -171,8 +177,9 @@
                                         <i th:class="${postulacionExistente != null} ? 'fas fa-save' : 'fas fa-paper-plane'"></i> 
                                         <span th:text="${postulacionExistente != null} ? ' ACTUALIZAR POSTULACIÓN' : ' ENVIAR POSTULACIÓN'"></span>
                                     </button>
-                            </form>
                         </div>
+                    </form>
+                </div>
 
             </div>
         </section>

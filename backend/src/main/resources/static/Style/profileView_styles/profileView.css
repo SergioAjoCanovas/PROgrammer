@@ -80,6 +80,8 @@ body.fondo-oscuro-neon {
     flex-direction: column;
     gap: 30px;
     width: 100%;
+    /* Aseguramos que la columna no se expanda por textos largos */
+    min-width: 0;
 }
 
 /* =========================================================
@@ -361,6 +363,11 @@ header .nav-enlaces a.activo span {
     color: #ccc;
     font-size: 0.95rem;
     flex-grow: 1;
+    /* FIX: Fuerza el salto de línea para descripciones largas */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
 }
 
 .tarjeta-mini-proyecto:hover {
@@ -381,6 +388,8 @@ header .nav-enlaces a.activo span {
 
 .tarjeta-inferior {
     flex: 1; 
+    /* FIX: Crucial para evitar que el flex item rompa el ancho máximo por culpa del texto */
+    min-width: 0; 
     min-height: 280px; 
     height: auto;
     box-sizing: border-box;
@@ -390,6 +399,14 @@ header .nav-enlaces a.activo span {
     height: auto;
     padding-right: 10px;
     transition: all 0.3s ease;
+}
+
+/* FIX: Obliga a que los párrafos dentro rompan las palabras largas (tu "Sobre mí") */
+.contenido-inferior p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
 }
 
 /* --- ANIMACIÓN GRID (SMOOTHIE TOTAL) --- */
@@ -455,6 +472,10 @@ header .nav-enlaces a.activo span {
 .resena-texto { 
     font-size: 0.85rem; 
     color: #ccc; 
+    /* FIX: Fuerza el salto de línea en comentarios larguísimos sin espacios */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* =========================================================

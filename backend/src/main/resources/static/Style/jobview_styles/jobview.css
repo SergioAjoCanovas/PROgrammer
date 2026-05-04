@@ -26,10 +26,40 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
+/* --- BOTÓN VOLVER --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto; /* Bajado un pelín (de 15px a 30px) */
+    padding: 0 45px; /* Empujado un poco más a la derecha (de 20px a 45px) */
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 5;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-principal {
     display: flex;
     justify-content: center;
-    padding: 80px 20px 40px;
+    padding: 30px 20px 40px; 
     
     /* Esto hace que el main crezca y ocupe el espacio sobrante */
     flex: 1; 
@@ -541,6 +571,11 @@ input::file-selector-button:hover {
    5. RESPONSIVE
    ========================================================= */
 @media (max-width: 900px) {
+    .contenedor-volver {
+        margin-top: 25px; 
+        padding: 0 30px;
+        margin-bottom: -10px;
+    }
     .contenedor-postulacion { 
         flex-direction: column; 
         align-items: center; 

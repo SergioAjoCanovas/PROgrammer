@@ -267,12 +267,12 @@
                         <h3>RESEÑAS RECIBIDAS</h3>
                     </div>
                     
-                    <div style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
+                    <div id="contenedor-resenas-own" style="padding-right: 5px;">
                         <div th:if="${#lists.isEmpty(reviews)}">
                             <p style="color: #888; font-style: italic;">Aún nadie ha valorado tu perfil. ¡Sigue programando!</p>
                         </div>
 
-                        <div th:each="r : ${reviews}" class="resena-item-own">
+                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index < 2}" class="resena-item-own">
                             <div class="resena-header-own">
                                 <span class="resena-autor-own">
                                     <span th:text="${r.autor.username}">Usuario</span>
@@ -283,6 +283,30 @@
                                 </span>
                             </div>
                             <p class="resena-texto-own" th:text="${r.comentario}">Comentario...</p>
+                        </div>
+
+                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 2}" class="resena-extra-wrapper-own">
+                            <div class="resena-extra-inner-own">
+                                <div class="resena-item-own">
+                                    <div class="resena-header-own">
+                                        <span class="resena-autor-own">
+                                            <span th:text="${r.autor.username}">Usuario</span>
+                                            <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                        </span>
+                                        <span class="resena-estrellas-own">
+                                            <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                        </span>
+                                    </div>
+                                    <p class="resena-texto-own" th:text="${r.comentario}">Comentario...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${reviews != null and #lists.size(reviews) > 2}" style="text-align: center; margin-top: 15px;">
+                            <button id="btn-toggle-resenas-own" class="boton-amarillo-solido" data-state="more" style="display: inline-flex; align-items: center; justify-content: center;">
+                                <span id="texto-toggle-resenas-own" style="margin-right: 8px;">Ver más reseñas</span>
+                                <i id="icono-toggle-resenas-own" class="fas fa-chevron-down" style="transition: transform 0.3s ease;"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1149,7 +1173,60 @@ document.addEventListener("click", function (e) {
     }
 });
 
-    //adadadadadd
+window.addEventListener('load', () => {
+    // Lógica de carga por lotes con expansión Grid Smoothie para OWN PROFILE
+    const btnToggleResenas = document.getElementById('btn-toggle-resenas-own');
+    const resenasExtra = document.querySelectorAll('.resena-extra-wrapper-own');
+    const textoToggle = document.getElementById('texto-toggle-resenas-own');
+    const iconoToggle = document.getElementById('icono-toggle-resenas-own');
+    
+    let indiceActual = 0;
+    const lote = 5;
+
+    if (btnToggleResenas) {
+        btnToggleResenas.addEventListener('click', () => {
+            const estado = btnToggleResenas.getAttribute('data-state');
+
+            if (estado === 'more') {
+                const finalLote = Math.min(indiceActual + lote, resenasExtra.length);
+                
+                for(let i = indiceActual; i < finalLote; i++) {
+                    const item = resenasExtra[i];
+                    item.classList.add('resena-visible');
+                    
+                    // Activamos la expansión 0fr -> 1fr de forma fluida
+                    requestAnimationFrame(() => {
+                        item.classList.add('expandido');
+                    });
+                }
+
+                indiceActual = finalLote;
+
+                if (indiceActual >= resenasExtra.length) {
+                    textoToggle.textContent = 'Ocultar reseñas';
+                    iconoToggle.style.transform = 'rotate(180deg)';
+                    btnToggleResenas.setAttribute('data-state', 'hide');
+                }
+            } else {
+                // Resetear suavemente hacia arriba
+                resenasExtra.forEach(item => {
+                    item.classList.remove('expandido');
+                    setTimeout(() => {
+                        if (!item.classList.contains('expandido')) {
+                            item.classList.remove('resena-visible');
+                        }
+                    }, 500); 
+                });
+                indiceActual = 0;
+                textoToggle.textContent = 'Ver más reseñas';
+                iconoToggle.style.transform = 'rotate(0deg)';
+                btnToggleResenas.setAttribute('data-state', 'more');
+                
+                document.getElementById('contenedor-resenas-own').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    }
+});
     </script>
     <div id="toast-neon-box" class="toast-neon">
         <i id="toast-neon-icon" class="fas fa-check-circle"></i>

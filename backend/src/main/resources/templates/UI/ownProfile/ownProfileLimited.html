@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>ProGrammer - Perfil limitado</title>
 
-    <!-- CSS GENERAL (si ya lo usas en otras vistas) -->
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
@@ -20,6 +19,66 @@
 
 <main class="contenedor-limitado">
 
+    <div class="tarjeta-limitada tarjeta-edicion-rapida">
+
+        <div class="perfil-superior">
+    
+            <!-- FOTO PERFIL -->
+            <form id="formFotoLimited"
+                  action="/usuario/uploadFoto"
+                  method="post"
+                  enctype="multipart/form-data">
+    
+                <label for="fotoLimited" style="cursor:pointer;">
+                    <div class="circulo-foto">
+                        <img th:if="${usuarioLogueado.fotoPerfil != null}"
+                             th:src="${usuarioLogueado.fotoPerfil}"
+                             style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+    
+                        <i th:if="${usuarioLogueado.fotoPerfil == null}"
+                           class="fas fa-user"
+                           style="font-size:2rem; color:#FFCC00;"></i>
+                    </div>
+                </label>
+    
+                <input type="file"
+                       id="fotoLimited"
+                       name="foto"
+                       accept="image/*"
+                       style="display:none;"
+                       onchange="document.getElementById('formFotoLimited').submit();">
+            </form>
+    
+            <!-- USERNAME -->
+            <div class="contenedor-nombre-usuario">
+    
+                <span class="nombre-usuario"
+                      th:text="${usuarioLogueado.username}"
+                      id="usernameLimited"></span>
+    
+                <i class="fas fa-pen icono-editar-nombre"
+                   onclick="activarEditUsernameLimited()"></i>
+            </div>
+    
+            <form id="formUsernameLimited"
+                  action="/usuario/updateUsername"
+                  method="post"
+                  style="display:none; width:100%;">
+    
+                <input type="text"
+                       name="username"
+                       class="input-nombre-perfil"
+                       id="inputUsernameLimited"
+                       th:value="${usuarioLogueado.username}">
+    
+                <button type="submit" class="boton-amarillo-solido">
+                    Guardar
+                </button>
+            </form>
+    
+        </div>
+    </div>
+
     <div class="tarjeta-limitada">
 
         <div class="icono-lock">
@@ -28,9 +87,7 @@
 
         <h2>PERFIL LIMITADO</h2>
 
-        <p>
-            Esta cuenta tiene acceso limitado.
-        </p>
+        <p>Esta cuenta tiene acceso limitado.</p>
 
         <p class="mensaje-secundario">
             Si deseas ser desarrollador o empresa, ponte en contacto con un administrador.
@@ -47,14 +104,12 @@
 </main>
 
 <style>
-    /* Estilos para iluminar el icono de perfil en el header */
     .item-derecha.activo .avatar-usuario {
         box-shadow: 0 0 20px #FFCC00 !important;
         transform: scale(1.1) !important;
         border-color: #FFCC00 !important;
     }
 
-    /* Si no tiene foto y muestra el fa-user-circle, iluminarlo también */
     .item-derecha.activo .avatar-usuario i {
         color: #FFCC00 !important;
         text-shadow: 0 0 10px #FFCC00 !important;
@@ -72,13 +127,39 @@
 <div th:replace="~{includes/footer :: footer}"></div>
 
 <script>
-    window.addEventListener('load', () => {
-        // Iluminamos el icono de Perfil en el header
-        const btnPerfil = document.getElementById('link-perfil');
-        if (btnPerfil) {
-            btnPerfil.classList.add('activo');
-        }
+window.addEventListener('load', () => {
+    const btnPerfil = document.getElementById('link-perfil');
+    if (btnPerfil) btnPerfil.classList.add('activo');
+});
+
+/* ================================
+   EDIT USERNAME (FIX AJAX)
+================================ */
+document.getElementById("formUsernameLimited").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = new URLSearchParams(new FormData(form));
+
+    const res = await fetch(form.action, {
+        method: "POST",
+        body: data
     });
+
+    const text = await res.text();
+
+    if (text === "OK") {
+        location.reload(); // refresca nombre/foto actualizados
+    } else {
+        alert(text); // EXISTS, EMPTY, etc.
+    }
+});
+
+function activarEditUsernameLimited() {
+    document.getElementById('usernameLimited').style.display = 'none';
+    document.getElementById('formUsernameLimited').style.display = 'block';
+    document.getElementById('inputUsernameLimited').focus();
+}
 </script>
 
 </body>

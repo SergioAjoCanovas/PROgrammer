@@ -44,6 +44,9 @@ public class UsuarioController {
 
         session.setAttribute("usuarioLogueado", usuario);
 
+        if ("VISITOR".equals(usuario.getRol().getNombre())) {
+            return "redirect:/limitedProfile";
+        }
         return "redirect:/ownProfile";
     }
 

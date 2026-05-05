@@ -49,7 +49,8 @@ public class ProyectoController {
     // =========================================================
     @PostMapping("/crear")
     public String crearProyecto(@ModelAttribute Proyecto proyecto,
-                                @RequestParam("imagenes") MultipartFile[] imagenes,
+                                @RequestParam(value = "tecnologias", required = false) List<Long> tecnologias,
+                                @RequestParam(value = "imagenes", required = false) MultipartFile[] imagenes,
                                 HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
@@ -88,6 +89,15 @@ public class ProyectoController {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        // Vincular tecnologías
+        if (tecnologias != null && !tecnologias.isEmpty()) {
+            List<Tecnologia> listaTechs = tecnologias.stream()
+                    .map(id -> tecnologiaRepository.findById(id).orElse(null))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            proyecto.setTecnologias(listaTechs);
         }
 
         proyectoRepository.save(proyecto);
@@ -244,7 +254,7 @@ public class ProyectoController {
 
     @PostMapping("/editar")
     public String guardarProyecto(@ModelAttribute Proyecto proyecto,
-                                  @RequestParam List<Long> tecnologias,
+                                  @RequestParam(value = "tecnologias", required = false) List<Long> tecnologias,
                                   @RequestParam(value = "imagenes", required = false) MultipartFile[] imagenes) {
 
         Proyecto proyectoExistente = proyectoRepository.findById(proyecto.getId()).orElse(null);
@@ -256,12 +266,14 @@ public class ProyectoController {
         proyectoExistente.setTitulo(proyecto.getTitulo());
         proyectoExistente.setDescripcion(proyecto.getDescripcion());
 
-        List<Tecnologia> tecnologiasActualizadas = tecnologias.stream()
-                .map(id -> tecnologiaRepository.findById(id).orElse(null))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        if (tecnologias != null) {
+            List<Tecnologia> tecnologiasActualizadas = tecnologias.stream()
+                    .map(id -> tecnologiaRepository.findById(id).orElse(null))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
 
-        proyectoExistente.setTecnologias(tecnologiasActualizadas);
+            proyectoExistente.setTecnologias(tecnologiasActualizadas);
+        }
 
         String uploadDir = System.getProperty("user.dir") + "/uploads/projects/";
 
@@ -309,7 +321,7 @@ public class ProyectoController {
         @ExceptionHandler(MaxUploadSizeExceededException.class)
         public String handleMaxSizeException(RedirectAttributes redirectAttributes) {
             redirectAttributes.addFlashAttribute("error", "FILE_TOO_LARGE");
-            return "redirect:/proyectos/crear";
+            return "redirect:/createProject";
         }
     }
 }

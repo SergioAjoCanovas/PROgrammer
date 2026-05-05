@@ -225,7 +225,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
+<script th:inline="javascript">
     // ============================================================
     // LÓGICA DE SEGUIR AL USUARIO (Igual que en ProfileView)
     // ============================================================
@@ -284,24 +284,19 @@
     });
 
     function inicializarIdentidadYEventos() {
-        const username = localStorage.getItem('usuarioLogueado');
-        const nombreLateral = document.getElementById('nombre-mi-perfil');
-        if (username && nombreLateral) {
-            nombreLateral.innerText = username;
-        }
-
-        // --- Lógica de Estrellas ---
+        /*[+
         const initialArq = [[${review.arquitectura != null ? review.arquitectura : 0}]];
         const initialLim = [[${review.limpieza != null ? review.limpieza : 0}]];
         const initialDoc = [[${review.documentacion != null ? review.documentacion : 0}]];
+        +]*/
 
         document.querySelectorAll(".estrellas").forEach(container => {
             const tipo = container.dataset.tipo;
             const input = document.getElementById("input-" + tipo);
             let initialVal = 0;
-            if (tipo === 'arquitectura') initialVal = initialArq;
-            if (tipo === 'limpieza') initialVal = initialLim;
-            if (tipo === 'documentacion') initialVal = initialDoc;
+            if (tipo === 'arquitectura') initialVal = typeof initialArq !== 'undefined' ? initialArq : 0;
+            if (tipo === 'limpieza') initialVal = typeof initialLim !== 'undefined' ? initialLim : 0;
+            if (tipo === 'documentacion') initialVal = typeof initialDoc !== 'undefined' ? initialDoc : 0;
             
             input.value = initialVal;
 
@@ -358,7 +353,9 @@
     }
 
     function confirmarEdicionResena(event, form) {
-        const isEditMode = [[${editMode}]];
+        /*[[${editMode}]]*/
+        const isEditMode = /*[[${editMode}]]*/ false;
+        
         if (!isEditMode) return true; // Si no es modo edición, enviar normal
 
         event.preventDefault();
@@ -394,7 +391,7 @@
         </div>
     </div>
 
-    <script th:if="${error != null}">
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
             const toastError = document.getElementById('toast-review-error');
             if (toastError) {
@@ -412,7 +409,7 @@
             }
             
             // Opcional: Desactivar el botón de submit si ya hay reseña (Y NO ES MODO EDICIÓN)
-            const isDuplicate = [[${isDuplicate}]];
+            const isDuplicate = /*[[${isDuplicate}]]*/ false;
             if (isDuplicate) {
                 const btnSubmit = document.querySelector('button[type="submit"]');
                 if(btnSubmit) {

@@ -62,6 +62,7 @@ public class UsuarioController {
 
         if (usuario == null) return "NOT_LOGGED";
         if (username == null || username.trim().isEmpty()) return "EMPTY";
+        if (username.trim().length() < 3) return "TOO_SHORT";
 
         if (usuarioRepository.existsByUsername(username)) return "EXISTS";
 

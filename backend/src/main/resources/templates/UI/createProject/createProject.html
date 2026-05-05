@@ -68,6 +68,50 @@
             accent-color: #FFCC00;
             margin: 0;
         }
+
+        /* BOTONES TOGGLE TECH (Marcar/Desmarcar) - EXACTOS DE ADD TECHNOLOGY */
+        .btn-tech-toggle {
+            background: transparent;
+            padding: 6px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* MARCAR (Cyan) */
+        .btn-tech-marcar {
+            color: #00f3ff;
+            border: 2px solid #00f3ff;
+        }
+        .btn-tech-marcar:hover, .btn-tech-marcar.btn-activo {
+            background: #00f3ff;
+            color: #000;
+            box-shadow: 0 0 20px #00f3ff;
+            transform: scale(1.05);
+        }
+
+        /* DESMARCAR (Rojo) */
+        .btn-tech-desmarcar {
+            color: #ff4444;
+            border: 2px solid #ff4444;
+        }
+        .btn-tech-desmarcar:hover, .btn-tech-desmarcar.btn-activo {
+            background: #ff4444;
+            color: #fff;
+            box-shadow: 0 0 20px #ff4444;
+            transform: scale(1.05);
+        }
+
+        .botones-categoria-tech {
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -102,7 +146,7 @@
                 </button>
             </div>
 
-            <form id="formProyecto" th:action="${proyecto != null} ? @{/proyectos/editar} : @{/proyectos/crear}" method="post" enctype="multipart/form-data">
+            <form id="formProyecto" th:action="${proyecto?.id != null} ? @{/proyectos/editar} : @{/proyectos/crear}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" th:value="${proyecto != null ? proyecto.id : ''}">
 
                 <div class="campo">
@@ -170,7 +214,10 @@
                 </div>
 
                 <div class="campo">
-                    <label style="margin-bottom: 15px; display: block;"><i class="fas fa-layer-group" style="color: #FFCC00; margin-right: 5px;"></i> Tecnologías Requeridas</label>
+                    <label style="margin-bottom: 15px; display: block;">
+                        <i class="fas fa-layer-group" style="color: #FFCC00; margin-right: 5px;"></i> Tecnologías Requeridas
+                        <span id="contador-tech" style="color: #00f3ff; font-size: 0.9em; margin-left: 10px; font-weight: bold;">(0/40)</span>
+                    </label>
                     
                     <div id="contenedor-tecnologias">
                         <p style="color: gray; font-size: 0.8rem; text-align: center; padding: 20px;">Cargando tecnologías desde la base de datos...</p>
@@ -298,6 +345,13 @@
                     return;
                 }
             }
+
+            const selectedTechs = document.querySelectorAll("input[name='tecnologias']:checked").length;
+            if (selectedTechs > 40) {
+                e.preventDefault();
+                mostrarToast("El máximo de tecnologías es 40", "error");
+                return;
+            }
     
             enviando = true;
             document.getElementById("btnSubmit").disabled = true;
@@ -321,7 +375,17 @@
     
                         let html = `
                             <div class="grupo-categoria">
-                                <div class="titulo-categoria">${categoria.nombre}</div>
+                                <div class="titulo-categoria" style="display: flex; justify-content: space-between; align-items: center; padding-right: 5px;">
+                                    <span>${categoria.nombre}</span>
+                                    <div class="botones-categoria-tech">
+                                        <button type="button" class="btn-tech-toggle btn-tech-marcar btn-cat-marcar" onclick="toggleCategory(this, true)">
+                                            <i class="fas fa-check"></i> Todos
+                                        </button>
+                                        <button type="button" class="btn-tech-toggle btn-tech-desmarcar btn-cat-desmarcar" onclick="toggleCategory(this, false)">
+                                            <i class="fas fa-times"></i> Ninguno
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="grid-tecnologias">
                         `;
     
@@ -331,7 +395,7 @@
                                 ? `<i class="${tech.icono} tech-icon"></i>`
                                 : `<i class="fas fa-code tech-icon"></i>`;
     
-                            const checked = techSeleccionadasSafe.includes(tech.id)
+                            const checked = techSeleccionadasSafe.map(Number).includes(Number(tech.id))
                                 ? "checked"
                                 : "";
     
@@ -347,11 +411,59 @@
                         html += `</div></div>`;
                         contenedor.append(html);
                     });
+
+                    // Inicializar estados y eventos
+                    updateButtonStates();
+                    $('#contenedor-tecnologias input[type="checkbox"]').on('change', updateButtonStates);
                 },
                 error: function () {
                     mostrarToast("Error al cargar tecnologías", "error");
                 }
             });
+        }
+
+        function updateButtonStates() {
+            const allCheckboxes = $('#contenedor-tecnologias input[type="checkbox"]');
+            if (allCheckboxes.length > 0) {
+                const totalChecked = allCheckboxes.filter(':checked').length;
+                const contadorSpan = document.getElementById('contador-tech');
+                if (contadorSpan) {
+                    contadorSpan.innerText = `(${totalChecked}/40)`;
+                    if (totalChecked > 40) {
+                        contadorSpan.style.color = '#ff4444'; // Rojo si supera
+                        contadorSpan.style.textShadow = '0 0 10px #ff4444';
+                    } else {
+                        contadorSpan.style.color = '#00f3ff'; // Cian si está bien
+                        contadorSpan.style.textShadow = 'none';
+                    }
+                }
+            }
+
+            $('.grupo-categoria').each(function() {
+                const checkboxes = $(this).find('input[type="checkbox"]');
+                if (checkboxes.length === 0) return;
+
+                const checkedCount = checkboxes.filter(':checked').length;
+                const total = checkboxes.length;
+                
+                const btnMarcar = $(this).find('.btn-cat-marcar')[0];
+                const btnDesmarcar = $(this).find('.btn-cat-desmarcar')[0];
+                
+                if (btnMarcar && btnDesmarcar) {
+                    if (total > 0 && checkedCount === total) {
+                        btnMarcar.classList.add('btn-activo');
+                        btnDesmarcar.classList.remove('btn-activo');
+                    } else {
+                        btnMarcar.classList.remove('btn-activo');
+                        btnDesmarcar.classList.add('btn-activo');
+                    }
+                }
+            });
+        }
+
+        function toggleCategory(btn, check) {
+            $(btn).closest('.grupo-categoria').find('input[type="checkbox"]').prop('checked', check);
+            updateButtonStates();
         }
     
         // -------------------- PREVIEW IMAGEN --------------------

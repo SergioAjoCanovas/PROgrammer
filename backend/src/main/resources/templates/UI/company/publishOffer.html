@@ -18,10 +18,54 @@
             opacity: 1 !important; 
         }
         .seccion-categoria { margin-bottom: 25px; background: rgba(25, 25, 25, 0.6); padding: 15px; border-radius: 8px; border: 1px solid #333; }
-        .titulo-categoria-form { color: #00f2ff; font-size: 1.1rem; margin-bottom: 15px; border-left: 3px solid #FFCC00; padding-left: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .titulo-categoria-form { color: #00f2ff; font-size: 1.1rem; margin-bottom: 15px; border-left: 3px solid #FFCC00; padding-left: 10px; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
         .grid-tecnologias { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
         .check-tech { display: flex; align-items: center; gap: 8px; color: #ddd; font-size: 0.9rem; cursor: pointer; padding: 5px; border-radius: 4px; transition: all 0.3s ease; }
         .check-tech:hover { background: rgba(0, 242, 255, 0.1); color: white; }
+
+        /* BOTONES TOGGLE TECH (Marcar/Desmarcar) - EXACTOS DE ADD TECHNOLOGY */
+        .btn-tech-toggle {
+            background: transparent;
+            padding: 6px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* MARCAR (Cyan) */
+        .btn-tech-marcar {
+            color: #00f3ff;
+            border: 2px solid #00f3ff;
+        }
+        .btn-tech-marcar:hover, .btn-tech-marcar.btn-activo {
+            background: #00f3ff;
+            color: #000;
+            box-shadow: 0 0 20px #00f3ff;
+            transform: scale(1.05);
+        }
+
+        /* DESMARCAR (Rojo) */
+        .btn-tech-desmarcar {
+            color: #ff4444;
+            border: 2px solid #ff4444;
+        }
+        .btn-tech-desmarcar:hover, .btn-tech-desmarcar.btn-activo {
+            background: #ff4444;
+            color: #fff;
+            box-shadow: 0 0 20px #ff4444;
+            transform: scale(1.05);
+        }
+
+        .botones-categoria-tech {
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -84,6 +128,17 @@
 
                 <div class="grupo-input">
                     <label><i class="fas fa-layer-group"></i> Tecnologías Requeridas</label>
+                    
+                    <!-- BOTONES GLOBALES -->
+                    <div class="botones-globales-tech" style="display: flex; gap: 15px; margin-bottom: 20px; justify-content: flex-start;">
+                        <button type="button" id="btn-global-marcar" class="btn-tech-toggle btn-tech-marcar" onclick="toggleAllTechs(true)">
+                            <i class="fas fa-check-double"></i> Marcar todas
+                        </button>
+                        <button type="button" id="btn-global-desmarcar" class="btn-tech-toggle btn-tech-desmarcar" onclick="toggleAllTechs(false)">
+                            <i class="fas fa-times"></i> Desmarcar todas
+                        </button>
+                    </div>
+
                     <script th:inline="javascript">
                         /*<![CDATA[*/
                         const techIdsPreseleccionadas = /*[[${techIdsActuales != null ? techIdsActuales : '[]'}]]*/ [];
@@ -148,7 +203,19 @@
                 categorias.forEach(cat => {
                     const div = document.createElement('div'); 
                     div.className = 'seccion-categoria';
-                    div.innerHTML = `<h3 class="titulo-categoria-form">${cat.nombre}</h3>`;
+                    div.innerHTML = `
+                        <div class="titulo-categoria-form">
+                            <span>${cat.nombre}</span>
+                            <div class="botones-categoria-tech">
+                                <button type="button" class="btn-tech-toggle btn-tech-marcar btn-cat-marcar" onclick="toggleCategory(this, true)">
+                                    <i class="fas fa-check"></i> Todos
+                                </button>
+                                <button type="button" class="btn-tech-toggle btn-tech-desmarcar btn-cat-desmarcar" onclick="toggleCategory(this, false)">
+                                    <i class="fas fa-times"></i> Ninguno
+                                </button>
+                            </div>
+                        </div>
+                    `;
                     const grid = document.createElement('div'); 
                     grid.className = 'grid-tecnologias';
                     
@@ -167,7 +234,70 @@
                     div.appendChild(grid); 
                     contenedor.appendChild(div);
                 });
+
+                // Una vez cargadas, inicializar estados y eventos
+                updateButtonStates();
+                document.querySelectorAll('#contenedor-tecnologias input[type="checkbox"]').forEach(cb => {
+                    cb.addEventListener('change', updateButtonStates);
+                });
             });
+        }
+
+        function updateButtonStates() {
+            const allCheckboxes = document.querySelectorAll('#contenedor-tecnologias input[type="checkbox"]');
+            if (allCheckboxes.length === 0) return;
+
+            const allCheckedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+            const totalCount = allCheckboxes.length;
+            
+            const btnGlobalMarcar = document.getElementById('btn-global-marcar');
+            const btnGlobalDesmarcar = document.getElementById('btn-global-desmarcar');
+            
+            if (btnGlobalMarcar && btnGlobalDesmarcar) {
+                if (totalCount > 0 && allCheckedCount === totalCount) {
+                    btnGlobalMarcar.classList.add('btn-activo');
+                    btnGlobalDesmarcar.classList.remove('btn-activo');
+                } else {
+                    btnGlobalMarcar.classList.remove('btn-activo');
+                    btnGlobalDesmarcar.classList.add('btn-activo');
+                }
+            }
+
+            document.querySelectorAll('.seccion-categoria').forEach(seccion => {
+                const checkboxes = seccion.querySelectorAll('input[type="checkbox"]');
+                const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+                const total = checkboxes.length;
+                
+                const btnMarcar = seccion.querySelector('.btn-cat-marcar');
+                const btnDesmarcar = seccion.querySelector('.btn-cat-desmarcar');
+                
+                if (btnMarcar && btnDesmarcar) {
+                    if (total > 0 && checkedCount === total) {
+                        btnMarcar.classList.add('btn-activo');
+                        btnDesmarcar.classList.remove('btn-activo');
+                    } else {
+                        btnMarcar.classList.remove('btn-activo');
+                        btnDesmarcar.classList.add('btn-activo');
+                    }
+                }
+            });
+        }
+
+        function toggleAllTechs(check) {
+            document.querySelectorAll('#contenedor-tecnologias input[type="checkbox"]').forEach(cb => {
+                cb.checked = check;
+            });
+            updateButtonStates();
+        }
+
+        function toggleCategory(btn, check) {
+            const seccion = btn.closest('.seccion-categoria');
+            if (seccion) {
+                seccion.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = check;
+                });
+                updateButtonStates();
+            }
         }
     </script>
 </body>

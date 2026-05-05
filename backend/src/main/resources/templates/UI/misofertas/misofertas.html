@@ -44,12 +44,22 @@
             font-size: 1rem;
             border-width: 2px;
         }
+
+        .seccion-empresas-admin { margin-top: 50px; }
+        .titulo-seccion-admin { color: #fff; border-bottom: 2px solid #FFCC00; padding-bottom: 10px; margin-bottom: 25px; font-size: 1.4rem; display: flex; align-items: center; gap: 12px; }
+        .empresa-grupo { background: rgba(20, 20, 20, 0.6); margin-bottom: 15px; border-radius: 12px; overflow: hidden; border: 1px solid #333; transition: all 0.3s ease; }
+        .empresa-grupo:hover { border-color: #555; }
+        .empresa-header { padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #151515; transition: background 0.3s ease; }
+        .empresa-info-mini { display: flex; align-items: center; gap: 15px; }
+        .foto-mini-admin { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #FFCC00; object-fit: cover; }
+        .contador-ofertas { background: rgba(255, 204, 0, 0.1); color: #FFCC00; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-left: 10px; }
+        .icon-arrow { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #FFCC00; }
+        .ofertas-lista-desplegable { display: none; padding: 20px; background: rgba(0, 0, 0, 0.2); border-top: 1px solid #333; }
     </style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
-
     <main class="contenedor-principal-ofertas">
         
         <div style="margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">
@@ -59,65 +69,113 @@
                     <i class="fas fa-arrow-left"></i> Volver a todos los empleos
                 </a>
                 
-                <a th:if="${!#lists.isEmpty(ofertas)}" href="/publishOffer" class="boton-crear-oferta">
+                <a th:if="${!#lists.isEmpty(misOfertas) or !#lists.isEmpty(ofertas)}" href="/publishOffer" class="boton-crear-oferta">
                     <i class="fas fa-plus-circle"></i> CREAR OTRA OFERTA
                 </a>
             </div>
             
             <div style="text-align: center; color: #FFCC00; margin-top: 10px;">
-                <h2 style="margin: 0;"><i class="fas fa-briefcase"></i> Ofertas publicadas por ti</h2>
-                <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;">Revisa quién se ha interesado en tus proyectos y gestiona tus ofertas.</p>
+                <h2 style="margin: 0;">
+                    <i class="fas fa-briefcase"></i> 
+                    <span th:text="${esAdmin} ? 'Panel de Control de Ofertas' : 'Ofertas publicadas por ti'">Ofertas publicadas por ti</span>
+                </h2>
+                <p style="color: #ccc; font-size: 0.9rem; margin-top: 5px;" 
+                   th:text="${esAdmin} ? 'Como administrador, gestiona tus ofertas propias y las del resto de empresas.' : 'Revisa quién se ha interesado en tus proyectos y gestiona tus ofertas.'">
+                   Revisa quién se ha interesado en tus proyectos y gestiona tus ofertas.
+                </p>
             </div>
         </div>
 
-        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}">
-            <div class="logo-empresa">
-                <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
-                     alt="Logo Empresa">
-            </div>
+        <!-- SECCIÓN 1: MIS OFERTAS (Para Admin y para Empresa normal) -->
+        <div th:if="${!#lists.isEmpty(misOfertas) or !#lists.isEmpty(ofertas)}" class="seccion-misofertas">
+            <h3 th:if="${esAdmin}" class="titulo-seccion-admin"><i class="fas fa-user-tie"></i> Mis Ofertas Propias</h3>
             
-            <div class="info-oferta">
-                <h3 class="nombre-empresa">
-                    <span th:text="${oferta.empresa?.username ?: 'Mi Empresa'}">Nombre de la Empresa</span>
-                    <i th:if="${oferta.empresa != null and (oferta.empresa.estado == 'VERIFICADO' or (oferta.empresa.rol != null and (oferta.empresa.rol.nombre == 'ADMIN' or oferta.empresa.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
-                </h3>
-                <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
-                <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
+            <div class="tarjeta-oferta" th:each="oferta : ${esAdmin ? misOfertas : ofertas}">
+                <div class="logo-empresa">
+                    <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" 
+                         alt="Logo Empresa">
+                </div>
                 
-                <div class="tech-tags">
-                    <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">
-                        Tecnología
-                    </span>
+                <div class="info-oferta">
+                    <h3 class="nombre-empresa">
+                        <span th:text="${oferta.empresa?.username ?: 'Mi Empresa'}">Nombre de la Empresa</span>
+                        <i th:if="${oferta.empresa != null and (oferta.empresa.estado == 'VERIFICADO' or (oferta.empresa.rol != null and (oferta.empresa.rol.nombre == 'ADMIN' or oferta.empresa.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </h3>
+                    <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
+                    <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
+                    
+                    <div class="tech-tags">
+                        <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">Tech</span>
+                    </div>
+                </div>
+                
+                <div class="acciones-oferta">
+                    <div class="estado-contenedor">
+                        <button class="btn-borrar" title="Eliminar oferta" th:onclick="'abrirModalBorrado(' + ${oferta.id} + ')'">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <label class="switch">
+                            <input type="checkbox" th:checked="${oferta.activa}" th:onchange="'cambiarEstado(' + ${oferta.id} + ', this)'">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="texto-estado" th:id="'texto-estado-' + ${oferta.id}" 
+                              th:text="${oferta.activa} ? 'Activa' : 'Cerrada'" 
+                              th:style="${oferta.activa} ? 'color: #00f2ff;' : 'color: #ff4444;'">
+                        </span>
+                    </div>
+                    <button class="boton-postular" th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">VER POSTULACIONES</button>
                 </div>
             </div>
-            
-            <div class="acciones-oferta">
-                <div class="estado-contenedor">
-                    <button class="btn-borrar" title="Eliminar oferta permanentemente" th:onclick="'abrirModalBorrado(' + ${oferta.id} + ')'">
-                        <i class="fas fa-trash"></i>
-                    </button>
+        </div>
 
-                    <label class="switch">
-                        <input type="checkbox" th:checked="${oferta.activa}" th:onchange="'cambiarEstado(' + ${oferta.id} + ', this)'">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="texto-estado" th:id="'texto-estado-' + ${oferta.id}" 
-                          th:text="${oferta.activa} ? 'Activa' : 'Cerrada'" 
-                          th:style="${oferta.activa} ? 'color: #00f2ff;' : 'color: #ff4444;'">
-                    </span>
+        <!-- SECCIÓN 2: OFERTAS DE OTRAS EMPRESAS (Solo Admin) -->
+        <div th:if="${esAdmin and !#maps.isEmpty(ofertasPorEmpresa)}" class="seccion-empresas-admin">
+            <h3 class="titulo-seccion-admin"><i class="fas fa-building"></i> Ofertas de Empresas</h3>
+            
+            <div class="empresa-grupo" th:each="entry : ${ofertasPorEmpresa}">
+                <div class="empresa-header" onclick="toggleEmpresaOfertas(this)">
+                    <div class="empresa-info-mini">
+                        <img th:src="${entry.key.fotoPerfil != null ? entry.key.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="foto-mini-admin">
+                        <span th:text="${entry.key.username}">Empresa</span>
+                        <span class="contador-ofertas" th:text="${#lists.size(entry.value)} + ' oferta(s)'">0 ofertas</span>
+                    </div>
+                    <i class="fas fa-chevron-down icon-arrow"></i>
                 </div>
                 
-                <button class="boton-postular" 
-                        th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">
-                    VER POSTULACIONES
-                </button>
+                <div class="ofertas-lista-desplegable">
+                    <div class="tarjeta-oferta" th:each="oferta : ${entry.value}">
+                        <div class="info-oferta" style="flex: 2;">
+                            <h4 class="titulo-puesto" th:text="${oferta.titulo}" style="margin-top: 0;">Título</h4>
+                            <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción</p>
+                            <div class="tech-tags">
+                                <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">Tech</span>
+                            </div>
+                        </div>
+                        <div class="acciones-oferta">
+                            <div class="estado-contenedor">
+                                <button class="btn-borrar" th:onclick="'abrirModalBorrado(' + ${oferta.id} + ')'">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <label class="switch">
+                                    <input type="checkbox" th:checked="${oferta.activa}" th:onchange="'cambiarEstado(' + ${oferta.id} + ', this)'">
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="texto-estado" th:id="'texto-estado-' + ${oferta.id}" 
+                                      th:text="${oferta.activa} ? 'Activa' : 'Cerrada'" 
+                                      th:style="${oferta.activa} ? 'color: #00f2ff;' : 'color: #ff4444;'">
+                                </span>
+                            </div>
+                            <button class="boton-postular" th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">VER POSTULACIONES</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <div th:if="${#lists.isEmpty(ofertas)}" style="text-align: center; color: white; margin-top: 70px;">
+        <div th:if="${#lists.isEmpty(ofertas) and (!esAdmin or (#lists.isEmpty(misOfertas) and #maps.isEmpty(ofertasPorEmpresa)))}" style="text-align: center; color: white; margin-top: 70px;">
             <i class="fas fa-folder-open fa-4x" style="color: #333; margin-bottom: 20px;"></i>
-            <h2>Aún no has publicado ninguna oferta.</h2>
-            <p style="color: #888;">Empieza ahora para encontrar al desarrollador ideal para tu proyecto.</p>
+            <h2 th:text="${esAdmin} ? 'No hay ninguna oferta en el sistema.' : 'Aún no has publicado ninguna oferta.'">Aún no has publicado ninguna oferta.</h2>
+            <p style="color: #888;" th:text="${esAdmin} ? 'Parece que todavía no se han creado ofertas de empleo.' : 'Empieza ahora para encontrar al desarrollador ideal para tu proyecto.'">Empieza ahora para encontrar al desarrollador ideal para tu proyecto.</p>
             <a href="/publishOffer" class="boton-crear-oferta boton-crear-primera">
                 <i class="fas fa-magic"></i> CREAR MI PRIMERA OFERTA
             </a>
@@ -208,6 +266,21 @@
                     console.error('Error:', error);
                     cerrarModal();
                 });
+            }
+        }
+        function toggleEmpresaOfertas(header) {
+            const container = header.parentElement;
+            const list = container.querySelector('.ofertas-lista-desplegable');
+            const icon = header.querySelector('.icon-arrow');
+            
+            if (list.style.display === 'block') {
+                list.style.display = 'none';
+                icon.style.transform = 'rotate(0deg)';
+                header.style.background = '#222';
+            } else {
+                list.style.display = 'block';
+                icon.style.transform = 'rotate(180deg)';
+                header.style.background = '#2a2a2a';
             }
         }
     </script>

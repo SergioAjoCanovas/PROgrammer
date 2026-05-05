@@ -106,10 +106,24 @@
                th:if="${aviso.tipo != 'NUEVO_PARCHE' and aviso.tipo != 'NUEVA_RESEÑA_PERFIL' and aviso.tipo != 'NUEVA_RESEÑA_PROYECTO'}"
                th:href="${aviso.enlace != null ? aviso.enlace : '#'}"
                class="aviso-item"
-               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : 
+                               (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : 
+                               (aviso.tipo == 'NUEVA_POSTULACION' ? 'tipo-postulacion' : 
+                               (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'tipo-aceptada' : 
+                               (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'tipo-rechazada' : ''))))}">
                 
-                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
-                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 'fa-briefcase'}"></i>
+                <div class="aviso-icono" 
+                     th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : 
+                                     (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : 
+                                     (aviso.tipo == 'NUEVA_POSTULACION' ? 'tipo-postulacion' : 
+                                     (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'tipo-aceptada' : 
+                                     (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'tipo-rechazada' : ''))))}">
+                    <i class="fas" 
+                       th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 
+                                       (aviso.tipo == 'NUEVA_OFERTA' ? 'fa-briefcase' : 
+                                       (aviso.tipo == 'NUEVA_POSTULACION' ? 'fa-file-signature' : 
+                                       (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'fa-check-circle' : 
+                                       (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'fa-times-circle' : 'fa-bell'))))}"></i>
                 </div>
                 
                 <div class="aviso-contenido">

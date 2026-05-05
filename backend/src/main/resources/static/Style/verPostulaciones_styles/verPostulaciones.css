@@ -28,7 +28,7 @@
     padding: 20px;
     margin-bottom: 20px;
     display: flex;
-    align-items: flex-start; /* Alineado arriba para que las cajas encajen bien */
+    align-items: stretch; /* Asegura que la columna de acciones ocupe todo el alto */
     gap: 20px;
     transition: all 0.3s ease;
 }
@@ -62,7 +62,6 @@
     line-height: 1.5;
 }
 
-/* Estilos para el proyecto vinculado */
 .caja-proyecto {
     margin-top: 10px;
     background: rgba(0, 242, 255, 0.05);
@@ -72,6 +71,16 @@
     font-size: 0.9rem;
     color: #aaa;
     display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.caja-proyecto:hover {
+    background: rgba(0, 242, 255, 0.15);
+    border-color: #00f2ff;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 /* =========================================================
@@ -83,7 +92,8 @@
     flex-direction: column;
     gap: 10px;
     align-items: flex-end;
-    min-width: 150px;
+    justify-content: flex-start;
+    min-width: 220px;
 }
 
 /* Botones Neón */
@@ -128,3 +138,64 @@
     color: #000;
     box-shadow: 0 0 10px #00f2ff;
 }
+
+/* =========================================================
+   5. SISTEMA DE PESTAÑAS (TABS)
+   ========================================================= */
+.tabs-neon {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn:hover {
+    color: #FFCC00;
+}
+
+.tab-btn.active {
+    color: #FFCC00;
+    background: rgba(255, 204, 0, 0.1);
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #FFCC00;
+    box-shadow: 0 0 10px #FFCC00;
+}
+
+.btn-aceptar { background: rgba(0, 230, 118, 0.1); color: #00e676; border: 1px solid #00e676; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; transition: all 0.3s; }
+.btn-aceptar:hover { background: #00e676; color: black; box-shadow: 0 0 15px #00e676; }
+.btn-rechazar { background: rgba(255, 68, 68, 0.1); color: #ff4444; border: 1px solid #ff4444; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; transition: all 0.3s; }
+.btn-rechazar:hover { background: #ff4444; color: black; box-shadow: 0 0 15px #ff4444; }
+
+.botones-decision { display: flex; gap: 10px; width: 100%; margin-top: auto; }
+
+.estado-postulacion-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; border: 1px solid transparent; }
+.badge-pendiente { background: rgba(255, 204, 0, 0.1); color: #FFCC00; border-color: #FFCC00; }
+.badge-aceptada { background: rgba(0, 230, 118, 0.2); color: #00e676; border-color: #00e676; }
+
+.cabecera-card { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.cabecera-card h3 { margin: 0; color: white; font-size: 1.2rem; }
+.fecha-postulacion { color: #666; font-size: 0.8rem; }
+.email-candidato { color: #888; font-size: 0.85rem; margin: 5px 0; }

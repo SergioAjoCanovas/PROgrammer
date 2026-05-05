@@ -2,6 +2,7 @@ package com.programmer.backend.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import com.programmer.backend.domain.PerfilDesarrollador;
 import com.programmer.backend.domain.PerfilEmpresa;
 import com.programmer.backend.domain.Usuario;
@@ -77,6 +78,11 @@ public class ViewController {
     @GetMapping("/createProject")
     public String createProject() {
         return "UI/createProject/createProject";
+    }
+
+    @PostMapping("/createProject")
+    public String createProjectPost() {
+        return "forward:/proyectos/crear";
     }
 
     @GetMapping("/editProject")
@@ -224,12 +230,14 @@ public class ViewController {
     @GetMapping("/limitedProfile")
     public String limitedProfile(HttpSession session, Model model) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        
-        if (usuario == null || !"VISITOR".equals(usuario.getRol().getNombre())) {
+    
+        if (usuario == null) return "redirect:/login";
+    
+        if (usuario.getRol() == null || !"VISITOR".equals(usuario.getRol().getNombre())) {
             return "redirect:/login";
         }
-
-        model.addAttribute("usuarioHeader", usuario);
+    
+        model.addAttribute("usuarioLogueado", usuario);
         return "UI/ownProfile/ownProfileLimited";
     }
 }

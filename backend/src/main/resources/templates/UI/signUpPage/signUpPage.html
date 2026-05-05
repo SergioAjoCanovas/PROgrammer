@@ -64,11 +64,23 @@
                 <div class="input-group">
                     <label for="username">Nombre de usuario</label>
                     <input type="text" id="username" name="username" placeholder="Ej: John Doe" required/>
+                    <ul class="password-requirements">
+                        <li id="req-username-min" class="invalid"><i class="fas fa-times"></i> Mínimo 3 letras</li>
+                        <li id="req-username-number" class="invalid"><i class="fas fa-times"></i> Sin números</li>
+                        <li id="req-username-special" class="invalid"><i class="fas fa-times"></i> Sin caracteres especiales (se permiten espacios)</li>
+                        <li id="req-username-upper" class="invalid"><i class="fas fa-times"></i> (Opcional) 1 Mayúscula al principio</li>
+                    </ul>
                 </div>
 
                 <div class="input-group">
                     <label for="email">Correo Electrónico</label>
                     <input type="email" id="email" name="email" placeholder="john.doe@email.com" required/>
+                    <ul class="password-requirements">
+                        <li id="req-email-start" class="invalid"><i class="fas fa-times"></i> Empezar por letra</li>
+                        <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 6 minúsculas antes del @</li>
+                        <li id="req-email-special" class="invalid"><i class="fas fa-times"></i> Sin caracteres especiales</li>
+                        <li id="req-email-format" class="invalid"><i class="fas fa-times"></i> @, host y dominio (.com...)</li>
+                    </ul>
                 </div>
 
                 <div class="input-group">
@@ -174,6 +186,8 @@
         // --- 2. VALIDACIÓN Y FUERZA DE CONTRASEÑA ---
         const form = document.querySelector('.login-form');
         const passwordInput = document.getElementById('password');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
         const strengthBar = document.getElementById('strength-bar');
         const strengthText = document.getElementById('strength-text');
 
@@ -184,6 +198,16 @@
         const reqLower = document.getElementById('req-lower');
         const reqNumber = document.getElementById('req-number');
         const reqSpecial = document.getElementById('req-special');
+        
+        const reqUsernameMin = document.getElementById('req-username-min');
+        const reqUsernameNumber = document.getElementById('req-username-number');
+        const reqUsernameSpecial = document.getElementById('req-username-special');
+        const reqUsernameUpper = document.getElementById('req-username-upper');
+        
+        const reqEmailStart = document.getElementById('req-email-start');
+        const reqEmailLength = document.getElementById('req-email-length');
+        const reqEmailSpecial = document.getElementById('req-email-special');
+        const reqEmailFormat = document.getElementById('req-email-format');
 
         // Requisitos mínimos
         const minLength = 8;
@@ -192,8 +216,11 @@
         const hasNumber = /[0-9]/;
         const hasSpecial = /[^A-Za-z0-9]/;
         const startsWithNumber = /^[0-9]/;
+        const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,10}$/;
 
         let passwordIsValid = false;
+        let usernameIsValid = false;
+        let emailIsValid = false;
 
         function updateReq(el, isValid) {
             if (isValid) {
@@ -206,6 +233,54 @@
                 el.querySelector('i').className = 'fas fa-times';
             }
         }
+
+        usernameInput.addEventListener('input', function() {
+            const val = this.value;
+            if (val.length > 0) {
+                const meetsMinLength = val.length >= 3;
+                const containsNumber = hasNumber.test(val);
+                const containsSpecial = /[^a-zA-Z0-9\s]/.test(val);
+                const firstCharIsUpper = /^[A-Z]/.test(val);
+                
+                updateReq(reqUsernameMin, meetsMinLength);
+                updateReq(reqUsernameNumber, !containsNumber);
+                updateReq(reqUsernameSpecial, !containsSpecial);
+                updateReq(reqUsernameUpper, firstCharIsUpper);
+                
+                usernameIsValid = meetsMinLength && !containsNumber && !containsSpecial;
+            } else {
+                usernameIsValid = false;
+                updateReq(reqUsernameMin, false);
+                updateReq(reqUsernameNumber, false);
+                updateReq(reqUsernameSpecial, false);
+                updateReq(reqUsernameUpper, false);
+            }
+        });
+
+        emailInput.addEventListener('input', function() {
+            const val = this.value;
+            if (val.length > 0) {
+                const startsWithLetter = /^[a-zA-Z]/.test(val);
+                const localPart = val.split('@')[0] || '';
+                const lowercaseCount = (localPart.match(/[a-z]/g) || []).length;
+                const meetsMinLength = lowercaseCount >= 6;
+                const containsSpecial = /[^a-zA-Z0-9@.]/.test(val);
+                const hasValidFormat = emailRegex.test(val);
+                
+                updateReq(reqEmailStart, startsWithLetter);
+                updateReq(reqEmailLength, meetsMinLength);
+                updateReq(reqEmailSpecial, !containsSpecial);
+                updateReq(reqEmailFormat, hasValidFormat);
+                
+                emailIsValid = startsWithLetter && meetsMinLength && !containsSpecial && hasValidFormat;
+            } else {
+                emailIsValid = false;
+                updateReq(reqEmailStart, false);
+                updateReq(reqEmailLength, false);
+                updateReq(reqEmailSpecial, false);
+                updateReq(reqEmailFormat, false);
+            }
+        });
 
         passwordInput.addEventListener('input', function() {
             const val = this.value;
@@ -317,6 +392,18 @@
             const pass = passwordInput.value;
             const confirm = document.getElementById('confirm_password').value;
             const rolSelect = document.getElementById('id_rol');
+
+            if (!usernameIsValid) {
+                e.preventDefault();
+                showToast("Usuario no válido", "El nombre de usuario debe tener mínimo 3 caracteres y no contener números.");
+                return;
+            }
+
+            if (!emailIsValid) {
+                e.preventDefault();
+                showToast("Correo no válido", "El correo no cumple con todos los requisitos.");
+                return;
+            }
 
             if (!rolSelect.value) {
                 e.preventDefault();

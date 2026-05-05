@@ -6,7 +6,9 @@ body.fondo-oscuro-neon {
     color: #FFFFFF;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0; 
-    min-height: 100vh; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     position: relative; 
     overflow-x: hidden;
     line-height: 1.6;
@@ -23,14 +25,45 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
+/* =========================================================
+   NUEVO: ENLACE SUPERIOR IZQUIERDO (Mismo estilo que projectview)
+   ========================================================= */
+.contenedor-volver {
+    max-width: 1700px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-principal {
     display: flex; 
     max-width: 1700px; 
     width: 98%; 
-    margin: 60px auto; 
+    margin: 30px auto 60px auto; /* Reducido el margin top para que el enlace encaje bien */
     padding: 0 20px; 
     gap: 40px; 
     align-items: flex-start;
+    flex: 1 0 auto;
 }
 
 .tarjeta-perfil, .tarjeta-proyecto-detalle, .tarjeta-formulario {
@@ -44,34 +77,156 @@ body.fondo-oscuro-neon::before {
 }
 
 /* =========================================================
-   2. PERFIL (IZQUIERDA)
+   TARJETA PERFIL
    ========================================================= */
-.columna-perfil { flex: 0 0 300px; }
 
+   .tarjeta-perfil {
+    background-color: #1a1a1a !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3) !important;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabecera igual */
 .cabecera-tarjeta {
-    border-bottom: 2px solid rgba(170, 170, 170, 0.2);
-    padding-bottom: 25px; 
-    margin-bottom: 30px; 
+    border-bottom: 2px solid #aaaaaa;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
-.foto-perfil-contenedor { position: relative; width: 110px; height: 110px; margin: 0 auto 15px auto; }
-.circulo-foto { width: 100%; height: 100%; border-radius: 50%; background: #222; border: 3px solid #FFCC00; }
-.icono-corazon { 
-    position: absolute; bottom: 5px; right: 5px; 
-    color: #FFCC00; background: #1a1a1a; padding: 8px; 
-    border-radius: 50%; border: 1px solid #FFCC00; 
+/* Foto perfil (idéntico comportamiento) */
+.foto-perfil-contenedor {
+    position: relative;
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px auto;
 }
 
-.nombre-usuario { font-size: 1.4rem; color: #FFF; font-weight: bold; margin: 0; }
-
-.redes-sociales { list-style: none; padding: 0; margin: 0 0 30px 10px; }
-.redes-sociales li { 
-    display: flex; align-items: center; gap: 15px; 
-    padding: 12px 0; 
-    color: #BBBBBB; font-size: 1.1rem; 
+.circulo-foto {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    overflow: hidden;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.redes-sociales li i { font-size: 1.4rem; width: 25px; text-align: center; color: #DDDDDD; }
+
+.circulo-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* =========================================================
+   BOTÓN SEGUIR (CORAZÓN ESTILO PROFILEVIEW)
+   ========================================================= */
+.btn-follow-heart {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(15, 5, 5, 0.8);
+    border: 1px solid #ff4444;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ff4444;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+    z-index: 10;
+}
+
+.btn-follow-heart:hover {
+    background-color: #ff4444;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.btn-follow-heart i.fas {
+    color: #ff4444; 
+}
+
+.btn-follow-heart i.far {
+    color: #ff4444; 
+}
+
+.btn-follow-heart:hover i.far {
+    color: #ffffff; 
+}
+
+.btn-follow-heart:hover i.fas {
+    color: #ffffff; 
+}
+
+/* Nombre usuario */
+.nombre-usuario {
+    font-size: 1.6rem;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+}
+
+/* =========================================================
+   LISTA DOTTED
+   ========================================================= */
+
+.lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+/* ITEM */
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+
+    color: #ccc;
+    text-decoration: none;
+
+    background-color: transparent;
+
+    transition: all 0.35s ease;
+}
+
+/* ICONO */
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+/* HOVER */
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
+}
 
 /* =========================================================
    3. BOTONES
@@ -169,7 +324,7 @@ textarea:focus {
 }
 
 /* =========================================================
-   6. MODAL DE IMÁGENES (SIN X)
+   6. MODAL DE IMÁGENES
    ========================================================= */
 .modal {
     display: none; 
@@ -180,19 +335,19 @@ textarea:focus {
     background-color: rgba(0,0,0,0.95); 
     backdrop-filter: blur(10px);
     padding-top: 50px;
-    cursor: zoom-out; /* Indica que al clicar fuera se cierra */
+    cursor: zoom-out; 
 }
 
 .contenido-modal {
     margin: auto;
     display: block;
-    width: 85%;
-    max-width: 1100px;
+    width: 60%;
+    max-width: 750px;
     border: 2px solid #FFCC00;
     border-radius: 15px;
     box-shadow: 0 0 50px rgba(255, 204, 0, 0.4);
     animation: zoomIn 0.3s ease;
-    cursor: default; /* El cursor vuelve a la normalidad sobre la foto */
+    cursor: default; 
 }
 
 @keyframes zoomIn {
@@ -219,9 +374,8 @@ textarea:focus {
     margin-bottom: 50px; 
 }
 
-/* Título con barra lateral y efecto de brillo sutil */
 .descripcion-proyecto h3, .repo h3 { 
-    color: #FFCC00; /* Color base de estrella activa */
+    color: #FFCC00; 
     font-size: 1.8rem; 
     font-weight: bold;
     margin-bottom: 25px; 
@@ -229,11 +383,9 @@ textarea:focus {
     border-left: 5px solid #FFCC00; 
     padding-left: 15px;
     line-height: 1;
-    /* Efecto Neón de las estrellas */
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
-/* Párrafo en blanco puro */
 .descripcion-proyecto p {
     color: #FFFFFF; 
     line-height: 1.8;
@@ -242,7 +394,6 @@ textarea:focus {
     padding-left: 5px;
 }
 
-/* Enlace con efecto idéntico a las estrellas activas al hacer hover */
 .repo a {
     color: #FFFFFF !important; 
     text-decoration: none; 
@@ -250,7 +401,7 @@ textarea:focus {
     display: inline-flex; 
     align-items: center; 
     gap: 12px; 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transición suave como las estrellas */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
     padding-left: 5px;
 }
 
@@ -261,7 +412,6 @@ textarea:focus {
 
 .repo a:hover { 
     color: #FFCC00 !important; 
-    /* El mismo text-shadow de tus estrellas .activa */
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 
                  0 0 20px rgba(255, 204, 0, 0.4);
     transform: translateX(8px) scale(1.02);
@@ -269,7 +419,6 @@ textarea:focus {
 
 .repo a:hover i { 
     color: #FFCC00; 
-    /* Brillo extra en el icono */
     filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.6));
 }
 
@@ -278,38 +427,32 @@ textarea:focus {
    ============================================================ */
 .estrellas {
     display: flex;
-    gap: 12px; /* Un poco más de espacio para que al rotar no se choquen */
+    gap: 12px; 
     padding: 10px 0;
 }
 
 .estrellas i {
-    font-size: 1.8rem; /* Un pelín más grandes */
+    font-size: 1.8rem; 
     color: #444; 
     cursor: pointer;
-    
-    /* LA ANIMACIÓN QUE QUERÍAS */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: inline-block; /* Necesario para que el transform (rotate) funcione bien */
+    display: inline-block; 
 }
 
-/* Cuando pasas el ratón por encima (Hover) */
 .estrellas i:hover {
-    transform: scale(1.4) rotate(15deg); /* Escala potente y rotación */
+    transform: scale(1.4) rotate(15deg); 
     color: #FFF000;
     text-shadow: 0 0 15px rgba(255, 240, 0, 1), 
                  0 0 25px rgba(255, 204, 0, 0.6);
 }
 
-/* Cuando la estrella está marcada (Activa) */
 .estrellas i.activa {
     color: #FFD700;
-    transform: scale(1.1); /* Se quedan un pelín más grandes que las grises */
+    transform: scale(1.1); 
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.8), 
                  0 0 20px rgba(255, 204, 0, 0.4);
 }
 
-/* Animación extra: si quieres que todas las anteriores brillen al pasar el ratón 
-   (esto es opcional, pero queda de lujo) */
 .estrellas:hover i {
     opacity: 0.7;
 }
@@ -318,3 +461,90 @@ textarea:focus {
     opacity: 0.5;
     transform: scale(0.9);
 }
+
+/* =========================================================
+   TECNOLOGÍAS (MISMO ESTILO QUE DESCRIPCIÓN)
+   ========================================================= */
+
+   .tecnologias {
+    margin-bottom: 50px;
+}
+
+.tecnologias h3 {
+    color: #FFCC00;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-transform: none;
+    border-left: 5px solid #FFCC00;
+    padding-left: 15px;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+
+/* contenedor de tags */
+.tecnologias .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-left: 5px; /* mismo “aire” que descripción */
+}
+
+/* chips de tecnología */
+.tech-tag-proyecto {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    color: #00f3ff;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tech-tag-proyecto:hover {
+    background: rgba(0, 243, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+/* TOAST DE ERROR PARA RESE�AS */
+.toast-error-neon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(20, 0, 0, 0.95);
+    border: 1px solid #330000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border-left: 6px solid #ff4444; 
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
+
+.toast-error-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-error-neon i {
+    color: #ff4444;
+    font-size: 2rem;
+}
+
+.toast-error-neon strong {
+    display: block;
+    color: #ff4444;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+

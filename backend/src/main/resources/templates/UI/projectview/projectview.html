@@ -47,39 +47,6 @@
             object-fit: cover;
         }
 
-        .btn-follow-heart {
-            position: absolute;
-            bottom: 5px;
-            right: 0px;
-            background: rgba(15, 5, 5, 0.8);
-            border: 1px solid #ff4444;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #ff4444;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
-            z-index: 10;
-        }
-
-        .btn-follow-heart:hover {
-            background: #ff4444;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .btn-follow-heart i.fas {
-            color: #ff4444;
-        }
-        .btn-follow-heart:hover i.fas {
-            color: white;
-        }
-
         .tech-tag-azul {
             background: rgba(0,243,255,0.05);
             padding: 5px 12px;
@@ -105,11 +72,22 @@
 
 <div th:replace="~{includes/header :: header}"></div>
 
+<div class="contenedor-volver">
+    <a th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id == autor.id}" 
+       href="/ownProfile" 
+       class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a tu perfil
+    </a>
+
+    <a th:unless="${session.usuarioLogueado != null and session.usuarioLogueado.id == autor.id}" 
+       th:href="'/profileView/' + ${autor.id}" 
+       class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Ver perfil de<span th:text="${autor.username}">Autor</span>
+    </a>
+</div>
+
 <main class="contenedor-principal">
 
-    <!-- ========================= -->
-    <!-- PERFIL AUTOR -->
-    <!-- ========================= -->
     <aside class="columna-perfil">
         <div class="tarjeta-perfil tarjeta-neon-estatica">
             <div class="cabecera-tarjeta">
@@ -137,7 +115,6 @@
 
             <div class="cuerpo-tarjeta">
 
-                <!-- REDES (DOTTED + CLICABLES) -->
                 <div class="lista-dotted">
 
                     <a th:if="${autor.github}"
@@ -170,13 +147,9 @@
         </div>
     </aside>
 
-    <!-- ========================= -->
-    <!-- PROYECTO -->
-    <!-- ========================= -->
     <section class="seccion-derecha-dinamica">
         <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
 
-            <!-- CABECERA -->
             <div class="cabecera-proyecto">
                 <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
 
@@ -189,7 +162,6 @@
 
             <div class="contenedor-detalles-proyecto">
 
-                <!-- AUTOR -->
                 <p class="autor-texto">
                     <strong>Autor:</strong>
                     <span>
@@ -198,7 +170,6 @@
                     </span>
                 </p>
 
-                <!-- BOTONES -->
                 <div class="fila-botones-neon">
 
                     <span th:if="${proyecto.estaValidado}" class="badge validado">
@@ -209,11 +180,16 @@
                         <i class="fas fa-times-circle"></i> No validado
                     </span>
 
-                    <a href="/newprojectreview" class="btn-accion-neon">
-                        <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
-                    </a>
+                    <a th:if="${session.usuarioLogueado != null
+                        and session.usuarioLogueado.rol.nombre != 'VISITOR'
+                        and (session.usuarioLogueado.rol.nombre == 'ADMIN'
+                             or session.usuarioLogueado.id != proyecto.autor.id)}"
+                   th:href="@{/project-reviews/crear/{id}(id=${proyecto.id})}"
+                   class="btn-accion-neon">
+                    <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
+                </a>
 
-                    <a href="/viewprojectreviews" class="btn-accion-neon">
+                    <a th:href="@{/project-reviews/{id}(id=${proyecto.id})}" class="btn-accion-neon">
                         <i class="fas fa-comments"></i> VER RESEÑAS
                     </a>
 
@@ -223,7 +199,6 @@
                         <i class="fas fa-edit"></i> EDITAR PROYECTO
                     </a>
 
-                    <!-- BOTÓN ELIMINAR -->
                     <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == autor.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and autor.rol.id != 1 and autor.rol.nombre != 'ADMIN'))}"
                             class="btn-accion-neon btn-eliminar"
                             th:attr="data-id=${proyecto.id}"
@@ -233,7 +208,6 @@
 
                 </div>
 
-                <!-- TECNOLOGÍAS -->
                 <div class="fila-botones-neon" th:if="${#lists.size(proyecto.tecnologias) > 0}" style="gap: 10px; flex-wrap: wrap;">
                     <span th:each="tec : ${proyecto.tecnologias}" class="tech-tag-azul">
                         <i th:class="${tec.icono}" style="color: #00f3ff;"></i>
@@ -241,14 +215,12 @@
                     </span>
                 </div>
 
-                <!-- GALERÍA -->
                 <div class="galeria-capturas">
                     <div class="marco-captura" th:each="img : ${imagenes}">
                         <img th:src="@{${img}}" alt="Captura">
                     </div>
                 </div>
 
-                <!-- TEXTO -->
                 <div class="bloque-texto-informativo">
 
                     <h3 class="titulo-seccion">Descripción</h3>
@@ -270,17 +242,11 @@
     </section>
 </main>
 
-<!-- ========================= -->
-<!-- MODAL IMAGEN -->
-<!-- ========================= -->
 <div id="modal-imagen" class="modal">
     <img class="contenido-modal" id="img-ampliada">
     <div id="caption-modal"></div>
 </div>
 
-<!-- ========================= -->
-<!-- MODAL ELIMINAR -->
-<!-- ========================= -->
 <div id="modal-eliminar" class="modal">
     <div class="contenido-modal-confirmacion">
         <p>¿Estás seguro de que quieres eliminar este proyecto?</p>
@@ -313,7 +279,6 @@ $(document).ready(function() {
     $(".marco-captura img").on("click", function() {
         $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
         $("#img-ampliada").attr("src", $(this).attr("src"));
-        $("#caption-modal").text($(this).attr("alt"));
         $("body").css("overflow", "hidden");
     });
 

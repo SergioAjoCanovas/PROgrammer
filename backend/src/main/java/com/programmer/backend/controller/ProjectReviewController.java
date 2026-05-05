@@ -1,48 +1,78 @@
 package com.programmer.backend.controller;
 
+import java.util.List;
 import com.programmer.backend.domain.ProjectReview;
 import com.programmer.backend.domain.Proyecto;
 import com.programmer.backend.domain.Usuario;
 import com.programmer.backend.repository.ProjectReviewRepository;
 import com.programmer.backend.repository.ProyectoRepository;
-import com.programmer.backend.repository.UsuarioRepository;
+import com.programmer.backend.service.ProjectReviewService;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 @RequestMapping("/project-reviews")
+@Transactional
 public class ProjectReviewController {
 
     private final ProjectReviewRepository reviewRepository;
     private final ProyectoRepository proyectoRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final ProjectReviewService projectReviewService;
+    private final com.programmer.backend.service.NotificacionService notificacionService;
 
     public ProjectReviewController(ProjectReviewRepository reviewRepository,
                                    ProyectoRepository proyectoRepository,
-                                   UsuarioRepository usuarioRepository) {
+                                   ProjectReviewService projectReviewService,
+                                   com.programmer.backend.service.NotificacionService notificacionService) {
         this.reviewRepository = reviewRepository;
         this.proyectoRepository = proyectoRepository;
-        this.usuarioRepository = usuarioRepository;
+        this.projectReviewService = projectReviewService;
+        this.notificacionService = notificacionService;
     }
 
     // =========================
     // VER FORMULARIO
     // =========================
     @GetMapping("/crear/{proyectoId}")
-    public String verFormulario(@PathVariable Long proyectoId, Model model) {
+    public String verFormulario(@PathVariable Long proyectoId, 
+                               @RequestParam(required = false) String edit,
+                               Model model, HttpSession session) {
+        Proyecto proyecto = proyectoRepository.findById(proyectoId).orElseThrow();
+        Usuario autor = (Usuario) session.getAttribute("usuarioLogueado");
+        
+        ProjectReview reviewExistente = null;
+        boolean editMode = "true".equals(edit);
+        boolean isDuplicate = false;
 
-        Proyecto proyecto = proyectoRepository.findById(proyectoId)
-                .orElseThrow();
+        if (autor != null) {
+            boolean isAdmin = autor.getRol() != null &&
+                    ("ADMIN".equalsIgnoreCase(autor.getRol().getNombre()) || autor.getRol().getId() == 1L);
 
+            if (proyecto.getAutor().getId().equals(autor.getId()) && !isAdmin) {
+                model.addAttribute("error", "autorreview");
+            }
+            
+            reviewExistente = reviewRepository.findByAutorAndProyecto(autor, proyecto).orElse(null);
+            
+            if (reviewExistente != null && !editMode) {
+                isDuplicate = true;
+                model.addAttribute("error", "duplicado");
+            }
+        }
+
+        // Si es duplicado y NO estamos editando, mandamos una review vacía para que el textarea esté limpio
         model.addAttribute("proyecto", proyecto);
-        model.addAttribute("review", new ProjectReview());
+        model.addAttribute("review", (reviewExistente != null && editMode) ? reviewExistente : new ProjectReview());
+        model.addAttribute("editMode", editMode);
+        model.addAttribute("isDuplicate", isDuplicate);
+        model.addAttribute("proyectoId", proyectoId);
 
-        return "UI/newprojectreview";
+        return "UI/newprojectreview/newprojectreview";
     }
 
     // =========================
@@ -50,74 +80,118 @@ public class ProjectReviewController {
     // =========================
     @PostMapping("/crear")
     public String crearReview(@ModelAttribute ProjectReview review,
-                              @RequestParam Long proyectoId,
-                              Principal principal) {
+                             @RequestParam Long proyectoId,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
 
-        //1. Usuario logeado
-        if (principal == null) {
-            return "redirect:/login";
+        Usuario autor = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (autor == null) return "redirect:/login";
+
+        Proyecto proyecto = proyectoRepository.findById(proyectoId).orElse(null);
+        if (proyecto == null) return "redirect:/proyectos";
+
+        boolean isAdmin = autor.getRol() != null &&
+                ("ADMIN".equalsIgnoreCase(autor.getRol().getNombre())
+                        || autor.getRol().getId() == 1L);
+
+        // VISITOR no puede reseñar
+        if (autor.getRol() != null &&
+                "VISITOR".equalsIgnoreCase(autor.getRol().getNombre())) {
+
+            redirectAttributes.addFlashAttribute("error", "no_permitido");
+            return "redirect:/proyectos/proyecto/" + proyectoId;
         }
 
-        Usuario autor = usuarioRepository.findByUsername(principal.getName())
-                .orElseThrow();
-
-        Proyecto proyecto = proyectoRepository.findById(proyectoId)
-                .orElseThrow();
-
-        //2. Autoreseña
-        if (proyecto.getAutor().getId().equals(autor.getId())) {
-            return "redirect:/project-reviews/" + proyectoId + "?error=autorreview";
+        // Autoreseña
+        if (proyecto.getAutor().getId().equals(autor.getId()) && !isAdmin) {
+            redirectAttributes.addFlashAttribute("error", "autorreview");
+            return "redirect:/project-reviews/" + proyectoId;
         }
 
-        //3. Duplicado
-        if (reviewRepository.findByAutorAndProyecto(autor, proyecto).isPresent()) {
-            return "redirect:/project-reviews/" + proyectoId + "?error=duplicado";
-        }
-
-        //Guardar
         review.setAutor(autor);
         review.setProyecto(proyecto);
 
-        reviewRepository.save(review);
+        // Si ya existe una review del mismo autor para el mismo proyecto, la actualizamos
+        ProjectReview reviewExistente = reviewRepository.findByAutorAndProyecto(autor, proyecto).orElse(null);
+        if (reviewExistente != null) {
+            reviewExistente.setComentario(review.getComentario());
+            reviewExistente.setArquitectura(review.getArquitectura());
+            reviewExistente.setLimpieza(review.getLimpieza());
+            reviewExistente.setDocumentacion(review.getDocumentacion());
+            reviewRepository.save(reviewExistente);
+            redirectAttributes.addAttribute("success", "updated");
+        } else {
+            reviewRepository.save(review);
+            redirectAttributes.addAttribute("success", "created");
+        }
+
+        // Enviar notificación al autor del proyecto
+        String mensajeNotif = autor.getUsername() + " ha valorado tu proyecto '" + proyecto.getTitulo() + "': " + review.getComentario();
+        notificacionService.enviarNotificacion(proyecto.getAutor(), mensajeNotif, "NUEVA_RESEÑA_PROYECTO", "/project-reviews/" + proyectoId);
 
         return "redirect:/project-reviews/" + proyectoId;
     }
 
     // =========================
-    // VER REVIEWS
+    // ELIMINAR REVIEW
+    // =========================
+    @PostMapping("/eliminar")
+    public String eliminarReview(@RequestParam Long reviewId, HttpSession session, RedirectAttributes redirectAttributes) {
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuarioLogueado == null) return "redirect:/login";
+
+        ProjectReview review = reviewRepository.findById(reviewId).orElse(null);
+        if (review != null) {
+            boolean isAdmin = usuarioLogueado.getRol() != null && 
+                             ("ADMIN".equalsIgnoreCase(usuarioLogueado.getRol().getNombre()) || usuarioLogueado.getRol().getId() == 1L);
+            
+            if (review.getAutor().getId().equals(usuarioLogueado.getId()) || isAdmin) {
+                Long proyectoId = review.getProyecto().getId();
+                reviewRepository.delete(review);
+                redirectAttributes.addAttribute("success", "deleted");
+                return "redirect:/project-reviews/" + proyectoId;
+            }
+        }
+        return "redirect:/proyectos";
+    }
+
+    // =========================
+    // VER REVIEWS (🔥 ESTE ES EL ÚNICO)
     // =========================
     @GetMapping("/{proyectoId}")
     public String verReviews(@PathVariable Long proyectoId, Model model) {
 
-        Proyecto proyecto = proyectoRepository.findById(proyectoId)
-                .orElseThrow();
+        Proyecto proyecto = proyectoRepository.findById(proyectoId).orElse(null);
 
-        List<ProjectReview> reviews = reviewRepository.findByProyecto(proyecto);
+        if (proyecto == null) {
+            return "redirect:/proyectos";
+        }
 
-        // =========================
-        // MEDIAS
-        // =========================
-        double mediaArq = reviews.stream()
-                .mapToInt(ProjectReview::getArquitectura)
-                .average().orElse(0);
+        Usuario autor = proyecto.getAutor();
 
-        double mediaLim = reviews.stream()
-                .mapToInt(ProjectReview::getLimpieza)
-                .average().orElse(0);
+        List<ProjectReview> reviews =
+                reviewRepository.findByProyectoOrderByFechaDesc(proyecto);
 
-        double mediaDoc = reviews.stream()
-                .mapToInt(ProjectReview::getDocumentacion)
-                .average().orElse(0);
+        // ⚠️ evitar null en medias
+        Double mediaArq = projectReviewService.mediaArquitectura(proyectoId);
+        Double mediaLim = projectReviewService.mediaLimpieza(proyectoId);
+        Double mediaDoc = projectReviewService.mediaDocumentacion(proyectoId);
 
-        double mediaTotal = (mediaArq + mediaLim + mediaDoc) / 3;
+        double total = 0;
+        if (mediaArq != null && mediaLim != null && mediaDoc != null) {
+            total = (mediaArq + mediaLim + mediaDoc) / 3;
+        }
 
         model.addAttribute("proyecto", proyecto);
+        model.addAttribute("autor", autor);
         model.addAttribute("reviews", reviews);
-        model.addAttribute("mediaArq", mediaArq);
-        model.addAttribute("mediaLim", mediaLim);
-        model.addAttribute("mediaDoc", mediaDoc);
-        model.addAttribute("mediaTotal", mediaTotal);
 
-        return "UI/viewprojectreviews";
+        model.addAttribute("mediaArq", mediaArq != null ? mediaArq : 0);
+        model.addAttribute("mediaLim", mediaLim != null ? mediaLim : 0);
+        model.addAttribute("mediaDoc", mediaDoc != null ? mediaDoc : 0);
+        model.addAttribute("mediaTotal", total);
+
+        return "UI/viewprojectreviews/viewprojectreviews";
     }
 }

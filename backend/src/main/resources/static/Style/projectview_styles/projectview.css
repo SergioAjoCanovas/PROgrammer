@@ -24,15 +24,43 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
+/* --- BOTÓN VOLVER (Añadido estilo grisáceo) --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-principal {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    margin: 40px auto;
+    /* Reducido el margen superior de 40px a 15px para acercarlo al botón de volver */
+    margin: 15px auto 40px auto;
     padding: 0 20px;
     gap: 45px; 
     align-items: flex-start;
-    flex: 1; /* Empuja el footer al fondo */
+    flex: 1 0 auto; /* Empuja el footer al fondo */
 }
 
 /* =========================================================
@@ -66,10 +94,50 @@ body.fondo-oscuro-neon::before {
 
 .foto-perfil-contenedor { position: relative; width: 140px; height: 140px; margin: 0 auto 20px auto; }
 .circulo-foto { width: 100%; height: 100%; border-radius: 50%; background-color: #222; border: 3px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
-.icono-corazon { 
-    position: absolute; bottom: 5px; right: 5px; 
-    color: #FFCC00; background: #333; padding: 8px; 
-    border-radius: 50%; border: 2px solid #FFCC00; 
+
+/* =========================================================
+   BOTÓN SEGUIR (CORAZÓN ESTILO PROFILEVIEW)
+   ========================================================= */
+.btn-follow-heart {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(15, 5, 5, 0.8);
+    border: 1px solid #ff4444;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ff4444;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+    z-index: 10;
+}
+
+.btn-follow-heart:hover {
+    background-color: #ff4444;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.btn-follow-heart i.fas {
+    color: #ff4444; 
+}
+
+.btn-follow-heart i.far {
+    color: #ff4444; 
+}
+
+.btn-follow-heart:hover i.far {
+    color: #ffffff; 
+}
+
+.btn-follow-heart:hover i.fas {
+    color: #ffffff; 
 }
 
 .nombre-usuario { font-size: 1.6rem; color: #FFFFFF; font-weight: bold; text-align: center; margin: 0; }
@@ -201,7 +269,7 @@ a {
 }
 
 .contenido-modal {
-    display: block; width: 85%; max-width: 1100px;
+    display: block; width: 60%; max-width: 750px;
     border: 2px solid #FFCC00; border-radius: 15px;
     box-shadow: 0 0 40px rgba(255, 204, 0, 0.5);
     animation: zoomIn 0.3s ease; cursor: default;

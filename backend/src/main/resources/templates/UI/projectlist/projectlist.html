@@ -24,6 +24,33 @@
         * { box-sizing: border-box; }
         body { overflow-x: hidden; }
 
+        /* ESTILOS PARA EL BOTÓN VOLVER (IGUAL A PROJECTVIEW) */
+        .contenedor-volver {
+            max-width: 1800px;
+            width: 98%;
+            margin: 30px auto 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .enlace-volver {
+            color: #888888; 
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .enlace-volver:hover {
+            color: #FFCC00; 
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+            transform: translateX(-5px); 
+        }
+
         #acordeon-proyectos {
             width: 100%;
             max-width: 100%;
@@ -128,6 +155,11 @@
         .btn-follow-heart:hover i.fas {
             color: white;
         }
+
+        /* Ocultar verificado del header cuando está activo (desplegado) */
+        .ui-accordion-header-active .verificado-header {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -135,9 +167,22 @@
 
 <div th:replace="~{includes/header :: header}"></div>
 
+<div class="contenedor-volver">
+    <a th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id == usuario.id}" 
+       href="/ownProfile" 
+       class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a tu perfil
+    </a>
+
+    <a th:unless="${session.usuarioLogueado != null and session.usuarioLogueado.id == usuario.id}" 
+       th:href="'/profileView/' + ${usuario.id}" 
+       class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Ver perfil de <span th:text="${usuario.username}">Usuario</span>
+    </a>
+</div>
+
 <main class="contenedor-principal">
 
-    <!-- SIDEBAR (MISMAS CLASES QUE EL ORIGINAL) -->
     <aside class="columna-perfil">
 
         <div class="tarjeta-perfil">
@@ -175,8 +220,7 @@
 
             <div class="perfil-inferior">
 
-                <!-- REDES + CV (DOTTED UNIFICADO) -->
-            <div class="lista-dotted">
+                <div class="lista-dotted">
 
                 <a th:if="${usuario.github != null}"
                 th:href="${usuario.github}"
@@ -213,7 +257,6 @@
 
     </aside>
 
-    <!-- CONTENIDO -->
     <section class="seccion-derecha-dinamica">
 
         <div class="tarjeta-acordeon-contenedor">
@@ -231,13 +274,19 @@
 
                     <h3>
                         <span th:text="${p.titulo}"></span>
-                        <span th:if="${p.estaValidado}" style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.6em; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 10px; vertical-align: middle;">
+                        <span th:if="${p.estaValidado}" class="verificado-header" style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.6em; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 10px; vertical-align: middle;">
                             <i class="fas fa-check-circle"></i> VERIFICADO
                         </span>
                     </h3>
 
                     <div>
                         <div class="inner-content">
+
+                            <div th:if="${p.estaValidado}" style="margin-bottom: 15px;">
+                                <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.75em; padding: 4px 10px; border-radius: 6px; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.2);">
+                                    <i class="fas fa-check-circle"></i> VERIFICADO
+                                </span>
+                            </div>
 
                             <p th:text="${p.descripcion}"></p>
 
@@ -281,7 +330,6 @@
 
 </main>
 
-<!-- MODAL -->
 <div id="modal-eliminar" class="modal">
     <div class="contenido-modal-confirmacion">
 

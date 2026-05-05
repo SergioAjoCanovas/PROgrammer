@@ -8,238 +8,20 @@
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/avisos_styles/avisos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        .activo, 
-        header a.activo i, 
-        header a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-            opacity: 1 !important;
-        }
-
-        body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .contenedor-avisos-page {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            flex: 1;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .header-avisos {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #FFCC00;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-        }
-
-        .titulo-avisos {
-            margin: 0;
-            font-size: 2rem;
-            color: #FFCC00;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .controles-avisos {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-control {
-            background: rgba(26, 26, 26, 0.8);
-            border: 1px solid #333;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-control:hover {
-            transform: translateY(-2px);
-            border-color: #FFCC00;
-        }
-
-        .btn-borrar:hover { border-color: #ff4444; color: #ff4444; }
-        
-        .btn-silenciar { color: #00ffaa; border-color: #00ffaa; }
-        .btn-silenciar.silenciado { color: #ff4444; border-color: #ff4444; }
-
-        .lista-avisos {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .aviso-item {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-            color: white;
-        }
-
-        .aviso-item:hover {
-            border-color: #FFCC00;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.15);
-            transform: translateX(5px);
-        }
-
-        .aviso-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: #FFCC00;
-            box-shadow: 0 0 10px #FFCC00;
-        }
-
-        .aviso-icono {
-            background: rgba(255, 204, 0, 0.1);
-            color: #FFCC00;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .aviso-icono.tipo-seguidor { color: #00f2ff; background: rgba(0, 242, 255, 0.1); }
-        .aviso-item.tipo-seguidor::before { background: #00f2ff; box-shadow: 0 0 10px #00f2ff; }
-
-        .aviso-icono.tipo-oferta { color: #ff00aa; background: rgba(255, 0, 170, 0.1); }
-        .aviso-item.tipo-oferta::before { background: #ff00aa; box-shadow: 0 0 10px #ff00aa; }
-
-        .aviso-icono.tipo-parche { color: #39FF14; background: rgba(57, 255, 20, 0.1); }
-        .aviso-item.tipo-parche::before { background: #39FF14; box-shadow: 0 0 10px #39FF14; }
-
-        .aviso-contenido {
-            flex: 1;
-        }
-
-        .aviso-mensaje {
-            font-size: 1.1rem;
-            margin: 0 0 5px 0;
-            line-height: 1.4;
-        }
-
-        .aviso-fecha {
-            color: #888;
-            font-size: 0.85rem;
-            margin: 0;
-        }
-
-        .aviso-vacio {
-            text-align: center;
-            padding: 50px;
-            background: #1a1a1a;
-            border-radius: 10px;
-            border: 1px dashed #333;
-            color: #888;
-        }
-
-        .aviso-vacio i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #444;
-        }
-
-        .btn-borrar-individual {
-            background: rgba(255, 68, 68, 0.1);
-            color: #ff4444;
-            border: 1px solid transparent;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-            z-index: 2; /* Para que sea clickeable por encima del link */
-        }
-
-        .btn-borrar-individual:hover {
-            background: #ff4444;
-            color: white;
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
-            transform: scale(1.1);
-        }
-            /* ESTILO DEL TOAST DE EXITO NEÓN (COPIA DE LOGIN) */
-        .toast-success-neon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(5, 15, 5, 0.98);
-            color: white;
-            padding: 18px 28px;
-            border-radius: 8px;
-            border-left: 6px solid #39FF14;
-            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: sans-serif;
-            transform: translateX(120%);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999;
-        }
-        .toast-success-neon.mostrar {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        .toast-success-neon i {
-            color: #39FF14;
-            font-size: 2rem;
-        }
-        .toast-success-neon strong {
-            display: block;
-            color: #39FF14;
-            font-size: 1.1rem;
-            margin-bottom: 2px;
-        }
-</style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
     <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="/main" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver a Inicio
+        </a>
+    </div>
 
     <main class="contenedor-avisos-page">
         <div class="header-avisos">
@@ -257,7 +39,6 @@
             </div>
         </div>
 
-        <!-- SECCIÓN DE PARCHES (ACTUALIZACIONES) -->
         <div class="lista-avisos" style="margin-bottom: 30px;" th:if="${notificaciones != null}">
             <h2 style="color: #39FF14; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
                 <i class="fas fa-bullhorn"></i> Mensajes de Actualización
@@ -285,19 +66,64 @@
             </a>
         </div>
 
-        <!-- SECCIÓN DE NOTIFICACIONES NORMALES -->
-        <div class="lista-avisos" th:if="${notificaciones != null}">
-            <h2 style="color: white; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
-                <i class="fas fa-bell"></i> Notificaciones
+        <div class="lista-avisos" style="margin-bottom: 30px;" th:if="${notificaciones != null}">
+            <h2 style="color: #FFCC00; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                <i class="fas fa-star"></i> Reseñas Recibidas
             </h2>
             <a th:each="aviso : ${notificaciones}" 
-               th:if="${aviso.tipo != 'NUEVO_PARCHE'}"
+               th:if="${aviso.tipo == 'NUEVA_RESEÑA_PERFIL' or aviso.tipo == 'NUEVA_RESEÑA_PROYECTO'}"
+               href="javascript:void(0);"
+               onclick="mostrarDetalleResena(event, this)"
+               class="aviso-item tipo-resena">
+                
+                <div class="aviso-icono tipo-resena">
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <div class="aviso-contenido">
+                    <p class="aviso-mensaje">
+                        <strong th:text="${aviso.tipo == 'NUEVA_RESEÑA_PERFIL' ? 'NUEVA RESEÑA DE PERFIL' : 'NUEVA RESEÑA DE PROYECTO'}">RESEÑA</strong><br>
+                        <span style="font-size: 0.85em; color: #bbb;" th:text="${#strings.abbreviate(aviso.mensaje, 60)}">Haz clic para ver los detalles.</span>
+                    </p>
+                    <div style="display:none;" class="resena-texto-oculto" th:text="${aviso.mensaje}"></div>
+                    <div style="display:none;" class="resena-enlace-oculto" th:text="${aviso.enlace}"></div>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion != null}" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion == null}">Hace un momento</p>
+                </div>
+                
+                <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </a>
+            <div th:if="${notificaciones.?[tipo == 'NUEVA_RESEÑA_PERFIL' or tipo == 'NUEVA_RESEÑA_PROYECTO'].size() == 0}" class="aviso-fecha" style="padding: 10px; font-style: italic;">No tienes reseñas nuevas.</div>
+        </div>
+
+        <div class="lista-avisos" th:if="${notificaciones != null}">
+            <h2 style="color: white; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+                <i class="fas fa-bell"></i> Otras Notificaciones
+            </h2>
+            <a th:each="aviso : ${notificaciones}" 
+               th:if="${aviso.tipo != 'NUEVO_PARCHE' and aviso.tipo != 'NUEVA_RESEÑA_PERFIL' and aviso.tipo != 'NUEVA_RESEÑA_PROYECTO'}"
                th:href="${aviso.enlace != null ? aviso.enlace : '#'}"
                class="aviso-item"
-               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
+               th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : 
+                               (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : 
+                               (aviso.tipo == 'NUEVA_POSTULACION' ? 'tipo-postulacion' : 
+                               (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'tipo-aceptada' : 
+                               (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'tipo-rechazada' : ''))))}">
                 
-                <div class="aviso-icono" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : '')}">
-                    <i class="fas" th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 'fa-briefcase'}"></i>
+                <div class="aviso-icono" 
+                     th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : 
+                                     (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : 
+                                     (aviso.tipo == 'NUEVA_POSTULACION' ? 'tipo-postulacion' : 
+                                     (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'tipo-aceptada' : 
+                                     (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'tipo-rechazada' : ''))))}">
+                    <i class="fas" 
+                       th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 
+                                       (aviso.tipo == 'NUEVA_OFERTA' ? 'fa-briefcase' : 
+                                       (aviso.tipo == 'NUEVA_POSTULACION' ? 'fa-file-signature' : 
+                                       (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'fa-check-circle' : 
+                                       (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'fa-times-circle' : 'fa-bell'))))}"></i>
                 </div>
                 
                 <div class="aviso-contenido">
@@ -312,18 +138,19 @@
                     <i class="fas fa-trash"></i>
                 </button>
             </a>
+            <div th:if="${notificaciones.?[tipo != 'NUEVO_PARCHE' and tipo != 'NUEVA_RESEÑA_PERFIL' and tipo != 'NUEVA_RESEÑA_PROYECTO'].size() == 0}" class="aviso-fecha" style="padding: 10px; font-style: italic;">No hay más notificaciones.</div>
         </div>
 
         <div class="aviso-vacio" th:if="${notificaciones == null or notificaciones.size() == 0}">
             <i class="fas fa-box-open"></i>
             <h3>No tienes avisos nuevos</h3>
-            <p>AquÃ­ aparecerÃ¡n las notificaciones cuando alguien te siga o publique una oferta.</p>
+            <p>Aquí aparecerán las notificaciones cuando alguien te siga o publique una oferta.</p>
         </div>
     </main>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-        <div id="toast-aviso-success" class="toast-success-neon">
+    <div id="toast-aviso-success" class="toast-success-neon">
         <i class="fas fa-check-circle"></i>
         <div>
             <strong>Éxito</strong>
@@ -331,7 +158,7 @@
         </div>
     </div>
 
-<script th:inline="javascript">
+    <script th:inline="javascript">
         function inicializarHeader() {
             const navAvisos = document.getElementById('link-avisos'); 
             if (navAvisos) {
@@ -350,7 +177,7 @@
             inicializarHeader();
         });
 
-        let pageIsSilenciado = [[${isSilenciado}]];
+        let pageIsSilenciado = /*[[${isSilenciado}]]*/ false;
 
         function toggleSilenciarPage() {
             fetch('/api/notificaciones/toggle-silence', { method: 'POST' })
@@ -383,7 +210,7 @@
             }).catch(e => console.error(e));
         }
 
-                function mostrarToastAviso(mensaje) {
+        function mostrarToastAviso(mensaje) {
             const toast = document.getElementById('toast-aviso-success');
             document.getElementById('toast-aviso-mensaje').innerText = mensaje;
             toast.classList.add('mostrar');
@@ -392,7 +219,7 @@
             }, 3000);
         }
 
-function borrarTodosAvisos() {
+        function borrarTodosAvisos() {
             Swal.fire({
                 title: '¿Borrar todos los avisos?',
                 text: "Esta acción no se puede deshacer.",
@@ -472,10 +299,32 @@ function borrarTodosAvisos() {
                 }
             });
         }
+
+        function mostrarDetalleResena(event, el) {
+            event.preventDefault();
+            const textoOculto = el.querySelector('.resena-texto-oculto');
+            const enlaceOculto = el.querySelector('.resena-enlace-oculto');
+            if (!textoOculto) return;
+
+            Swal.fire({
+                title: '<span style="color:#FFCC00;"><i class="fas fa-star"></i> Detalle de la Reseña</span>',
+                html: `<div style="text-align: left; font-size: 1.1rem; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding: 10px; color: #ddd; white-space: pre-wrap;">${textoOculto.innerText}</div>`,
+                background: '#1a1a1a',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#FFCC00',
+                cancelButtonColor: '#333',
+                confirmButtonText: '<span style="color:black; font-weight:bold;">Ir a la reseña</span>',
+                cancelButtonText: 'Cerrar',
+                customClass: {
+                    popup: 'swal-resena'
+                }
+            }).then((result) => {
+                if (result.isConfirmed && enlaceOculto) {
+                    window.location.href = enlaceOculto.innerText;
+                }
+            });
+        }
     </script>
 </body>
 </html>
-
-
-
-

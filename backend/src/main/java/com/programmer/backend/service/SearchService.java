@@ -79,7 +79,7 @@ public class SearchService {
 
                     // Filtrar por nombre si existe query
                     if (query != null && !query.trim().isEmpty()) {
-                        if (!perfil.getUsuario().getUsername().toLowerCase().startsWith(query.toLowerCase().trim())) {
+                        if (!perfil.getUsuario().getUsername().toLowerCase().contains(query.toLowerCase().trim())) {
                             return false;
                         }
                     }
@@ -96,6 +96,15 @@ public class SearchService {
                     return true;
                 })
                 .sorted((p1, p2) -> {
+                    // 0. Priorizar si el nombre de usuario empieza por la query
+                    if (query != null && !query.trim().isEmpty()) {
+                        String q = query.toLowerCase().trim();
+                        boolean p1Starts = p1.getUsuario().getUsername().toLowerCase().startsWith(q);
+                        boolean p2Starts = p2.getUsuario().getUsername().toLowerCase().startsWith(q);
+                        if (p1Starts && !p2Starts) return -1;
+                        if (!p1Starts && p2Starts) return 1;
+                    }
+
                     if (techIds == null || techIds.isEmpty()) return 0;
 
                     long matches1 = p1.getTecnologias().stream()
@@ -183,6 +192,15 @@ public class SearchService {
                     return true;
                 })
                 .sorted((p1, p2) -> {
+                    // 0. Priorizar si el nombre de empresa empieza por la query
+                    if (query != null && !query.trim().isEmpty()) {
+                        String q = query.toLowerCase().trim();
+                        boolean p1Starts = p1.getUsuario().getUsername().toLowerCase().startsWith(q);
+                        boolean p2Starts = p2.getUsuario().getUsername().toLowerCase().startsWith(q);
+                        if (p1Starts && !p2Starts) return -1;
+                        if (!p1Starts && p2Starts) return 1;
+                    }
+
                     if (techIds == null || techIds.isEmpty()) return 0;
 
                     long matches1 = p1.getTecnologias().stream()

@@ -26,10 +26,40 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
+/* --- BOTÓN VOLVER --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto; /* Bajado un pelín (de 15px a 30px) */
+    padding: 0 45px; /* Empujado un poco más a la derecha (de 20px a 45px) */
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 5;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
 .contenedor-principal {
     display: flex;
     justify-content: center;
-    padding: 80px 20px 40px;
+    padding: 30px 20px 40px; 
     
     /* Esto hace que el main crezca y ocupe el espacio sobrante */
     flex: 1; 
@@ -235,36 +265,59 @@ textarea { height: 120px; resize: none; }
     top: 0; left: 0; right: 0; bottom: 0;
     background: #1a1a1a;
     z-index: 15;
-    padding: 30px;
+    padding: 20px;
     display: none; 
     flex-direction: column;
-    border-radius: 25px;
+    border-radius: 20px;
 }
 
-.tarjeta-oferta.tech-expanded > div:not(.vista-todas-techs) {
-    display: none;
+.tarjeta-oferta {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 400px; /* Un mínimo razonable */
 }
+
+.tarjeta-oferta.tech-expanded .contenido-oferta {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Si queremos que mantenga el tamaño exacto, podemos no poner height: 0, 
+   pero si la lista de tecnologías es muy larga, el scroll de la tarjeta podría fallar.
+   Usaremos un enfoque híbrido: mantener el tamaño si es posible. */
 
 .tarjeta-oferta.tech-expanded .vista-todas-techs { 
     display: flex; 
+    animation: fadeInOverlay 0.4s ease-out;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .close-overlay {
     align-self: flex-end;
-    color: #FFCC00;
+    color: #00f2ff;
     font-size: 1.4rem;
     cursor: pointer;
     margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.close-overlay:hover {
+    color: #fff;
+    transform: rotate(90deg);
 }
 
 .titulo-overlay {
-    color: #fff;
-    font-size: 1rem;
+    color: #00f2ff;
+    font-size: 1.1rem;
     text-transform: uppercase;
-    border-bottom: 1px solid #FFCC00;
-    padding-bottom: 8px;
-    margin-bottom: 20px;
+    border-bottom: 1px solid #00f2ff;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
     text-align: center;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
 }
 
 .grid-techs-3 {
@@ -278,21 +331,21 @@ textarea { height: 120px; resize: none; }
 
 .grid-techs-3 span {
     text-align: center;
-    font-size: 0.7rem;
-    padding: 6px 2px;
+    font-size: 0.75rem;
+    padding: 8px 4px;
     display: inline-block;
-    background: rgba(255, 204, 0, 0.1);
-    color: #FFCC00;
-    border-radius: 5px;
-    border: 1px solid rgba(255, 204, 0, 0.2);
+    background: rgba(0, 242, 255, 0.05);
+    color: #00f2ff;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 242, 255, 0.3);
     transition: all 0.3s ease; 
 }
 
 .grid-techs-3 span:hover {
-    background: #FFCC00;
-    color: #000;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
-    border-color: #FFCC00;
+    background: rgba(0, 242, 255, 0.15);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+    border-color: #00f2ff;
 }
 
 /* =========================================================
@@ -541,6 +594,11 @@ input::file-selector-button:hover {
    5. RESPONSIVE
    ========================================================= */
 @media (max-width: 900px) {
+    .contenedor-volver {
+        margin-top: 25px; 
+        padding: 0 30px;
+        margin-bottom: -10px;
+    }
     .contenedor-postulacion { 
         flex-direction: column; 
         align-items: center; 
@@ -550,3 +608,103 @@ input::file-selector-button:hover {
         max-width: 600px; 
     }
 }
+
+/* Estilos para el estado "Ya Postulado" */
+.mensaje-ya-postulado {
+    padding: 20px;
+    text-align: center;
+}
+
+.glow-border-status {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
+}
+
+.glow-border-status::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+}
+
+.icon-badge {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 242, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+.icon-badge i {
+    font-size: 1.8rem;
+    color: #00f2ff;
+    text-shadow: 0 0 10px #00f2ff;
+}
+
+.mensaje-ya-postulado h3 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.mensaje-ya-postulado p {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.resumen-info-final {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.item-final {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.label-final {
+    font-size: 0.65rem;
+    color: #666;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.val-final {
+    color: #ddd;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.badge-status-neon {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+.status-pendiente { color: #FFCC00; border: 1px solid #FFCC00; background: rgba(255, 204, 0, 0.1); }
+.status-aceptada { color: #00e676; border: 1px solid #00e676; background: rgba(0, 230, 118, 0.1); box-shadow: 0 0 10px rgba(0, 230, 118, 0.2); }
+.status-rechazada { color: #ff4444; border: 1px solid #ff4444; background: rgba(255, 68, 68, 0.1); }
+
+/* Estados especiales para el card de estatus */
+.border-aceptada { border-color: #00e676 !important; box-shadow: 0 0 30px rgba(0, 230, 118, 0.15) !important; }
+.border-rechazada { border-color: #ff4444 !important; box-shadow: 0 0 30px rgba(255, 68, 68, 0.15) !important; }
+.bg-aceptada { background: rgba(0, 230, 118, 0.1) !important; border-color: rgba(0, 230, 118, 0.3) !important; }
+.bg-aceptada i { color: #00e676 !important; text-shadow: 0 0 10px #00e676 !important; }
+.bg-rechazada { background: rgba(255, 68, 68, 0.1) !important; border-color: rgba(255, 68, 68, 0.3) !important; }
+.bg-rechazada i { color: #ff4444 !important; text-shadow: 0 0 10px #ff4444 !important; }

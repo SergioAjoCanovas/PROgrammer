@@ -43,11 +43,34 @@ public class OfertaController {
     }
 
     @GetMapping("/mis-ofertas")
-    public String verMisOfertas(@RequestParam("empresa") String usernameEmpresa, Model model) {
-        List<OfertaEmpleo> misOfertas = ofertaRepository.findAll().stream()
-            .filter(o -> o.getEmpresa() != null && usernameEmpresa.equals(o.getEmpresa().getUsername()))
-            .collect(Collectors.toList());
-        model.addAttribute("ofertas", misOfertas);
+    public String verMisOfertas(@RequestParam("empresa") String usernameEmpresa, Model model, HttpSession session) {
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        boolean esAdmin = usuarioLogueado != null && usuarioLogueado.getRol() != null && 
+                          ("ADMIN".equalsIgnoreCase(usuarioLogueado.getRol().getNombre()) || "1".equals(usuarioLogueado.getRol().getNombre()));
+
+        List<OfertaEmpleo> allOfertas = ofertaRepository.findAll();
+        
+        if (esAdmin) {
+            // Mis Ofertas (las creadas por el admin)
+            List<OfertaEmpleo> misOfertas = allOfertas.stream()
+                .filter(o -> o.getEmpresa() != null && usernameEmpresa.equals(o.getEmpresa().getUsername()))
+                .collect(Collectors.toList());
+            
+            // Ofertas de otras empresas (Agrupadas por Empresa)
+            java.util.Map<Usuario, List<OfertaEmpleo>> ofertasPorEmpresa = allOfertas.stream()
+                .filter(o -> o.getEmpresa() != null && !usernameEmpresa.equals(o.getEmpresa().getUsername()))
+                .collect(Collectors.groupingBy(OfertaEmpleo::getEmpresa));
+
+            model.addAttribute("misOfertas", misOfertas);
+            model.addAttribute("ofertasPorEmpresa", ofertasPorEmpresa);
+        } else {
+            List<OfertaEmpleo> misOfertas = allOfertas.stream()
+                .filter(o -> o.getEmpresa() != null && usernameEmpresa.equals(o.getEmpresa().getUsername()))
+                .collect(Collectors.toList());
+            model.addAttribute("ofertas", misOfertas);
+        }
+
+        model.addAttribute("esAdmin", esAdmin);
         return "UI/misofertas/misofertas";
     }
 
@@ -75,7 +98,7 @@ public class OfertaController {
             
             // Comprobamos si es el dueño O si es administrador
             boolean esAdmin = usuario.getRol() != null && 
-                              ("ADMIN".equalsIgnoreCase(usuario.getRol().getNombre()) || "1".equals(usuario.getRol().getNombre()));
+                               ("ADMIN".equalsIgnoreCase(usuario.getRol().getNombre()) || "1".equals(usuario.getRol().getNombre()));
             
             if (!oferta.getEmpresa().getId().equals(usuario.getId()) && !esAdmin) {
                 return "redirect:/jobsearching"; // Si no es ni el dueño ni Admin, lo echamos
@@ -248,16 +271,82 @@ public class OfertaController {
             }
 
             postulacionRepository.save(p);
+
+            // Notificar a la empresa si no es una actualización
+            if (!esActualizacion && o.get().getEmpresa() != null) {
+                Usuario empresa = o.get().getEmpresa();
+                if (!empresa.isSilenciarNotificaciones()) {
+                    Notificacion n = new Notificacion();
+                    n.setUsuario(empresa);
+                    n.setTipo("NUEVA_POSTULACION");
+                    n.setMensaje("El usuario " + usuario.getUsername() + " se ha postulado a tu oferta: " + o.get().getTitulo());
+                    n.setEnlace("/ver-postulaciones/" + ofertaId);
+                    notificacionRepository.save(n);
+                }
+            }
         }
         return "redirect:/jobsearching?" + (esActualizacion ? "actualizado=true" : "postulado=true");
     }
 
     @GetMapping("/api/postulaciones/mis-ofertas-ids")
     @ResponseBody
-    public ResponseEntity<List<Long>> obtenerMisOfertasPostuladas(@RequestParam("username") String username) {
+    public ResponseEntity<List<java.util.Map<String, Object>>> obtenerMisOfertasPostuladas(@RequestParam("username") String username) {
         return usuarioRepository.findByUsername(username)
             .map(u -> ResponseEntity.ok(postulacionRepository.findByDesarrolladorId(u.getId()).stream()
-                .map(p -> p.getOferta().getId()).collect(Collectors.toList())))
+                .map(p -> {
+                    java.util.Map<String, Object> map = new java.util.HashMap<>();
+                    map.put("ofertaId", p.getOferta().getId());
+                    map.put("estado", p.getEstado());
+                    return map;
+                }).collect(Collectors.toList())))
             .orElse(ResponseEntity.ok(List.of()));
+    }
+
+    @PostMapping("/api/postulaciones/{id}/update-status")
+    @ResponseBody
+    public ResponseEntity<?> updateStatus(@PathVariable("id") Long id, @RequestParam("estado") String estado) {
+        try {
+            Optional<Postulacion> postOpt = postulacionRepository.findById(id);
+            if (postOpt.isPresent()) {
+                Postulacion p = postOpt.get();
+                p.setEstado(estado);
+                postulacionRepository.save(p);
+
+                // Notificar al desarrollador
+                Notificacion n = new Notificacion();
+                n.setUsuario(p.getDesarrollador());
+                boolean aceptada = "ACEPTADA".equals(estado);
+                n.setTipo(aceptada ? "POSTULACION_ACEPTADA" : "POSTULACION_RECHAZADA");
+                String msg = aceptada ? "¡Felicidades! Tu postulación para '" + p.getOferta().getTitulo() + "' ha sido ACEPTADA." 
+                                      : "Tu postulación para '" + p.getOferta().getTitulo() + "' ha sido rechazada.";
+                n.setMensaje(msg);
+                n.setEnlace("/jobsearching");
+                notificacionRepository.save(n);
+
+                return ResponseEntity.ok().body("{\"success\": true}");
+            }
+            return ResponseEntity.badRequest().body("{\"success\": false}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"success\": false}");
+        }
+    }
+
+    @PostMapping("/api/postulaciones/eliminar")
+    @ResponseBody
+    public ResponseEntity<?> eliminarPostulacion(@RequestParam("ofertaId") Long ofertaId, @RequestParam("username") String username) {
+        try {
+            Optional<Usuario> userOpt = usuarioRepository.findByUsername(username);
+            if (userOpt.isPresent()) {
+                Optional<Postulacion> postOpt = postulacionRepository.findByDesarrolladorId(userOpt.get().getId()).stream()
+                    .filter(p -> p.getOferta().getId().equals(ofertaId)).findFirst();
+                if (postOpt.isPresent()) {
+                    postulacionRepository.delete(postOpt.get());
+                    return ResponseEntity.ok().body("{\"success\": true}");
+                }
+            }
+            return ResponseEntity.badRequest().body("{\"success\": false}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"success\": false}");
+        }
     }
 }

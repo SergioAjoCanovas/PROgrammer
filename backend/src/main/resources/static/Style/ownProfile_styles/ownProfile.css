@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
     1. VARIABLES Y CONFIGURACIÓN GLOBAL
    ============================================================ */
 :root {
@@ -380,8 +380,9 @@ p, span, div, h1, h2, h3, h4 {
 
 .tarjeta-mini-proyecto:hover {
     border-color: var(--amarillo-neon);
-    transform: translateY(-10px);
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3) !important;
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.4) !important;
+    z-index: 10;
 }
 
 .tarjeta-mini-proyecto h3 {
@@ -661,6 +662,26 @@ p, span, div, h1, h2, h3, h4 {
     line-height: 1.4;
 }
 
+.contenedor-resenas-scroll {
+    max-height: 300px; /* Altura aproximada para 3 reseñas */
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Scrollbar personalizado para las reseñas */
+.contenedor-resenas-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.contenedor-resenas-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.contenedor-resenas-scroll::-webkit-scrollbar-thumb {
+    background: var(--amarillo-neon);
+    border-radius: 10px;
+    box-shadow: 0 0 5px var(--amarillo-neon);
+}
+
 /* --- ANIMACIÓN GRID (SMOOTHIE) PARA RESEÑAS PROPIAS --- */
 .resena-extra-wrapper-own {
     display: grid;
@@ -723,8 +744,8 @@ p, span, div, h1, h2, h3, h4 {
    .proyecto-card {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    min-height: 260px;
+    gap: 15px;
+    min-height: 280px;
 }
 
 /* DESCRIPCIÓN CON SCROLL COMO BIO */
@@ -749,7 +770,7 @@ p, span, div, h1, h2, h3, h4 {
 /* CARRUSEL PEQUEÑO */
 .carousel-proyecto {
     width: 100%;
-    height: 80px;
+    height: 90px;
     overflow: hidden;
     border-radius: 10px;
     position: relative;

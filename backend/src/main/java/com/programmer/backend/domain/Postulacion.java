@@ -34,6 +34,9 @@ public class Postulacion {
     @Column(name = "fecha_postulacion", insertable = false, updatable = false)
     private Date fechaPostulacion;
 
+    @Column(name = "estado", length = 20)
+    private String estado = "PENDIENTE";
+
     // --- GETTERS Y SETTERS ---
 
     public Long getId() {
@@ -90,5 +93,13 @@ public class Postulacion {
 
     public void setFechaPostulacion(Date fechaPostulacion) {
         this.fechaPostulacion = fechaPostulacion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

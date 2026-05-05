@@ -72,7 +72,8 @@
                            name="username"
                            class="input-nombre-perfil"
                            id="inputUsernameLimited"
-                           th:value="${usuarioLogueado.username}">
+                           th:value="${usuarioLogueado.username}"
+                           oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')">
 
                     <button type="submit" class="boton-amarillo-solido">
                         Guardar
@@ -215,7 +216,15 @@ document.getElementById("formUsernameLimited").addEventListener("submit", async 
     e.preventDefault();
 
     const form = e.target;
-    const data = new URLSearchParams(new FormData(form));
+    const formData = new FormData(form);
+    const nuevoNombre = formData.get("username").trim();
+
+    if (nuevoNombre.length < 3) {
+        mostrarToast("El nombre debe tener al menos 3 caracteres", "error");
+        return;
+    }
+
+    const data = new URLSearchParams(formData);
 
     const res = await fetch(form.action, {
         method: "POST",
@@ -231,6 +240,8 @@ document.getElementById("formUsernameLimited").addEventListener("submit", async 
         mostrarToast("Ese nombre ya existe", "error");
     } else if (text === "EMPTY") {
         mostrarToast("El nombre no puede estar vacío", "error");
+    } else if (text === "TOO_SHORT") {
+        mostrarToast("El nombre debe tener al menos 3 caracteres", "error");
     } else {
         mostrarToast("Error al actualizar", "error");
     }

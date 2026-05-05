@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/jobsearching_styles/jobsearching_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="body-layout fondo-oscuro-neon">
 
@@ -22,11 +23,40 @@
 
     <main class="contenedor-principal-ofertas">
         <div class="cabecera-filtros">
-            <div class="filtro-contenedor">
-                <button class="btn-filtro filtro-seleccionado" onclick="aplicarFiltro('todas', this)">Todas</button>
-                <button class="btn-filtro" onclick="aplicarFiltro('activas', this)">Activas</button>
-                <button class="btn-filtro" onclick="aplicarFiltro('cerradas', this)">Cerradas</button>
-                <button class="btn-filtro" id="btn-filtro-postulaciones" style="display: none;" onclick="aplicarFiltro('postulaciones', this)">Mis Postulaciones</button>
+            <!-- PESTAÑAS PRINCIPALES (Estilo Admin Panel) -->
+            <div class="tabs-principales-jobsearching">
+                <button class="tab-principal-btn activo" id="tab-btn-ofertas" onclick="cambiarSeccionPrincipal('seccion-ofertas')">
+                    <i class="fas fa-briefcase"></i> Explorar Ofertas
+                </button>
+                <button class="tab-principal-btn" id="tab-btn-postulaciones" onclick="cambiarSeccionPrincipal('seccion-postulaciones')">
+                    <i class="fas fa-user-tie"></i> Mis Postulaciones
+                </button>
+            </div>
+
+            <div class="filtro-contenedor-grupal">
+                <!-- CONTENIDO: EXPLORAR OFERTAS -->
+                <div class="seccion-principal-content activo" id="seccion-ofertas">
+                    <div class="grupo-filtros">
+                        <div class="botones-grupo">
+                            <button class="btn-filtro filtro-seleccionado" onclick="aplicarFiltro('todas', this)">Todas</button>
+                            <button class="btn-filtro" id="btn-filtro-activas" onclick="aplicarFiltro('activas', this)">Activas</button>
+                            <button class="btn-filtro" id="btn-filtro-cerradas" onclick="aplicarFiltro('cerradas', this)">Cerradas</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENIDO: MIS POSTULACIONES -->
+                <div class="seccion-principal-content" id="seccion-postulaciones" style="display: none;">
+                    <div class="grupo-filtros">
+                        <div class="botones-grupo">
+                            <button class="btn-filtro" id="btn-filtro-todas-sin-mias" onclick="aplicarFiltro('todas_sin_mias', this)">Todas</button>
+                            <button class="btn-filtro" id="btn-filtro-nuevas" onclick="aplicarFiltro('nuevas', this)">Nuevas</button>
+                            <button class="btn-filtro" id="btn-filtro-pendientes" onclick="aplicarFiltro('pendientes', this)">Pendientes</button>
+                            <button class="btn-filtro" id="btn-filtro-aceptadas" onclick="aplicarFiltro('aceptadas', this)">Aceptadas</button>
+                            <button class="btn-filtro" id="btn-filtro-rechazadas" onclick="aplicarFiltro('rechazadas', this)">Rechazadas</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="acciones-superiores" id="contenedor-ofertas-propias" style="display: none;">
                 <button class="boton-ofertas-propias" onclick="irAMisOfertas()">
@@ -35,7 +65,11 @@
             </div>
         </div>
 
-        <div class="tarjeta-oferta" th:each="oferta : ${ofertas}" th:data-id="${oferta.id}" th:data-empresa="${oferta.empresa?.username}">
+        <div class="tarjeta-oferta" 
+             th:each="oferta : ${ofertas}" 
+             th:data-id="${oferta.id}" 
+             th:data-empresa="${oferta.empresa?.username}"
+             th:data-es-propia="${session.usuarioLogueado != null and oferta.empresa != null and session.usuarioLogueado.id == oferta.empresa.id}">
             <div class="logo-empresa foto-perfil-wrapper">
                 <img th:src="${oferta.empresa != null && oferta.empresa.fotoPerfil != null ? oferta.empresa.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" alt="Logo Empresa">
                 <button th:if="${session.usuarioLogueado != null and oferta.empresa != null and session.usuarioLogueado.id != oferta.empresa.id}"
@@ -74,6 +108,8 @@
         .toast-neon-exito i { color: #00e676; font-size: 2rem; }
         .toast-neon-exito strong { display: block; color: #00e676; font-size: 1.1rem; margin-bottom: 2px; }
         .badge-propia { background: #FFCC00; color: black; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 5px; display: inline-block; text-transform: uppercase; }
+        .boton-eliminar-postulacion { background: rgba(255, 68, 68, 0.1); color: #ff4444; border: 1px solid #ff4444; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.3s ease; text-transform: uppercase; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .boton-eliminar-postulacion:hover { background: #ff4444; color: white; box-shadow: 0 0 15px rgba(255, 68, 68, 0.4); }
     </style>
 
     <div id="toast-postulacion" class="toast-neon-exito">
@@ -113,20 +149,87 @@
     function aplicarFiltro(tipo, btn) {
         if (btn) { document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('filtro-seleccionado')); btn.classList.add('filtro-seleccionado'); }
         document.querySelectorAll('.tarjeta-oferta').forEach(t => {
-            const act = t.querySelector('.estado-oferta').classList.contains('activo');
             const id = parseInt(t.getAttribute('data-id'));
-            let m = (tipo==='todas') || (tipo==='activas'&&act) || (tipo==='cerradas'&&!act) || (tipo==='postulaciones'&&misPostulacionesIds.includes(id));
+            const act = t.querySelector('.estado-oferta').classList.contains('activo');
+            const esPropia = t.getAttribute('data-es-propia') === 'true';
+            const postu = misPostulacionesIds.find(p => p.ofertaId === id);
+            
+            let m = false;
+            if (tipo === 'todas') {
+                m = true;
+            } else if (tipo === 'todas_sin_mias') {
+                m = !esPropia;
+            } else if (tipo === 'activas') {
+                m = act;
+            } else if (tipo === 'cerradas') {
+                m = !act;
+            } else if (tipo === 'nuevas') {
+                m = !postu && !esPropia;
+            } else if (tipo === 'aceptadas') {
+                m = postu && postu.estado === 'ACEPTADA';
+            } else if (tipo === 'rechazadas') {
+                m = postu && postu.estado === 'RECHAZADA';
+            } else if (tipo === 'pendientes') {
+                m = postu && (postu.estado === 'PENDIENTE' || !postu.estado);
+            }
+            
             t.style.display = m ? 'flex' : 'none';
         });
     }
 
+    function cambiarSeccionPrincipal(seccionId) {
+        document.querySelectorAll('.seccion-principal-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tab-principal-btn').forEach(el => el.classList.remove('activo'));
+        
+        document.getElementById(seccionId).style.display = 'block';
+        const btnId = seccionId === 'seccion-ofertas' ? 'tab-btn-ofertas' : 'tab-btn-postulaciones';
+        document.getElementById(btnId).classList.add('activo');
+
+        // Al cambiar de sección principal, activamos el primer filtro de esa sección por defecto
+        const primerBoton = document.getElementById(seccionId).querySelector('.btn-filtro');
+        if (primerBoton) {
+            primerBoton.click();
+        }
+    }
+
     function comprobarRoles() {
         const rs = (localStorage.getItem('rolUsuario') || '').trim().toUpperCase(); const u = localStorage.getItem('usuarioLogueado');
-        if (rs === 'COMPANY' || rs === '3') document.getElementById('contenedor-ofertas-propias').style.display = 'flex';
-        if ((rs === 'DEVELOPER' || rs === '2') && u) {
-            document.getElementById('btn-filtro-postulaciones').style.display = 'inline-block';
-            fetch('/api/postulaciones/mis-ofertas-ids?username=' + encodeURIComponent(u)).then(r => r.json()).then(d => { misPostulacionesIds = d; adaptarBotonesPorRol(); });
-        } else { adaptarBotonesPorRol(); }
+        const esAdmin = rs === 'ADMIN' || rs === '1';
+        const esEmpresa = rs === 'COMPANY' || rs === '3';
+        const esDev = rs === 'DEVELOPER' || rs === '2';
+
+        // 1. GESTIÓN DE PESTAÑAS SEGÚN ROL
+        if (esAdmin) {
+            // Admin ve todo
+            document.getElementById('tab-btn-ofertas').style.display = 'inline-block';
+            document.getElementById('tab-btn-postulaciones').style.display = 'inline-block';
+        } else if (esEmpresa) {
+            // Empresa solo ve Explorar Ofertas
+            document.getElementById('tab-btn-ofertas').style.display = 'inline-block';
+            document.getElementById('tab-btn-postulaciones').style.display = 'none';
+            cambiarSeccionPrincipal('seccion-ofertas');
+        } else if (esDev) {
+            // Developer solo ve Mis Postulaciones
+            document.getElementById('tab-btn-ofertas').style.display = 'none';
+            document.getElementById('tab-btn-postulaciones').style.display = 'inline-block';
+            cambiarSeccionPrincipal('seccion-postulaciones');
+        }
+
+        // 2. MOSTRAR BOTÓN DE GESTIÓN DE OFERTAS PROPIAS
+        if (esEmpresa || esAdmin) {
+            document.getElementById('contenedor-ofertas-propias').style.display = 'flex';
+        }
+        
+        // 3. CARGAR POSTULACIONES SI ES NECESARIO (Dev o Admin)
+        if (esDev || esAdmin) {
+            if (u) {
+                fetch('/api/postulaciones/mis-ofertas-ids?username=' + encodeURIComponent(u)).then(r => r.json()).then(d => { misPostulacionesIds = d; adaptarBotonesPorRol(); });
+            } else {
+                adaptarBotonesPorRol();
+            }
+        } else { 
+            adaptarBotonesPorRol(); 
+        }
     }
 
     function irAMisOfertas() { const u = localStorage.getItem('usuarioLogueado'); if (u) window.location.href = '/mis-ofertas?empresa=' + encodeURIComponent(u); }
@@ -135,24 +238,25 @@
         const u = localStorage.getItem('usuarioLogueado'); 
         const r = (localStorage.getItem('rolUsuario') || '').trim().toUpperCase();
         const esAdmin = r === 'ADMIN' || r === '1';
+        const rsEmpresa = r === 'COMPANY' || r === '3';
+        const rsDev = r === 'DEVELOPER' || r === '2';
 
         document.querySelectorAll('.tarjeta-oferta').forEach(t => {
             const acc = t.querySelector('.acciones-oferta'); 
             const emp = t.getAttribute('data-empresa');
+            const esPropia = t.getAttribute('data-es-propia') === 'true';
             const id = t.getAttribute('data-id'); 
             const act = t.querySelector('.estado-oferta').classList.contains('activo');
-            const esSuOferta = (r === 'COMPANY' || r === '3') && emp === u;
 
-            // Aquí el frontend trata al Admin y a la Empresa propietaria de forma IDÉNTICA
-            if (esAdmin || esSuOferta) {
+            if (esPropia) {
                 if (!t.querySelector('.badge-propia')) {
                     const b = document.createElement('span'); 
                     b.className = 'badge-propia'; 
                     
-                    if (esSuOferta) {
+                    if (rsEmpresa) {
                         b.innerHTML = '<i class="fas fa-star"></i> Tu Oferta';
                     } else if (esAdmin) {
-                        b.innerHTML = '<i class="fas fa-shield-alt"></i> Gestión Admin';
+                        b.innerHTML = '<i class="fas fa-shield-alt"></i> Tu Oferta (Admin)';
                         b.style.background = '#00f2ff';
                         b.style.color = 'black';
                     }
@@ -166,14 +270,111 @@
                     </div>`;
             } else if (act) {
                 const b = t.querySelector('.boton-postular');
-                if (r === 'DEVELOPER' || r === '2') { 
-                    b.innerHTML = misPostulacionesIds.includes(parseInt(id)) ? '<i class="fas fa-edit"></i> EDITAR POSTULACIÓN' : 'POSTULAR'; 
+                
+                if (rsDev || esAdmin) { 
+                    const postu = misPostulacionesIds.find(p => p.ofertaId === parseInt(id));
+                    const yaPostulado = !!postu;
+                    
+                    let htmlAcciones = "";
+                    
+                    if (yaPostulado) {
+                        const esRechazada = postu.estado === 'RECHAZADA';
+                        const esAceptada = postu.estado === 'ACEPTADA';
+                        
+                        if (esRechazada) t.classList.add('tarjeta-rechazada');
+                        if (esAceptada) t.classList.add('tarjeta-aceptada');
+
+                        let estadoPostulacionLabel = 'Pendiente';
+                        let estadoClass = 'pendiente'; 
+                        let estadoIcon = 'fa-clock';
+
+                        if (esAceptada) {
+                            estadoPostulacionLabel = 'Aceptada';
+                            estadoClass = 'activo';
+                            estadoIcon = 'fa-check-circle';
+                        } else if (esRechazada) {
+                            estadoPostulacionLabel = 'Rechazada';
+                            estadoClass = 'inactivo';
+                            estadoIcon = 'fa-times-circle';
+                        }
+
+                        htmlAcciones = `<span class="estado-oferta ${estadoClass}"><i class="fas ${estadoIcon}"></i> <span>Tu Postulación: ${estadoPostulacionLabel}</span></span>
+                            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">`;
+                        
+                        if (esRechazada) {
+                            htmlAcciones += `<button class="boton-postular btn-resultado-rechazada" onclick="irAJobView(${id})"><i class="fas fa-user-times"></i> HAS SIDO RECHAZADO</button>`;
+                        } else if (esAceptada) {
+                            htmlAcciones += `<button class="boton-postular btn-resultado-aceptada" onclick="irAJobView(${id})"><i class="fas fa-award"></i> ¡HAS SIDO ACEPTADO!</button>`;
+                        } else {
+                            htmlAcciones += `<button class="boton-postular" onclick="irAJobView(${id})"><i class="fas fa-edit"></i> EDITAR POSTULACIÓN</button>
+                                <button class="boton-eliminar-postulacion" onclick="confirmarEliminarPostulacion(${id})"><i class="fas fa-trash-alt"></i> ELIMINAR POSTULACIÓN</button>`;
+                        }
+                    } else {
+                        htmlAcciones = `<span class="estado-oferta activo"><i class="fas fa-check-circle"></i> <span>Activa</span></span>
+                            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                            <button class="boton-postular" onclick="irAJobView(${id})">POSTULAR</button>`;
+                    }
+
+                    // Si es ADMIN y NO es su oferta, añadimos los botones de moderación estándar (VER INFO y EDITAR)
+                    if (esAdmin && !esPropia) {
+                        htmlAcciones += `
+                            <button class="boton-postular" onclick="irAJobView(${id})">VER INFO</button>
+                            <button class="boton-postular btn-empresa-editar" onclick="irAEditarOferta(${id})"><i class="fas fa-edit"></i> EDITAR</button>`;
+                    }
+
+                    htmlAcciones += `</div>`;
+                    acc.innerHTML = htmlAcciones;
                 }
                 else { 
                     b.innerHTML = 'VER INFORMACIÓN'; 
                 }
             }
         });
+    }
+
+    function confirmarEliminarPostulacion(id) {
+        Swal.fire({
+            title: '¿Eliminar tu postulación?',
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ff4444',
+            cancelButtonColor: '#333',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            background: '#1a1a1a',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const u = localStorage.getItem('usuarioLogueado');
+                const formData = new FormData();
+                formData.append('ofertaId', id);
+                formData.append('username', u);
+
+                fetch('/api/postulaciones/eliminar', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(r => r.json())
+                .then(d => {
+                    if (d.success) {
+                        mostrarToastEliminado();
+                        setTimeout(() => window.location.reload(), 2000);
+                    }
+                });
+            }
+        });
+    }
+
+    function mostrarToastEliminado() {
+        const t = document.getElementById('toast-postulacion');
+        document.getElementById('toast-titulo').innerText = "¡Postulación eliminada!";
+        document.getElementById('toast-subtitulo').innerText = "Se ha eliminado tu postulación correctamente.";
+        t.querySelector('i').className = "fas fa-trash-alt";
+        t.style.borderLeftColor = "#ff4444";
+        t.querySelector('i').style.color = "#ff4444";
+        t.querySelector('strong').style.color = "#ff4444";
+        t.classList.add('mostrar');
     }
 
     window.addEventListener('load', () => { inicializarHeader(); comprobarRoles(); });
@@ -183,7 +384,7 @@
         if (p.has('postulado') || p.has('actualizado') || p.has('ofertaPublicada') || p.has('ofertaEditada')) {
             if (p.get('ofertaEditada') === 'true') { document.getElementById('toast-titulo').innerText = "¡Oferta editada!"; document.getElementById('toast-subtitulo').innerText = "Los cambios en tu oferta se han guardado con éxito."; t.querySelector('i').className = "fas fa-edit"; }
             else if (p.get('ofertaPublicada') === 'true') { document.getElementById('toast-titulo').innerText = "¡Oferta publicada!"; document.getElementById('toast-subtitulo').innerText = "Tu oferta ya es visible."; t.querySelector('i').className = "fas fa-bullhorn"; }
-            else if (p.get('actualizado') === 'true') { document.getElementById('toast-titulo').innerText = "¡Postulación actualizada!"; document.getElementById('toast-subtitulo').innerText = "Tus cambios se han guardado correctamente."; t.querySelector('i').className = "fas fa-save"; }
+            else if (p.get('actualizado') === 'true') { document.getElementById('toast-titulo').innerText = "¡Postulación modificada!"; document.getElementById('toast-subtitulo').innerText = "Se ha modificado correctamente."; t.querySelector('i').className = "fas fa-save"; }
             setTimeout(() => { t.classList.add('mostrar'); }, 100);
             window.history.replaceState({}, document.title, window.location.pathname);
             setTimeout(() => { t.classList.remove('mostrar'); }, 4500);

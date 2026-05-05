@@ -256,3 +256,108 @@
     transform: scale(1.03);
     box-shadow: 0 0 15px #FFCC00;
 }
+
+/* ============================================================
+   GRID DOS TARJETAS (SIN ROMPER FUNCIONALIDAD)
+============================================================ */
+
+.grid-limitado {
+    display: flex;
+    gap: 30px; /* separación */
+    justify-content: center;
+    align-items: stretch; /* misma altura */
+    width: 100%;
+    max-width: 900px;
+}
+
+/* ambas tarjetas ocupan lo mismo */
+.grid-limitado .tarjeta-limitada {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.texto-info-edicion {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.4;
+
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+    .grid-limitado {
+        flex-direction: column;
+    }
+}
+
+/* ============================================================
+   TOAST NEÓN (IGUAL QUE OWN PROFILE)
+============================================================ */
+
+.toast-neon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    background-color: rgba(5, 15, 5, 0.98);
+    color: white;
+
+    padding: 18px 28px;
+    border-radius: 8px;
+
+    border-left: 6px solid #39FF14;
+
+    box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    font-family: sans-serif;
+
+    transform: translateX(120%);
+    opacity: 0;
+
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    z-index: 9999;
+}
+
+.toast-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* ERROR (ROJO) */
+.toast-neon.error {
+    border-left-color: #ff4444;
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    background-color: rgba(15, 5, 5, 0.98);
+}
+
+/* ICONO */
+.toast-neon i {
+    color: #39FF14;
+    font-size: 2rem;
+}
+
+.toast-neon.error i {
+    color: #ff4444;
+}
+
+/* TITULO */
+.toast-neon strong {
+    display: block;
+    color: #39FF14;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.toast-neon.error strong {
+    color: #ff4444;
+}

@@ -363,3 +363,30 @@
     color: #FFCC00 !important;
     text-shadow: 0 0 15px rgba(255, 204, 0, 0.7) !important;
 }
+
+.area-mensajes {
+    scroll-behavior: smooth;
+    min-height: 0;
+}
+
+.mensaje {
+    animation: fadeIn 0.2s ease-in;
+}
+
+.item-chat.nuevo-chat {
+    background-color: rgba(255, 204, 0, 0.08);
+    border-left: 4px solid #FFCC00;
+    box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.2);
+    animation: glowPulse 1.5s infinite;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: inset 0 0 8px rgba(255,204,0,0.15); }
+    50% { box-shadow: inset 0 0 14px rgba(255,204,0,0.35); }
+    100% { box-shadow: inset 0 0 8px rgba(255,204,0,0.15); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

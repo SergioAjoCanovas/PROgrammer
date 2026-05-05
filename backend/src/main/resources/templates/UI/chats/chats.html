@@ -8,136 +8,261 @@
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="/Style/chats_styles/chats_styles.css"> 
+    <link rel="stylesheet" href="/Style/chats_styles/chats_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-    </style>
 </head>
-<body class="fondo-oscuro-neon">
 
-    <div th:replace="~{includes/header :: header}"></div>
+<body class="fondo-oscuro-neon"
+      th:attr="data-user1=${user1}, data-user2=${user2 != null ? user2 : ''}">
 
-    <div class="contenedor-volver">
-        <a href="/main" class="enlace-volver">
-            <i class="fas fa-arrow-left"></i> Volver a inicio
-        </a>
-    </div>
+<div th:replace="~{includes/header :: header}"></div>
 
-    <main class="contenedor-principal-chats">
-        <section class="tarjeta-chats border-neon">
-            
-            <aside class="panel-contactos">
-                <div class="cabecera-contactos">
-                    <h2><i class="fas fa-comments"></i> Mensajes</h2>
-                    <button class="btn-nuevo-chat neon-button" title="Nuevo mensaje"><i class="fas fa-plus"></i></button>
-                </div>
-                
-                <div class="buscador-chats">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Buscar conversación...">
-                </div>
+<div class="contenedor-volver">
+    <a href="/main" class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a inicio
+    </a>
+</div>
 
-                <div class="lista-conversaciones">
-                    <div class="item-chat activo">
-                        <div class="avatar-chat">
-                            <img src="/Img/stock/empresa1.png" alt="Avatar">
-                            <span class="estado en-linea"></span>
-                        </div>
-                        <div class="info-chat">
-                            <h4>Tech Solutions SL</h4>
-                            <p>Nos interesa tu perfil para...</p>
-                        </div>
-                        <div class="meta-chat">
-                            <span class="hora">10:45</span>
-                            <span class="badge-no-leido">2</span>
-                        </div>
-                    </div>
+<main class="contenedor-principal-chats">
+    <section class="tarjeta-chats border-neon">
 
-                    <div class="item-chat">
-                        <div class="avatar-chat">
-                            <i class="fas fa-user-circle fa-2x" style="color: #ccc;"></i>
-                            <span class="estado ausente"></span>
-                        </div>
-                        <div class="info-chat">
-                            <h4>Marta Backend Dev</h4>
-                            <p>He revisado la API, todo ok.</p>
-                        </div>
-                        <div class="meta-chat">
-                            <span class="hora">Ayer</span>
-                        </div>
+        <!-- LISTA -->
+        <aside class="panel-contactos">
+
+            <div class="cabecera-contactos">
+                <h2><i class="fas fa-comments"></i> Mensajes</h2>
+            </div>
+
+            <div class="lista-conversaciones" id="listaChats"></div>
+
+        </aside>
+
+        <!-- CHAT -->
+        <section class="panel-conversacion">
+
+            <div class="cabecera-chat-activo">
+                <div class="info-usuario-activo">
+                    <img id="chatAvatar" class="avatar-pequeno" src="/Img/default-avatar.png">
+
+                    <div>
+                        <h3 id="chatNombre">Chat</h3>
+                        <span class="subtitulo-estado">Selecciona una conversación</span>
                     </div>
                 </div>
-            </aside>
+            </div>
 
-            <section class="panel-conversacion">
-                <div class="cabecera-chat-activo">
-                    <div class="info-usuario-activo">
-                        <img src="/Img/stock/empresa1.png" alt="Avatar" class="avatar-pequeno">
-                        <div>
-                            <h3>Tech Solutions SL</h3>
-                            <span class="subtitulo-estado">Escribiendo...</span>
-                        </div>
-                    </div>
-                    <div class="acciones-chat">
-                        <button title="Videollamada"><i class="fas fa-video"></i></button>
-                        <button title="Opciones"><i class="fas fa-ellipsis-v"></i></button>
-                    </div>
-                </div>
+            <div class="area-mensajes" id="chatBox">
+                <p style="opacity:0.5; text-align:center; margin-top:20px;">
+                    Selecciona un chat para empezar
+                </p>
+            </div>
 
-                <div class="area-mensajes">
-                    <div class="mensaje recibido">
-                        <div class="burbuja">
-                            <p>¡Hola! Hemos visto tu perfil en ProGrammer y tu último proyecto de e-commerce nos ha gustado mucho.</p>
-                            <span class="hora-mensaje">10:40</span>
-                        </div>
-                    </div>
+            <div class="zona-input-chat">
+                <input type="text" id="mensajeInput" placeholder="Escribe un mensaje...">
 
-                    <div class="mensaje enviado">
-                        <div class="burbuja">
-                            <p>¡Hola! Muchas gracias, me alegro de que os haya gustado. Fue un resto integrar la pasarela de pagos.</p>
-                            <span class="hora-mensaje">10:42 <i class="fas fa-check-double leido"></i></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="zona-input-chat">
-                    <button class="btn-adjuntar" title="Adjuntar archivo o código"><i class="fas fa-paperclip"></i></button>
-                    <input type="text" placeholder="Escribe un mensaje aquí...">
-                    <button class="btn-enviar neon-button"><i class="fas fa-paper-plane"></i></button>
-                </div>
-            </section>
+                <button class="btn-enviar neon-button" onclick="enviarMensaje()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
 
         </section>
-    </main>
 
-    <div th:replace="~{includes/footer :: footer}"></div>
+    </section>
+</main>
 
-    <script>
-        function inicializarInterfazChat() {
-            const navChats = document.getElementById('nav-chats'); 
+<div th:replace="~{includes/footer :: footer}"></div>
 
-            if (navChats) {
-                navChats.classList.add('activo');
-            } else {
-                const links = document.querySelectorAll('header a');
-                links.forEach(l => {
-                    if (l.getAttribute('href')?.includes('chats')) {
-                        l.classList.add('activo');
-                    }
-                });
-            }
-        }
+<script>
 
-        window.addEventListener('load', () => {
-            setTimeout(inicializarInterfazChat, 100);
-        });
-    </script>
+const chatBox = document.getElementById("chatBox");
+const listaChats = document.getElementById("listaChats");
+
+const user1 = Number(document.body.dataset.user1 || 0);
+
+let user2 = document.body.dataset.user2 && document.body.dataset.user2 !== ""
+    ? Number(document.body.dataset.user2)
+    : null;
+
+
+// =====================
+// HELPERS
+// =====================
+function hayChatActivo() {
+    return user1 > 0 && user2 > 0;
+}
+
+
+// =====================
+// MENSAJES
+// =====================
+async function cargarMensajes() {
+
+    if (!hayChatActivo()) {
+        chatBox.innerHTML = "<p style='opacity:0.5; text-align:center'>Selecciona un chat</p>";
+        return;
+    }
+
+    const res = await fetch(`/chat/${user1}/${user2}`);
+    if (!res.ok) return;
+
+    const mensajes = await res.json();
+
+    chatBox.innerHTML = "";
+
+    mensajes.forEach(m => {
+
+        const esMio = m.emisorId === user1;
+
+        const div = document.createElement("div");
+        div.className = "mensaje " + (esMio ? "enviado" : "recibido");
+
+        div.innerHTML = `
+            <div class="burbuja">
+                <p>${m.contenido}</p>
+                <span class="hora-mensaje">
+                    ${new Date(m.fechaEnvio).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                </span>
+            </div>
+        `;
+
+        chatBox.appendChild(div);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+// =====================
+// ENVIAR MENSAJE
+// =====================
+async function enviarMensaje() {
+
+    if (!hayChatActivo()) {
+        alert("Selecciona un chat primero");
+        return;
+    }
+
+    const input = document.getElementById("mensajeInput");
+    const texto = input.value.trim();
+
+    if (!texto) return;
+
+    await fetch(`/chat/send?emisorId=${user1}&receptorId=${user2}&contenido=${encodeURIComponent(texto)}`, {
+        method: "POST"
+    });
+
+    input.value = "";
+    cargarMensajes();
+}
+
+
+// =====================
+// CAMBIAR CHAT
+// =====================
+function cambiarChat(nuevoUser2, nombre, avatar) {
+
+    if (!nuevoUser2) return;
+
+    user2 = Number(nuevoUser2);
+
+    if (isNaN(user2)) return;
+
+    document.getElementById("chatNombre").innerText = nombre;
+    document.getElementById("chatAvatar").src = avatar || '/Img/default-avatar.png';
+
+    cargarMensajes();
+}
+
+
+// =====================
+// LISTA DE AMIGOS (CHATS)
+// =====================
+async function cargarChats() {
+
+    if (!user1) return;
+
+    const res = await fetch(`/chat/amigos/${user1}`);
+    if (!res.ok) return;
+
+    const chats = await res.json();
+
+    console.log("AMIGOS:", chats);
+
+    listaChats.innerHTML = "";
+
+    chats.forEach(m => {
+
+        const div = document.createElement("div");
+        div.className = "item-chat";
+
+        div.onclick = () => {
+
+            console.log("CLICK CHAT:", m);
+
+            cambiarChat(
+                m.userId,
+                m.username,
+                m.fotoPerfil
+            );
+        };
+
+        div.innerHTML = `
+            <div class="avatar-chat">
+                <img src="${m.fotoPerfil || '/Img/default-avatar.png'}">
+            </div>
+
+            <div class="info-chat">
+                <h4>${m.username}</h4>
+            </div>
+        `;
+
+        listaChats.appendChild(div);
+    });
+
+    // auto abrir primero
+    if (chats.length > 0 && !hayChatActivo()) {
+        const first = chats[0];
+
+        cambiarChat(
+            first.userId,
+            first.username,
+            first.fotoPerfil
+        );
+    }
+}
+
+
+// =====================
+// POLLING
+// =====================
+setInterval(async () => {
+
+    if (!hayChatActivo()) return;
+
+    try {
+        await cargarMensajes();
+        await cargarChats();
+    } catch (e) {
+        console.error("Error polling chat", e);
+    }
+
+}, 10000);
+
+
+// ENTER
+document.getElementById("mensajeInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") enviarMensaje();
+});
+
+
+// INIT
+cargarChats();
+
+if (hayChatActivo()) {
+    cargarMensajes();
+}
+
+</script>
+
 </body>
 </html>

@@ -182,11 +182,6 @@ public class ViewController {
         return "UI/menu/menu";
     }
 
-    @GetMapping("/chats")
-    public String chats() {
-        return "UI/chats/chats";
-    }
-
     @GetMapping("/jobview")
     public String jobview() {
         return "UI/jobview/jobview";

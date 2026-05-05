@@ -21,6 +21,15 @@ CREATE TABLE usuarios(
     FOREIGN KEY (id_rol) REFERENCES roles(id)
 );
 
+CREATE TABLE usuario_seguidores (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seguidor_id BIGINT,
+    seguido_id BIGINT
+);
+ALTER TABLE usuario_seguidores
+ADD CONSTRAINT unique_seguimiento UNIQUE (seguidor_id, seguido_id);
+
+
 -- Tabla de categorías de tecnologías
 CREATE TABLE categorias_tecnologias (
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,

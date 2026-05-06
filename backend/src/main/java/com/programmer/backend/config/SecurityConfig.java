@@ -41,12 +41,22 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/uploads/**").permitAll()
-                .anyRequest().permitAll()
+                // Permitir acceso a la API de autenticación y recursos estáticos
+                .requestMatchers("/api/auth/**", "/login", "/signUp", "/Style/**", "/Img/**", "/uploads/**").permitAll()
+                // El resto de la aplicación requiere autenticación
+                .anyRequest().authenticated() 
             )
 
-            .formLogin(form -> form.disable())
+            // CAMBIO: Se habilita formLogin para gestionar la redirección automática
+            .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/api/auth/login") // Debe coincidir con el th:action de tu HTML
+                .defaultSuccessUrl("/main", true)      // Redirección cuando el login es correcto
+                .failureUrl("/login?error=auth")      // Redirección cuando falla
+                .permitAll()
+            )
+            
+            .formLogin(form -> form.disable()) // ELIMINAR ESTA LÍNEA si existía en tu código original
             .httpBasic(basic -> basic.disable())
             .oauth2Login(oauth2 -> oauth2
                 .loginPage("/login")

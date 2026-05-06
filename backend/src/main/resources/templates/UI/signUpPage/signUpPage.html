@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <title>Registro - PROgrammer</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* ESTILO DEL TOAST DE ERROR NEÓN */
         .toast-error-neon {
@@ -76,10 +77,10 @@
                     <label for="email">Correo Electrónico</label>
                     <input type="email" id="email" name="email" placeholder="john.doe@email.com" required/>
                     <ul class="password-requirements">
-                        <li id="req-email-start" class="invalid"><i class="fas fa-times"></i> Empezar por letra</li>
-                        <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 6 minúsculas antes del @</li>
-                        <li id="req-email-special" class="invalid"><i class="fas fa-times"></i> Sin caracteres especiales</li>
-                        <li id="req-email-format" class="invalid"><i class="fas fa-times"></i> @, host y dominio (.com...)</li>
+                        <li id="req-email-start" class="invalid"><i class="fas fa-times"></i> Empezar por letra o número</li>
+                        <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 6 caracteres antes del @</li>
+                        <li id="req-email-dots" class="invalid"><i class="fas fa-times"></i> Puntos no seguidos ni antes del @</li>
+                        <li id="req-email-format" class="invalid"><i class="fas fa-times"></i> Formato válido (ej@host.com)</li>
                     </ul>
                 </div>
 
@@ -206,7 +207,7 @@
         
         const reqEmailStart = document.getElementById('req-email-start');
         const reqEmailLength = document.getElementById('req-email-length');
-        const reqEmailSpecial = document.getElementById('req-email-special');
+        const reqEmailDots = document.getElementById('req-email-dots');
         const reqEmailFormat = document.getElementById('req-email-format');
 
         // Requisitos mínimos
@@ -216,7 +217,8 @@
         const hasNumber = /[0-9]/;
         const hasSpecial = /[^A-Za-z0-9]/;
         const startsWithNumber = /^[0-9]/;
-        const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,10}$/;
+        // Nueva Regex para email: permite números al inicio/final, mín 6 alfanuméricos
+        const emailRegex = /^[a-zA-Z0-9](?!.*\.@)(?!.*\.\.)(?=([^@]*[a-zA-Z0-9]){6,})[a-zA-Z0-9.]*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,10}$/;
 
         let passwordIsValid = false;
         let usernameIsValid = false;
@@ -260,24 +262,29 @@
         emailInput.addEventListener('input', function() {
             const val = this.value;
             if (val.length > 0) {
-                const startsWithLetter = /^[a-zA-Z]/.test(val);
-                const localPart = val.split('@')[0] || '';
-                const lowercaseCount = (localPart.match(/[a-z]/g) || []).length;
-                const meetsMinLength = lowercaseCount >= 6;
-                const containsSpecial = /[^a-zA-Z0-9@.]/.test(val);
+                const parts = val.split('@');
+                const localPart = parts[0] || '';
+                
+                const startsWithAlnum = /^[a-zA-Z0-9]/.test(localPart);
+                const alnumCount = (localPart.match(/[a-zA-Z0-9]/g) || []).length;
+                const meetsMinLength = alnumCount >= 6;
+                const noConsecutiveDots = !/\.\./.test(localPart);
+                const noDotAtEnd = !localPart.endsWith('.');
+                const dotsValid = noConsecutiveDots && noDotAtEnd;
+                
                 const hasValidFormat = emailRegex.test(val);
                 
-                updateReq(reqEmailStart, startsWithLetter);
+                updateReq(reqEmailStart, startsWithAlnum);
                 updateReq(reqEmailLength, meetsMinLength);
-                updateReq(reqEmailSpecial, !containsSpecial);
+                updateReq(reqEmailDots, dotsValid);
                 updateReq(reqEmailFormat, hasValidFormat);
                 
-                emailIsValid = startsWithLetter && meetsMinLength && !containsSpecial && hasValidFormat;
+                emailIsValid = hasValidFormat;
             } else {
                 emailIsValid = false;
                 updateReq(reqEmailStart, false);
                 updateReq(reqEmailLength, false);
-                updateReq(reqEmailSpecial, false);
+                updateReq(reqEmailDots, false);
                 updateReq(reqEmailFormat, false);
             }
         });
@@ -412,44 +419,62 @@
             const pass = passwordInput.value;
             const confirmPass = document.getElementById('confirm_password').value;
 
-            // 1. AVISO PARA DESARROLLADORES (Al principio para que no se escape)
-            if (rolSelect.value === "2") {
-                const proceed = window.confirm("¡Atención!\n\nPara ser visible en el buscador de desarrolladores y en la sección de destacados, deberás añadir al menos una tecnología a tu perfil después de registrarte.\n\n¿Deseas continuar?");
-                if (!proceed) {
-                    e.preventDefault();
-                    return;
-                }
-            }
+            // Prevenir siempre al principio para validar nosotros
+            e.preventDefault();
 
-            // 2. RESTO DE VALIDACIONES
+            // 1. VALIDACIONES
             if (!usernameIsValid) {
-                e.preventDefault();
                 showToast("Usuario no válido", "El nombre de usuario debe tener mínimo 3 caracteres y no contener números.");
                 return;
             }
 
             if (!emailIsValid) {
-                e.preventDefault();
                 showToast("Correo no válido", "El correo no cumple con todos los requisitos.");
                 return;
             }
 
             if (!rolSelect.value) {
-                e.preventDefault();
                 showToast("Faltan campos", "Por favor, selecciona qué tipo de perfil buscas.");
                 return;
             }
 
             if (!passwordIsValid) {
-                e.preventDefault();
                 showToast("Contraseña no válida", "La contraseña no cumple con los requisitos mínimos.");
                 return;
             }
 
             if (pass !== confirmPass) {
-                e.preventDefault();
                 showToast("Contraseñas no coinciden", "Las contraseñas que has introducido son diferentes.");
                 return;
+            }
+
+            // 2. AVISO PARA DESARROLLADORES (SweetAlert2 Amarillo)
+            if (rolSelect.value === "2") {
+                Swal.fire({
+                    title: '<span style="color:#FFCC00;"><i class="fas fa-exclamation-triangle"></i> ¡Atención Desarrollador!</span>',
+                    html: `<div style="text-align: left; font-size: 1.1rem; line-height: 1.6; padding: 10px; color: #ddd;">
+                            Para ser visible en el buscador de desarrolladores para otra gente y empresas 
+                            <span style="color:#ff4444; font-weight:bold;">(tu mismo no te ves)</span> 
+                            y en la sección de destacados, deberás añadir al menos una tecnología a tu perfil después de registrarte.
+                           </div>`,
+                    background: '#1a1a1a',
+                    color: '#fff',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FFCC00',
+                    cancelButtonColor: '#333',
+                    confirmButtonText: '<span style="color:black; font-weight:bold;">Entendido, continuar</span>',
+                    cancelButtonText: 'Cancelar',
+                    customClass: {
+                        popup: 'swal-advertencia-amarilla'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Enviar de verdad tras confirmar
+                    }
+                });
+            } else {
+                // Si no es desarrollador, enviamos directamente
+                form.submit();
             }
         });
 
@@ -459,8 +484,13 @@
             const toast = document.getElementById('toast-signup-error');
             
             if (urlParams.has('error')) {
-                // El error que viene de la URL (si ya existe el email, etc.)
-                showToast("Error de registro", "El usuario o email ya existen.");
+                const errorType = urlParams.get('error');
+                
+                if (errorType === 'security') {
+                    showToast("Intento no autorizado", "No tienes permisos para registrarte con ese rol. El intento ha sido bloqueado.");
+                } else {
+                    showToast("Error de registro", "El usuario o email ya existen.");
+                }
 
                 // Limpiar la URL para que no vuelva a salir al recargar
                 window.history.replaceState({}, document.title, window.location.pathname);

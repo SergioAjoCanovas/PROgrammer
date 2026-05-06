@@ -87,8 +87,7 @@ public class AuthController {
 
         // SEGURIDAD: Prohibir registro de administradores desde el formulario público
         if (rolElegido.getNombre().equalsIgnoreCase("ADMIN") || idRol == 1) {
-            response.sendRedirect("/signUp?error=security");
-            return;
+            return new RedirectView("/signUp?error=security");
         }
 
         // Foto (por defecto usamos el icono estándar)

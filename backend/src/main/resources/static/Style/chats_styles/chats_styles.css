@@ -369,6 +369,8 @@
 .area-mensajes {
     scroll-behavior: smooth;
     min-height: 0;
+    overflow-wrap: right;
+    word-break: break-word;
 }
 
 .mensaje {

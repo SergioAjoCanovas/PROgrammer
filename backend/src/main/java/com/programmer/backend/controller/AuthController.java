@@ -15,12 +15,17 @@ import com.programmer.backend.service.RegistroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collections;
@@ -49,6 +54,9 @@ public class AuthController {
     @Autowired
     private RegistroService registroService;
 
+    // Repositorio para guardar explícitamente el contexto en Spring Security 6
+    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+
     // =========================
     // REGISTRO
     // =========================
@@ -60,6 +68,8 @@ public class AuthController {
             @RequestParam("confirm_password") String confirmPassword,
             @RequestParam("id_rol") long idRol,
             @RequestParam(value = "foto", required = false) MultipartFile foto,
+            HttpServletRequest request,
+            HttpServletResponse response,
             HttpSession session
     ) throws IOException {
 
@@ -93,7 +103,7 @@ public class AuthController {
         Usuario usuarioGuardado = registroService.registrarUsuario(nuevoUsuario);
 
         // =========================
-        // 🔥 CREACIÓN DE PERFIL AUTOMÁTICA
+        // CREACIÓN DE PERFIL AUTOMÁTICA
         // =========================
 
         String rolNombre = rolElegido.getNombre();
@@ -110,13 +120,18 @@ public class AuthController {
             perfilEmpresaRepository.save(perfil);
         }
 
-        // 🔥 REGISTRAR EN SPRING SECURITY
+        // 🔥 REGISTRAR EN SPRING SECURITY 6 (Guardado explícito)
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 usuarioGuardado.getUsername(),
                 null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rolNombre))
         );
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+        // ESTA ES LA LÍNEA MÁGICA QUE FALTABA:
+        securityContextRepository.saveContext(context, request, response);
 
         // Sesión manual
         session.setAttribute("usuarioLogueado", usuarioGuardado);
@@ -132,6 +147,8 @@ public class AuthController {
     public RedirectView iniciarSesion(
             @RequestParam("username") String usuarioOEmail,
             @RequestParam("password") String password,
+            HttpServletRequest request,
+            HttpServletResponse response,
             HttpSession session
     ) throws IOException {
 
@@ -150,13 +167,18 @@ public class AuthController {
         Usuario usuario = usuarioOpt.get();
         String rolNombre = usuario.getRol().getNombre();
 
-        // 🔥 REGISTRAR EN SPRING SECURITY (Evita que bloqueen tu redirección)
+        // 🔥 REGISTRAR EN SPRING SECURITY 6 (Guardado explícito)
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 usuario.getUsername(),
                 null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rolNombre))
         );
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+        // ESTA ES LA LÍNEA MÁGICA QUE FALTABA:
+        securityContextRepository.saveContext(context, request, response);
 
         // Sesión manual
         session.setAttribute("usuarioLogueado", usuario);

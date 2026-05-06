@@ -73,6 +73,12 @@ public class AuthController {
         Rol rolElegido = rolRepository.findById(idRol)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
+        // SEGURIDAD: Prohibir registro de administradores desde el formulario público
+        if (rolElegido.getNombre().equalsIgnoreCase("ADMIN") || idRol == 1) {
+            response.sendRedirect("/signUp?error=security");
+            return;
+        }
+
         // Foto (por defecto usamos el icono estándar)
         String rutaFoto = "/Img/stock/default-profile.svg";
         if (foto != null && !foto.isEmpty()) {

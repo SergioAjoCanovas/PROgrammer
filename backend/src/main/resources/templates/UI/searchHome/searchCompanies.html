@@ -198,8 +198,9 @@
                                 <div class="tags-container">
                                     <div class="tags">
                                         <span th:each="tech, iterStat : ${company.tecnologias}" th:if="${iterStat.index < 3}" th:text="${tech.nombre}"></span>
+                                        <span th:if="${company.tecnologias == null or company.tecnologias.isEmpty()}" style="color: #666; font-style: italic; background: transparent; border: 1px dashed #444; box-shadow: none;">Sin tecnologías</span>
                                     </div>
-                                    <i th:if="${company.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
+                                    <i th:if="${company.tecnologias != null and company.tecnologias.size() > 3}" class="fas fa-plus tech-toggle" onclick="toggleTechExpansion(this)"></i>
                                 </div>
                                 
                                 <button class="btn-perfil" th:onclick="|window.location.href='/profileView/' + ${company.usuario.id}|">Ver Perfil</button>

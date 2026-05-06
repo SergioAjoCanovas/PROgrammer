@@ -255,11 +255,19 @@ CREATE TABLE postulaciones (
 -- Tabla de mensajes
 CREATE TABLE mensajes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    emisor_id BIGINT,
-    receptor_id BIGINT,
-    contenido TEXT,
+
+    emisor_id BIGINT NOT NULL,
+    receptor_id BIGINT NOT NULL,
+
+    contenido TEXT NOT NULL,
+
     leido BOOLEAN DEFAULT FALSE,
+
+    borrado_por_emisor BOOLEAN DEFAULT FALSE,
+    borrado_por_receptor BOOLEAN DEFAULT FALSE,
+
     fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
     FOREIGN KEY (emisor_id) REFERENCES usuarios(id),
     FOREIGN KEY (receptor_id) REFERENCES usuarios(id)
 );

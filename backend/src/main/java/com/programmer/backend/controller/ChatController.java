@@ -35,4 +35,22 @@ public class ChatController {
 
         chatService.enviarMensaje(emisorId, receptorId, contenido);
     }
+
+    // =========================================
+    // MARCAR COMO LEÍDOS
+    // =========================================
+    @PostMapping("/marcar-leidos")
+    public void marcarLeidos(@RequestParam Long userId,
+                            @RequestParam Long otroId) {
+        chatService.marcarChatComoLeido(userId, otroId);
+    }
+
+    // =========================================
+    // VACIAR CHAT
+    // =========================================
+    @PostMapping("/vaciar")
+    public void vaciarChat(@RequestParam Long userId,
+                        @RequestParam Long otroId) {
+        chatService.vaciarChat(userId, otroId);
+    }
 }

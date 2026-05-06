@@ -80,6 +80,37 @@ public class NotificacionController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{id}/leer")
+    @Transactional
+    public ResponseEntity<?> marcarLeida(@PathVariable Long id, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) return ResponseEntity.status(401).build();
+
+        notificacionRepository.findById(id).ifPresent(n -> {
+            if (n.getUsuario().getId().equals(usuario.getId())) {
+                n.setLeida(true);
+                notificacionRepository.save(n);
+            }
+        });
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/tipo/{tipo}")
+    @Transactional
+    public ResponseEntity<?> borrarPorTipo(@PathVariable String tipo, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) return ResponseEntity.status(401).build();
+
+        if ("RESENAS".equals(tipo)) {
+            notificacionRepository.deleteByUsuarioAndTipoIn(usuario, java.util.List.of("NUEVA_RESEÑA_PERFIL", "NUEVA_RESEÑA_PROYECTO"));
+        } else if ("OTRAS".equals(tipo)) {
+            notificacionRepository.deleteByUsuarioAndTipoNotIn(usuario, java.util.List.of("NUEVO_PARCHE", "NUEVA_RESEÑA_PERFIL", "NUEVA_RESEÑA_PROYECTO"));
+        } else {
+            notificacionRepository.deleteByUsuarioAndTipo(usuario, tipo);
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/toggle-silence")
     @Transactional
     public ResponseEntity<?> toggleSilence(HttpSession session) {

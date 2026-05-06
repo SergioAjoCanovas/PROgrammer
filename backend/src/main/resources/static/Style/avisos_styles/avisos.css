@@ -107,9 +107,16 @@ body {
     border-color: #FFCC00;
 }
 
-.btn-borrar:hover { 
-    border-color: #ff4444; 
+.btn-borrar { 
     color: #ff4444; 
+    border-color: #ff4444; 
+}
+
+.btn-borrar:hover { 
+    background: #ff4444;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
+    border-color: #ff4444 !important;
 }
 
 .btn-silenciar { 
@@ -118,9 +125,10 @@ body {
 }
 
 .btn-silenciar:hover {
+    background: #00f2ff;
+    color: black;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
     border-color: #00f2ff !important;
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
-    color: #00f2ff;
 }
 
 .btn-silenciar.silenciado { 
@@ -129,8 +137,48 @@ body {
 }
 
 .btn-silenciar.silenciado:hover {
+    background: #ff4444;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
     border-color: #ff4444 !important;
-    box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+}
+
+.aviso-item.no-leida {
+    border-left: 4px solid #ff4444;
+    background: rgba(255, 68, 68, 0.05);
+}
+
+.aviso-item.no-leida::before {
+    background: #ff4444;
+    box-shadow: 0 0 10px #ff4444;
+}
+
+.aviso-acciones-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-leer-individual {
+    background: rgba(57, 255, 20, 0.1);
+    color: #39FF14;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.btn-leer-individual:hover {
+    background: #39FF14;
+    color: black;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+    transform: scale(1.1);
 }
 
 .btn-borrar-individual {
@@ -165,6 +213,116 @@ body {
     gap: 15px;
 }
 
+/* Encabezados de sección con acciones */
+.header-lista-avisos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-lista-avisos:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.icon-desplegar {
+    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.header-lista-avisos.colapsado .icon-desplegar {
+    transform: rotate(-90deg);
+}
+
+.contenido-seccion-desplegable {
+    transition: all 0.3s ease;
+    overflow: hidden;
+    max-height: 2000px; /* Suficiente para la mayoría de listas */
+    opacity: 1;
+    padding: 10px 20px; /* Espacio para que el hover no se corte */
+    box-sizing: border-box;
+}
+
+.header-lista-avisos.colapsado + .contenido-seccion-desplegable {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.header-lista-avisos h2 {
+    margin: 0 !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.badge-seccion {
+    background: #ff4444;
+    color: white;
+    font-size: 0.8rem;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+}
+
+.acciones-seccion {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-accion-seccion {
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid #444;
+    color: #888;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.btn-accion-seccion:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn-accion-seccion.silenciar:hover {
+    border-color: #00f2ff;
+    color: #00f2ff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+}
+
+.btn-accion-seccion.silenciado {
+    color: #00f2ff;
+    border-color: #00f2ff;
+}
+
+.btn-accion-seccion.silenciado:hover {
+    background: #00f2ff;
+    color: black;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+}
+
+.btn-accion-seccion.borrar:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
 .aviso-item {
     background: #1a1a1a;
     border: 1px solid #333;
@@ -175,9 +333,12 @@ body {
     gap: 20px;
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
     text-decoration: none;
     color: white;
+    margin-bottom: 20px; /* Más separación entre ellos */
+    width: calc(100% - 10px); /* Un poco menos ancho para el efecto visual */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .aviso-item:hover {

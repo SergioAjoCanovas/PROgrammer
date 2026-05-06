@@ -375,11 +375,30 @@
             }
         });
 
-        function showToast(title, message) {
+        function showToast(title, message, type = 'error') {
             const toast = document.getElementById('toast-signup-error');
+            const icon = toast.querySelector('i');
             document.getElementById('toast-error-titulo').textContent = title;
             document.getElementById('toast-error-mensaje').textContent = message;
             
+            // Reset classes
+            toast.className = 'toast-error-neon';
+            icon.className = 'fas';
+            
+            if (type === 'info') {
+                toast.style.borderLeftColor = '#00f2ff';
+                toast.style.boxShadow = '0 8px 32px rgba(0, 242, 255, 0.3)';
+                icon.classList.add('fa-info-circle');
+                icon.style.color = '#00f2ff';
+                document.getElementById('toast-error-titulo').style.color = '#00f2ff';
+            } else {
+                toast.style.borderLeftColor = '#ff4444';
+                toast.style.boxShadow = '0 8px 32px rgba(255, 68, 68, 0.3)';
+                icon.classList.add('fa-exclamation-circle');
+                icon.style.color = '#ff4444';
+                document.getElementById('toast-error-titulo').style.color = '#ff4444';
+            }
+
             toast.classList.add('mostrar');
             
             // Ocultar después de 5 segundos
@@ -389,10 +408,20 @@
         }
 
         form.addEventListener('submit', (e) => {
-            const pass = passwordInput.value;
-            const confirm = document.getElementById('confirm_password').value;
             const rolSelect = document.getElementById('id_rol');
+            const pass = passwordInput.value;
+            const confirmPass = document.getElementById('confirm_password').value;
 
+            // 1. AVISO PARA DESARROLLADORES (Al principio para que no se escape)
+            if (rolSelect.value === "2") {
+                const proceed = window.confirm("¡Atención!\n\nPara ser visible en el buscador de desarrolladores y en la sección de destacados, deberás añadir al menos una tecnología a tu perfil después de registrarte.\n\n¿Deseas continuar?");
+                if (!proceed) {
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // 2. RESTO DE VALIDACIONES
             if (!usernameIsValid) {
                 e.preventDefault();
                 showToast("Usuario no válido", "El nombre de usuario debe tener mínimo 3 caracteres y no contener números.");
@@ -417,9 +446,10 @@
                 return;
             }
 
-            if (pass !== confirm) {
+            if (pass !== confirmPass) {
                 e.preventDefault();
                 showToast("Contraseñas no coinciden", "Las contraseñas que has introducido son diferentes.");
+                return;
             }
         });
 

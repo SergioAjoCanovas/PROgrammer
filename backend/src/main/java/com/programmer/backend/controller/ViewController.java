@@ -45,12 +45,6 @@ public class ViewController {
         model.addAttribute("notificaciones", notificaciones);
         model.addAttribute("isSilenciado", usuario.isSilenciarNotificaciones());
 
-        // Marcar todas como leídas al entrar a la página
-        for (com.programmer.backend.domain.Notificacion n : notificaciones) {
-            if (!n.isLeida()) n.setLeida(true);
-        }
-        notificacionRepository.saveAll(notificaciones);
-
         return "UI/avisos/avisos";
     }
 

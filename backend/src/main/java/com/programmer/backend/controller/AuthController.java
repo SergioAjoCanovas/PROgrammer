@@ -96,13 +96,13 @@ public class AuthController {
 
         String rolNombre = rolElegido.getNombre();
 
-        if (rolNombre.equals("DESARROLLADOR")) {
+        if (rolNombre.equals("DESARROLLADOR") || rolNombre.equals("DEVELOPER") || rolNombre.equals("2")) {
             PerfilDesarrollador perfil = new PerfilDesarrollador();
             perfil.setUsuario(usuarioGuardado);
             perfilDesarrolladorRepository.save(perfil);
         }
 
-        if (rolNombre.equals("EMPRESA")) {
+        if (rolNombre.equals("EMPRESA") || rolNombre.equals("COMPANY") || rolNombre.equals("3")) {
             PerfilEmpresa perfil = new PerfilEmpresa();
             perfil.setUsuario(usuarioGuardado);
             perfilEmpresaRepository.save(perfil);

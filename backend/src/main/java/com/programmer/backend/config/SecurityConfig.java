@@ -47,16 +47,13 @@ public class SecurityConfig {
                 .anyRequest().authenticated() 
             )
 
-            // CAMBIO: Se habilita formLogin para gestionar la redirección automática
+            // Configuramos la página de login. 
+            // No definimos 'loginProcessingUrl' aquí porque tu AuthController ya maneja el POST en /api/auth/login.
             .formLogin(form -> form
                 .loginPage("/login")
-                .loginProcessingUrl("/api/auth/login") // Debe coincidir con el th:action de tu HTML
-                .defaultSuccessUrl("/main", true)      // Redirección cuando el login es correcto
-                .failureUrl("/login?error=auth")      // Redirección cuando falla
                 .permitAll()
             )
             
-            .formLogin(form -> form.disable()) // ELIMINAR ESTA LÍNEA si existía en tu código original
             .httpBasic(basic -> basic.disable())
             .oauth2Login(oauth2 -> oauth2
                 .loginPage("/login")

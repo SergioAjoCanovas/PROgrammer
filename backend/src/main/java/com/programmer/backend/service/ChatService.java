@@ -7,12 +7,18 @@ import com.programmer.backend.dto.ChatPreviewDTO;
 import com.programmer.backend.repository.MensajeRepository;
 import com.programmer.backend.repository.UsuarioRepository;
 import com.programmer.backend.repository.UsuariosSeguimientoRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ChatService {
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
@@ -44,18 +50,46 @@ public class ChatService {
     public void enviarMensaje(Long emisorId, Long receptorId, String contenido) {
 
         if (!sonAmigos(emisorId, receptorId)) {
-            throw new RuntimeException("No sois amigos");
+            throw new RuntimeException("No puedes enviar mensajes si no sois amigos");
         }
+    
+        Mensaje mensaje = guardarMensaje(emisorId, receptorId, contenido);
+    
+        MensajeDTO dto = new MensajeDTO(
+            mensaje.getEmisor().getId(),
+            mensaje.getReceptor().getId(),
+            mensaje.getContenido(),
+            mensaje.getFechaEnvio()
+        );
+    
+        // 🔥 ENVIAR AL RECEPTOR
+        messagingTemplate.convertAndSend(
+            "/topic/messages/" + receptorId,
+            dto
+        );
+    
+        // 🔥 ENVIAR AL EMISOR (para que se vea al instante también)
+        messagingTemplate.convertAndSend(
+            "/topic/messages/" + emisorId,
+            dto
+        );
+    }
 
-        Usuario emisor = usuarioRepository.findById(emisorId).orElseThrow();
-        Usuario receptor = usuarioRepository.findById(receptorId).orElseThrow();
+    private Mensaje guardarMensaje(Long emisorId, Long receptorId, String contenido) {
 
-        Mensaje m = new Mensaje();
-        m.setEmisor(emisor);
-        m.setReceptor(receptor);
-        m.setContenido(contenido);
-
-        mensajeRepository.save(m);
+        Usuario emisor = usuarioRepository.findById(emisorId)
+                .orElseThrow(() -> new RuntimeException("Emisor no encontrado"));
+    
+        Usuario receptor = usuarioRepository.findById(receptorId)
+                .orElseThrow(() -> new RuntimeException("Receptor no encontrado"));
+    
+        Mensaje mensaje = new Mensaje();
+        mensaje.setEmisor(emisor);
+        mensaje.setReceptor(receptor);
+        mensaje.setContenido(contenido);
+        mensaje.setFechaEnvio(java.time.LocalDateTime.now());
+    
+        return mensajeRepository.save(mensaje);
     }
 
     public boolean sonAmigos(Long a, Long b) {

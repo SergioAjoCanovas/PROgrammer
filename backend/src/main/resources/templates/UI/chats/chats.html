@@ -72,6 +72,9 @@
 
 <div th:replace="~{includes/footer :: footer}"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
 <script>
 
 const chatBox = document.getElementById("chatBox");
@@ -85,6 +88,23 @@ let user2 = document.body.dataset.user2 && document.body.dataset.user2 !== ""
 
 
 // =====================
+// WEBSOCKET
+// =====================
+const socket = new SockJS('/ws');
+const stompClient = Stomp.over(socket);
+
+stompClient.connect({}, function () {
+
+    stompClient.subscribe('/topic/messages/' + user1, function (message) {
+
+    const mensaje = JSON.parse(message.body);
+    pintarMensaje(mensaje);
+    });
+
+});
+
+
+// =====================
 // HELPERS
 // =====================
 function hayChatActivo() {
@@ -93,12 +113,81 @@ function hayChatActivo() {
 
 
 // =====================
-// MENSAJES
+// PINTAR MENSAJE (ÚNICO)
+// =====================
+function pintarMensaje(m) {
+
+    const esMio = m.emisorId === user1;
+
+    // si NO es el chat activo → solo actualizamos lista (no chat)
+    if (!user2 || (m.emisorId !== user2 && m.receptorId !== user2)) {
+        marcarChatConMensaje(m);
+        return;
+    }
+
+    // evitar duplicados visuales (simple pero efectivo)
+    const div = document.createElement("div");
+    div.className = "mensaje " + (esMio ? "enviado" : "recibido");
+
+    div.innerHTML = `
+        <div class="burbuja">
+            <p>${m.contenido}</p>
+            <span class="hora-mensaje">
+                ${new Date(m.fechaEnvio).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+            </span>
+        </div>
+    `;
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // mover chat arriba en lista
+    moverChatArriba(m);
+}
+
+
+// =====================
+// CHAT ARRIBA + BADGE (base)
+// =====================
+function moverChatArriba(m) {
+
+    const items = [...listaChats.children];
+
+    const item = items.find(el =>
+        el.dataset.userid == m.emisorId || el.dataset.userid == m.receptorId
+    );
+
+    if (!item) return;
+
+    listaChats.prepend(item);
+}
+
+
+// =====================
+// MARCAR CHAT CON MENSAJE (placeholder visual)
+// =====================
+function marcarChatConMensaje(m) {
+
+    const items = [...listaChats.children];
+
+    const item = items.find(el =>
+        el.dataset.userid == m.emisorId || el.dataset.userid == m.receptorId
+    );
+
+    if (!item) return;
+
+    item.classList.add("chat-pendiente"); // amarillo (CSS luego)
+    listaChats.prepend(item);
+}
+
+
+// =====================
+// CARGAR MENSAJES
 // =====================
 async function cargarMensajes() {
 
     if (!hayChatActivo()) {
-        chatBox.innerHTML = "<p style='opacity:0.5; text-align:center'>Selecciona un chat</p>";
+        chatBox.innerHTML = "<p style='opacity:0.5;text-align:center'>Selecciona un chat</p>";
         return;
     }
 
@@ -152,7 +241,8 @@ async function enviarMensaje() {
     });
 
     input.value = "";
-    cargarMensajes();
+
+    // NO recargamos (WebSocket lo hace)
 }
 
 
@@ -164,18 +254,33 @@ function cambiarChat(nuevoUser2, nombre, avatar) {
     if (!nuevoUser2) return;
 
     user2 = Number(nuevoUser2);
-
     if (isNaN(user2)) return;
 
     document.getElementById("chatNombre").innerText = nombre;
     document.getElementById("chatAvatar").src = avatar || '/Img/default-avatar.png';
 
+    // 🔥 LIMPIAR NOTIFICACIÓN VISUAL
+    limpiarNoLeido(user2);
+
     cargarMensajes();
+}
+
+function limpiarNoLeido(userId) {
+
+    const items = [...listaChats.children];
+
+    const item = items.find(el =>
+        el.dataset.userid == userId
+    );
+
+    if (!item) return;
+
+    item.classList.remove("chat-pendiente");
 }
 
 
 // =====================
-// LISTA DE AMIGOS (CHATS)
+// LISTA DE CHATS
 // =====================
 async function cargarChats() {
 
@@ -186,40 +291,34 @@ async function cargarChats() {
 
     const chats = await res.json();
 
-    console.log("AMIGOS:", chats);
-
     listaChats.innerHTML = "";
 
-    chats.forEach(m => {
+    chats.forEach(c => {
 
         const div = document.createElement("div");
         div.className = "item-chat";
 
-        div.onclick = () => {
+        div.dataset.userid = c.userId;
 
-            console.log("CLICK CHAT:", m);
-
-            cambiarChat(
-                m.userId,
-                m.username,
-                m.fotoPerfil
-            );
-        };
+        div.onclick = () => cambiarChat(
+            c.userId,
+            c.username,
+            c.fotoPerfil
+        );
 
         div.innerHTML = `
             <div class="avatar-chat">
-                <img src="${m.fotoPerfil || '/Img/default-avatar.png'}">
+                <img src="${c.fotoPerfil || '/Img/default-avatar.png'}">
             </div>
 
             <div class="info-chat">
-                <h4>${m.username}</h4>
+                <h4>${c.username}</h4>
             </div>
         `;
 
         listaChats.appendChild(div);
     });
 
-    // auto abrir primero
     if (chats.length > 0 && !hayChatActivo()) {
         const first = chats[0];
 
@@ -230,23 +329,6 @@ async function cargarChats() {
         );
     }
 }
-
-
-// =====================
-// POLLING
-// =====================
-setInterval(async () => {
-
-    if (!hayChatActivo()) return;
-
-    try {
-        await cargarMensajes();
-        await cargarChats();
-    } catch (e) {
-        console.error("Error polling chat", e);
-    }
-
-}, 10000);
 
 
 // ENTER
@@ -261,7 +343,6 @@ cargarChats();
 if (hayChatActivo()) {
     cargarMensajes();
 }
-
 </script>
 
 </body>

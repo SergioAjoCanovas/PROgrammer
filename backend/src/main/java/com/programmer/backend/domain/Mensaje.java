@@ -36,6 +36,12 @@ public class Mensaje {
         }
     }
 
+    @Column(name = "borrado_por_emisor")
+    private boolean borradoPorEmisor = false;
+
+    @Column(name = "borrado_por_receptor")
+    private boolean borradoPorReceptor = false;
+
     public Long getId() {
         return id;
     }

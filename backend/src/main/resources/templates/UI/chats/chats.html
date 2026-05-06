@@ -41,14 +41,24 @@
         <section class="panel-conversacion">
 
             <div class="cabecera-chat-activo">
-                <div class="info-usuario-activo">
-                    <img id="chatAvatar" class="avatar-pequeno" src="/Img/default-avatar.png">
 
+                <div class="info-usuario-activo">
+                    <img id="chatAvatar" class="avatar-pequeno"
+                    src="/Img/default-avatar.png"
+                    onerror="this.src='/Img/stock/default-profile.svg'">
+            
                     <div>
                         <h3 id="chatNombre">Chat</h3>
                         <span class="subtitulo-estado">Selecciona una conversación</span>
                     </div>
                 </div>
+            
+                <div class="acciones-chat">
+                    <button onclick="vaciarChat()" title="Vaciar chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            
             </div>
 
             <div class="area-mensajes" id="chatBox">
@@ -69,6 +79,33 @@
 
     </section>
 </main>
+
+<div id="chat-modal-vaciar" class="chat-modal-overlay chat-hidden">
+
+    <div class="chat-modal">
+        <h3>Vaciar chat</h3>
+
+        <p>¿Seguro que quieres vaciar este chat? Esta acción no se puede deshacer.</p>
+
+        <div class="chat-modal-botones">
+            <button class="chat-btn-cancelar" onclick="cerrarModalVaciarChat()">
+                Cancelar
+            </button>
+
+            <button class="chat-btn-confirmar" onclick="confirmarVaciarChat()">
+                Vaciar
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div id="chat-toast" class="chat-toast">
+
+    <i class="fas fa-check-circle"></i>
+    <span id="chat-toast-msg">Mensaje</span>
+
+</div>
 
 <div th:replace="~{includes/footer :: footer}"></div>
 
@@ -116,70 +153,9 @@ function hayChatActivo() {
 // PINTAR MENSAJE (ÚNICO)
 // =====================
 function pintarMensaje(m) {
-
-    const esMio = m.emisorId === user1;
-
-    // si NO es el chat activo → solo actualizamos lista (no chat)
-    if (!user2 || (m.emisorId !== user2 && m.receptorId !== user2)) {
-        marcarChatConMensaje(m);
-        return;
-    }
-
-    // evitar duplicados visuales (simple pero efectivo)
-    const div = document.createElement("div");
-    div.className = "mensaje " + (esMio ? "enviado" : "recibido");
-
-    div.innerHTML = `
-        <div class="burbuja">
-            <p>${m.contenido}</p>
-            <span class="hora-mensaje">
-                ${new Date(m.fechaEnvio).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
-            </span>
-        </div>
-    `;
-
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // mover chat arriba en lista
-    moverChatArriba(m);
+    cargarMensajes();
+    cargarChats();
 }
-
-
-// =====================
-// CHAT ARRIBA + BADGE (base)
-// =====================
-function moverChatArriba(m) {
-
-    const items = [...listaChats.children];
-
-    const item = items.find(el =>
-        el.dataset.userid == m.emisorId || el.dataset.userid == m.receptorId
-    );
-
-    if (!item) return;
-
-    listaChats.prepend(item);
-}
-
-
-// =====================
-// MARCAR CHAT CON MENSAJE (placeholder visual)
-// =====================
-function marcarChatConMensaje(m) {
-
-    const items = [...listaChats.children];
-
-    const item = items.find(el =>
-        el.dataset.userid == m.emisorId || el.dataset.userid == m.receptorId
-    );
-
-    if (!item) return;
-
-    item.classList.add("chat-pendiente"); // amarillo (CSS luego)
-    listaChats.prepend(item);
-}
-
 
 // =====================
 // CARGAR MENSAJES
@@ -198,7 +174,24 @@ async function cargarMensajes() {
 
     chatBox.innerHTML = "";
 
+    let ultimaFecha = null;
+
     mensajes.forEach(m => {
+
+        const fechaMensaje = new Date(m.fechaEnvio);
+        const diaActual = fechaMensaje.toDateString();
+
+        if (diaActual !== ultimaFecha) {
+
+            const separador = document.createElement("div");
+            separador.className = "chat-fecha-separador";
+
+            separador.innerText = obtenerDia(m.fechaEnvio);
+
+            chatBox.appendChild(separador);
+
+            ultimaFecha = diaActual;
+        }
 
         const esMio = m.emisorId === user1;
 
@@ -209,7 +202,7 @@ async function cargarMensajes() {
             <div class="burbuja">
                 <p>${m.contenido}</p>
                 <span class="hora-mensaje">
-                    ${new Date(m.fechaEnvio).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                    ${fechaMensaje.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
                 </span>
             </div>
         `;
@@ -218,6 +211,26 @@ async function cargarMensajes() {
     });
 
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function actualizarPreviewChat(m) {
+
+    const id = m.emisorId === user1 ? m.receptorId : m.emisorId;
+
+    const item = [...listaChats.children]
+        .find(el => Number(el.dataset.userid) === Number(id));
+
+    if (!item) return;
+
+    // mover arriba
+    listaChats.prepend(item);
+
+    // marcar no leído si NO es chat activo
+    if (id !== user2) {
+        item.classList.add("chat-pendiente");
+    } else {
+        item.classList.remove("chat-pendiente");
+    }
 }
 
 
@@ -249,7 +262,7 @@ async function enviarMensaje() {
 // =====================
 // CAMBIAR CHAT
 // =====================
-function cambiarChat(nuevoUser2, nombre, avatar) {
+async function cambiarChat(nuevoUser2, nombre, avatar) {
 
     if (!nuevoUser2) return;
 
@@ -259,8 +272,16 @@ function cambiarChat(nuevoUser2, nombre, avatar) {
     document.getElementById("chatNombre").innerText = nombre;
     document.getElementById("chatAvatar").src = avatar || '/Img/default-avatar.png';
 
-    // 🔥 LIMPIAR NOTIFICACIÓN VISUAL
-    limpiarNoLeido(user2);
+    await fetch(`/chat/marcar-leidos?userId=${user1}&otroId=${user2}`, {
+        method: "POST"
+    });
+
+    await cargarChats();
+
+    const item = document.querySelector(`[data-userid="${user2}"]`);
+    if (item) {
+        item.classList.remove("chat-pendiente");
+    }
 
     cargarMensajes();
 }
@@ -286,7 +307,7 @@ async function cargarChats() {
 
     if (!user1) return;
 
-    const res = await fetch(`/chat/amigos/${user1}`);
+    const res = await fetch(`/chat/list/${user1}`);
     if (!res.ok) return;
 
     const chats = await res.json();
@@ -299,6 +320,10 @@ async function cargarChats() {
         div.className = "item-chat";
 
         div.dataset.userid = c.userId;
+
+        if (c.noLeidos > 0) {
+            div.classList.add("chat-pendiente");
+        }
 
         div.onclick = () => cambiarChat(
             c.userId,
@@ -313,21 +338,141 @@ async function cargarChats() {
 
             <div class="info-chat">
                 <h4>${c.username}</h4>
+
+                <p class="preview-mensaje">
+                    ${c.ultimoMensaje || ""}
+                </p>
             </div>
+
+            ${c.noLeidos > 0 ? `
+                <span class="badge-no-leido">${c.noLeidos}</span>
+            ` : ""}
         `;
 
         listaChats.appendChild(div);
     });
+}
 
-    if (chats.length > 0 && !hayChatActivo()) {
-        const first = chats[0];
+// =====================
+// VACIAR CHATS
+// =====================
+function vaciarChat() {
 
-        cambiarChat(
-            first.userId,
-            first.username,
-            first.fotoPerfil
-        );
+if (!user2) {
+    mostrarToast("Selecciona un chat primero");
+    return;
+}
+
+document.getElementById("chat-modal-vaciar")
+    .classList.remove("chat-hidden");
+}
+
+function cerrarModalVaciarChat() {
+document.getElementById("chat-modal-vaciar")
+    .classList.add("chat-hidden");
+}
+
+async function confirmarVaciarChat() {
+
+await fetch(`/chat/vaciar?userId=${user1}&otroId=${user2}`, {
+    method: "POST"
+});
+
+cerrarModalVaciarChat();
+
+chatBox.innerHTML = "<p style='opacity:0.5;text-align:center'>Chat vaciado</p>";
+
+mostrarToast("Chat vaciado correctamente");
+
+cargarMensajes();
+cargarChats();
+}
+
+function mostrarToast(mensaje) {
+
+    const toast = document.getElementById("chat-toast");
+    const msg = document.getElementById("chat-toast-msg");
+
+    msg.innerText = mensaje;
+
+    toast.classList.add("mostrar");
+
+    setTimeout(() => {
+        toast.classList.remove("mostrar");
+    }, 2500);
+}
+
+function obtenerDia(fecha) {
+
+    const d = new Date(fecha);
+
+    return d.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+// =====================
+// CARGAR FECHAS EN TIEMPO REAL
+// =====================
+
+async function cargarMensajes() {
+
+    if (!hayChatActivo()) {
+        chatBox.innerHTML = "<p style='opacity:0.5;text-align:center'>Selecciona un chat</p>";
+        return;
     }
+
+    const res = await fetch(`/chat/${user1}/${user2}`);
+    if (!res.ok) return;
+
+    const mensajes = await res.json();
+
+    renderizarMensajes(mensajes);
+}
+
+function renderizarMensajes(mensajes) {
+
+    chatBox.innerHTML = "";
+
+    let ultimaFecha = null;
+
+    mensajes.forEach(m => {
+
+        const fecha = new Date(m.fechaEnvio);
+        const dia = fecha.toDateString();
+
+        // separador de día
+        if (dia !== ultimaFecha) {
+
+            const separador = document.createElement("div");
+            separador.className = "chat-fecha-separador";
+            separador.innerText = obtenerDia(m.fechaEnvio);
+
+            chatBox.appendChild(separador);
+
+            ultimaFecha = dia;
+        }
+
+        const esMio = m.emisorId === user1;
+
+        const div = document.createElement("div");
+        div.className = "mensaje " + (esMio ? "enviado" : "recibido");
+
+        div.innerHTML = `
+            <div class="burbuja">
+                <p>${m.contenido}</p>
+                <span class="hora-mensaje">
+                    ${fecha.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                </span>
+            </div>
+        `;
+
+        chatBox.appendChild(div);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 

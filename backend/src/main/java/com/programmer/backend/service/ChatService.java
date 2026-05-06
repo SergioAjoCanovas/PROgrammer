@@ -11,6 +11,7 @@ import com.programmer.backend.repository.UsuariosSeguimientoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,61 +53,57 @@ public class ChatService {
         if (!sonAmigos(emisorId, receptorId)) {
             throw new RuntimeException("No puedes enviar mensajes si no sois amigos");
         }
-    
+
         Mensaje mensaje = guardarMensaje(emisorId, receptorId, contenido);
-    
+
         MensajeDTO dto = new MensajeDTO(
-            mensaje.getEmisor().getId(),
-            mensaje.getReceptor().getId(),
-            mensaje.getContenido(),
-            mensaje.getFechaEnvio()
+                mensaje.getEmisor().getId(),
+                mensaje.getReceptor().getId(),
+                mensaje.getContenido(),
+                mensaje.getFechaEnvio()
         );
-    
-        // 🔥 ENVIAR AL RECEPTOR
+
         messagingTemplate.convertAndSend(
-            "/topic/messages/" + receptorId,
-            dto
+                "/topic/messages/" + receptorId,
+                dto
         );
-    
-        // 🔥 ENVIAR AL EMISOR (para que se vea al instante también)
+
         messagingTemplate.convertAndSend(
-            "/topic/messages/" + emisorId,
-            dto
+                "/topic/messages/" + emisorId,
+                dto
         );
+    }
+
+    @Transactional
+    public void marcarChatComoLeido(Long userId, Long otroId) {
+        mensajeRepository.marcarComoLeidos(userId, otroId);
+    }
+
+    @Transactional
+    public void vaciarChat(Long userId, Long otroId) {
+        mensajeRepository.vaciarChat(userId, otroId);
     }
 
     private Mensaje guardarMensaje(Long emisorId, Long receptorId, String contenido) {
 
         Usuario emisor = usuarioRepository.findById(emisorId)
                 .orElseThrow(() -> new RuntimeException("Emisor no encontrado"));
-    
+
         Usuario receptor = usuarioRepository.findById(receptorId)
                 .orElseThrow(() -> new RuntimeException("Receptor no encontrado"));
-    
+
         Mensaje mensaje = new Mensaje();
         mensaje.setEmisor(emisor);
         mensaje.setReceptor(receptor);
         mensaje.setContenido(contenido);
         mensaje.setFechaEnvio(java.time.LocalDateTime.now());
-    
+
         return mensajeRepository.save(mensaje);
     }
 
     public boolean sonAmigos(Long a, Long b) {
 
         return seguimientoRepository.existsBySeguidor_IdAndSeguido_Id(a, b)
-            && seguimientoRepository.existsBySeguidor_IdAndSeguido_Id(b, a);
-    }
-
-    public List<ChatPreviewDTO> obtenerAmigos(Long userId) {
-
-        return usuarioRepository.findAmigos(userId)
-                .stream()
-                .map(u -> new ChatPreviewDTO(
-                        u.getId(),
-                        u.getUsername(),
-                        u.getFotoPerfil()
-                ))
-                .toList();
+                && seguimientoRepository.existsBySeguidor_IdAndSeguido_Id(b, a);
     }
 }

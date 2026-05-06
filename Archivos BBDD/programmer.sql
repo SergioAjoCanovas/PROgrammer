@@ -21,6 +21,15 @@ CREATE TABLE usuarios(
     FOREIGN KEY (id_rol) REFERENCES roles(id)
 );
 
+CREATE TABLE usuario_seguidores (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seguidor_id BIGINT,
+    seguido_id BIGINT
+);
+ALTER TABLE usuario_seguidores
+ADD CONSTRAINT unique_seguimiento UNIQUE (seguidor_id, seguido_id);
+
+
 -- Tabla de categorías de tecnologías
 CREATE TABLE categorias_tecnologias (
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -246,11 +255,19 @@ CREATE TABLE postulaciones (
 -- Tabla de mensajes
 CREATE TABLE mensajes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    emisor_id BIGINT,
-    receptor_id BIGINT,
-    contenido TEXT,
+
+    emisor_id BIGINT NOT NULL,
+    receptor_id BIGINT NOT NULL,
+
+    contenido TEXT NOT NULL,
+
     leido BOOLEAN DEFAULT FALSE,
+
+    borrado_por_emisor BOOLEAN DEFAULT FALSE,
+    borrado_por_receptor BOOLEAN DEFAULT FALSE,
+
     fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
     FOREIGN KEY (emisor_id) REFERENCES usuarios(id),
     FOREIGN KEY (receptor_id) REFERENCES usuarios(id)
 );

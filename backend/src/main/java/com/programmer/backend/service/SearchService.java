@@ -39,7 +39,7 @@ public class SearchService {
     private TecnologiaRepository tecnologiaRepository;
 
     public List<PerfilDesarrollador> getAllDevelopers() {
-        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
+        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "DESARROLLADOR", "2", "ADMIN", "1"));
         return developers.stream()
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
                 .filter(Optional::isPresent)
@@ -49,7 +49,7 @@ public class SearchService {
     }
 
         public List<PerfilDesarrollador> getFeaturedDevelopers(Long currentUserId) {
-        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
+        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "DESARROLLADOR", "2", "ADMIN", "1"));
         return developers.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
@@ -65,7 +65,7 @@ public class SearchService {
     }
 
     public List<PerfilDesarrollador> searchDevelopers(String query, List<Long> techIds, Long currentUserId) {
-        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "ADMIN"));
+        List<Usuario> developers = usuarioRepository.findByRolNombreIn(Arrays.asList("DEVELOPER", "DESARROLLADOR", "2", "ADMIN", "1"));
         return developers.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilDesarrolladorRepository.findByUsuarioId(user.getId()))
@@ -151,7 +151,7 @@ public class SearchService {
 
     // Método para las empresas destacadas (el carrusel inicial)
     public List<PerfilEmpresa> getFeaturedCompanies(Long currentUserId) {
-        List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
+        List<Usuario> companies = usuarioRepository.findByRolNombreIn(Arrays.asList("COMPANY", "EMPRESA", "3"));
         return companies.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))
@@ -160,13 +160,13 @@ public class SearchService {
                 .sorted((p1, p2) -> Integer.compare(
                         p2.getUsuario().getFollowersCount(),
                         p1.getUsuario().getFollowersCount()))
-                .limit(10)
+                .limit(20)
                 .collect(Collectors.toList());
     }
 
     // Método para la búsqueda filtrada
     public List<PerfilEmpresa> searchCompanies(String query, List<Long> techIds, Long currentUserId) {
-        List<Usuario> companies = usuarioRepository.findByRolNombre("COMPANY");
+        List<Usuario> companies = usuarioRepository.findByRolNombreIn(Arrays.asList("COMPANY", "EMPRESA", "3"));
         return companies.stream()
                 .filter(user -> currentUserId == null || !user.getId().equals(currentUserId))
                 .map(user -> perfilEmpresaRepository.findByUsuarioId(user.getId()))

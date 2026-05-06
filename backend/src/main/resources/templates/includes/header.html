@@ -47,6 +47,7 @@
             color: #ffffff;
             padding: 5px 10px;
             transition: all 0.3s ease;
+            position: relative; /* Para el globo de notificaciones */
         }
 
         .icono-nav i {
@@ -72,8 +73,7 @@
 
         /* --- NOTIFICACIONES --- */
         .contenedor-avisos {
-            position: relative;
-            display: inline-block;
+            display: contents; /* Evita desplazamientos al ser un wrapper innecesario en flex */
         }
 
         .panel-notificaciones {
@@ -304,7 +304,7 @@
                 const badge = document.getElementById('badge-avisos');
                 
                 if (data.noLeidas > 0) {
-                    badge.innerText = data.noLeidas > 99 ? '99+' : data.noLeidas;
+                    badge.innerText = data.noLeidas > 99 ? '+99' : data.noLeidas;
                     badge.style.display = 'block';
                 } else {
                     badge.style.display = 'none';

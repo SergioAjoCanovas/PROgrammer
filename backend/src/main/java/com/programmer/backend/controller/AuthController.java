@@ -73,6 +73,12 @@ public class AuthController {
         Rol rolElegido = rolRepository.findById(idRol)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
+        // SEGURIDAD: Prohibir registro de administradores desde el formulario público
+        if (rolElegido.getNombre().equalsIgnoreCase("ADMIN") || idRol == 1) {
+            response.sendRedirect("/signUp?error=security");
+            return;
+        }
+
         // Foto (por defecto usamos el icono estándar)
         String rutaFoto = "/Img/stock/default-profile.svg";
         if (foto != null && !foto.isEmpty()) {
@@ -96,13 +102,13 @@ public class AuthController {
 
         String rolNombre = rolElegido.getNombre();
 
-        if (rolNombre.equals("DESARROLLADOR")) {
+        if (rolNombre.equals("DESARROLLADOR") || rolNombre.equals("DEVELOPER") || rolNombre.equals("2")) {
             PerfilDesarrollador perfil = new PerfilDesarrollador();
             perfil.setUsuario(usuarioGuardado);
             perfilDesarrolladorRepository.save(perfil);
         }
 
-        if (rolNombre.equals("EMPRESA")) {
+        if (rolNombre.equals("EMPRESA") || rolNombre.equals("COMPANY") || rolNombre.equals("3")) {
             PerfilEmpresa perfil = new PerfilEmpresa();
             perfil.setUsuario(usuarioGuardado);
             perfilEmpresaRepository.save(perfil);

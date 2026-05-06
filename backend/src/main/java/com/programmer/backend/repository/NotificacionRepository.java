@@ -12,4 +12,7 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
     List<Notificacion> findByUsuarioOrderByFechaCreacionDesc(Usuario usuario);
     long countByUsuarioAndLeidaFalse(Usuario usuario);
     void deleteByUsuario(Usuario usuario);
+    void deleteByUsuarioAndTipo(Usuario usuario, String tipo);
+    void deleteByUsuarioAndTipoIn(Usuario usuario, List<String> tipos);
+    void deleteByUsuarioAndTipoNotIn(Usuario usuario, List<String> tipos);
 }

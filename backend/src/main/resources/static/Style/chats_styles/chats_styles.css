@@ -276,6 +276,11 @@
 .mensaje {
     display: flex;
     max-width: 75%;
+    transition: transform 0.3s ease;
+}
+
+.mensaje:hover {
+    transform: translateY(-3px);
 }
 
 .mensaje.recibido { align-self: flex-start; }
@@ -544,5 +549,43 @@
 
 .chat-fecha-separador::after {
     right: 0;
+}
+
+/* =========================================================
+   ESTADO VACÍO (SIN CHAT)
+   ========================================================= */
+.chat-vacio-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    color: #888;
+    background-color: #121212; /* Fondo sólido no transparente */
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.chat-vacio-placeholder i {
+    font-size: 4rem;
+    color: #FFCC00;
+    margin-bottom: 20px;
+    opacity: 0.5;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+.chat-vacio-placeholder h2 {
+    color: #FFCC00;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.chat-vacio-placeholder p {
+    font-size: 1rem;
+    max-width: 300px;
+    line-height: 1.4;
 }
 

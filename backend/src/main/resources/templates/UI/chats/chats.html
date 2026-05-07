@@ -240,7 +240,7 @@ function actualizarPreviewChat(m) {
 async function enviarMensaje() {
 
     if (!hayChatActivo()) {
-        alert("Selecciona un chat primero");
+        mostrarToast("Selecciona un chat primero");
         return;
     }
 

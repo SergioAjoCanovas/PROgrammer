@@ -430,7 +430,7 @@ body.fondo-oscuro-neon::before {
 
 .reseña-item:hover {
     border-color: #FFCC00;
-    transform: translateX(5px);
+    transform: translateY(-4px);
 }
 
 .reseña-user {

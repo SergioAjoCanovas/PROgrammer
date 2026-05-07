@@ -313,11 +313,26 @@
         .red-url {
             font-size: 0.75rem;
             color: #888;
-            max-width: 180px;
+            max-width: 1800px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             transition: all 0.3s;
+        }
+        .icono-chat-amigo {
+            color: #28a745;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icono-chat-amigo:hover {
+            color: #39FF14;
+            text-shadow: 0 0 10px #39FF14, 0 0 20px rgba(57, 255, 20, 0.5);
+            transform: scale(1.2);
         }
 </style>
 </head>
@@ -553,6 +568,11 @@
                         </span>
                         <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                         <div class="seguimiento-acciones">
+                            <a th:if="${amigos != null and amigos.contains(user)}" 
+                               th:href="@{'/chats/' + ${usuarioHeader.id} + '/' + ${user.id}}" 
+                               class="icono-chat-amigo" title="Chatear">
+                                <i class="fas fa-comment"></i>
+                            </a>
                             <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
                             <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" onclick="toggleFollowUserSeguimiento(this, event)">
                                 <i class="fas fa-heart"></i>
@@ -577,6 +597,11 @@
                         </span>
                         <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                         <div class="seguimiento-acciones">
+                            <a th:if="${amigos != null and amigos.contains(user)}" 
+                               th:href="@{'/chats/' + ${usuarioHeader.id} + '/' + ${user.id}}" 
+                               class="icono-chat-amigo" title="Chatear">
+                                <i class="fas fa-comment"></i>
+                            </a>
                             <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
                             <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" onclick="toggleFollowUserSeguimiento(this, event)">
                                 <i class="fas fa-heart"></i>
@@ -601,6 +626,11 @@
                         </span>
                         <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
                         <div class="seguimiento-acciones">
+                            <a th:if="${amigos != null and amigos.contains(user)}" 
+                               th:href="@{'/chats/' + ${usuarioHeader.id} + '/' + ${user.id}}" 
+                               class="icono-chat-amigo" title="Chatear">
+                                <i class="fas fa-comment"></i>
+                            </a>
                             <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
                             <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" th:if="${siguiendo != null and siguiendo.contains(user)}" onclick="toggleFollowUserSeguimiento(this, event)">
                                 <i class="fas fa-heart"></i>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Configura tu perfil - PROgrammer</title>
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/loginPage_styles/loginPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .btn-choice {
+            padding: 25px; font-size: 1.1rem; border: 2px solid #ffcc00;
+            background: rgba(255, 204, 0, 0.05); color: white; cursor: pointer;
+            border-radius: 12px; transition: all 0.3s ease; width: 250px;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .btn-choice:hover { background: #ffcc00; color: black; transform: translateY(-5px); }
+        .support-notice { margin-top: 50px; padding: 15px; border-top: 1px solid #333; color: #888; font-size: 0.9rem; max-width: 500px; }
+    </style>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #0b0b0b; color: white; flex-direction: column; text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <h1 style="color: #ffcc00; margin-bottom: 10px;">¡Bienvenido a PROgrammer!</h1>
+    <p style="margin-bottom: 40px; font-size: 1.2rem; color: #ccc;">Para empezar, dinos qué perfil encaja mejor contigo:</p>
+
+    <form action="/seleccionar-rol" method="POST" style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+        
+        <button type="submit" name="tipo" value="DEVELOPER" class="btn-choice">
+            <i class="fas fa-code fa-2x"></i>
+            <span><strong>Programador</strong><br><small>Busco proyectos y empleo</small></span>
+        </button>
+        
+        <button type="submit" name="tipo" value="COMPANY" class="btn-choice">
+            <i class="fas fa-building fa-2x"></i>
+            <span><strong>Empresa</strong><br><small>Quiero contratar talento</small></span>
+        </button>
+
+        <button type="submit" name="tipo" value="VISITOR" class="btn-choice">
+            <i class="fas fa-user fa-2x"></i>
+            <span><strong>Usuario Normal</strong><br><small>Solo quiero explorar</small></span>
+        </button>
+    </form>
+
+    <div class="support-notice">
+        <i class="fas fa-info-circle"></i>
+        <p><strong>Nota importante:</strong> Esta elección es definitiva para tu cuenta. En caso de que quieras modificar tu rol en el futuro, tendrás que escribir a nuestro equipo de soporte.</p>
+    </div>
+
+</body>
+</html>

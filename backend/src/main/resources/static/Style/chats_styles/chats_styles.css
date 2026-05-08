@@ -375,11 +375,12 @@
     .panel-conversacion { display: none; }
 }
 
-#header-placeholder a.activo, 
-#header-placeholder a.activo i, 
-#header-placeholder a.activo span {
+.activo, 
+header a.activo i, 
+header a.activo span {
     color: #FFCC00 !important;
-    text-shadow: 0 0 15px rgba(255, 204, 0, 0.7) !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+    opacity: 1 !important;
 }
 
 .area-mensajes {

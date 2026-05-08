@@ -118,6 +118,22 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 
 <script>
+function inicializarHeader() {
+    const navChats = document.getElementById('nav-chats'); 
+    if (navChats) {
+        navChats.classList.add('activo');
+    } else {
+        const links = document.querySelectorAll('header a');
+        links.forEach(link => {
+            if (link.getAttribute('href')?.includes('chats')) {
+                link.classList.add('activo');
+            }
+        });
+    }
+}
+
+// Ejecutar al cargar
+window.addEventListener('load', inicializarHeader);
 
 const chatBox = document.getElementById("chatBox");
 const listaChats = document.getElementById("listaChats");

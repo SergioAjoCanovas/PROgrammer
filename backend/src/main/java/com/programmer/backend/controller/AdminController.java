@@ -24,10 +24,21 @@ public class AdminController {
     @Autowired
     private ProyectoRepository proyectoRepository;
 
+    // Helper method to safely check if a user is an admin without throwing NullPointerExceptions
+    private boolean isUserAdmin(Usuario usuario) {
+        if (usuario == null || usuario.getRol() == null || usuario.getRol().getNombre() == null) {
+            return false;
+        }
+        String nombreRol = usuario.getRol().getNombre();
+        return "ADMIN".equals(nombreRol) || "1".equals(nombreRol);
+    }
+
     @GetMapping
     public String adminPanel(HttpSession session, Model model) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null || (!"ADMIN".equals(usuario.getRol().getNombre()) && !"1".equals(usuario.getRol().getNombre()))) {
+        
+        // Safely check if logged-in user is admin
+        if (!isUserAdmin(usuario)) {
             return "redirect:/main";
         }
 
@@ -35,12 +46,12 @@ public class AdminController {
 
         List<Usuario> logueados = todos.stream()
                 .filter(u -> "LOGUEADO".equals(u.getEstado()) || u.getEstado() == null)
-                .filter(u -> !"ADMIN".equals(u.getRol().getNombre()) && !"1".equals(u.getRol().getNombre()))
+                .filter(u -> !isUserAdmin(u)) // Safe check
                 .collect(Collectors.toList());
 
         List<Usuario> verificados = todos.stream()
                 .filter(u -> "VERIFICADO".equals(u.getEstado()) || 
-                            (("ADMIN".equals(u.getRol().getNombre()) || "1".equals(u.getRol().getNombre())) && !"ELIMINADO".equals(u.getEstado())))
+                            (isUserAdmin(u) && !"ELIMINADO".equals(u.getEstado()))) // Safe check
                 .collect(Collectors.toList());
 
         model.addAttribute("logueados", logueados);
@@ -65,7 +76,7 @@ public class AdminController {
     @PostMapping("/verificar/{id}")
     public String verificarUsuario(@PathVariable Long id, HttpSession session) {
         Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
-        if (sessionUser != null && ("ADMIN".equals(sessionUser.getRol().getNombre()) || "1".equals(sessionUser.getRol().getNombre()))) {
+        if (isUserAdmin(sessionUser)) {
             Usuario usuario = usuarioRepository.findById(id).orElse(null);
             if (usuario != null) {
                 usuario.setEstado("VERIFICADO");
@@ -78,7 +89,7 @@ public class AdminController {
     @PostMapping("/desverificar/{id}")
     public String desverificarUsuario(@PathVariable Long id, HttpSession session) {
         Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
-        if (sessionUser != null && ("ADMIN".equals(sessionUser.getRol().getNombre()) || "1".equals(sessionUser.getRol().getNombre()))) {
+        if (isUserAdmin(sessionUser)) {
             Usuario usuario = usuarioRepository.findById(id).orElse(null);
             if (usuario != null) {
                 usuario.setEstado("LOGUEADO"); 
@@ -91,7 +102,7 @@ public class AdminController {
     @PostMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable Long id, HttpSession session) {
         Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
-        if (sessionUser != null && ("ADMIN".equals(sessionUser.getRol().getNombre()) || "1".equals(sessionUser.getRol().getNombre()))) {
+        if (isUserAdmin(sessionUser)) {
             Usuario usuario = usuarioRepository.findById(id).orElse(null);
             if (usuario != null) {
                 try {
@@ -109,7 +120,7 @@ public class AdminController {
     @PostMapping("/verificarProyecto/{id}")
     public String verificarProyecto(@PathVariable Long id, HttpSession session) {
         Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
-        if (sessionUser != null && ("ADMIN".equals(sessionUser.getRol().getNombre()) || "1".equals(sessionUser.getRol().getNombre()))) {
+        if (isUserAdmin(sessionUser)) {
             Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
             if (proyecto != null) {
                 proyecto.setEstaValidado(true);
@@ -122,7 +133,7 @@ public class AdminController {
     @PostMapping("/desverificarProyecto/{id}")
     public String desverificarProyecto(@PathVariable Long id, HttpSession session) {
         Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
-        if (sessionUser != null && ("ADMIN".equals(sessionUser.getRol().getNombre()) || "1".equals(sessionUser.getRol().getNombre()))) {
+        if (isUserAdmin(sessionUser)) {
             Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
             if (proyecto != null) {
                 proyecto.setEstaValidado(false);
@@ -135,7 +146,7 @@ public class AdminController {
     @PostMapping("/eliminarProyecto/{id}")
     public String eliminarProyecto(@PathVariable Long id, HttpSession session) {
         Usuario sessionUser = (Usuario) session.getAttribute("usuarioLogueado");
-        if (sessionUser != null && ("ADMIN".equals(sessionUser.getRol().getNombre()) || "1".equals(sessionUser.getRol().getNombre()))) {
+        if (isUserAdmin(sessionUser)) {
             Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
             if (proyecto != null) {
                 proyectoRepository.delete(proyecto);

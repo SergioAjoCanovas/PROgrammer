@@ -13,13 +13,22 @@ import com.programmer.backend.repository.PerfilEmpresaRepository;
 import com.programmer.backend.service.RegistroService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -45,19 +54,23 @@ public class AuthController {
     @Autowired
     private RegistroService registroService;
 
+    // Repositorio para guardar explícitamente el contexto en Spring Security 6
+    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+
     // =========================
     // REGISTRO
     // =========================
     @PostMapping("/signup")
-    public void registrar(
+    public RedirectView registrar(
             @RequestParam("username") String username,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("confirm_password") String confirmPassword,
             @RequestParam("id_rol") long idRol,
             @RequestParam(value = "foto", required = false) MultipartFile foto,
-            HttpSession session,
-            HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response,
+            HttpSession session
     ) throws IOException {
 
         // Validaciones
@@ -65,8 +78,7 @@ public class AuthController {
                 || usuarioRepository.existsByUsername(username)
                 || usuarioRepository.existsByEmail(email)) {
 
-            response.sendRedirect("/signUp?error=true");
-            return;
+            return new RedirectView("/signUp?error=true");
         }
 
         // Rol
@@ -77,6 +89,7 @@ public class AuthController {
         if (rolElegido.getNombre().equalsIgnoreCase("ADMIN") || idRol == 1) {
             response.sendRedirect("/signUp?error=security");
             return;
+            return new RedirectView("/signUp?error=security");
         }
 
         // Foto (por defecto usamos el icono estándar)
@@ -97,7 +110,7 @@ public class AuthController {
         Usuario usuarioGuardado = registroService.registrarUsuario(nuevoUsuario);
 
         // =========================
-        // 🔥 CREACIÓN DE PERFIL AUTOMÁTICA
+        // CREACIÓN DE PERFIL AUTOMÁTICA
         // =========================
 
         String rolNombre = rolElegido.getNombre();
@@ -114,22 +127,36 @@ public class AuthController {
             perfilEmpresaRepository.save(perfil);
         }
 
-        // Sesión
+        // 🔥 REGISTRAR EN SPRING SECURITY 6 (Guardado explícito)
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                usuarioGuardado.getUsername(),
+                null,
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rolNombre))
+        );
+        
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+        // ESTA ES LA LÍNEA MÁGICA QUE FALTABA:
+        securityContextRepository.saveContext(context, request, response);
+
+        // Sesión manual
         session.setAttribute("usuarioLogueado", usuarioGuardado);
         session.setAttribute("rolUsuario", rolNombre);
 
-        response.sendRedirect("/main?user=" + java.net.URLEncoder.encode(username, "UTF-8") + "&rol=" + java.net.URLEncoder.encode(rolNombre, "UTF-8"));
+        return new RedirectView("/main?user=" + java.net.URLEncoder.encode(username, "UTF-8") + "&rol=" + java.net.URLEncoder.encode(rolNombre, "UTF-8"));
     }
 
     // =========================
     // LOGIN
     // =========================
     @PostMapping("/login")
-    public void iniciarSesion(
+    public RedirectView iniciarSesion(
             @RequestParam("username") String usuarioOEmail,
             @RequestParam("password") String password,
-            HttpSession session,
-            HttpServletResponse response
+            HttpServletRequest request,
+            HttpServletResponse response,
+            HttpSession session
     ) throws IOException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(usuarioOEmail);
@@ -141,15 +168,29 @@ public class AuthController {
         if (usuarioOpt.isEmpty()
                 || !passwordEncoder.matches(password, usuarioOpt.get().getPassword())) {
 
-            response.sendRedirect("/login?error=auth");
-            return;
+            return new RedirectView("/login?error=auth");
         }
 
         Usuario usuario = usuarioOpt.get();
+        String rolNombre = usuario.getRol().getNombre();
 
+        // 🔥 REGISTRAR EN SPRING SECURITY 6 (Guardado explícito)
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                usuario.getUsername(),
+                null,
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rolNombre))
+        );
+        
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(auth);
+        SecurityContextHolder.setContext(context);
+        // ESTA ES LA LÍNEA MÁGICA QUE FALTABA:
+        securityContextRepository.saveContext(context, request, response);
+
+        // Sesión manual
         session.setAttribute("usuarioLogueado", usuario);
-        session.setAttribute("rolUsuario", usuario.getRol().getNombre());
+        session.setAttribute("rolUsuario", rolNombre);
 
-        response.sendRedirect("/main?user=" + java.net.URLEncoder.encode(usuario.getUsername(), "UTF-8") + "&rol=" + java.net.URLEncoder.encode(usuario.getRol().getNombre(), "UTF-8"));
+        return new RedirectView("/main?user=" + java.net.URLEncoder.encode(usuario.getUsername(), "UTF-8") + "&rol=" + java.net.URLEncoder.encode(rolNombre, "UTF-8"));
     }
 }

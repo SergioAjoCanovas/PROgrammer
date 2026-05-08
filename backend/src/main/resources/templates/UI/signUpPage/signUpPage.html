@@ -80,6 +80,8 @@
                         <li id="req-email-start" class="invalid"><i class="fas fa-times"></i> Empezar por letra o número</li>
                         <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 4 letras o números antes del @</li>
                         <li id="req-email-specials" class="invalid"><i class="fas fa-times"></i> Caracteres (._+-) no seguidos ni antes del @</li>
+                        <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 6 caracteres antes del @</li>
+                        <li id="req-email-dots" class="invalid"><i class="fas fa-times"></i> Puntos no seguidos ni antes del @</li>
                         <li id="req-email-format" class="invalid"><i class="fas fa-times"></i> Formato válido (ej@host.com)</li>
                     </ul>
                 </div>
@@ -208,6 +210,7 @@
         const reqEmailStart = document.getElementById('req-email-start');
         const reqEmailLength = document.getElementById('req-email-length');
         const reqEmailSpecials = document.getElementById('req-email-specials');
+        const reqEmailDots = document.getElementById('req-email-dots');
         const reqEmailFormat = document.getElementById('req-email-format');
 
         // Requisitos mínimos
@@ -283,11 +286,16 @@
                 updateReq(reqEmailFormat, fullValid);
                 
                 emailIsValid = fullValid;
+                updateReq(reqEmailDots, dotsValid);
+                updateReq(reqEmailFormat, hasValidFormat);
+                
+                emailIsValid = hasValidFormat;
             } else {
                 emailIsValid = false;
                 updateReq(reqEmailStart, false);
                 updateReq(reqEmailLength, false);
                 updateReq(reqEmailSpecials, false);
+                updateReq(reqEmailDots, false);
                 updateReq(reqEmailFormat, false);
             }
         });

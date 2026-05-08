@@ -182,10 +182,21 @@
     margin: 0 0 5px 0;
 }
 
+.item-chat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.info-chat {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.info-chat h4,
 .info-chat p {
-    color: #aaa;
-    font-size: 0.85rem;
-    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -265,6 +276,11 @@
 .mensaje {
     display: flex;
     max-width: 75%;
+    transition: transform 0.3s ease;
+}
+
+.mensaje:hover {
+    transform: translateY(-3px);
 }
 
 .mensaje.recibido { align-self: flex-start; }
@@ -273,6 +289,8 @@
 .burbuja {
     padding: 12px 18px;
     border-radius: 15px;
+    overflow-wrap: right;
+    word-break: break-word;
 }
 
 .mensaje.recibido .burbuja {
@@ -363,3 +381,211 @@
     color: #FFCC00 !important;
     text-shadow: 0 0 15px rgba(255, 204, 0, 0.7) !important;
 }
+
+.area-mensajes {
+    scroll-behavior: smooth;
+    min-height: 0;
+    overflow-wrap: right;
+    word-break: break-word;
+}
+
+.mensaje {
+    animation: fadeIn 0.2s ease-in;
+}
+
+.item-chat.nuevo-chat {
+    background-color: rgba(255, 204, 0, 0.08);
+    border-left: 4px solid #FFCC00;
+    box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.2);
+    animation: glowPulse 1.5s infinite;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: inset 0 0 8px rgba(255,204,0,0.15); }
+    50% { box-shadow: inset 0 0 14px rgba(255,204,0,0.35); }
+    100% { box-shadow: inset 0 0 8px rgba(255,204,0,0.15); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-pendiente {
+    background-color: rgba(255, 215, 0, 0.15);
+}
+
+.badge-no-leidos {
+    background: gold;
+    color: black;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+/* =========================
+   MODAL CHAT AISLADO
+========================= */
+
+.chat-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.chat-hidden {
+    display: none;
+}
+
+.chat-modal {
+    background: #1a1a1a;
+    border: 1px solid #FFCC00;
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+}
+
+.chat-modal h3 {
+    color: #FFCC00;
+    margin-bottom: 10px;
+}
+
+.chat-modal p {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.chat-modal-botones {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.chat-btn-cancelar,
+.chat-btn-confirmar {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.chat-btn-cancelar {
+    background: #333;
+    color: white;
+}
+
+.chat-btn-confirmar {
+    background: #FFCC00;
+    color: black;
+}
+
+/* =========================
+   TOASTS
+========================= */
+.chat-toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: rgba(20, 20, 20, 0.95);
+    border-left: 5px solid #FFCC00;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: 0.4s ease;
+    z-index: 9999;
+}
+
+.chat-toast.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.chat-toast i {
+    color: #FFCC00;
+    font-size: 1.3rem;
+}
+
+/* =========================
+   SEPARADOR DE FECHA
+========================= */
+
+.chat-fecha-separador {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 0.8rem;
+    color: #aaa;
+    position: relative;
+}
+
+.chat-fecha-separador::before,
+.chat-fecha-separador::after {
+    content: "";
+    height: 1px;
+    width: 40%;
+    background: #333;
+    position: absolute;
+    top: 50%;
+}
+
+.chat-fecha-separador::before {
+    left: 0;
+}
+
+.chat-fecha-separador::after {
+    right: 0;
+}
+
+/* =========================================================
+   ESTADO VACÍO (SIN CHAT)
+   ========================================================= */
+.chat-vacio-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    color: #888;
+    background-color: #121212; /* Fondo sólido no transparente */
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.chat-vacio-placeholder i {
+    font-size: 4rem;
+    color: #FFCC00;
+    margin-bottom: 20px;
+    opacity: 0.5;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+.chat-vacio-placeholder h2 {
+    color: #FFCC00;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.chat-vacio-placeholder p {
+    font-size: 1rem;
+    max-width: 300px;
+    line-height: 1.4;
+}
+

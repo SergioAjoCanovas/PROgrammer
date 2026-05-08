@@ -8,136 +8,515 @@
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="/Style/chats_styles/chats_styles.css"> 
+    <link rel="stylesheet" href="/Style/chats_styles/chats_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-    </style>
 </head>
-<body class="fondo-oscuro-neon">
 
-    <div th:replace="~{includes/header :: header}"></div>
+<body class="fondo-oscuro-neon"
+      th:attr="data-user1=${user1}, 
+               data-user2=${user2 != null ? user2 : ''},
+               data-user2-name=${receptorNombre != null ? receptorNombre : ''},
+               data-user2-avatar=${receptorAvatar != null ? receptorAvatar : ''}">
 
-    <div class="contenedor-volver">
-        <a href="/main" class="enlace-volver">
-            <i class="fas fa-arrow-left"></i> Volver a inicio
-        </a>
-    </div>
+<div th:replace="~{includes/header :: header}"></div>
 
-    <main class="contenedor-principal-chats">
-        <section class="tarjeta-chats border-neon">
+<div class="contenedor-volver">
+    <a href="/main" class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a inicio
+    </a>
+</div>
+
+<main class="contenedor-principal-chats">
+    <section class="tarjeta-chats border-neon">
+
+        <!-- LISTA -->
+        <aside class="panel-contactos">
+
+            <div class="cabecera-contactos">
+                <h2><i class="fas fa-comments"></i> Mensajes</h2>
+            </div>
+
+            <div class="lista-conversaciones" id="listaChats"></div>
+
+        </aside>
+
+        <!-- CHAT -->
+        <section class="panel-conversacion">
+
+            <div class="cabecera-chat-activo">
+
+                <div class="info-usuario-activo">
+                    <img id="chatAvatar" class="avatar-pequeno"
+                    src="/Img/default-avatar.png"
+                    onerror="this.src='/Img/stock/default-profile.svg'">
             
-            <aside class="panel-contactos">
-                <div class="cabecera-contactos">
-                    <h2><i class="fas fa-comments"></i> Mensajes</h2>
-                    <button class="btn-nuevo-chat neon-button" title="Nuevo mensaje"><i class="fas fa-plus"></i></button>
-                </div>
-                
-                <div class="buscador-chats">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Buscar conversación...">
-                </div>
-
-                <div class="lista-conversaciones">
-                    <div class="item-chat activo">
-                        <div class="avatar-chat">
-                            <img src="/Img/stock/empresa1.png" alt="Avatar">
-                            <span class="estado en-linea"></span>
-                        </div>
-                        <div class="info-chat">
-                            <h4>Tech Solutions SL</h4>
-                            <p>Nos interesa tu perfil para...</p>
-                        </div>
-                        <div class="meta-chat">
-                            <span class="hora">10:45</span>
-                            <span class="badge-no-leido">2</span>
-                        </div>
-                    </div>
-
-                    <div class="item-chat">
-                        <div class="avatar-chat">
-                            <i class="fas fa-user-circle fa-2x" style="color: #ccc;"></i>
-                            <span class="estado ausente"></span>
-                        </div>
-                        <div class="info-chat">
-                            <h4>Marta Backend Dev</h4>
-                            <p>He revisado la API, todo ok.</p>
-                        </div>
-                        <div class="meta-chat">
-                            <span class="hora">Ayer</span>
-                        </div>
+                    <div>
+                        <h3 id="chatNombre">Chat</h3>
+                        <span class="subtitulo-estado">Selecciona una conversación</span>
                     </div>
                 </div>
-            </aside>
-
-            <section class="panel-conversacion">
-                <div class="cabecera-chat-activo">
-                    <div class="info-usuario-activo">
-                        <img src="/Img/stock/empresa1.png" alt="Avatar" class="avatar-pequeno">
-                        <div>
-                            <h3>Tech Solutions SL</h3>
-                            <span class="subtitulo-estado">Escribiendo...</span>
-                        </div>
-                    </div>
-                    <div class="acciones-chat">
-                        <button title="Videollamada"><i class="fas fa-video"></i></button>
-                        <button title="Opciones"><i class="fas fa-ellipsis-v"></i></button>
-                    </div>
+            
+                <div class="acciones-chat">
+                    <button onclick="vaciarChat()" title="Vaciar chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
+            
+            </div>
 
-                <div class="area-mensajes">
-                    <div class="mensaje recibido">
-                        <div class="burbuja">
-                            <p>¡Hola! Hemos visto tu perfil en ProGrammer y tu último proyecto de e-commerce nos ha gustado mucho.</p>
-                            <span class="hora-mensaje">10:40</span>
-                        </div>
-                    </div>
-
-                    <div class="mensaje enviado">
-                        <div class="burbuja">
-                            <p>¡Hola! Muchas gracias, me alegro de que os haya gustado. Fue un resto integrar la pasarela de pagos.</p>
-                            <span class="hora-mensaje">10:42 <i class="fas fa-check-double leido"></i></span>
-                        </div>
-                    </div>
+            <div class="area-mensajes" id="chatBox">
+                <div class="chat-vacio-placeholder">
+                    <i class="fas fa-comments"></i>
+                    <h2>Tus Mensajes</h2>
+                    <p>Selecciona una conversación de la lista para empezar a chatear.</p>
                 </div>
+            </div>
 
-                <div class="zona-input-chat">
-                    <button class="btn-adjuntar" title="Adjuntar archivo o código"><i class="fas fa-paperclip"></i></button>
-                    <input type="text" placeholder="Escribe un mensaje aquí...">
-                    <button class="btn-enviar neon-button"><i class="fas fa-paper-plane"></i></button>
-                </div>
-            </section>
+            <div class="zona-input-chat">
+                <input type="text" id="mensajeInput" placeholder="Escribe un mensaje...">
+
+                <button class="btn-enviar neon-button" onclick="enviarMensaje()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
 
         </section>
-    </main>
 
-    <div th:replace="~{includes/footer :: footer}"></div>
+    </section>
+</main>
 
-    <script>
-        function inicializarInterfazChat() {
-            const navChats = document.getElementById('nav-chats'); 
+<div id="chat-modal-vaciar" class="chat-modal-overlay chat-hidden">
 
-            if (navChats) {
-                navChats.classList.add('activo');
-            } else {
-                const links = document.querySelectorAll('header a');
-                links.forEach(l => {
-                    if (l.getAttribute('href')?.includes('chats')) {
-                        l.classList.add('activo');
-                    }
-                });
-            }
+    <div class="chat-modal">
+        <h3>Vaciar chat</h3>
+
+        <p>¿Seguro que quieres vaciar este chat? Esta acción no se puede deshacer.</p>
+
+        <div class="chat-modal-botones">
+            <button class="chat-btn-cancelar" onclick="cerrarModalVaciarChat()">
+                Cancelar
+            </button>
+
+            <button class="chat-btn-confirmar" onclick="confirmarVaciarChat()">
+                Vaciar
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div id="chat-toast" class="chat-toast">
+
+    <i class="fas fa-check-circle"></i>
+    <span id="chat-toast-msg">Mensaje</span>
+
+</div>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
+<script>
+
+const chatBox = document.getElementById("chatBox");
+const listaChats = document.getElementById("listaChats");
+
+const user1 = Number(document.body.dataset.user1 || 0);
+
+let user2 = document.body.dataset.user2 && document.body.dataset.user2 !== ""
+    ? Number(document.body.dataset.user2)
+    : null;
+
+
+// =====================
+// WEBSOCKET
+// =====================
+const socket = new SockJS('/ws');
+const stompClient = Stomp.over(socket);
+
+stompClient.connect({}, function () {
+
+    stompClient.subscribe('/topic/messages/' + user1, function (message) {
+
+    const mensaje = JSON.parse(message.body);
+    pintarMensaje(mensaje);
+    });
+
+});
+
+
+// =====================
+// HELPERS
+// =====================
+function hayChatActivo() {
+    return user1 > 0 && user2 > 0;
+}
+
+
+// =====================
+// PINTAR MENSAJE (ÚNICO)
+// =====================
+function pintarMensaje(m) {
+    cargarMensajes();
+    cargarChats();
+}
+
+// =====================
+// CARGAR MENSAJES
+// =====================
+async function cargarMensajes() {
+
+    if (!hayChatActivo()) {
+        chatBox.innerHTML = `
+            <div class="chat-vacio-placeholder">
+                <i class="fas fa-comments"></i>
+                <h2>Tus Mensajes</h2>
+                <p>Selecciona una conversación para empezar.</p>
+            </div>
+        `;
+        return;
+    }
+
+    const res = await fetch(`/chat/${user1}/${user2}`);
+    if (!res.ok) return;
+
+    const mensajes = await res.json();
+
+    chatBox.innerHTML = "";
+
+    let ultimaFecha = null;
+
+    mensajes.forEach(m => {
+
+        const fechaMensaje = new Date(m.fechaEnvio);
+        const diaActual = fechaMensaje.toDateString();
+
+        if (diaActual !== ultimaFecha) {
+
+            const separador = document.createElement("div");
+            separador.className = "chat-fecha-separador";
+
+            separador.innerText = obtenerDia(m.fechaEnvio);
+
+            chatBox.appendChild(separador);
+
+            ultimaFecha = diaActual;
         }
 
-        window.addEventListener('load', () => {
-            setTimeout(inicializarInterfazChat, 100);
-        });
-    </script>
+        const esMio = m.emisorId === user1;
+
+        const div = document.createElement("div");
+        div.className = "mensaje " + (esMio ? "enviado" : "recibido");
+
+        div.innerHTML = `
+            <div class="burbuja">
+                <p>${m.contenido}</p>
+                <span class="hora-mensaje">
+                    ${fechaMensaje.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                </span>
+            </div>
+        `;
+
+        chatBox.appendChild(div);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function actualizarPreviewChat(m) {
+
+    const id = m.emisorId === user1 ? m.receptorId : m.emisorId;
+
+    const item = [...listaChats.children]
+        .find(el => Number(el.dataset.userid) === Number(id));
+
+    if (!item) return;
+
+    // mover arriba
+    listaChats.prepend(item);
+
+    // marcar no leído si NO es chat activo
+    if (id !== user2) {
+        item.classList.add("chat-pendiente");
+    } else {
+        item.classList.remove("chat-pendiente");
+    }
+}
+
+
+// =====================
+// ENVIAR MENSAJE
+// =====================
+async function enviarMensaje() {
+
+    if (!hayChatActivo()) {
+        mostrarToast("Selecciona un chat primero");
+        return;
+    }
+
+    const input = document.getElementById("mensajeInput");
+    const texto = input.value.trim();
+
+    if (!texto) return;
+
+    await fetch(`/chat/send?emisorId=${user1}&receptorId=${user2}&contenido=${encodeURIComponent(texto)}`, {
+        method: "POST"
+    });
+
+    input.value = "";
+
+    // NO recargamos (WebSocket lo hace)
+}
+
+
+// =====================
+// CAMBIAR CHAT
+// =====================
+async function cambiarChat(nuevoUser2, nombre, avatar) {
+
+    if (!nuevoUser2) return;
+
+    user2 = Number(nuevoUser2);
+    if (isNaN(user2)) return;
+
+    document.getElementById("chatNombre").innerText = nombre;
+    document.getElementById("chatAvatar").src = avatar || '/Img/default-avatar.png';
+
+    await fetch(`/chat/marcar-leidos?userId=${user1}&otroId=${user2}`, {
+        method: "POST"
+    });
+
+    await cargarChats();
+
+    const item = document.querySelector(`[data-userid="${user2}"]`);
+    if (item) {
+        item.classList.remove("chat-pendiente");
+    }
+
+    cargarMensajes();
+}
+
+function limpiarNoLeido(userId) {
+
+    const items = [...listaChats.children];
+
+    const item = items.find(el =>
+        el.dataset.userid == userId
+    );
+
+    if (!item) return;
+
+    item.classList.remove("chat-pendiente");
+}
+
+
+// =====================
+// LISTA DE CHATS
+// =====================
+async function cargarChats() {
+
+    if (!user1) return;
+
+    const res = await fetch(`/chat/list/${user1}`);
+    if (!res.ok) return;
+
+    const chats = await res.json();
+
+    listaChats.innerHTML = "";
+
+    chats.forEach(c => {
+
+        const div = document.createElement("div");
+        div.className = "item-chat";
+
+        div.dataset.userid = c.userId;
+
+        if (c.noLeidos > 0) {
+            div.classList.add("chat-pendiente");
+        }
+
+        div.onclick = () => cambiarChat(
+            c.userId,
+            c.username,
+            c.fotoPerfil
+        );
+
+        div.innerHTML = `
+            <div class="avatar-chat">
+                <img src="${c.fotoPerfil || '/Img/default-avatar.png'}">
+            </div>
+
+            <div class="info-chat">
+                <h4>${c.username}</h4>
+
+                <p class="preview-mensaje">
+                    ${c.ultimoMensaje || ""}
+                </p>
+            </div>
+
+            ${c.noLeidos > 0 ? `
+                <span class="badge-no-leido">${c.noLeidos}</span>
+            ` : ""}
+        `;
+
+        listaChats.appendChild(div);
+    });
+}
+
+// =====================
+// VACIAR CHATS
+// =====================
+function vaciarChat() {
+
+if (!user2) {
+    mostrarToast("Selecciona un chat primero");
+    return;
+}
+
+document.getElementById("chat-modal-vaciar")
+    .classList.remove("chat-hidden");
+}
+
+function cerrarModalVaciarChat() {
+document.getElementById("chat-modal-vaciar")
+    .classList.add("chat-hidden");
+}
+
+async function confirmarVaciarChat() {
+
+await fetch(`/chat/vaciar?userId=${user1}&otroId=${user2}`, {
+    method: "POST"
+});
+
+cerrarModalVaciarChat();
+
+chatBox.innerHTML = "<p style='opacity:0.5;text-align:center'>Chat vaciado</p>";
+
+mostrarToast("Chat vaciado correctamente");
+
+cargarMensajes();
+cargarChats();
+}
+
+function mostrarToast(mensaje) {
+
+    const toast = document.getElementById("chat-toast");
+    const msg = document.getElementById("chat-toast-msg");
+
+    msg.innerText = mensaje;
+
+    toast.classList.add("mostrar");
+
+    setTimeout(() => {
+        toast.classList.remove("mostrar");
+    }, 2500);
+}
+
+function obtenerDia(fecha) {
+
+    const d = new Date(fecha);
+
+    return d.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+// =====================
+// CARGAR FECHAS EN TIEMPO REAL
+// =====================
+
+async function cargarMensajes() {
+
+    if (!hayChatActivo()) {
+        chatBox.innerHTML = `
+            <div class="chat-vacio-placeholder">
+                <i class="fas fa-comments"></i>
+                <h2>Tus Mensajes</h2>
+                <p>Selecciona una conversación para empezar.</p>
+            </div>
+        `;
+        return;
+    }
+
+    const res = await fetch(`/chat/${user1}/${user2}`);
+    if (!res.ok) return;
+
+    const mensajes = await res.json();
+
+    renderizarMensajes(mensajes);
+}
+
+function renderizarMensajes(mensajes) {
+
+    chatBox.innerHTML = "";
+
+    let ultimaFecha = null;
+
+    mensajes.forEach(m => {
+
+        const fecha = new Date(m.fechaEnvio);
+        const dia = fecha.toDateString();
+
+        // separador de día
+        if (dia !== ultimaFecha) {
+
+            const separador = document.createElement("div");
+            separador.className = "chat-fecha-separador";
+            separador.innerText = obtenerDia(m.fechaEnvio);
+
+            chatBox.appendChild(separador);
+
+            ultimaFecha = dia;
+        }
+
+        const esMio = m.emisorId === user1;
+
+        const div = document.createElement("div");
+        div.className = "mensaje " + (esMio ? "enviado" : "recibido");
+
+        div.innerHTML = `
+            <div class="burbuja">
+                <p>${m.contenido}</p>
+                <span class="hora-mensaje">
+                    ${fecha.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                </span>
+            </div>
+        `;
+
+        chatBox.appendChild(div);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+// ENTER
+document.getElementById("mensajeInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") enviarMensaje();
+});
+
+
+// INIT
+cargarChats();
+
+if (hayChatActivo()) {
+    const preName = document.body.dataset.user2Name;
+    const preAvatar = document.body.dataset.user2Avatar;
+
+    if (preName) {
+        document.getElementById("chatNombre").innerText = preName;
+        document.querySelector(".subtitulo-estado").innerText = "Chateando ahora";
+    }
+    if (preAvatar && preAvatar !== "") {
+        document.getElementById("chatAvatar").src = preAvatar;
+    }
+
+    cargarMensajes();
+}
+</script>
+
 </body>
 </html>

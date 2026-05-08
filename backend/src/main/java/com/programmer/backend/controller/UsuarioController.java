@@ -28,26 +28,35 @@ public class UsuarioController {
     }
 
     // =========================
-    // FOTO PERFIL
+    // FOTO PERFIL (Actualizada a AJAX)
     // =========================
     @PostMapping("/usuario/uploadFoto")
+    @ResponseBody
     public String subirFoto(@RequestParam("foto") MultipartFile foto,
                             HttpSession session) throws IOException {
 
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) return "redirect:/login";
+        if (usuario == null) return "NOT_LOGGED";
+        if (foto.isEmpty()) return "EMPTY";
 
+        // Validar tipo de archivo
+        String contentType = foto.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return "INVALID_TYPE";
+        }
+
+        // Guardar la foto físicamente usando el servicio
         String rutaImagen = registroService.guardarFoto(foto);
 
+        // Actualizar el objeto usuario y la base de datos
         usuario.setFotoPerfil(rutaImagen);
         usuarioRepository.save(usuario);
 
+        // Actualizar la sesión para que los cambios se vean en toda la web
         session.setAttribute("usuarioLogueado", usuario);
 
-        if ("VISITOR".equals(usuario.getRol().getNombre())) {
-            return "redirect:/limitedProfile";
-        }
-        return "redirect:/ownProfile";
+        // Devolvemos OK y la ruta para que el JS pueda actualizar la imagen
+        return "OK|" + rutaImagen;
     }
 
     // =========================

@@ -343,7 +343,7 @@
             <div class="tarjeta-acordeon profile-main-card">
                 <div class="perfil-superior">
                         <form id="formFoto" action="/usuario/uploadFoto" method="post" enctype="multipart/form-data" style="display:none;">
-                            <input type="file" id="inputFoto" name="foto" accept="image/*" onchange="document.getElementById('formFoto').submit();">
+                            <input type="file" id="inputFoto" name="foto" accept="image/*" onchange="subirFotoAjax(event)">
                         </form>
 
                         <div class="circulo-foto" onclick="document.getElementById('inputFoto').click()">
@@ -481,7 +481,6 @@
                             </div>
                         </div>
 
-                        <!-- OVERLAY DE TODAS LAS TECHS (COMO EN SEARCH) -->
                         <div class="vista-todas-techs" th:if="${#lists.size(p.tecnologias) > 3}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('tech-expanded')"></i>
                             <h4 class="titulo-overlay">Tecnologías</h4>
@@ -490,7 +489,6 @@
                             </div>
                         </div>
 
-                        <!-- OVERLAY DE DESCRIPCIÓN COMPLETA (NUEVO) -->
                         <div class="vista-bio-completa" th:if="${descLarga}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('bio-expanded')"></i>
                             <h4 class="titulo-overlay">Descripción del Proyecto</h4>
@@ -798,6 +796,64 @@
             btnPerfil.classList.add('activo');
         }
     });
+
+    // ----- NUEVA FUNCIÓN AJAX PARA LA FOTO DE PERFIL -----
+    function subirFotoAjax(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validamos que sea imagen
+        if (!file.type.startsWith("image/")) {
+            mostrarToast("Solo se permiten imágenes", "error");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("foto", file);
+
+        fetch("/usuario/uploadFoto", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(data => {
+            if (data.startsWith("OK|")) {
+                const nuevaRuta = data.split("|")[1]; // Extraemos la ruta
+
+                // 1. Actualizar la imagen principal del perfil
+                const circuloFoto = document.querySelector(".circulo-foto");
+                const imgPerfil = circuloFoto.querySelector("img");
+                
+                if (imgPerfil) {
+                    imgPerfil.src = nuevaRuta;
+                } else {
+                    // Si antes no tenía foto (mostraba el icono), lo reemplazamos
+                    circuloFoto.innerHTML = `<img src="${nuevaRuta}" alt="foto perfil" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+                }
+
+                // 2. Actualizar la imagen del menú de navegación (Header)
+                const imgHeader = document.querySelector(".avatar-usuario img");
+                if (imgHeader) {
+                    imgHeader.src = nuevaRuta;
+                } else {
+                    const avatarContainer = document.querySelector(".avatar-usuario");
+                    if(avatarContainer) {
+                        avatarContainer.innerHTML = `<img src="${nuevaRuta}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #333;">`;
+                    }
+                }
+
+                mostrarToast("Foto actualizada correctamente", "success");
+            } else if (data === "INVALID_TYPE") {
+                mostrarToast("Formato inválido", "error");
+            } else {
+                mostrarToast("Error al subir la foto", "error");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        });
+    }
+    // -----------------------------------------------------
 
     function activarEdicionNombre() {
         const display = document.getElementById("nombre-perfil-display");

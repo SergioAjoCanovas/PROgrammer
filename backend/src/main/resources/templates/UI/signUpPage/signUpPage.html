@@ -78,8 +78,8 @@
                     <input type="email" id="email" name="email" placeholder="john.doe@email.com" required/>
                     <ul class="password-requirements">
                         <li id="req-email-start" class="invalid"><i class="fas fa-times"></i> Empezar por letra o número</li>
-                        <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 6 caracteres antes del @</li>
-                        <li id="req-email-dots" class="invalid"><i class="fas fa-times"></i> Puntos no seguidos ni antes del @</li>
+                        <li id="req-email-length" class="invalid"><i class="fas fa-times"></i> Mínimo 4 letras o números antes del @</li>
+                        <li id="req-email-specials" class="invalid"><i class="fas fa-times"></i> Caracteres (._+-) no seguidos ni antes del @</li>
                         <li id="req-email-format" class="invalid"><i class="fas fa-times"></i> Formato válido (ej@host.com)</li>
                     </ul>
                 </div>
@@ -207,7 +207,7 @@
         
         const reqEmailStart = document.getElementById('req-email-start');
         const reqEmailLength = document.getElementById('req-email-length');
-        const reqEmailDots = document.getElementById('req-email-dots');
+        const reqEmailSpecials = document.getElementById('req-email-specials');
         const reqEmailFormat = document.getElementById('req-email-format');
 
         // Requisitos mínimos
@@ -218,7 +218,7 @@
         const hasSpecial = /[^A-Za-z0-9]/;
         const startsWithNumber = /^[0-9]/;
         // Nueva Regex para email: permite números al inicio/final, mín 6 alfanuméricos
-        const emailRegex = /^[a-zA-Z0-9](?!.*\.@)(?!.*\.\.)(?=([^@]*[a-zA-Z0-9]){6,})[a-zA-Z0-9.]*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,10}$/;
+        const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._+-]*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,10}$/;
 
         let passwordIsValid = false;
         let usernameIsValid = false;
@@ -267,24 +267,27 @@
                 
                 const startsWithAlnum = /^[a-zA-Z0-9]/.test(localPart);
                 const alnumCount = (localPart.match(/[a-zA-Z0-9]/g) || []).length;
-                const meetsMinLength = alnumCount >= 6;
-                const noConsecutiveDots = !/\.\./.test(localPart);
-                const noDotAtEnd = !localPart.endsWith('.');
-                const dotsValid = noConsecutiveDots && noDotAtEnd;
+                const meetsMinLength = alnumCount >= 4;
+                
+                // No dos seguidos, no al final
+                const noConsecutiveSpecials = !/[._+-]{2}/.test(localPart);
+                const noSpecialAtEnd = !/[._+-]$/.test(localPart);
+                const specialsValid = noConsecutiveSpecials && noSpecialAtEnd;
                 
                 const hasValidFormat = emailRegex.test(val);
+                const fullValid = hasValidFormat && meetsMinLength && specialsValid && startsWithAlnum;
                 
                 updateReq(reqEmailStart, startsWithAlnum);
                 updateReq(reqEmailLength, meetsMinLength);
-                updateReq(reqEmailDots, dotsValid);
-                updateReq(reqEmailFormat, hasValidFormat);
+                updateReq(reqEmailSpecials, specialsValid);
+                updateReq(reqEmailFormat, fullValid);
                 
-                emailIsValid = hasValidFormat;
+                emailIsValid = fullValid;
             } else {
                 emailIsValid = false;
                 updateReq(reqEmailStart, false);
                 updateReq(reqEmailLength, false);
-                updateReq(reqEmailDots, false);
+                updateReq(reqEmailSpecials, false);
                 updateReq(reqEmailFormat, false);
             }
         });

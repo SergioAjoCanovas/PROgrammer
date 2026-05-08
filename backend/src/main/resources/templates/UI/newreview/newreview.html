@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Reseñas</title>
+
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/newreview_styles/newreview.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-principal">
+
+        <aside class="columna-perfil">
+            <div class="tarjeta-perfil">
+                <div class="perfil-superior">
+                    <div class="foto-perfil-contenedor">
+                        <div class="circulo-foto"></div>
+                        <div class="icono-corazon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <h2 class="nombre-usuario">
+                        <span th:text="${usuario.username}">Usuario</span>
+                        <i th:if="${usuario != null and (usuario.estado == 'VERIFICADO' or (usuario.rol != null and (usuario.rol.nombre == 'ADMIN' or usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </h2>
+                </div>
+
+                <div class="perfil-inferior">
+                    <ul class="redes-sociales">
+                        <li><i class="fab fa-instagram"></i> Instagram</li>
+                        <li><i class="fab fa-twitter"></i> Twitter</li>
+                        <li><i class="fas fa-phone"></i> Contacto</li>
+                    </ul>
+                    <button class="boton-curriculum">CURRICULUM</button>
+                </div>
+            </div>
+        </aside>
+
+        <section class="zona-reseñas">
+
+            <div class="tarjeta-acordeon tarjeta-crear-reseña">
+                <div class="cabecera-formulario">
+                    <h2><i class="fas fa-pen"></i> Añadir reseña</h2>
+                    <a th:href="@{/perfil/{id}(id=${usuario.id})}" class="boton-volver-circular" title="Volver al perfil">
+                        <i class="fas fa-undo"></i>
+                    </a>
+                </div>
+
+                <form th:action="@{/reviews/crear}" method="post">
+                    <input type="hidden" name="receptorId" th:value="${usuario.id}">
+                    <input type="hidden" name="rating" id="rating" value="0" required>
+
+                    <div class="campo">
+                        <label>Tu valoración</label>
+                        <div class="estrellas" id="estrellas">
+                            <i class="far fa-star" data-value="1"></i>
+                            <i class="far fa-star" data-value="2"></i>
+                            <i class="far fa-star" data-value="3"></i>
+                            <i class="far fa-star" data-value="4"></i>
+                            <i class="far fa-star" data-value="5"></i>
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label>Comentario</label>
+                        <textarea name="comentario" placeholder="Cuéntanos tu experiencia con este profesional..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="boton-ver">
+                        <i class="fas fa-paper-plane"></i> PUBLICAR RESEÑA
+                    </button>
+                </form>
+            </div>
+
+            <div class="tarjeta-acordeon tarjeta-lista-reseñas">
+                <div class="cabecera-reseñas">
+                    <h2><i class="fas fa-comments"></i> Reseñas de la comunidad</h2>
+                </div>
+
+                <div class="media-global" th:if="${not #lists.isEmpty(reviews)}">
+                    <h3>Puntuación media</h3>
+                    <div class="media-estrellas">
+                        <i class="fas fa-star" th:each="i : ${#numbers.sequence(1,5)}"
+                           th:classappend="${i <= media} ? ' activa' : ''"></i>
+                        <span class="numero-media" th:text="${#numbers.formatDecimal(media,1,1)}">0.0</span>
+                    </div>
+                </div>
+
+                <div class="contenedor-reseñas">
+                    <p th:if="${#lists.isEmpty(reviews)}" class="sin-reseñas">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+                    
+                    <div class="reseña" th:each="r : ${reviews}">
+                        <div class="reseña-header">
+                            <span class="usuario-autor">
+                                <i class="fas fa-user-circle"></i> <span th:text="${r.autor.username}"></span>
+                                <i th:if="${r.autor != null and (r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                            </span>
+                            <span class="rating-visual" th:text="${#strings.repeat('⭐', r.rating)}"></span>
+                        </div>
+                        <p class="texto-comentario" th:text="${r.comentario}"></p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            actualizarMiUsuarioEnHeader();
+            inicializarSistemaEstrellas();
+        });
+
+        // --- 1. LÓGICA DE SELECCIÓN DE ESTRELLAS ---
+        function inicializarSistemaEstrellas() {
+            const estrellas = document.querySelectorAll("#estrellas i");
+            const inputRating = document.getElementById("rating");
+
+            estrellas.forEach(e => {
+                e.addEventListener("click", () => {
+                    const val = e.dataset.value;
+                    inputRating.value = val;
+
+                    // Resetear y pintar
+                    estrellas.forEach((s, index) => {
+                        if (index < val) {
+                            s.classList.remove("far");
+                            s.classList.add("fas", "activa");
+                        } else {
+                            s.classList.remove("fas", "activa");
+                            s.classList.add("far");
+                        }
+                    });
+                });
+            });
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'ProGrammer - Perfil de ' + ${usuario.username}">ProGrammer - Perfil de Usuario</title>
+    
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        .carrusel-proyecto {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .btn-follow-heart {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(15, 5, 5, 0.8);
+            border: 2px solid #ff4444;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+            z-index: 10;
+        }
+
+        .btn-follow-heart:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
+        }
+
+        .btn-follow-heart i.fas, .btn-follow-heart i.far {
+            color: #ff4444;
+            transition: color 0.3s ease;
+        }
+        .btn-follow-heart:hover i.fas, .btn-follow-heart:hover i.far {
+            color: white;
+        }
+
+        .carrusel-inner {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 100%;
+            height: 100%;
+        }
+        .carrusel-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .btn-carrusel {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 10, 10, 0.6);
+            color: white;
+            border: 1px solid rgba(0, 243, 255, 0.5);
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 5px;
+            z-index: 10;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-carrusel:hover {
+            background: rgba(0, 243, 255, 0.3);
+            color: #00f3ff;
+            box-shadow: 0 0 8px #00f3ff;
+        }
+        .btn-carrusel.prev { left: 5px; }
+        .btn-carrusel.next { right: 5px; }
+
+        .enlace-proyecto-titulo {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .enlace-proyecto-titulo:hover {
+            color: #00f3ff;
+            text-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+        }
+        .btn-ver-proyecto {
+            display: inline-block;
+            background: transparent;
+            color: #00f3ff;
+            border: 1px solid rgba(0, 243, 255, 0.5);
+            padding: 6px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        .btn-ver-proyecto:hover {
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+            color: #fff;
+            border-color: #00f3ff;
+        }
+        
+        .icono-grid-top:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00;
+            transform: scale(1.1);
+        }
+        .texto-enlace-proyectos:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00;
+        }
+
+        .tech-tag-azul {
+            background: rgba(0,243,255,0.05);
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,243,255,0.2);
+            color: white;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .tech-tag-azul:hover {
+            background: rgba(0,243,255,0.15);
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0,243,255,0.4);
+            transform: translateY(-2px);
+        }
+        .tech-tag-proyecto {
+            background: rgba(0,243,255,0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: #00f3ff;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .tech-tag-proyecto:hover {
+            background: rgba(0,243,255,0.2);
+            box-shadow: 0 0 8px rgba(0,243,255,0.5);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .lista-dotted {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        .item-dotted {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px dashed #FFCC00;
+            border-radius: 12px;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.35s ease;
+        }
+
+        .item-dotted i {
+            color: #FFCC00;
+            font-size: 1.1rem; 
+            width: 22px;       
+            text-align: center;
+            transition: all 0.35s ease;
+        }
+
+        .item-dotted:hover {
+            background-color: rgba(255, 204, 0, 0.08);
+            color: #FFCC00;
+            transform: translateX(6px);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+        }
+
+        .item-dotted:hover i { transform: scale(1.2); }
+
+        /* TOAST DE EXITO NEÓN */
+        .toast-success-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-success-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-success-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-success-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        /* TOAST DE ERROR NEÓN */
+        .toast-error-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(15, 5, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #ff4444;
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-error-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-error-neon i {
+            color: #ff4444;
+            font-size: 2rem;
+        }
+        .toast-error-neon strong {
+            display: block;
+            color: #ff4444;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body class="fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a id="btn-dinamico-volver" href="javascript:history.back()" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> <span id="texto-btn-volver">Volver</span>
+        </a>
+    </div>
+
+    <main class="contenedor-principal">
+        <aside class="columna-perfil">
+            <div class="tarjeta-perfil">
+                <div class="perfil-superior">
+                    <div class="foto-perfil-contenedor">
+                        <div class="circulo-foto">
+                            <img th:src="${usuario.fotoPerfil != null ? usuario.fotoPerfil : '/Img/stock/default-profile.png'}" alt="Foto de Perfil">
+                        </div>
+                        <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != usuario.id}" 
+                             th:attr="data-id=${usuario.id}" 
+                             onclick="toggleFollowUser(this, event)">
+                             <i class="fa-heart" th:classappend="${usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="contenedor-nombre-usuario">
+                        <h2 class="nombre-usuario" th:text="${usuario.username}">Nombre</h2>
+                        <i th:if="${usuario != null and (usuario.estado == 'VERIFICADO' or (usuario.rol != null and (usuario.rol.nombre == 'ADMIN' or usuario.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; font-size: 1.1em;" title="Usuario Verificado"></i>
+                    </div>
+                    
+                    <div class="followers-text">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span>
+                                <span th:text="${usuario.followersCountFormatted}">0</span>
+                                <span th:text="${usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                            </span>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <i class="fas fa-star"></i>
+                            <span>
+                                <span th:text="${#numbers.formatDecimal(media, 1, 1)}">0.0</span>
+                                <span>Media</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="perfil-inferior">
+                    <div class="lista-dotted">
+                        <a th:if="${usuario.github != null and !usuario.github.isEmpty()}"
+                           th:href="${usuario.github}" target="_blank" class="item-dotted">
+                            <i class="fab fa-github"></i>
+                            <span>Mi GitHub</span>
+                        </a>
+                        
+                        <a th:if="${usuario.linkedin != null and !usuario.linkedin.isEmpty()}"
+                           th:href="${usuario.linkedin}" target="_blank" class="item-dotted">
+                            <i class="fab fa-linkedin"></i>
+                            <span>Mi LinkedIn</span>
+                        </a>
+                        
+                        <a th:if="${usuario.curriculum != null and !usuario.curriculum.isEmpty()}"
+                           th:href="${usuario.curriculum}" target="_blank" class="item-dotted">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Mi CV</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tarjeta-resenas-izq" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != usuario.id}">
+                <h3>AÑADIR RESEÑA</h3>
+                
+                <form id="form-review" th:action="@{/reviews/crear}" method="post" th:object="${newReview}" onsubmit="return confirmarGuardadoResena(event, this);">
+                    <input type="hidden" name="receptorId" th:value="${usuario.id}">
+                    <input type="hidden" name="reviewId" id="edit-review-id" value="">
+                    
+                    <div class="campo">
+                        <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
+                        <div class="estrellas" id="estrellas-selector">
+                            <i class="far fa-star" data-value="1"></i>
+                            <i class="far fa-star" data-value="2"></i>
+                            <i class="far fa-star" data-value="3"></i>
+                            <i class="far fa-star" data-value="4"></i>
+                            <i class="far fa-star" data-value="5"></i>
+                        </div>
+                        <input type="hidden" th:field="*{rating}" value="0">
+                    </div>
+
+                    <textarea class="input-resena" th:field="*{comentario}" placeholder="Cuéntanos tu experiencia..." required></textarea>
+                    
+                    <button type="submit" id="btn-submit-review" class="boton-anadir">
+                        <i class="fas fa-paper-plane"></i> Publicar reseña
+                    </button>
+                </form>
+                
+                <p th:if="${param.error == 'duplicated'}" style="color: #ff4444; font-size: 0.8rem; margin-top: 5px;">Ya has valorado a este usuario.</p>
+                <p th:if="${param.error == 'autoreview'}" style="color: #ff4444; font-size: 0.8rem; margin-top: 5px;">No puedes valorarte a ti mismo.</p>
+            </div>
+        </aside>
+
+        <div class="columna-derecha">
+            <section class="seccion-proyectos">
+                <div class="tarjeta-proyectos-contenedor">
+                    <div class="cabecera-proyectos" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 th:onclick="'window.location.href=\'/proyectos/projectList/' + ${usuario.id} + '\''" class="texto-enlace-proyectos" style="cursor: pointer; transition: all 0.3s; margin: 0;">PROYECTOS</h2>
+                        <i class="fas fa-th icono-grid-top" th:onclick="'window.location.href=\'/proyectos/projectList/' + ${usuario.id} + '\''" style="color: white; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;"></i>
+                    </div>
+                    <div class="rejilla-proyectos">
+                        
+                        <div th:if="${ultimosProyectos == null or #lists.isEmpty(ultimosProyectos)}" class="tarjeta-mini-proyecto">
+                            <h3 style="color: #ccc;">Próximamente</h3>
+                            <p style="color: #ccc; font-style: italic;">Este usuario aún no tiene proyectos publicados.</p>
+                        </div>
+
+                        <div th:each="proyecto : ${ultimosProyectos}" 
+                             class="tarjeta-mini-proyecto" 
+                             style="position: relative; padding-top: 40px; cursor: pointer;" 
+                             th:onclick="'window.location.href=\'/proyectos/proyecto/' + ${proyecto.id} + '\''">
+                             
+                            <span th:if="${proyecto.estaValidado}" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 242, 255, 0.9); color: black; border-radius: 4px; padding: 3px 8px; font-size: 0.65em; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.5);">
+                                <i class="fas fa-check-circle"></i> VERIFICADO
+                            </span>
+                            
+                            <div class="carrusel-proyecto" th:if="${proyecto.imagenes != null and !proyecto.imagenes.isEmpty()}">
+                                <div class="carrusel-inner" th:id="'carrusel-inner-' + ${proyecto.id}">
+                                    <img th:each="img : ${proyecto.imagenes}" th:src="${img}" alt="Imagen del proyecto">
+                                </div>
+                                
+                                <button th:if="${proyecto.imagenes.size() > 1}" type="button" class="btn-carrusel prev" th:onclick="'event.stopPropagation(); moverCarruselProyecto(' + ${proyecto.id} + ', -1)'"><i class="fas fa-chevron-left"></i></button>
+                                <button th:if="${proyecto.imagenes.size() > 1}" type="button" class="btn-carrusel next" th:onclick="'event.stopPropagation(); moverCarruselProyecto(' + ${proyecto.id} + ', 1)'"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+
+                            <h3 style="margin-top: 10px;">
+                                <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" th:text="${proyecto.nombre}" class="enlace-proyecto-titulo" onclick="event.stopPropagation();">Nombre del Proyecto</a>
+                            </h3>
+                            
+                            <p th:text="${proyecto.descripcion}">Descripción del proyecto.</p>
+                            
+                            <div th:if="${proyecto.tecnologias != null and !proyecto.tecnologias.isEmpty()}" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span th:each="tech : ${proyecto.tecnologias}" 
+                                      th:text="${tech.nombre}" 
+                                      class="tech-tag-proyecto">
+                                </span>
+                            </div>
+
+                            <div>
+                                <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" class="btn-ver-proyecto" onclick="event.stopPropagation();">
+                                    <i class="fas fa-external-link-square-alt"></i> Ver Proyecto
+                                </a>
+                            </div>
+
+                        </div>
+                        <div th:if="${ultimosProyectos != null and ultimosProyectos.size() == 1}" 
+                             class="tarjeta-mini-proyecto" 
+                             style="border: 1px dashed rgba(0, 243, 255, 0.3); background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0.8; min-height: 250px;">
+                             
+                            <i class="fas fa-laptop-code" style="font-size: 3rem; color: rgba(0, 243, 255, 0.2); margin-bottom: 15px;"></i>
+                            <h3 style="color: #888; font-size: 1.1rem; margin-bottom: 5px;">En desarrollo...</h3>
+                            <p style="color: #666; font-size: 0.85rem; padding: 0 10px;">Creando nuevas líneas de código. Nuevos proyectos próximamente.</p>
+                            
+                            <a th:if="${usuario.github != null and !usuario.github.isEmpty()}" 
+                               th:href="${usuario.github}" target="_blank" 
+                               style="margin-top: 20px; color: #00f3ff; text-decoration: none; font-size: 0.8rem; border: 1px solid rgba(0,243,255,0.4); padding: 5px 15px; border-radius: 5px; transition: all 0.3s ease;">
+                                <i class="fab fa-github"></i> Explorar repositorios
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <div class="contenedor-inferior-derecha">
+                
+                <div class="tarjeta-inferior" style="border: 2px solid var(--amarillo-neon); box-shadow: 0 0 15px var(--amarillo-neon);">
+                    <div class="cabecera-inferior"><h3>RESEÑAS RECIENTES</h3></div>
+                    
+                    <div class="contenido-inferior" id="contenedor-resenas" style="margin-top: 35px; padding-top: 15px;">
+                        <div th:if="${#lists.isEmpty(reviews)}">
+                            <p>No hay reseñas aún.</p>
+                        </div>
+                        
+                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index < 2}" class="resena-item">
+                            <div class="resena-header">
+                                <span class="resena-usuario">
+                                    <span th:text="${r.autor.username}">Usuario</span>
+                                    <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </span>
+                                <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
+                                    <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                </span>
+                            </div>
+                            <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
+                            <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" class="resena-acciones-bottom">
+                                <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
+                                <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
+                                    <input type="hidden" name="reviewId" th:value="${r.id}"/>
+                                    <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 2}" class="resena-extra-wrapper">
+                            <div class="resena-extra-inner">
+                                <div class="resena-item">
+                                    <div class="resena-header">
+                                        <span class="resena-usuario">
+                                            <span th:text="${r.autor.username}">Usuario</span>
+                                            <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                        </span>
+                                        <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
+                                            <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                        </span>
+                                    </div>
+                                    <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
+                                    <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" class="resena-acciones-bottom">
+                                        <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
+                                        <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
+                                            <input type="hidden" name="reviewId" th:value="${r.id}"/>
+                                            <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${reviews != null and #lists.size(reviews) > 2}" style="text-align: center; margin-top: 15px;">
+                            <button id="btn-toggle-resenas" data-state="more" style="display: inline-flex; align-items: center; justify-content: center;">
+                                <span id="texto-toggle-resenas" style="margin-right: 8px;">Ver más reseñas</span>
+                                <i id="icono-toggle-resenas" class="fas fa-chevron-down" style="transition: transform 0.3s ease;"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="tarjeta-inferior">
+                    <div class="cabecera-inferior"><h3>SOBRE MÍ</h3></div>
+                    <div class="contenido-inferior">
+                        <p th:text="${usuario.biografia != null and !usuario.biografia.isEmpty() ? usuario.biografia : 'Sin descripción.'}"></p>
+                        
+                        <div th:if="${techsPorCategoria != null and !techsPorCategoria.isEmpty()}" style="margin-top: 25px;">
+                            <h4 style="color: #FFCC00; font-size: 0.95rem; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px;">TECNOLOGÍAS:</h4>
+                            
+                            <div th:each="entry : ${techsPorCategoria}" style="margin-bottom: 15px;">
+                                <h5 style="color: #00f3ff; font-size: 0.8rem; margin: 0 0 10px 0; text-transform: uppercase;" th:text="${entry.key}">Categoría</h5>
+                                
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <span th:each="tech : ${entry.value}" class="tech-tag-azul">
+                                        <i th:if="${tech.icono != null}" th:class="${tech.icono}" style="color: #00f3ff;"></i>
+                                        <span th:text="${tech.nombre}"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${techsPorCategoria == null and perfilDesarrollador != null and !perfilDesarrollador.tecnologias.isEmpty()}" style="margin-top: 15px;">
+                            <h4 style="color: #FFCC00; font-size: 0.9rem; margin-bottom: 10px;">Tecnologías:</h4>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <span th:each="tech : ${perfilDesarrollador.tecnologias}" th:text="${tech.nombre}" class="tech-tag-proyecto" style="padding: 5px 10px; font-size: 0.8rem;">
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const urlAnterior = document.referrer || "";
+            const btnVolver = document.getElementById('btn-dinamico-volver');
+            const textoVolver = document.getElementById('texto-btn-volver');
+
+            if (urlAnterior.includes('/ver-postulaciones')) {
+                textoVolver.textContent = 'Volver a Postulaciones';
+            } else {
+                textoVolver.textContent = 'Conectar con más PROgramadores';
+                btnVolver.href = '/searchProgrammer';
+            }
+
+            // Selector de estrellas
+            const estrellas = document.querySelectorAll("#estrellas-selector i");
+            const inputRating = document.getElementById("rating");
+
+            estrellas.forEach(star => {
+                star.addEventListener("click", () => {
+                    const val = star.dataset.value;
+                    inputRating.value = val;
+
+                    estrellas.forEach((s, index) => {
+                        if (index < val) {
+                            s.classList.replace("far", "fas");
+                            s.classList.add("activa");
+                        } else {
+                            s.classList.replace("fas", "far");
+                            s.classList.remove("activa");
+                        }
+                    });
+                });
+            });
+
+            // Lógica de carga por lotes con expansión Grid Smoothie
+            const btnToggleResenas = document.getElementById('btn-toggle-resenas');
+            const resenasExtra = document.querySelectorAll('.resena-extra-wrapper');
+            const textoToggle = document.getElementById('texto-toggle-resenas');
+            const iconoToggle = document.getElementById('icono-toggle-resenas');
+            
+            let indiceActual = 0;
+            const lote = 5;
+
+            if (btnToggleResenas) {
+                btnToggleResenas.addEventListener('click', () => {
+                    const estado = btnToggleResenas.getAttribute('data-state');
+
+                    if (estado === 'more') {
+                        const finalLote = Math.min(indiceActual + lote, resenasExtra.length);
+                        
+                        for(let i = indiceActual; i < finalLote; i++) {
+                            const item = resenasExtra[i];
+                            item.classList.add('resena-visible');
+                            
+                            // Activamos la expansión 0fr -> 1fr de forma fluida
+                            requestAnimationFrame(() => {
+                                item.classList.add('expandido');
+                            });
+                        }
+
+                        indiceActual = finalLote;
+
+                        if (indiceActual >= resenasExtra.length) {
+                            textoToggle.textContent = 'Ocultar reseñas';
+                            iconoToggle.style.transform = 'rotate(180deg)';
+                            btnToggleResenas.setAttribute('data-state', 'hide');
+                        }
+                    } else {
+                        // Resetear suavemente hacia arriba
+                        resenasExtra.forEach(item => {
+                            item.classList.remove('expandido');
+                            setTimeout(() => {
+                                if (!item.classList.contains('expandido')) {
+                                    item.classList.remove('resena-visible');
+                                }
+                            }, 500); 
+                        });
+                        indiceActual = 0;
+                        textoToggle.textContent = 'Ver más reseñas';
+                        iconoToggle.style.transform = 'rotate(0deg)';
+                        btnToggleResenas.setAttribute('data-state', 'more');
+                        
+                        document.getElementById('contenedor-resenas').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            }
+            
+        });
+
+        const carruselEstados = {};
+
+        function moverCarruselProyecto(proyectoId, direccion) {
+            const inner = document.getElementById('carrusel-inner-' + proyectoId);
+            if (!inner) return;
+
+            if (carruselEstados[proyectoId] === undefined) {
+                carruselEstados[proyectoId] = 0;
+            }
+
+            const totalImagenes = inner.children.length;
+            carruselEstados[proyectoId] += direccion;
+
+            if (carruselEstados[proyectoId] >= totalImagenes) {
+                carruselEstados[proyectoId] = 0;
+            } else if (carruselEstados[proyectoId] < 0) {
+                carruselEstados[proyectoId] = totalImagenes - 1;
+            }
+
+            const desplazamiento = -(carruselEstados[proyectoId] * 100);
+            inner.style.transform = `translateX(${desplazamiento}%)`;
+        }
+
+        async function toggleFollowUser(btn, event) {
+            event.stopPropagation();
+            const targetId = btn.getAttribute('data-id');
+            const icon = btn.querySelector('i');
+            
+            const isFollowing = icon.classList.contains('fas');
+
+            if (isFollowing) {
+                const targetName = btn.getAttribute('data-username') || document.querySelector('.nombre-usuario').innerText;
+                const result = await mostrarModalUnfollowGlobal(targetName);
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('targetId', targetId);
+                
+                const response = await fetch('/usuario/toggleFollow', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
+                
+                if (result === 'OK') {
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+                } else if (result === 'NOT_LOGGED') {
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al seguir al usuario: ' + result);
+                }
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+            }
+        }
+    </script>
+<script>
+let estaEditandoResena = false;
+
+function editarResena(btn) {
+    const id = btn.getAttribute("data-id");
+    const rating = parseInt(btn.getAttribute("data-rating"));
+    const comentario = btn.getAttribute("data-comentario");
+
+    const form = document.getElementById("form-review");
+    const editIdInput = document.getElementById("edit-review-id");
+    const ratingInput = document.getElementById("rating");
+    const textarea = document.querySelector("#form-review textarea[name='comentario']");
+    const btnSubmit = document.getElementById("btn-submit-review");
+
+    if (!form || !editIdInput || !ratingInput || !textarea || !btnSubmit) return;
+
+    form.action = "/reviews/editar";
+    editIdInput.value = id;
+    ratingInput.value = rating;
+    textarea.value = comentario;
+    estaEditandoResena = true;
+
+    btnSubmit.innerHTML = "<i class=\"fas fa-save\"></i> Guardar edición";
+    btnSubmit.style.backgroundColor = "#FFCC00";
+    btnSubmit.style.color = "#000";
+
+    const estrellas = document.querySelectorAll("#estrellas-selector i");
+    estrellas.forEach(estrella => {
+        const val = parseInt(estrella.getAttribute("data-value"));
+        if (val <= rating) {
+            estrella.classList.remove("far");
+            estrella.classList.add("fas");
+            estrella.classList.add("activa");
+        } else {
+            estrella.classList.remove("fas");
+            estrella.classList.add("far");
+            estrella.classList.remove("activa");
+        }
+    });
+
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function confirmarGuardadoResena(event, form) {
+    if (estaEditandoResena) {
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Seguro que quieres editar tu reseña?',
+            text: "Los cambios sobrescribirán tu comentario anterior.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FFCC00',
+            cancelButtonColor: '#333',
+            confirmButtonText: '<span style="color:black; font-weight:bold;">Sí, guardar</span>',
+            cancelButtonText: 'Cancelar',
+            background: '#1a1a1a',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false;
+    }
+    return true;
+}
+
+function confirmarBorrarResena(event, form) {
+    event.preventDefault();
+    Swal.fire({
+        title: '¿Seguro que quieres borrar tu reseña?',
+        text: "Podrás escribir una nueva reseña si lo deseas.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff4444',
+        cancelButtonColor: '#333',
+        confirmButtonText: 'Sí, borrar',
+        cancelButtonText: 'Cancelar',
+        background: '#1a1a1a',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+    return false;
+}
+</script>
+
+    <!-- Toast de éxito -->
+    <div id="toast-success-resena" class="toast-success-neon">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Éxito</strong>
+            <span id="toast-mensaje-resena" style="font-size: 0.9rem; color: #eee;">Operación realizada correctamente</span>
+        </div>
+    </div>
+
+    <!-- Toast de error -->
+    <div id="toast-error-resena" class="toast-error-neon">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong>Error</strong>
+            <span id="toast-error-mensaje-resena" style="font-size: 0.9rem; color: #eee;">Ocurrió un problema</span>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar toast si hay éxito o error en la URL
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.has('success')) {
+                const type = urlParams.get('success');
+                const toast = document.getElementById('toast-success-resena');
+                const textSpan = document.getElementById('toast-mensaje-resena');
+                
+                if (type === 'created') {
+                    textSpan.innerText = '¡Reseña publicada correctamente!';
+                } else if (type === 'updated') {
+                    textSpan.innerText = 'Se ha editado correctamente';
+                } else if (type === 'deleted') {
+                    textSpan.innerText = 'Ha eliminado la reseña correctamente';
+                } else {
+                    textSpan.innerText = 'Operación realizada correctamente';
+                }
+                
+                toast.classList.add('mostrar');
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                    const cleanUrl = window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }, 4000);
+            }
+            
+            if (urlParams.has('error')) {
+                const errorType = urlParams.get('error');
+                if (errorType === 'duplicated') {
+                    const toastError = document.getElementById('toast-error-resena');
+                    const errorSpan = document.getElementById('toast-error-mensaje-resena');
+                    
+                    errorSpan.innerText = 'Ya has puesto una reseña a este usuario';
+                    
+                    toastError.classList.add('mostrar');
+                    setTimeout(() => {
+                        toastError.classList.remove('mostrar');
+                        const cleanUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    }, 4000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

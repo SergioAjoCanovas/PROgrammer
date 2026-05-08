@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - PROgrammer</title>
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/nosotros_styles/nosotros_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fondo-oscuro-neon cuerpo-flexible">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-principal-nosotros">
+        <div class="vidrio-contenedor-nosotros">
+            
+            <div class="cabecera-nosotros">
+                <h2><i class="fas fa-code"></i> El Equipo</h2>
+                <a href="javascript:history.back()" class="boton-cerrar-nosotros">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+
+            <h1 class="titulo-seccion">Creadores de <span class="texto-neon">PROgrammer</span></h1>
+            
+            <div class="grid-nosotros">
+                
+                <div class="tarjeta-nosotros">
+                    <div class="marco-foto">
+                        <img th:src="@{/Img/perfiles/CristianEscobar.jpg}" alt="Cristian">
+                    </div>
+                    <h3>Cristian Escobar</h3>
+                    <p>Fullstack Developer</p>
+                    <div class="acciones-equipo">
+                        <a href="https://www.linkedin.com/in/cristian-escobar-dom%C3%ADnguez-202080252/" target="_blank" class="btn-icon linkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <th:block th:if="${usuarioLogueado?.rol?.id == 1 or usuarioLogueado?.rol?.id == 3}">
+                            <a th:href="@{/Documentos/cv-cristian.pdf}" download class="btn-cv">
+                                <i class="fas fa-download"></i> CV
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="tarjeta-nosotros">
+                    <div class="marco-foto">
+                        <img th:src="@{/Img/perfiles/DavidAlcazar.jpg}" alt="David">
+                    </div>
+                    <h3>David Alcázar</h3>
+                    <p>Backend Architect</p>
+                    <div class="acciones-equipo">
+                        <a href="https://www.linkedin.com/in/davidalcazarsanchez/" target="_blank" class="btn-icon linkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <th:block th:if="${usuarioLogueado?.rol?.id == 1 or usuarioLogueado?.rol?.id == 3}">
+                            <a th:href="@{/Documentos/cv-david.pdf}" download class="btn-cv">
+                                <i class="fas fa-download"></i> CV
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div class="tarjeta-nosotros">
+                    <div class="marco-foto">
+                        <img th:src="@{/Img/perfiles/SergioAjo.jpg}" alt="Sergio">
+                    </div>
+                    <h3>Sergio Ajo</h3>
+                    <p>Frontend Expert</p>
+                    <div class="acciones-equipo">
+                        <a href="https://www.linkedin.com/in/sergio-ajo-c%C3%A1novas-644078252/" target="_blank" class="btn-icon linkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <th:block th:if="${usuarioLogueado?.rol?.id == 1 or usuarioLogueado?.rol?.id == 3}">
+                            <a th:href="@{/Documentos/cv-sergio.pdf}" download class="btn-cv">
+                                <i class="fas fa-download"></i> CV
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+</body>
+</html>

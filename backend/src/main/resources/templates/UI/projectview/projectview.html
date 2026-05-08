@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Vista de Proyecto</title>
+
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/projectview.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/badgestatus.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .activo, 
+        header .nav-enlaces a.activo i, 
+        header .nav-enlaces a.activo span {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+
+        .foto-perfil-contenedor {
+            position: relative;
+            display: block;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+        }
+
+        .circulo-foto {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #FFCC00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+            overflow: hidden;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circulo-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tech-tag-azul {
+            background: rgba(0,243,255,0.05);
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,243,255,0.2);
+            color: white;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .tech-tag-azul:hover {
+            background: rgba(0,243,255,0.15);
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0,243,255,0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="body-layout fondo-oscuro-neon">
+
+<div th:replace="~{includes/header :: header}"></div>
+
+<div class="contenedor-volver">
+    <a th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id == autor.id}" 
+       href="/ownProfile" 
+       class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a tu perfil
+    </a>
+
+    <a th:unless="${session.usuarioLogueado != null and session.usuarioLogueado.id == autor.id}" 
+       th:href="'/profileView/' + ${autor.id}" 
+       class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Ver perfil de<span th:text="${autor.username}">Autor</span>
+    </a>
+</div>
+
+<main class="contenedor-principal">
+
+    <aside class="columna-perfil">
+        <div class="tarjeta-perfil tarjeta-neon-estatica">
+            <div class="cabecera-tarjeta">
+
+                <div class="foto-perfil-contenedor">
+                    <div class="circulo-foto">
+                        <img th:if="${autor.fotoPerfil != null}"
+                            th:src="${autor.fotoPerfil}">
+                        <i th:unless="${autor.fotoPerfil != null}" class="fas fa-user" style="font-size: 3rem; color: #aaa;"></i>
+                    </div>
+                    <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != autor.id}" 
+                         th:attr="data-id=${autor.id}" 
+                         onclick="toggleFollowUser(this, event)">
+                         <i class="fa-heart" th:classappend="${autor.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                    </button>
+                </div>
+                <h2 class="nombre-usuario">
+                    <span th:text="${autor.username}">Autor</span>
+                    <i th:if="${autor != null and (autor.estado == 'VERIFICADO' or (autor.rol != null and (autor.rol.nombre == 'ADMIN' or autor.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                </h2>
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
+                    <i class="fas fa-users"></i> <span th:text="${autor.followersCountFormatted}">0</span> <span th:text="${autor.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                </div>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+
+                <div class="lista-dotted">
+
+                    <a th:if="${autor.github}"
+                    th:href="${autor.github}"
+                    target="_blank"
+                    class="item-dotted">
+                        <i class="fab fa-github"></i>
+                        <span>Mi GitHub</span>
+                    </a>
+
+                    <a th:if="${autor.linkedin}"
+                    th:href="${autor.linkedin}"
+                    target="_blank"
+                    class="item-dotted">
+                        <i class="fab fa-linkedin"></i>
+                        <span>Mi LinkedIn</span>
+                    </a>
+
+                    <a th:if="${autor.curriculum != null}"
+                    th:href="${autor.curriculum}"
+                    target="_blank"
+                    class="item-dotted">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mi CV</span>
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </aside>
+
+    <section class="seccion-derecha-dinamica">
+        <div class="tarjeta-proyecto-detalle tarjeta-neon-estatica">
+
+            <div class="cabecera-proyecto">
+                <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
+
+                <a href="javascript:void(0)" onclick="volverDesdeProyecto()"
+                   class="boton-volver-circular"
+                   title="Volver">
+                    <i class="fas fa-undo"></i>
+                </a>
+            </div>
+
+            <div class="contenedor-detalles-proyecto">
+
+                <p class="autor-texto">
+                    <strong>Autor:</strong>
+                    <span>
+                        <span th:text="${autor.username}">Autor</span>
+                        <i th:if="${autor != null and (autor.estado == 'VERIFICADO' or (autor.rol != null and (autor.rol.nombre == 'ADMIN' or autor.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                    </span>
+                </p>
+
+                <div class="fila-botones-neon">
+
+                    <span th:if="${proyecto.estaValidado}" class="badge validado">
+                        <i class="fas fa-check-circle"></i> Validado
+                    </span>
+
+                    <span th:unless="${proyecto.estaValidado}" class="badge no-validado">
+                        <i class="fas fa-times-circle"></i> No validado
+                    </span>
+
+                    <a th:if="${session.usuarioLogueado != null
+                        and session.usuarioLogueado.rol.nombre != 'VISITOR'
+                        and (session.usuarioLogueado.rol.nombre == 'ADMIN'
+                             or session.usuarioLogueado.id != proyecto.autor.id)}"
+                   th:href="@{/project-reviews/crear/{id}(id=${proyecto.id})}"
+                   class="btn-accion-neon">
+                    <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
+                </a>
+
+                    <a th:href="@{/project-reviews/{id}(id=${proyecto.id})}" class="btn-accion-neon">
+                        <i class="fas fa-comments"></i> VER RESEÑAS
+                    </a>
+
+                    <a th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == autor.id or session.usuarioLogueado.rol.nombre == 'ADMIN')}"
+                        th:href="@{/proyectos/editar/{id}(id=${proyecto.id})}"
+                        class="btn-accion-neon">
+                        <i class="fas fa-edit"></i> EDITAR PROYECTO
+                    </a>
+
+                    <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == autor.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and autor.rol.id != 1 and autor.rol.nombre != 'ADMIN'))}"
+                            class="btn-accion-neon btn-eliminar"
+                            th:attr="data-id=${proyecto.id}"
+                            onclick="abrirModalEliminar(this)">
+                        <i class="fas fa-trash"></i> BORRAR PROYECTO
+                    </button>
+
+                </div>
+
+                <div class="fila-botones-neon" th:if="${#lists.size(proyecto.tecnologias) > 0}" style="gap: 10px; flex-wrap: wrap;">
+                    <span th:each="tec : ${proyecto.tecnologias}" class="tech-tag-azul">
+                        <i th:class="${tec.icono}" style="color: #00f3ff;"></i>
+                        <span th:text="${tec.nombre}"></span>
+                    </span>
+                </div>
+
+                <div class="galeria-capturas">
+                    <div class="marco-captura" th:each="img : ${imagenes}">
+                        <img th:src="@{${img}}" alt="Captura">
+                    </div>
+                </div>
+
+                <div class="bloque-texto-informativo">
+
+                    <h3 class="titulo-seccion">Descripción</h3>
+                    <p class="texto-parrafo" th:text="${proyecto.descripcion}">
+                        Descripción
+                    </p>
+
+                    <h3 class="titulo-seccion">Repositorio</h3>
+                    <a th:href="${proyecto.repoUrl}"
+                       class="enlace-repositorio"
+                       target="_blank">
+                        <i class="fab fa-github"></i>
+                        <span th:text="${proyecto.repoUrl}">Repo</span>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="modal-imagen" class="modal">
+    <img class="contenido-modal" id="img-ampliada">
+    <div id="caption-modal"></div>
+</div>
+
+<div id="modal-eliminar" class="modal">
+    <div class="contenido-modal-confirmacion">
+        <p>¿Estás seguro de que quieres eliminar este proyecto?</p>
+
+        <div class="botones-confirmacion">
+            <button class="btn-accion-neon btn-eliminar"
+                    onclick="eliminarProyecto()">
+                Sí, eliminar
+            </button>
+
+            <button class="btn-accion-neon"
+                    onclick="cerrarModalEliminar()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+let proyectoId = null;
+
+$(document).ready(function() {
+
+    inicializarHeader();
+
+    $(".marco-captura img").on("click", function() {
+        $("#modal-imagen").css("display", "flex").hide().fadeIn(300);
+        $("#img-ampliada").attr("src", $(this).attr("src"));
+        $("body").css("overflow", "hidden");
+    });
+
+    $("#modal-imagen").on("click", function(e) {
+        if (e.target !== document.getElementById("img-ampliada")) {
+            $(this).fadeOut(300, function() {
+                $("body").css("overflow", "auto");
+            });
+        }
+    });
+});
+
+function inicializarHeader() {
+    const navPerfil = document.getElementById('nav-perfil');
+    if (navPerfil) navPerfil.classList.add('activo');
+}
+
+// =========================
+// MODAL ELIMINAR
+// =========================
+
+function abrirModalEliminar(btn) {
+    proyectoId = btn.getAttribute("data-id");
+
+    $("#modal-eliminar").fadeIn(200).css("display", "flex");
+    $("body").css("overflow", "hidden");
+}
+
+function cerrarModalEliminar() {
+    $("#modal-eliminar").fadeOut(200);
+    $("body").css("overflow", "auto");
+}
+
+function eliminarProyecto() {
+    fetch("/proyectos/delete/" + proyectoId, {
+        method: "POST"
+    })
+    .then(res => res.text())
+    .then(response => {
+        if (response === "OK") {
+            window.location.href = "/proyectos/projectList/" + "[[${session.usuarioLogueado != null ? session.usuarioLogueado.id : ''}]]";
+        } else {
+            alert("Error: " + response);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error eliminando proyecto");
+    });
+}
+
+async function toggleFollowUser(btn, event) {
+    event.stopPropagation();
+    const targetId = btn.getAttribute('data-id');
+    const icon = btn.querySelector('i');
+    const isFollowing = icon.classList.contains('fas');
+
+    if (isFollowing) {
+        const targetName = btn.getAttribute('data-username') || document.querySelector('.creador-info h3')?.innerText || 'este usuario';
+        const result = await mostrarModalUnfollowGlobal(targetName);
+
+        if (!result.isConfirmed) {
+            return;
+        }
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append('targetId', targetId);
+        
+        const response = await fetch('/usuario/toggleFollow', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.text();
+        
+        if (result === 'OK') {
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        } else if (result === 'NOT_LOGGED') {
+            window.location.href = '/login';
+        } else {
+            alert('Error al seguir al usuario: ' + result);
+        }
+    } catch (error) {
+        console.error('Error toggling follow:', error);
+    }
+}
+
+function volverDesdeProyecto() {
+    if (document.referrer.includes("/ownProfile")) {
+        window.location.href = "/ownProfile";
+    } else {
+        window.location.href = "/profileView/[[${autor.id}]]";
+    }
+}
+</script>
+
+</body>
+</html>

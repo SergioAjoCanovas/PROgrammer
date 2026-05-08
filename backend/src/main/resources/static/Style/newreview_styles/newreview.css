@@ -1,0 +1,212 @@
+/* ============================================================
+    RESET Y ESTRUCTURA (CORREGIDO PARA FOOTER)
+   ============================================================ */
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #0f0f0f;
+    min-height: 100vh; /* Ocupa el alto de la pantalla */
+    display: flex;
+    flex-direction: column; /* Alineación vertical */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.contenedor-principal {
+    display: flex;
+    gap: 25px;
+    padding: 30px;
+    flex: 1; /* Esto empuja el footer hacia abajo */
+    align-items: flex-start;
+}
+
+/* ============================================================
+    COLUMNA PERFIL
+   ============================================================ */
+.columna-perfil {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circulo-foto {
+    width: 100px;
+    height: 100px;
+    background-color: #333;
+    border: 3px solid #FFCC00;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+}
+
+.zona-reseñas {
+    display: flex;
+    gap: 25px;
+    flex: 1;
+}
+
+/* ============================================================
+    TARJETAS
+   ============================================================ */
+.tarjeta-acordeon {
+    background: linear-gradient(145deg, #1a1a1a, #222);
+    border: 2px solid #FFCC00;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 204, 0, 0.1);
+    color: white;
+    position: relative;
+}
+
+.tarjeta-crear-reseña {
+    flex: 1;
+    max-width: 400px;
+    height: fit-content;
+}
+
+.tarjeta-lista-reseñas {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+    FORMULARIO
+   ============================================================ */
+.campo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    gap: 8px;
+}
+
+textarea {
+    background-color: #111;
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 12px;
+    color: white;
+    height: 100px;
+    resize: none;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #FFCC00;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.2);
+}
+
+/* ============================================================
+    ESTRELLAS (EFECTO NEÓN)
+   ============================================================ */
+.estrellas {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.estrellas i {
+    font-size: 1.8rem;
+    color: #444; 
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+}
+
+.estrellas i:hover {
+    transform: scale(1.4) rotate(15deg);
+    color: #FFF000;
+    text-shadow: 0 0 15px rgba(255, 240, 0, 1);
+}
+
+.estrellas i.activa {
+    color: #FFD700;
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+}
+
+/* ============================================================
+    LISTADO DE RESEÑAS
+   ============================================================ */
+.contenedor-reseñas {
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px; 
+}
+
+.reseña {
+    background-color: #050505;
+    border: 1px solid rgba(255, 204, 0, 0.2);
+    border-radius: 15px;
+    padding: 18px;
+    transition: all 0.4s ease;
+    width: 100%;
+}
+
+.reseña:hover {
+    transform: translateY(-5px);
+    border-color: #FFCC00;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.reseña-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #FFCC00;
+    font-weight: bold;
+}
+
+/* Scrollbar personalizado */
+.contenedor-reseñas::-webkit-scrollbar { width: 6px; }
+.contenedor-reseñas::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 10px; }
+
+/* ============================================================
+    BOTONES
+   ============================================================ */
+.boton-ver {
+    background-color: #FFCC00;
+    color: black;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.boton-volver-circular {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #FFCC00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFCC00;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.boton-volver-circular:hover {
+    background: #FFCC00;
+    color: #000;
+}
+
+/* ============================================================
+    RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+    .contenedor-principal { flex-direction: column; }
+    .zona-reseñas { flex-direction: column; }
+    .tarjeta-crear-reseña { max-width: 100%; }
+    .boton-volver-circular { position: static; margin-bottom: 10px; }
+}

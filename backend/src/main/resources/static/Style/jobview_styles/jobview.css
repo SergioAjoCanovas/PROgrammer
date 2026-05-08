@@ -1,0 +1,710 @@
+/* =========================================================
+   1. FONDO Y ESTRUCTURA (ESTILO REJILLA NEÓN)
+   ========================================================= */
+body.fondo-oscuro-neon {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
+    color: #FFFFFF;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    
+    /* Flexbox para empujar el footer */
+    display: flex;
+    flex-direction: column;
+}
+
+body.fondo-oscuro-neon::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+}
+
+/* --- BOTÓN VOLVER --- */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto; /* Bajado un pelín (de 15px a 30px) */
+    padding: 0 45px; /* Empujado un poco más a la derecha (de 20px a 45px) */
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 5;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00; 
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
+    transform: translateX(-5px); 
+}
+
+.contenedor-principal {
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px 40px; 
+    
+    /* Esto hace que el main crezca y ocupe el espacio sobrante */
+    flex: 1; 
+}
+
+/* El footer se pegará abajo automáticamente al estar dentro del flujo flex */
+#footer-placeholder {
+    width: 100%;
+}
+
+.contenedor-postulacion {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* TARJETAS */
+.tarjeta-proyecto-detalle {
+    background-color: rgba(26, 26, 26, 0.95) !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 25px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.tarjeta-oferta, .tarjeta-formulario {
+    flex: 1;
+    max-width: 550px;
+}
+
+/* CABECERA Y LOGO */
+.cabecera-proyecto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.categoria {
+    background-color: #FFCC00;
+    color: black;
+    padding: 6px 15px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.info-superior {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #aaaa;
+    padding-bottom: 20px;
+}
+
+.logo-empresa {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #333;
+    border: 2px solid #FFCC00;
+}
+
+.foto-perfil-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-follow-heart {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: rgba(15, 5, 5, 0.8);
+    border: 1px solid #ff4444;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ff4444;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+    z-index: 10;
+}
+
+.btn-follow-heart:hover {
+    background: #ff4444;
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-follow-heart i.fas {
+    color: #ff4444;
+}
+.btn-follow-heart:hover i.fas {
+    color: white;
+}
+
+/* DESCRIPCIÓN */
+.descripcion-proyecto h3 {
+    margin-bottom: 10px;
+    color: #FFCC00;
+    text-transform: uppercase;
+}
+
+.descripcion-proyecto p, .descripcion-proyecto ul {
+    color: #ccc;
+    padding-left: 15px;
+    line-height: 1.6;
+}
+
+/* FORMULARIO */
+.bloque-postulacion {
+    border-top: 2px solid #aaaa;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input, textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background-color: #050505;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #FFCC00;
+}
+
+textarea { height: 120px; resize: none; }
+
+/* OVERLAY TECNOLOGIAS Y TAGS */
+.tags-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tech-tags span {
+    background: rgba(0, 242, 255, 0.05);
+    color: #00f2ff;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.tech-tags span:hover {
+    background: rgba(0, 242, 255, 0.15);
+    border-color: #00f2ff;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.tech-toggle { 
+    cursor: pointer; 
+    color: #fff; 
+    font-size: 1.3rem; 
+    transition: all 0.3s ease; 
+}
+
+.tech-toggle:hover { 
+    color: #FFCC00; 
+    text-shadow: 0 0 10px #FFCC00;
+    transform: scale(1.3); 
+}
+
+.vista-todas-techs {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #1a1a1a;
+    z-index: 15;
+    padding: 20px;
+    display: none; 
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.tarjeta-oferta {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 400px; /* Un mínimo razonable */
+}
+
+.tarjeta-oferta.tech-expanded .contenido-oferta {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Si queremos que mantenga el tamaño exacto, podemos no poner height: 0, 
+   pero si la lista de tecnologías es muy larga, el scroll de la tarjeta podría fallar.
+   Usaremos un enfoque híbrido: mantener el tamaño si es posible. */
+
+.tarjeta-oferta.tech-expanded .vista-todas-techs { 
+    display: flex; 
+    animation: fadeInOverlay 0.4s ease-out;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.close-overlay {
+    align-self: flex-end;
+    color: #00f2ff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.close-overlay:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.titulo-overlay {
+    color: #00f2ff;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid #00f2ff;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+.grid-techs-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    overflow-y: auto; 
+    max-height: 280px; 
+}
+
+.grid-techs-3 span {
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 8px 4px;
+    display: inline-block;
+    background: rgba(0, 242, 255, 0.05);
+    color: #00f2ff;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    transition: all 0.3s ease; 
+}
+
+.grid-techs-3 span:hover {
+    background: rgba(0, 242, 255, 0.15);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+    border-color: #00f2ff;
+}
+
+/* =========================================================
+   2. PROYECTOS SELECCIONABLES Y FORMULARIOS (NUEVO)
+   ========================================================= */
+.contenedor-proyectos-seleccion {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; 
+    margin-top: 10px;
+}
+
+.seleccionable {
+    cursor: pointer;
+    border: 1px solid #444;
+    border-radius: 15px;
+    padding: 18px;
+    background-color: rgba(25, 25, 25, 0.6);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.seleccionable:hover {
+    border-color: rgba(0, 242, 255, 0.5);
+    background-color: rgba(0, 242, 255, 0.05);
+    transform: scale(1.03) translateX(8px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+}
+
+.seleccionado {
+    border: 2px solid #FFCC00 !important;
+    background-color: rgba(255, 204, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.3) !important;
+}
+
+.aviso-sin-proyectos {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-left: 4px solid #ff4444;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.aviso-sin-proyectos p { 
+    color: #ddd; 
+    margin-bottom: 15px; 
+    font-size: 0.95em; 
+}
+
+.btn-crear-proyecto {
+    display: inline-block;
+    background: transparent;
+    color: #00f2ff;
+    border: 1px solid #00f2ff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.btn-crear-proyecto:hover {
+    background: rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+}
+
+/* OPCIONES CV Y RADIO BUTTONS */
+.opciones-cv {
+    background: rgba(25, 25, 25, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.opcion-radio { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    margin-bottom: 10px; 
+}
+
+.opcion-radio:last-child { 
+    margin-bottom: 0; 
+}
+
+.opcion-radio input[type="radio"] { 
+    accent-color: #00f2ff; 
+    width: 18px; 
+    height: 18px; 
+    cursor: pointer; 
+}
+
+.opcion-radio label { 
+    cursor: pointer; 
+    margin: 0; 
+    font-weight: normal; 
+    font-size: 0.95rem; 
+    color: #ccc; 
+}
+
+.input-archivo-animado { 
+    transition: all 0.4s ease; 
+    overflow: hidden; 
+}
+
+/* HEADER Y NAVEGACIÓN ACTIVA */
+.activo, 
+header .nav-enlaces a.activo i, 
+header .nav-enlaces a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+}
+
+/* =========================================================
+   3. BLOQUEO DE ROL Y CANDIDATURA (NUEVO)
+   ========================================================= */
+.candidatura-bloqueada {
+    opacity: 0.4;
+    filter: grayscale(100%);
+    pointer-events: none;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+.mensaje-bloqueo-rol {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid #FFCC00;
+    color: white;
+    padding: 25px 35px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 10;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.15);
+    width: 80%;
+    max-width: 450px;
+}
+
+.mensaje-bloqueo-rol i {
+    color: #FFCC00;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   4. BOTONES (CENTRADO TOTAL Y ESTILO NEÓN)
+   ========================================================= */
+.contenedor-boton-central {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+    padding-bottom: 10px;
+}
+
+.boton-postular-final {
+    background-color: #050505 !important;
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
+    padding: 16px 50px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1px;
+}
+
+.boton-postular-final:hover {
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 0 35px rgba(255, 204, 0, 1) !important;
+}
+
+input::file-selector-button {
+    background-color: #050505 !important;
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-right: 15px;
+    transition: all 0.3s ease;
+}
+
+input::file-selector-button:hover {
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    box-shadow: 0 0 20px #FFCC00;
+    transform: scale(1.02);
+}
+
+/* Estado verde al seleccionar archivo */
+.archivo-subido-verde {
+    border-color: #00e676 !important;
+    color: #00e676 !important;
+    background-color: rgba(0, 230, 118, 0.05) !important;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
+}
+
+.archivo-subido-verde::file-selector-button {
+    background-color: #00e676 !important;
+    color: #000 !important;
+    border-color: #00e676 !important;
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.6) !important;
+}
+
+.archivo-subido-verde::file-selector-button:hover {
+    background-color: #00c853 !important;
+}
+
+.boton-volver-curvo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background-color: #050505;
+    color: #FFCC00;
+    border: 2px solid #FFCC00;
+    border-radius: 50%; 
+    text-decoration: none;
+    transition: all 0.4s ease;
+}
+
+.boton-volver-curvo:hover {
+    background-color: #FFCC00;
+    color: #1a1a1a;
+    transform: scale(1.15) rotate(-15deg); 
+    box-shadow: 0 0 20px #FFCC00;
+}
+
+/* =========================================================
+   5. RESPONSIVE
+   ========================================================= */
+@media (max-width: 900px) {
+    .contenedor-volver {
+        margin-top: 25px; 
+        padding: 0 30px;
+        margin-bottom: -10px;
+    }
+    .contenedor-postulacion { 
+        flex-direction: column; 
+        align-items: center; 
+    }
+    .tarjeta-oferta, .tarjeta-formulario { 
+        width: 100%; 
+        max-width: 600px; 
+    }
+}
+
+/* Estilos para el estado "Ya Postulado" */
+.mensaje-ya-postulado {
+    padding: 20px;
+    text-align: center;
+}
+
+.glow-border-status {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
+}
+
+.glow-border-status::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+}
+
+.icon-badge {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 242, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+}
+
+.icon-badge i {
+    font-size: 1.8rem;
+    color: #00f2ff;
+    text-shadow: 0 0 10px #00f2ff;
+}
+
+.mensaje-ya-postulado h3 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.mensaje-ya-postulado p {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.resumen-info-final {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.item-final {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.label-final {
+    font-size: 0.65rem;
+    color: #666;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.val-final {
+    color: #ddd;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.badge-status-neon {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+.status-pendiente { color: #FFCC00; border: 1px solid #FFCC00; background: rgba(255, 204, 0, 0.1); }
+.status-aceptada { color: #00e676; border: 1px solid #00e676; background: rgba(0, 230, 118, 0.1); box-shadow: 0 0 10px rgba(0, 230, 118, 0.2); }
+.status-rechazada { color: #ff4444; border: 1px solid #ff4444; background: rgba(255, 68, 68, 0.1); }
+
+/* Estados especiales para el card de estatus */
+.border-aceptada { border-color: #00e676 !important; box-shadow: 0 0 30px rgba(0, 230, 118, 0.15) !important; }
+.border-rechazada { border-color: #ff4444 !important; box-shadow: 0 0 30px rgba(255, 68, 68, 0.15) !important; }
+.bg-aceptada { background: rgba(0, 230, 118, 0.1) !important; border-color: rgba(0, 230, 118, 0.3) !important; }
+.bg-aceptada i { color: #00e676 !important; text-shadow: 0 0 10px #00e676 !important; }
+.bg-rechazada { background: rgba(255, 68, 68, 0.1) !important; border-color: rgba(255, 68, 68, 0.3) !important; }
+.bg-rechazada i { color: #ff4444 !important; text-shadow: 0 0 10px #ff4444 !important; }

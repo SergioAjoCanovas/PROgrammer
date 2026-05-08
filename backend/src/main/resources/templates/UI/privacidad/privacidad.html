@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - PROgrammer</title>
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/privacidad_styles/privacidad_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fondo-oscuro-neon cuerpo-flexible">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <main class="contenedor-principal-privacidad">
+        <div class="vidrio-contenedor-privacidad">
+            
+            <div class="cabecera-privacidad">
+                <h2><i class="fas fa-shield-alt"></i> Política de Privacidad</h2>
+                <a href="javascript:history.back()" class="boton-cerrar-privacidad" title="Volver">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+
+            <div class="contenido-legal">
+                <section>
+                    <h3>1. Recopilación de Datos Técnicos</h3>
+                    <p>En PROgrammer recopilamos información necesaria para construir tu perfil profesional, como tu nombre de usuario, stack tecnológico y enlaces a repositorios. También registramos datos técnicos como tu dirección IP y tipo de navegador para optimizar la experiencia de usuario y prevenir ataques automatizados a nuestra infraestructura.</p>
+                </section>
+
+                <section>
+                    <h3>2. Uso de la Información</h3>
+                    <p>Los datos recopilados se utilizan exclusivamente para: 
+                        <br>• Personalizar tu feed de proyectos.
+                        <br>• Conectarte con otros desarrolladores según tus tecnologías.
+                        <br>• Mantener la seguridad y estabilidad del sistema.
+                        <br>No vendemos ni alquilamos tu información personal a empresas de publicidad externas.</p>
+                </section>
+
+                <section>
+                    <h3>3. Visibilidad del Perfil</h3>
+                    <p>Al ser una red social para programadores, tu perfil y el stack tecnológico que selecciones son **públicos por defecto**. Esto permite que otros usuarios y reclutadores encuentren tu talento. Te recomendamos no compartir información sensible como contraseñas, claves API o datos privados en las secciones de descripción pública.</p>
+                </section>
+
+                <section>
+                    <h3>4. Cookies y Almacenamiento Local</h3>
+                    <p>Utilizamos cookies técnicas y almacenamiento local (Local Storage) para mantener tu sesión activa y recordar tus preferencias de tema (modo oscuro/neón). Estas herramientas son esenciales para el funcionamiento básico del sitio y no se utilizan para el rastreo invasivo de actividad fuera de nuestra plataforma.</p>
+                </section>
+
+                <section>
+                    <h3>5. Control de tus Datos</h3>
+                    <p>Tienes derecho a acceder, rectificar o eliminar tu información en cualquier momento desde la configuración de tu perfil. Al eliminar tu cuenta, todos tus datos asociados, incluyendo tu historial de tecnologías y proyectos, serán borrados de nuestras bases de datos activas de forma irreversible en un plazo máximo de 30 días.</p>
+                </section>
+
+                <section>
+                    <h3>6. Seguridad de la Información</h3>
+                    <p>Implementamos medidas de seguridad de nivel industrial, incluyendo cifrado SSL y hashing de contraseñas, para proteger tus datos. Sin embargo, recuerda que ningún método de transmisión por Internet es 100% seguro. Te instamos a utilizar contraseñas robustas y únicas para tu cuenta de PROgrammer.</p>
+                </section>
+            </div>
+
+            <div class="contenedor-boton-aceptar">
+                <button onclick="history.back()" class="boton-amarillo-solido">ACEPTO LA POLÍTICA</button>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+</body>
+</html>

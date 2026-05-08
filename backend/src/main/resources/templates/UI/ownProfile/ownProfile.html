@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel - PROgrammer</title>
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .icono-grid-top:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00;
+            transform: scale(1.1);
+        }
+
+        /* Hover amarillo neón para los iconos de lápiz */
+        .icono-lapiz {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .icono-lapiz:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+            transform: scale(1.15);
+        }
+
+        /* Estilos para iluminar el icono de perfil en el header */
+        .item-derecha.activo .avatar-usuario {
+            box-shadow: 0 0 20px #FFCC00 !important;
+            transform: scale(1.1) !important;
+            border-color: #FFCC00 !important;
+        }
+
+        /* Si no tiene foto y muestra el fa-user-circle, iluminarlo también */
+        .item-derecha.activo .avatar-usuario i {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00 !important;
+        }
+
+        /* Iluminar caja de texto de mensaje de parche/bio al escribir */
+        #parche-textarea:focus, #bio-textarea:focus {
+            outline: none !important;
+            border-color: #FFCC00 !important;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
+        }
+
+        .item-derecha.activo .texto-icono {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px #FFCC00, 
+                         0 0 20px #FFCC00, 
+                         0 0 40px rgba(255, 204, 0, 0.6) !important;
+            transform: scale(1.15) !important;
+        }
+            /* ESTILO DEL TOAST NEÓN */
+        .toast-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-neon.error {
+            border-left-color: #ff4444;
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+            background-color: rgba(15, 5, 5, 0.98);
+        }
+        .toast-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-neon.error i {
+            color: #ff4444;
+        }
+        .toast-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+        .toast-neon.error strong {
+            color: #ff4444;
+        }
+
+        /* OVERLAY TECNOLOGÍAS PROYECTO */
+        .tarjeta-mini-proyecto {
+            position: relative;
+            overflow: hidden; /* Volvemos a ocultar el desborde */
+        }
+
+        .vista-todas-techs {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0; /* Volvemos a fijar el fondo */
+            background: #1a1a1a;
+            z-index: 100;
+            padding: 20px;
+            display: none; 
+            flex-direction: column;
+            border-radius: 20px;
+            border: 1px solid #FFCC00;
+            box-shadow: inset 0 0 15px rgba(255, 204, 0, 0.2);
+        }
+
+        .carousel-proyecto {
+            margin: 15px 0; /* Más separación entre imagen y el resto */
+        }
+
+        .tarjeta-mini-proyecto.tech-expanded .vista-todas-techs {
+            display: flex;
+        }
+
+        .vista-bio-completa {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #1a1a1a;
+            z-index: 100;
+            padding: 20px;
+            display: none; 
+            flex-direction: column;
+            border-radius: 20px;
+            border: 1px solid #FFCC00;
+            box-shadow: inset 0 0 15px rgba(255, 204, 0, 0.2);
+        }
+
+        .tarjeta-mini-proyecto.bio-expanded .vista-bio-completa {
+            display: flex;
+        }
+
+        /* Ocultar contenido original al expandir techs o bio */
+        .tarjeta-mini-proyecto.tech-expanded .contenido-proyecto-card,
+        .tarjeta-mini-proyecto.bio-expanded .contenido-proyecto-card {
+            display: none;
+        }
+
+        .close-overlay {
+            align-self: flex-end;
+            color: #FFCC00;
+            font-size: 1.4rem;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        .close-overlay:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 10px #FFCC00;
+        }
+
+        .titulo-overlay {
+            color: #fff;
+            font-size: 1rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #FFCC00;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .grid-techs-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            overflow-y: auto; 
+            max-height: 280px; 
+            padding-right: 5px;
+        }
+
+        .grid-techs-3::-webkit-scrollbar {
+            width: 4px;
+        }
+        .grid-techs-3::-webkit-scrollbar-thumb {
+            background: #FFCC00;
+            border-radius: 10px;
+        }
+
+        .grid-techs-3 span {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 6px 2px;
+            background: rgba(255, 204, 0, 0.1);
+            color: #FFCC00;
+            border: 1px solid rgba(255, 204, 0, 0.2);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .grid-techs-3 span:hover {
+            background: #FFCC00;
+            color: #000;
+            box-shadow: 0 0 15px #FFCC00;
+        }
+
+        .proyecto-desc.interactiva {
+            cursor: pointer;
+            transition: color 0.3s ease;
+            color: #bbb;
+        }
+        .proyecto-desc.interactiva:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+        }
+        .proyecto-desc.interactiva p {
+            color: inherit;
+        }
+
+        .caja-bio-full {
+            width: 100%;
+            overflow-y: auto;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            text-align: left;
+            max-height: 280px;
+        }
+        .caja-bio-full::-webkit-scrollbar {
+            width: 4px;
+        }
+        .caja-bio-full::-webkit-scrollbar-thumb {
+            background: #FFCC00;
+            border-radius: 10px;
+        }
+        .cv-chip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 204, 0, 0.05);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .cv-chip:hover {
+            background: rgba(255, 204, 0, 0.1);
+            border-color: #FFCC00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        .cv-icon {
+            color: #FFCC00;
+            font-size: 1.4rem;
+        }
+        .cv-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .cv-name {
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+        .cv-action-text {
+            color: #888;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .cv-delete {
+            color: #ff4444;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s;
+        }
+        .cv-delete:hover {
+            color: #ff0000;
+            transform: scale(1.2);
+            text-shadow: 0 0 10px #ff0000;
+        }
+        /* REDES SOCIALES MEJORADAS */
+        .valor-red {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .valor-red:hover .red-titulo {
+            text-shadow: 0 0 10px #FFCC00;
+        }
+        .valor-red:hover .red-url {
+            color: #FFCC00;
+        }
+        .red-titulo {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #FFCC00;
+            transition: all 0.3s;
+        }
+        .red-url {
+            font-size: 0.75rem;
+            color: #888;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+</style>
+</head>
+<body class="fondo-oscuro-neon">
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="/main" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> <span id="texto-volver-dinamico">Volver a inicio</span>
+        </a>
+    </div>
+
+    <main class="contenedor-principal" style="align-items: center; justify-content: flex-start;">
+        <div class="vidrio-contenedor-perfil">
+            <div class="tabs-neon">
+            <button class="tab-btn active" id="btn-tab-personalizacion" onclick="mostrarSeccion('personalizacion')">Personalización de Perfil</button>
+            <button class="tab-btn" id="btn-tab-seguimiento" onclick="mostrarSeccion('seguimiento')">Seguimiento</button>
+            <button th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}" class="tab-btn" id="btn-tab-mensajes" onclick="mostrarSeccion('mensajes')">Mensajes Actu</button>
+        </div>
+
+        <div id="seccion-personalizacion" style="display: flex; width: 100%; gap: 30px; align-items: flex-start; flex-wrap: wrap;">
+            <aside class="columna-perfil" style="flex: 0 0 320px;">
+            <div class="tarjeta-acordeon profile-main-card">
+                <div class="perfil-superior">
+                        <form id="formFoto" action="/usuario/uploadFoto" method="post" enctype="multipart/form-data" style="display:none;">
+                            <input type="file" id="inputFoto" name="foto" accept="image/*" onchange="document.getElementById('formFoto').submit();">
+                        </form>
+
+                        <div class="circulo-foto" onclick="document.getElementById('inputFoto').click()">
+                            <img th:if="${usuarioHeader.fotoPerfil != null}" th:src="${usuarioHeader.fotoPerfil}" alt="foto perfil" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                            <i th:if="${usuarioHeader.fotoPerfil == null}" class="fas fa-camera icono-camera"></i>
+                        </div>
+                        <div class="contenedor-nombre-usuario">
+                            <div class="nombre-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                                <h2 class="nombre-usuario" id="nombre-perfil-display" th:text="${usuarioHeader.username}" style="margin: 0;"></h2>
+                                <i th:if="${usuarioHeader != null and (usuarioHeader.estado == 'VERIFICADO' or (usuarioHeader.rol != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                <input type="text" id="nombre-perfil-input" class="input-nombre-perfil" style="display:none;" 
+                                       onkeypress="if(event.key==='Enter'){ this.blur(); guardarNombre(); }"
+                                       oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')">
+                            </div>
+                            <i class="fas fa-pencil-alt icono-editar-nombre icono-lapiz" onclick="activarEdicionNombre()"></i>
+                        </div>
+                        <div style="text-align: center; margin-top: 5px; margin-bottom: 0px; color: #FFCC00; font-size: 0.9em; font-weight: bold;">
+                            <i class="fas fa-users"></i> <span th:text="${usuarioHeader.followersCountFormatted}">0</span> <span th:text="${usuarioHeader.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
+                        </div>
+                        <div th:if="${media > 0}" style="margin-top: 0px; margin-bottom: 15px; color: #FFCC00; font-size: 0.9rem; font-weight: bold;">
+                            Valoración: <span th:text="${media}">0</span> ⭐
+                        </div>
+                </div>
+                <div class="perfil-inferior">
+                    <ul class="redes-sociales">
+                        <li class="campo-red" data-type="github">
+                            <div class="valor-red" id="github-display" 
+                                 th:attr="data-url=${usuarioHeader.github}">
+                                <div class="red-titulo" th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? 'Mi GitHub' : 'Añadir GitHub'}"></div>
+                                <span class="red-url" th:text="${usuarioHeader.github != null && !#strings.isEmpty(usuarioHeader.github) ? usuarioHeader.github : ''}"></span>
+                            </div>
+                            <div class="acciones-red">
+                                <i class="fas fa-pencil-alt icono-editar-texto icono-lapiz" onclick="activarEdicionRed('github')"></i>
+                                <i class="fas fa-trash icono-borrar-texto icono-rojo icono-papelera" onclick="eliminarRed('github')"></i>
+                            </div>
+                            <input type="text" id="github-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
+                        </li>
+                        <li class="campo-red" data-type="linkedin">
+                            <div class="valor-red" id="linkedin-display" 
+                                 th:attr="data-url=${usuarioHeader.linkedin}">
+                                <div class="red-titulo" th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? 'Mi LinkedIn' : 'Añadir LinkedIn'}"></div>
+                                <span class="red-url" th:text="${usuarioHeader.linkedin != null && !#strings.isEmpty(usuarioHeader.linkedin) ? usuarioHeader.linkedin : ''}"></span>
+                            </div>
+                            <div class="acciones-red">
+                                <i class="fas fa-pencil-alt icono-editar-texto icono-lapiz" onclick="activarEdicionRed('linkedin')"></i>
+                                <i class="fas fa-trash icono-borrar-texto icono-rojo icono-papelera" onclick="eliminarRed('linkedin')"></i>
+                            </div>
+                            <input type="text" id="linkedin-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
+                        </li>
+                    </ul>
+                    <button class="boton-amarillo-solido" onclick="document.getElementById('inputCV').click()">ACTUALIZAR CURRÍCULUM</button>
+                    <input type="file" id="inputCV" accept="application/pdf" style="display:none;" onchange="subirCV(event)">
+                    <div id="cv-container" class="cv-container" th:attr="data-url=${cvUrl}, data-nombre=${cvNombre}"></div>
+                </div>
+            </div>
+
+            <div class="tarjeta-acordeon">
+                <div class="cabecera-tarjeta"><h3>MIS TECNOLOGÍAS</h3><i class="fas fa-laptop-code"></i></div>
+                <div class="tags-tecnologias">
+                    <span class="tag-tech" th:each="tech, iterStat : ${tecnologiasUsuario}" 
+                          th:text="${tech.nombre}"
+                          th:classappend="${iterStat.index >= 6 ? 'tech-oculta tech-extra' : ''}"></span>
+                    
+                    <span class="tag-tech tag-mas" id="btn-mas-techs" th:if="${#lists.size(tecnologiasUsuario) > 6}" onclick="mostrarMasTechs()">
+                        +<span th:text="${#lists.size(tecnologiasUsuario) - 6}"></span>
+                    </span>
+
+                    <span class="tag-tech tag-menos" id="btn-menos-techs" style="display: none;" onclick="mostrarMenosTechs()">
+                        <i class="fas fa-minus" style="margin-right: 5px;"></i> Menos
+                    </span>
+                </div>
+                <button onclick="window.location.href='/stack'" class="boton-amarillo-solido">AÑADIR TECNOLOGÍA</button>
+            </div>
+        </aside>
+
+        <div class="columna-derecha">
+            <section class="tarjeta-acordeon card-proyectos-principal">
+                <div class="cabecera-tarjeta">
+                    <h2>MIS PROYECTOS</h2>
+                    <i class="fas fa-th icono-grid-top" style="color: white; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;" onclick="window.location.href='/proyectos/projectList'"></i>
+                </div>
+                <div class="rejilla-proyectos">
+
+                    <div class="tarjeta-mini-proyecto tarjeta-anadir" 
+                         onclick="window.location.href='/createProject'"
+                         style="cursor: pointer;">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Nuevo Proyecto</h3>
+                        <p>Sube tu código y muéstralo al mundo.</p>
+                        <button class="boton-amarillo-solido">
+                            CREAR AHORA
+                        </button>
+                    </div>
+                
+                    <div th:each="p : ${ultimosProyectos}"
+                        th:with="descLarga=${p.descripcion != null and #strings.length(p.descripcion) > 40}"
+                        class="tarjeta-mini-proyecto proyecto-card"
+                        th:attr="data-id=${p.id}" style="position: relative; padding-top: 40px;">
+                        
+                        <div class="contenido-proyecto-card">
+                            <span th:if="${p.estaValidado}" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 242, 255, 0.9); color: black; border-radius: 4px; padding: 3px 8px; font-size: 0.65em; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.5);">
+                                <i class="fas fa-check-circle"></i> VERIFICADO
+                            </span>
+                    
+                            <h3>
+                                <span th:text="${p.nombre}">Nombre proyecto</span>
+                            </h3>
+                    
+                            <div class="proyecto-desc" 
+                                 th:classappend="${descLarga} ? 'interactiva' : ''"
+                                 th:onclick="${descLarga} ? 'event.stopPropagation(); this.closest(\'.tarjeta-mini-proyecto\').classList.add(\'bio-expanded\')' : ''">
+                                <p th:text="${descLarga ? #strings.substring(p.descripcion, 0, 40) + '...' : p.descripcion}"></p>
+                            </div>
+                    
+                            <div class="carousel-proyecto"
+                                    th:if="${p.imagenes != null and !p.imagenes.isEmpty()}"
+                                    th:attr="data-id=${p.id}">
+                                <img th:each="img : ${p.imagenes}"
+                                        th:src="${img}"
+                                        class="carousel-img">
+                            </div>
+                    
+                            <div class="tech-proyecto">
+                                <span th:each="t,iter : ${p.tecnologias}"
+                                      th:if="${iter.index < 3}"
+                                      class="tag-tech small"
+                                      th:text="${t.nombre}">
+                                </span>
+                    
+                                <span th:if="${#lists.size(p.tecnologias) > 3}"
+                                      class="tag-tech tag-mas"
+                                      onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.add('tech-expanded')">
+                                    +<span th:text="${#lists.size(p.tecnologias) - 3}"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- OVERLAY DE TODAS LAS TECHS (COMO EN SEARCH) -->
+                        <div class="vista-todas-techs" th:if="${#lists.size(p.tecnologias) > 3}">
+                            <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('tech-expanded')"></i>
+                            <h4 class="titulo-overlay">Tecnologías</h4>
+                            <div class="grid-techs-3">
+                                <span th:each="t : ${p.tecnologias}" th:text="${t.nombre}"></span>
+                            </div>
+                        </div>
+
+                        <!-- OVERLAY DE DESCRIPCIÓN COMPLETA (NUEVO) -->
+                        <div class="vista-bio-completa" th:if="${descLarga}">
+                            <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('bio-expanded')"></i>
+                            <h4 class="titulo-overlay">Descripción del Proyecto</h4>
+                            <div class="caja-bio-full">
+                                <p th:text="${p.descripcion}"></p>
+                            </div>
+                        </div>
+                
+                    </div>
+                
+                </div>
+            </section>
+
+            <div class="fila-inferior">
+                <div class="tarjeta-acordeon info-half-card">
+                    <div class="cabecera-tarjeta"><h3>SOBRE MÍ</h3><i class="fas fa-edit icono-editar-texto icono-lapiz" onclick="activarEdicionBio()"></i></div>
+                    <div id="bio-view"><p id="bio-texto" th:text="${usuarioHeader.biografia != null && !#strings.isEmpty(usuarioHeader.biografia) ? usuarioHeader.biografia : 'Cuéntale al mundo más acerca de ti'}"></p></div>
+                    <div id="bio-edit" style="display:none;">
+                        <textarea id="bio-textarea" maxlength="500" oninput="actualizarContadorBio()"></textarea>
+                        <div class="bio-footer"><span id="bio-counter"></span><button class="boton-amarillo-solido" onclick="guardarBio()">GUARDAR</button></div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-acordeon info-half-card">
+                    <div class="cabecera-tarjeta">
+                        <h3>RESEÑAS RECIBIDAS</h3>
+                    </div>
+                    
+                    <div id="contenedor-resenas-own" class="contenedor-resenas-scroll">
+                        <div th:if="${#lists.isEmpty(reviews)}">
+                            <p style="color: #888; font-style: italic;">Aún nadie ha valorado tu perfil. ¡Sigue programando!</p>
+                        </div>
+
+                        <div th:each="r : ${reviews}" class="resena-item-own">
+                            <div class="resena-header-own">
+                                <span class="resena-autor-own">
+                                    <span th:text="${r.autor.username}">Usuario</span>
+                                    <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                                </span>
+                                <span class="resena-estrellas-own">
+                                    <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
+                                </span>
+                            </div>
+                            <p class="resena-texto-own" th:text="${r.comentario}">Comentario...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        </div> <div id="seccion-seguimiento" style="display: none; width: 100%; flex-direction: column;">
+            
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-handshake"></i> Amigos (<span th:text="${amigos != null ? amigos.size() : 0}">0</span>)</h2>
+                <div class="grid-usuarios-seguimiento" id="grid-amigos" th:if="${amigos != null and !amigos.isEmpty()}">
+                    <div class="usuario-seguimiento-card item-amigo" style="display: none;" th:each="user : ${amigos}">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.svg'}" class="seguimiento-foto">
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
+                        <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
+                        <div class="seguimiento-acciones">
+                            <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="contenedor-btn-mas" style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 15px; width: 100%;">
+                        <button class="boton-amarillo-solido btn-load-more" onclick="loadMoreSeguimiento('item-amigo', this)" style="display: none;"></button>
+                    </div>
+                </div>
+                <p th:if="${amigos == null or amigos.isEmpty()}" style="color:#aaa;">No tienes amigos mutuamente seguidos.</p>
+            </div>
+
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-user-plus"></i> Usuarios que Sigues (<span th:text="${siguiendo != null ? siguiendo.size() : 0}">0</span>)</h2>
+                <div class="grid-usuarios-seguimiento" id="grid-siguiendo" th:if="${siguiendo != null and !siguiendo.isEmpty()}">
+                    <div class="usuario-seguimiento-card item-siguiendo" style="display: none;" th:each="user : ${siguiendo}">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.svg'}" class="seguimiento-foto">
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
+                        <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
+                        <div class="seguimiento-acciones">
+                            <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="contenedor-btn-mas" style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 15px; width: 100%;">
+                        <button class="boton-amarillo-solido btn-load-more" onclick="loadMoreSeguimiento('item-siguiendo', this)" style="display: none;"></button>
+                    </div>
+                </div>
+                <p th:if="${siguiendo == null or siguiendo.isEmpty()}" style="color:#aaa;">No sigues a ningún usuario aún.</p>
+            </div>
+
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-users"></i> Tus Seguidores (<span th:text="${seguidores != null ? seguidores.size() : 0}">0</span>)</h2>
+                <div class="grid-usuarios-seguimiento" id="grid-seguidores" th:if="${seguidores != null and !seguidores.isEmpty()}">
+                    <div class="usuario-seguimiento-card item-seguidores" style="display: none;" th:each="user : ${seguidores}">
+                        <img th:src="${user.fotoPerfil != null ? user.fotoPerfil : '/Img/stock/default-profile.svg'}" class="seguimiento-foto">
+                        <span class="seguimiento-nombre" style="margin-top: 5px;">
+                            <span th:text="${user.username}"></span>
+                            <i th:if="${user != null and (user.estado == 'VERIFICADO' or (user.rol != null and (user.rol.nombre == 'ADMIN' or user.rol.nombre == '1')))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
+                        </span>
+                        <div style="font-size: 0.75rem; color: #FFCC00; margin-top: 2px; margin-bottom: 12px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${user.followersCountFormatted}"></span> <span th:text="${user.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
+                        <div class="seguimiento-acciones">
+                            <i class="fas fa-eye icono-ojo" th:onclick="'window.location.href=\'/profileView/' + ${user.id} + '\''"></i>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" th:if="${siguiendo != null and siguiendo.contains(user)}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="btn-follow-heart" th:attr="data-id=${user.id}, data-username=${user.username}" th:unless="${siguiendo != null and siguiendo.contains(user)}" onclick="toggleFollowUserSeguimiento(this, event)">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="contenedor-btn-mas" style="grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 15px; width: 100%;">
+                        <button class="boton-amarillo-solido btn-load-more" onclick="loadMoreSeguimiento('item-seguidores', this)" style="display: none;"></button>
+                    </div>
+                </div>
+                <p th:if="${seguidores == null or seguidores.isEmpty()}" style="color:#aaa;">Aún no tienes seguidores.</p>
+            </div>
+
+        </div> <div id="seccion-mensajes" style="display: none; width: 100%; flex-direction: column;">
+            <div class="seccion-seguimiento-grupo">
+                <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-bullhorn"></i> Enviar Mensaje de Actualización (Parche)</h2>
+                <div class="tarjeta-acordeon info-half-card" style="margin-top: 20px; width: 100%;">
+                    <div class="cabecera-tarjeta"><h3>REDACCION DEL PARCHE</h3></div>
+                    <div id="parche-edit">
+                        <textarea id="parche-textarea" maxlength="10000" oninput="actualizarContadorParche()" style="width: 100%; min-height: 150px; background: rgba(0,0,0,0.3); color: white; border: 1px solid #444; border-radius: 8px; padding: 10px; resize: vertical; box-sizing: border-box;"></textarea>
+                        <div class="bio-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <span id="parche-counter" style="color: #aaa; font-size: 0.9rem; font-weight: bold;">10000/10000</span>
+                            <button class="boton-amarillo-solido" onclick="enviarParche()" style="padding: 8px 16px !important; font-size: 0.85rem !important; width: fit-content !important; max-width: 200px; display: inline-flex; justify-content: center; align-items: center; gap: 8px; margin: 0;"><i class="fas fa-paper-plane"></i> ENVIAR AVISO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> </div> </main>
+
+    <div id="toast" class="toast"></div>
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <script>
+        function mostrarMasTechs() {
+            // Quita la clase 'tech-oculta' a las extras
+            const ocultas = document.querySelectorAll('.tech-extra');
+            ocultas.forEach(span => {
+                span.classList.remove('tech-oculta');
+            });
+            // Oculta el botón de MÁS y muestra el de MENOS
+            document.getElementById('btn-mas-techs').style.display = 'none';
+            document.getElementById('btn-menos-techs').style.display = 'inline-flex';
+        }
+
+        function mostrarMenosTechs() {
+            // Vuelve a añadir la clase 'tech-oculta' a las extras
+            const extras = document.querySelectorAll('.tech-extra');
+            extras.forEach(span => {
+                span.classList.add('tech-oculta');
+            });
+            // Oculta el botón de MENOS y muestra el de MÁS
+            document.getElementById('btn-menos-techs').style.display = 'none';
+            document.getElementById('btn-mas-techs').style.display = 'inline-flex';
+        }
+
+        // --- LÓGICA DE PESTAÑAS (TABS) ---
+        function mostrarSeccion(seccion) {
+            document.getElementById('seccion-personalizacion').style.display = (seccion === 'personalizacion') ? 'flex' : 'none';
+            document.getElementById('seccion-seguimiento').style.display = (seccion === 'seguimiento') ? 'flex' : 'none';
+            
+            const seccionMensajes = document.getElementById('seccion-mensajes');
+            if (seccionMensajes) {
+                seccionMensajes.style.display = (seccion === 'mensajes') ? 'flex' : 'none';
+            }
+
+            document.getElementById('btn-tab-personalizacion').classList.toggle('active', seccion === 'personalizacion');
+            document.getElementById('btn-tab-seguimiento').classList.toggle('active', seccion === 'seguimiento');
+            
+            const btnMensajes = document.getElementById('btn-tab-mensajes');
+            if (btnMensajes) {
+                btnMensajes.classList.toggle('active', seccion === 'mensajes');
+            }
+        }
+
+        // --- LÓGICA DE SEGUIMIENTO (SWEETALERT2) ---
+        function toggleFollowUserSeguimiento(btn, event) {
+            event.stopPropagation();
+            const targetId = btn.getAttribute('data-id');
+            const targetName = btn.getAttribute('data-username');
+            
+            // Asumimos que si estamos en la vista de seguimiento (amigos o siguiendo), ya los seguimos.
+            // Para "seguidores", el color del icono indica si los seguimos o no.
+            const icon = btn.querySelector('i');
+            const isFollowing = icon.classList.contains('fas');
+
+            if (isFollowing) {
+                // Confirmación para dejar de seguir
+                mostrarModalUnfollowGlobal(targetName).then((result) => {
+                    if (result.isConfirmed) {
+                        ejecutarToggleFollow(targetId, btn, false);
+                    }
+                });
+            } else {
+                // Seguir sin confirmación
+                ejecutarToggleFollow(targetId, btn, true);
+            }
+        }
+
+        function ejecutarToggleFollow(targetId, btn, isFollowingNow) {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => {
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Error al seguir/dejar de seguir");
+                }
+            })
+            .catch(err => console.error(err));
+        }
+
+        // --- LÓGICA DE PAGINACIÓN SEGUIMIENTO (6 en 6) ---
+        function initSeguimientoGrid(claseItem) {
+            const items = document.querySelectorAll('.' + claseItem);
+            if(items.length === 0) return;
+            
+            let btn = items[0].parentElement.querySelector('.btn-load-more');
+            if(!btn) return;
+
+            let mostrados = 0;
+            items.forEach((item, index) => {
+                if(index < 6) {
+                    item.style.display = 'flex';
+                    mostrados++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            actualizarBotonSeguimiento(items, mostrados, btn);
+        }
+
+        function loadMoreSeguimiento(claseItem, btn) {
+            const items = document.querySelectorAll('.' + claseItem);
+            let ocultos = [];
+            items.forEach(item => {
+                if(item.style.display === 'none') {
+                    ocultos.push(item);
+                }
+            });
+
+            let aMostrar = Math.min(6, ocultos.length);
+            for(let i=0; i<aMostrar; i++) {
+                ocultos[i].style.display = 'flex';
+            }
+
+            const mostradosTotal = items.length - (ocultos.length - aMostrar);
+            actualizarBotonSeguimiento(items, mostradosTotal, btn);
+        }
+
+        function actualizarBotonSeguimiento(items, mostrados, btn) {
+            const restantes = items.length - mostrados;
+            if(restantes > 0) {
+                const num = Math.min(6, restantes);
+                btn.innerHTML = `+ Otras ${num} persona${num !== 1 ? 's' : ''}`;
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        window.addEventListener('load', () => {
+            initSeguimientoGrid('item-amigo');
+            initSeguimientoGrid('item-siguiendo');
+            initSeguimientoGrid('item-seguidores');
+        });
+    </script>
+
+    <script>
+        let editandoNombre = false;
+        let nombreOriginal = "";
+        let editandoRed = null;
+        let valorOriginalRed = "";
+
+    window.addEventListener('load', () => {
+        // renderizarDatosUsuario(); // ¡Esta función no existe y bloqueaba la ejecución!
+        
+        // SOLO ILUMINAR AJUSTES
+        const btnAjustes = document.getElementById('btn-ajustes-header');
+        if (btnAjustes) {
+            btnAjustes.classList.add('activo-btn');
+        }
+
+        // Iluminamos el icono de Perfil en el header
+        const btnPerfil = document.getElementById('link-perfil');
+        if (btnPerfil) {
+            btnPerfil.classList.add('activo');
+        }
+    });
+
+    function activarEdicionNombre() {
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        editandoNombre = true;
+        nombreOriginal = display.innerText;
+
+        input.value = nombreOriginal;
+        display.style.display = "none";
+        input.style.display = "block";
+        input.focus();
+    }
+
+    function guardarNombre() {
+        if (!editandoNombre) return;
+
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        const nuevoNombre = input.value.trim();
+
+        if (nuevoNombre === "") {
+            mostrarToast("El nombre no puede estar vacío", "error");
+            cancelarEdicionNombre();
+            return;
+        }
+
+        if (nuevoNombre.length < 3) {
+            mostrarToast("El nombre debe tener al menos 3 letras", "error");
+            cancelarEdicionNombre();
+            return;
+        }
+
+        fetch("/usuario/updateUsername", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "username=" + encodeURIComponent(nuevoNombre)
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            if (data === "OK") {
+                display.innerText = nuevoNombre;
+
+                const headerUsername = document.querySelector(".info-texto-usuario span");
+                if (headerUsername) {
+                    headerUsername.innerText = nuevoNombre.toUpperCase();
+                }
+
+                mostrarToast("Nombre actualizado correctamente", "success");
+            } else if (data === "EXISTS") {
+                mostrarToast("Ese nombre ya existe", "error");
+            } else if (data === "EMPTY") {
+                mostrarToast("El nombre no puede estar vacío", "error");
+            } else if (data === "TOO_SHORT") {
+                mostrarToast("El nombre debe tener al menos 3 letras", "error");
+            } else {
+                mostrarToast("Error al actualizar", "error");
+            }
+        })
+        .finally(() => {
+            editandoNombre = false;
+            input.style.display = "none";
+            display.style.display = "block";
+        });
+    }
+
+    function cancelarEdicionNombre() {
+        const display = document.getElementById("nombre-perfil-display");
+        const input = document.getElementById("nombre-perfil-input");
+
+        editandoNombre = false;
+
+        input.value = nombreOriginal;
+
+        input.style.display = "none";
+        display.style.display = "block";
+
+        input.blur();
+    }
+
+    function activarEdicionRed(tipo) {
+        const display = document.getElementById(tipo + "-display");
+        const input = document.getElementById(tipo + "-input");
+
+        editandoRed = tipo;
+        valorOriginalRed = display.getAttribute("data-url") || "";
+
+        input.value = valorOriginalRed;
+
+        input.style.display = "block";
+        input.focus();
+    }
+
+    function normalizarURL(tipo, valor) {
+        if (!valor) return null;
+
+        valor = valor.trim().replace(/\s/g, "");
+
+        if (valor.startsWith("http://") || valor.startsWith("https://")) {
+            return valor;
+        }
+
+        if (valor.startsWith("www.")) {
+            return "https://" + valor;
+        }
+
+        if (valor.startsWith("github.com/")) {
+            return "https://" + valor;
+        }
+
+        if (valor.startsWith("linkedin.com/")) {
+            return "https://" + valor;
+        }
+
+        if (tipo === "github") {
+            return "https://github.com/" + valor;
+        }
+
+        if (tipo === "linkedin") {
+            return "https://www.linkedin.com/in/" + valor;
+        }
+
+        return valor;
+    }
+
+    function guardarRed(tipo) {
+        const input = document.getElementById(tipo + "-input");
+        const display = document.getElementById(tipo + "-display");
+
+        const valor = input.value.trim();
+
+        let urlFinal = normalizarURL(tipo, valor);
+
+        if (valor === "") {
+            urlFinal = null;
+        }
+
+        fetch("/usuario/updateRed", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "tipo=" + tipo + "&valor=" + encodeURIComponent(urlFinal || "")
+        })
+        .then(res => res.text())
+        .then(data => {
+
+            if (data === "OK") {
+
+                const tituloEl = display.querySelector(".red-titulo");
+                const urlEl = display.querySelector(".red-url");
+
+                if (urlFinal) {
+                    tituloEl.innerText = tipo === "github" ? "Mi GitHub" : "Mi LinkedIn";
+                    urlEl.innerText = urlFinal;
+                    display.setAttribute("data-url", urlFinal);
+                } else {
+                    tituloEl.innerText = tipo === "github" ? "Añadir GitHub" : "Añadir LinkedIn";
+                    urlEl.innerText = "";
+                    display.removeAttribute("data-url");
+                }
+
+                mostrarToast(tipo + " actualizado correctamente", "success");
+
+            } else if (data === "NOT_LOGGED") {
+                mostrarToast("Usuario no logueado", "error");
+            } else {
+                mostrarToast("Error al actualizar " + tipo, "success");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        })
+        .finally(() => {
+            input.style.display = "none";
+            editandoRed = null;
+        });
+    }
+
+    function eliminarRed(tipo) {
+        const nombreBonito = tipo === "github" ? "GitHub" : "LinkedIn";
+        
+        Swal.fire({
+            title: '¿Eliminar ' + nombreBonito + '?',
+            text: "Se quitará el enlace de tu perfil público.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FFCC00',
+            cancelButtonColor: '#333',
+            confirmButtonText: '<span style="color:black; font-weight:bold;">Sí, eliminar</span>',
+            cancelButtonText: 'Cancelar',
+            background: '#1a1a1a',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("/usuario/updateRed", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "tipo=" + tipo + "&valor="
+                })
+                .then(res => res.text())
+                .then(data => {
+                    const display = document.getElementById(tipo + "-display");
+                    if (data === "OK") {
+                        display.querySelector(".red-titulo").innerText = "Añadir " + nombreBonito;
+                        display.querySelector(".red-url").innerText = "";
+                        display.removeAttribute("data-url");
+                        mostrarToast(tipo + " eliminado correctamente", "success");
+                    } else {
+                        mostrarToast("Error al eliminar " + tipo, "success");
+                    }
+                })
+                .catch(() => {
+                    mostrarToast("Error de conexión", "error");
+                });
+            }
+        });
+    }
+
+    function cancelarEdicionRed() {
+        if (!editandoRed) return;
+
+        const input = document.getElementById(editandoRed + "-input");
+
+        input.value = valorOriginalRed;
+        input.style.display = "none";
+
+        editandoRed = null;
+    }
+
+    //---- FUNCIONES PARA EL CV
+    function subirCV(event) {
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        if (file.type !== "application/pdf") {
+            mostrarToast("Solo se permiten archivos PDF", "error");
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            mostrarToast("El archivo supera los 2MB", "error");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("cv", file);
+
+        fetch("/usuario/uploadCV", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(data => {
+            if (data.startsWith("OK")) {
+
+                const url = data.split("|")[1]; // backend devuelve: OK|url
+
+                renderizarCV(file.name, url);
+
+                mostrarToast("CV subido correctamente", "success");
+            } else {
+                mostrarToast("Error al subir el CV", "error");
+            }
+        })
+        .catch(() => {
+            mostrarToast("Error de conexión", "error");
+        });
+    }
+
+    function renderizarCV(nombre, url) {
+        const container = document.getElementById("cv-container");
+
+        container.innerHTML = `
+            <div class="cv-chip" onclick="window.open('${url}', '_blank')">
+                <i class="fas fa-file-pdf cv-icon"></i>
+                <div class="cv-info">
+                    <span class="cv-name">${nombre}</span>
+                    <span class="cv-action-text">Ver Currículum</span>
+                </div>
+                <i class="fas fa-trash cv-delete" onclick="event.stopPropagation(); eliminarCV()"></i>
+            </div>
+        `;
+    }
+
+    function eliminarCV() {
+        Swal.fire({
+            title: '¿Eliminar currículum?',
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FFCC00',
+            cancelButtonColor: '#333',
+            confirmButtonText: '<span style="color:black; font-weight:bold;">Sí, eliminar</span>',
+            cancelButtonText: 'Cancelar',
+            background: '#1a1a1a',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("/usuario/deleteCV", {
+                    method: "POST"
+                })
+                .then(res => res.text())
+                .then(data => {
+                    if (data === "OK") {
+                        document.getElementById("cv-container").innerHTML = `
+                            <p style="color: #666; font-size: 0.85rem; font-style: italic; margin-top: 15px;">No has subido ningún currículum todavía.</p>
+                        `;
+                        mostrarToast("CV eliminado correctamente", "success");
+                    } else {
+                        mostrarToast("Error al eliminar el CV", "error");
+                    }
+                })
+                .catch(() => {
+                    mostrarToast("Error de conexión", "error");
+                });
+            }
+        });
+    }
+
+    //-----EVENTS LISTENER PARA EL NOMBRE
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && editandoNombre) {
+            cancelarEdicionNombre();
+        }
+    });
+
+    document.addEventListener("mousedown", function (event) {
+        if (!editandoNombre) return;
+
+        const wrapper = document.querySelector(".nombre-wrapper");
+        const input = document.getElementById("nombre-perfil-input");
+
+        const clickDentro =
+            wrapper.contains(event.target) ||
+            input.contains(event.target);
+
+        if (!clickDentro) {
+            cancelarEdicionNombre();
+        }
+    });
+
+    //-----EVENTS LISTENER PARA LAS REDES SOCIALES
+
+    document.addEventListener("keypress", function (e) {
+        if (e.key === "Enter" && editandoRed) {
+            guardarRed(editandoRed);
+        }
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            cancelarEdicionRed();
+        }
+    });
+
+    document.addEventListener("mousedown", function (e) {
+        if (!editandoRed) return;
+
+        const input = document.getElementById(editandoRed + "-input");
+        const wrapper = input.parentElement;
+
+        if (!wrapper.contains(e.target)) {
+            cancelarEdicionRed();
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        const el = e.target.closest(".valor-red");
+        if (!el) return;
+
+        const url = el.dataset.url;
+        const li = el.closest(".campo-red");
+        const tipo = li ? li.dataset.type : null;
+
+        if (url && url.trim() !== "") {
+            window.open(url, "_blank");
+        } else if (tipo) {
+            activarEdicionRed(tipo);
+        }
+    });
+
+    window.addEventListener("load", () => {
+        const container = document.getElementById("cv-container");
+
+        const url = container.dataset.url;
+        const nombre = container.dataset.nombre;
+
+        if (url) {
+            renderizarCV(nombre, url);
+        } else {
+            container.innerHTML = `
+                <p style="color: #666; font-size: 0.85rem; font-style: italic; margin-top: 15px;">No has subido ningún currículum todavía.</p>
+            `;
+        }
+    });
+
+    //TOAST DE AVISO
+
+    function mostrarToast(msg, tipo = "success") {
+        const toast = document.getElementById("toast");
+
+        toast.className = "toast"; 
+
+        if (tipo === "error") {
+            toast.classList.add("toast-error");
+        } else {
+            toast.classList.add("toast-success");
+        }
+
+        toast.innerText = msg;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4000);
+    }
+
+    let bioOriginal = "";
+
+    function activarEdicionBio() {
+        const bioEdit = document.getElementById("bio-edit");
+        const bioView = document.getElementById("bio-view");
+
+        // Si ya está desplegado, lo cerramos
+        if (bioEdit.style.display === "block") {
+            bioEdit.style.display = "none";
+            bioView.style.display = "block";
+            return;
+        }
+
+        const texto = document.getElementById("bio-texto").innerText;
+
+        bioOriginal = texto === "Cuéntale al mundo más acerca de ti" ? "" : texto;
+
+        const textarea = document.getElementById("bio-textarea");
+        textarea.value = bioOriginal;
+
+        bioView.style.display = "none";
+        bioEdit.style.display = "block";
+
+        const max = 500;
+        document.getElementById("bio-counter").innerText = `${max - textarea.value.length}/${max}`;
+
+        actualizarContadorBio();
+    }
+
+    function actualizarContadorBio() {
+        const textarea = document.getElementById("bio-textarea");
+        const counter = document.getElementById("bio-counter");
+
+        const max = 500;
+
+        let valor = textarea.value;
+
+        if (valor.length > max) {
+            textarea.value = valor.substring(0, max);
+        }
+
+        counter.innerText = `${max - textarea.value.length}/${max}`;
+    }
+
+function guardarBio() {
+    const textarea = document.getElementById("bio-textarea");
+    const texto = textarea.value.trim();
+    const max = 500;
+
+    if (texto.length > max) {
+        mostrarToast("La biografía no puede superar 500 caracteres", "error");
+        return;
+    }
+
+    fetch("/usuario/updateBio", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "biografia=" + encodeURIComponent(texto)
+    })
+    .then(res => res.text())
+    .then(data => {
+
+        if (data === "OK") {
+
+            const bioView = document.getElementById("bio-texto");
+
+            if (texto === "") {
+                bioView.innerText = "Cuéntale al mundo más acerca de ti";
+            } else {
+                bioView.innerText = texto;
+            }
+
+            mostrarToast("Biografía actualizada correctamente");
+
+        } else {
+            mostrarToast("Error al actualizar biografía", "error");
+        }
+    })
+    .finally(() => {
+        document.getElementById("bio-view").style.display = "block";
+        document.getElementById("bio-edit").style.display = "none";
+    });
+}
+
+// CARRUSEL AUTOMÁTICO SIMPLE
+function iniciarCarruseles() {
+    document.querySelectorAll(".carousel-proyecto").forEach(carousel => {
+        const imgs = carousel.querySelectorAll("img");
+        let index = 0;
+
+        if (imgs.length === 0) return;
+
+        imgs[0].classList.add("active");
+
+        setInterval(() => {
+            imgs[index].classList.remove("active");
+            index = (index + 1) % imgs.length;
+            imgs[index].classList.add("active");
+        }, 2500);
+    });
+}
+
+window.addEventListener("load", iniciarCarruseles);
+
+// EXPANDIR TECNOLOGÍAS PROYECTO
+        function mostrarToast(mensaje, tipo = "success") {
+            const toast = document.getElementById('toast-neon-box');
+            const icon = document.getElementById('toast-neon-icon');
+            const title = document.getElementById('toast-neon-title');
+            const msg = document.getElementById('toast-neon-msg');
+            
+            msg.innerText = mensaje;
+            
+            if (tipo === 'error') {
+                toast.classList.add('error');
+                icon.className = 'fas fa-exclamation-circle';
+                title.innerText = 'Error';
+            } else {
+                toast.classList.remove('error');
+                icon.className = 'fas fa-check-circle';
+                title.innerText = 'Éxito';
+            }
+            
+            toast.classList.add('mostrar');
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+            }, 3000);
+        }
+
+
+
+// LOGICA DE PARCHES PARA ADMINS
+function actualizarContadorParche() {
+    const textarea = document.getElementById("parche-textarea");
+    const counter = document.getElementById("parche-counter");
+    if(!textarea || !counter) return;
+
+    const max = 10000;
+    let valor = textarea.value;
+
+    if (valor.length > max) {
+        textarea.value = valor.substring(0, max);
+    }
+    counter.innerText = `${max - textarea.value.length}/${max}`;
+}
+
+function enviarParche() {
+    const textarea = document.getElementById("parche-textarea");
+    const texto = textarea.value.trim();
+
+    if (texto === "") {
+        mostrarToast("El mensaje no puede estar vacío", "error");
+        return;
+    }
+
+    if (texto.length > 2000) {
+        mostrarToast("El mensaje no puede superar 2000 caracteres", "error");
+        return;
+    }
+
+    Swal.fire({
+        title: '¿Enviar mensaje global?',
+        text: "Esto llegará a la bandeja de Avisos de TODOS los usuarios registrados.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#FFCC00',
+        cancelButtonColor: '#333',
+        confirmButtonText: '<span style="color:black; font-weight:bold;">Sí, enviar</span>',
+        cancelButtonText: 'Cancelar',
+        background: '#1a1a1a',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const formData = new FormData();
+            formData.append("mensaje", texto);
+
+            fetch("/api/notificaciones/broadcast-patch", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => {
+                if (res.ok) {
+                    mostrarToast("El mensaje del parche se ha mandado correctamente", "success");
+                    textarea.value = "";
+                    actualizarContadorParche();
+                } else {
+                    mostrarToast("Error al enviar el mensaje", "error");
+                }
+            })
+            .catch(() => {
+                mostrarToast("Error de conexión", "error");
+            });
+        }
+    });
+}
+window.addEventListener('load', actualizarContadorParche);
+
+document.addEventListener("click", function (e) {
+    const card = e.target.closest(".proyecto-card");
+    if (!card) return;
+
+    // Evita que clics en botones internos disparen la navegación
+    if (e.target.closest("button, a, .tag-tech, .tag-mas, .vista-todas-techs")) {
+        return;
+    }
+
+    const id = card.dataset.id;
+    if (id) {
+        window.location.href = "/proyectos/proyecto/" + id;
+    }
+});
+
+    </script>
+    <div id="toast-neon-box" class="toast-neon">
+        <i id="toast-neon-icon" class="fas fa-check-circle"></i>
+        <div>
+            <strong id="toast-neon-title">Éxito</strong>
+            <span id="toast-neon-msg" style="font-size: 0.9rem; color: #eee;"></span>
+        </div>
+    </div>
+</body>
+</html>

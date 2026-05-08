@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avisos - ProGrammer</title>
+    
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/avisos_styles/avisos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body class="body-layout fondo-oscuro-neon">
+
+    <div th:replace="~{includes/header :: header}"></div>
+
+    <div class="contenedor-volver">
+        <a href="/main" class="enlace-volver">
+            <i class="fas fa-arrow-left"></i> Volver a Inicio
+        </a>
+    </div>
+
+    <main class="contenedor-avisos-page">
+        <div class="header-avisos">
+            <h1 class="titulo-avisos">
+                <i class="fas fa-bell"></i> Mis Avisos
+            </h1>
+            <div class="controles-avisos">
+                <button class="btn-control btn-silenciar" th:classappend="${isSilenciado ? 'silenciado' : ''}" onclick="toggleSilenciarPage()" id="btn-silenciar-page">
+                    <i class="fas" th:classappend="${isSilenciado ? 'fa-bell-slash' : 'fa-bell'}"></i>
+                    <span th:text="${isSilenciado ? 'Reactivar Avisos' : 'Silenciar Avisos'}">Silenciar</span>
+                </button>
+                <button class="btn-control btn-borrar" onclick="borrarTodosAvisos()">
+                    <i class="fas fa-trash"></i> Borrar Todo
+                </button>
+            </div>
+        </div>
+
+        <div class="lista-avisos" style="margin-bottom: 30px;" th:if="${notificaciones != null}">
+            <div class="header-lista-avisos" onclick="toggleSeccion(this)">
+                <h2 style="color: #39FF14; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-chevron-down icon-desplegar"></i>
+                    <i class="fas fa-bullhorn"></i> Mensajes de Actualización
+                    <span class="badge-seccion" th:if="${notificaciones.?[tipo == 'NUEVO_PARCHE' and !leida].size() > 0}" th:text="${notificaciones.?[tipo == 'NUEVO_PARCHE' and !leida].size()}"></span>
+                </h2>
+                <div class="acciones-seccion" onclick="event.stopPropagation()">
+                    <button class="btn-accion-seccion silenciar" onclick="toggleSilencioSeccion(this, 'SISTEMA')" title="Silenciar actualizaciones">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn-accion-seccion borrar" onclick="borrarSeccion('NUEVO_PARCHE')" title="Borrar todas las actualizaciones">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="contenido-seccion-desplegable">
+            <a th:each="aviso : ${notificaciones}" 
+               th:if="${aviso.tipo == 'NUEVO_PARCHE'}"
+               href="javascript:void(0);"
+               onclick="mostrarMensajeParche(event, this)"
+               class="aviso-item tipo-parche"
+               th:classappend="${!aviso.leida ? 'no-leida' : ''}">
+                
+                <div class="aviso-icono tipo-parche">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                
+                <div class="aviso-contenido">
+                    <p class="aviso-mensaje"><strong>ACTUALIZACIÓN DEL SISTEMA</strong><br><span style="font-size: 0.85em; color: #bbb;">Haz clic para ver los detalles.</span></p>
+                    <div style="display:none;" class="parche-texto-oculto" th:text="${aviso.mensaje}"></div>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion != null}" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion == null}">Hace un momento</p>
+                </div>
+                
+                <div class="aviso-acciones-item">
+                    <button class="btn-leer-individual" th:if="${!aviso.leida}" th:onclick="'marcarComoLeida(event, ' + ${aviso.id} + ', this)'" title="Marcar como leído">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </a>
+            </div>
+        </div>
+
+        <div class="lista-avisos" style="margin-bottom: 30px;" th:if="${notificaciones != null}">
+            <div class="header-lista-avisos" onclick="toggleSeccion(this)">
+                <h2 style="color: #FFCC00; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-chevron-down icon-desplegar"></i>
+                    <i class="fas fa-star"></i> Reseñas Recibidas
+                    <span class="badge-seccion" th:if="${notificaciones.?[ (tipo == 'NUEVA_RESEÑA_PERFIL' or tipo == 'NUEVA_RESEÑA_PROYECTO') and !leida ].size() > 0}" th:text="${notificaciones.?[ (tipo == 'NUEVA_RESEÑA_PERFIL' or tipo == 'NUEVA_RESEÑA_PROYECTO') and !leida ].size()}"></span>
+                </h2>
+                <div class="acciones-seccion" onclick="event.stopPropagation()">
+                    <button class="btn-accion-seccion silenciar" onclick="toggleSilencioSeccion(this, 'RESENAS')" title="Silenciar reseñas">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn-accion-seccion borrar" onclick="borrarSeccion('RESENAS')" title="Borrar todas las reseñas">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="contenido-seccion-desplegable">
+            <a th:each="aviso : ${notificaciones}" 
+               th:if="${aviso.tipo == 'NUEVA_RESEÑA_PERFIL' or aviso.tipo == 'NUEVA_RESEÑA_PROYECTO'}"
+               href="javascript:void(0);"
+               onclick="mostrarDetalleResena(event, this)"
+               class="aviso-item tipo-resena"
+               th:classappend="${!aviso.leida ? 'no-leida' : ''}">
+                
+                <div class="aviso-icono tipo-resena">
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <div class="aviso-contenido">
+                    <p class="aviso-mensaje">
+                        <strong th:text="${aviso.tipo == 'NUEVA_RESEÑA_PERFIL' ? 'NUEVA RESEÑA DE PERFIL' : 'NUEVA RESEÑA DE PROYECTO'}">RESEÑA</strong><br>
+                        <span style="font-size: 0.85em; color: #bbb;" th:text="${#strings.abbreviate(aviso.mensaje, 60)}">Haz clic para ver los detalles.</span>
+                    </p>
+                    <div style="display:none;" class="resena-texto-oculto" th:text="${aviso.mensaje}"></div>
+                    <div style="display:none;" class="resena-enlace-oculto" th:text="${aviso.enlace}"></div>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion != null}" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion == null}">Hace un momento</p>
+                </div>
+                
+                <div class="aviso-acciones-item">
+                    <button class="btn-leer-individual" th:if="${!aviso.leida}" th:onclick="'marcarComoLeida(event, ' + ${aviso.id} + ', this)'" title="Marcar como leído">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </a>
+            <div th:if="${notificaciones.?[tipo == 'NUEVA_RESEÑA_PERFIL' or tipo == 'NUEVA_RESEÑA_PROYECTO'].size() == 0}" class="aviso-fecha" style="padding: 10px; font-style: italic;">No tienes reseñas nuevas.</div>
+            </div>
+        </div>
+
+        <div class="lista-avisos" th:if="${notificaciones != null}">
+            <div class="header-lista-avisos" onclick="toggleSeccion(this)">
+                <h2 style="color: white; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-chevron-down icon-desplegar"></i>
+                    <i class="fas fa-bell"></i> Otras Notificaciones
+                    <span class="badge-seccion" th:if="${notificaciones.?[ tipo != 'NUEVO_PARCHE' and tipo != 'NUEVA_RESEÑA_PERFIL' and tipo != 'NUEVA_RESEÑA_PROYECTO' and !leida ].size() > 0}" th:text="${notificaciones.?[ tipo != 'NUEVO_PARCHE' and tipo != 'NUEVA_RESEÑA_PERFIL' and tipo != 'NUEVA_RESEÑA_PROYECTO' and !leida ].size()}"></span>
+                </h2>
+                <div class="acciones-seccion" onclick="event.stopPropagation()">
+                    <button class="btn-accion-seccion silenciar" onclick="toggleSilencioSeccion(this, 'OTRAS')" title="Silenciar otras notificaciones">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn-accion-seccion borrar" onclick="borrarSeccion('OTRAS')" title="Borrar estas notificaciones">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="contenido-seccion-desplegable">
+            <a th:each="aviso : ${notificaciones}" 
+               th:if="${aviso.tipo != 'NUEVO_PARCHE' and aviso.tipo != 'NUEVA_RESEÑA_PERFIL' and aviso.tipo != 'NUEVA_RESEÑA_PROYECTO'}"
+               th:href="${aviso.enlace != null ? aviso.enlace : '#'}"
+               class="aviso-item"
+               th:classappend="${(aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : 
+                               (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : 
+                               (aviso.tipo == 'NUEVA_POSTULACION' ? 'tipo-postulacion' : 
+                               (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'tipo-aceptada' : 
+                               (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'tipo-rechazada' : ''))))) + (!aviso.leida ? ' no-leida' : '')}">
+                
+                <div class="aviso-icono" 
+                     th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'tipo-seguidor' : 
+                                     (aviso.tipo == 'NUEVA_OFERTA' ? 'tipo-oferta' : 
+                                     (aviso.tipo == 'NUEVA_POSTULACION' ? 'tipo-postulacion' : 
+                                     (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'tipo-aceptada' : 
+                                     (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'tipo-rechazada' : ''))))}">
+                    <i class="fas" 
+                       th:classappend="${aviso.tipo == 'NUEVO_SEGUIDOR' ? 'fa-user-plus' : 
+                                       (aviso.tipo == 'NUEVA_OFERTA' ? 'fa-briefcase' : 
+                                       (aviso.tipo == 'NUEVA_POSTULACION' ? 'fa-file-signature' : 
+                                       (aviso.tipo == 'POSTULACION_ACEPTADA' ? 'fa-check-circle' : 
+                                       (aviso.tipo == 'POSTULACION_RECHAZADA' ? 'fa-times-circle' : 'fa-bell'))))}"></i>
+                </div>
+                
+                <div class="aviso-contenido">
+                    <p class="aviso-mensaje" th:text="${aviso.mensaje}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion != null}" th:text="${#dates.format(aviso.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></p>
+                    <p class="aviso-fecha" th:if="${aviso.fechaCreacion == null}">Hace un momento</p>
+                </div>
+                
+                <i class="fas fa-chevron-right" style="color: #444;" th:if="${aviso.enlace != null}"></i>
+                
+                <div class="aviso-acciones-item">
+                    <button class="btn-leer-individual" th:if="${!aviso.leida}" th:onclick="'marcarComoLeida(event, ' + ${aviso.id} + ', this)'" title="Marcar como leído">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn-borrar-individual" th:onclick="'borrarUnAviso(event, ' + ${aviso.id} + ', this)'" title="Borrar este aviso">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </a>
+            </div>
+        </div>
+
+        <div class="aviso-vacio" th:if="${notificaciones == null or notificaciones.size() == 0}">
+            <i class="fas fa-box-open"></i>
+            <h3>No tienes avisos nuevos</h3>
+            <p>Aquí aparecerán las notificaciones cuando alguien te siga o publique una oferta.</p>
+        </div>
+    </main>
+
+    <div th:replace="~{includes/footer :: footer}"></div>
+
+    <div id="toast-aviso-success" class="toast-success-neon">
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>Éxito</strong>
+            <span id="toast-aviso-mensaje" style="font-size: 0.9rem; color: #eee;"></span>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function inicializarHeader() {
+            const navAvisos = document.getElementById('link-avisos'); 
+            if (navAvisos) {
+                navAvisos.classList.add('activo');
+            } else {
+                const links = document.querySelectorAll('header a');
+                links.forEach(link => {
+                    if (link.getAttribute('href')?.includes('avisos')) {
+                        link.classList.add('activo');
+                    }
+                });
+            }
+        }
+
+        window.addEventListener('load', () => {
+            inicializarHeader();
+        });
+
+        let pageIsSilenciado = /*[[${isSilenciado}]]*/ false;
+
+        function toggleSilenciarPage() {
+            const titulo = pageIsSilenciado ? '¿Reactivar notificaciones?' : '¿Silenciar todas las notificaciones?';
+            const texto = pageIsSilenciado ? 'Volverás a recibir avisos de seguimiento, ofertas, etc.' : 'Dejarás de ver los avisos rojos en el header, aunque podrás verlos aquí.';
+            const confirmText = pageIsSilenciado ? 'Sí, reactivar' : 'Sí, silenciar';
+            
+            Swal.fire({
+                title: titulo,
+                text: texto,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: pageIsSilenciado ? '#39FF14' : '#00f2ff',
+                cancelButtonColor: '#333',
+                confirmButtonText: confirmText,
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ejecutarToggleSilence();
+                }
+            });
+        }
+
+        function ejecutarToggleSilence() {
+            fetch('/api/notificaciones/toggle-silence', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                pageIsSilenciado = data.silenciado;
+                const btn = document.getElementById('btn-silenciar-page');
+                const icon = btn.querySelector('i');
+                const span = btn.querySelector('span');
+
+                if (pageIsSilenciado) {
+                    btn.classList.add('silenciado');
+                    icon.classList.remove('fa-bell');
+                    icon.classList.add('fa-bell-slash');
+                    span.innerText = 'Reactivar Avisos';
+                    Swal.fire({
+                        toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000,
+                        icon: 'info', title: 'Avisos silenciados', background: '#1a1a1a', color: '#fff'
+                    });
+                } else {
+                    btn.classList.remove('silenciado');
+                    icon.classList.remove('fa-bell-slash');
+                    icon.classList.add('fa-bell');
+                    span.innerText = 'Silenciar Avisos';
+                    Swal.fire({
+                        toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000,
+                        icon: 'success', title: 'Avisos activados', background: '#1a1a1a', color: '#fff'
+                    });
+                }
+            }).catch(e => console.error(e));
+        }
+
+        function mostrarToastAviso(mensaje) {
+            const toast = document.getElementById('toast-aviso-success');
+            document.getElementById('toast-aviso-mensaje').innerText = mensaje;
+            toast.classList.add('mostrar');
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+            }, 3000);
+        }
+
+        function borrarTodosAvisos() {
+            Swal.fire({
+                title: '¿Borrar todos los avisos?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4444',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Sí, borrar todo',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/api/notificaciones', { method: 'DELETE' })
+                    .then(() => {
+                        mostrarToastAviso('Se han borrado todos los avisos correctamente');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    });
+                }
+            });
+        }
+
+        function borrarUnAviso(event, id, btn) {
+            event.preventDefault(); 
+            event.stopPropagation(); 
+            
+            Swal.fire({
+                title: '¿Seguro que quieres borrar esta notificación?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4444',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Sí, borrar',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/api/notificaciones/' + id, { method: 'DELETE' })
+                    .then(res => {
+                        if(res.ok) {
+                            mostrarToastAviso('Se ha borrado la notificación correctamente');
+                            
+                            const item = btn.closest('.aviso-item');
+                            
+                            // Si era no leída, restamos al contador de sección
+                            if (item.classList.contains('no-leida')) {
+                                actualizarContadorSeccion(item, -1);
+                            }
+
+                            item.style.transition = 'all 0.3s ease';
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateX(50px)';
+                            
+                            setTimeout(() => {
+                                item.remove();
+                                if (document.querySelectorAll('.aviso-item').length === 0) {
+                                    setTimeout(() => window.location.reload(), 1500);
+                                }
+                            }, 300);
+                        }
+                    }).catch(e => console.error(e));
+                }
+            });
+        }
+
+        function marcarComoLeida(event, id, btn) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            fetch('/api/notificaciones/' + id + '/leer', { method: 'POST' })
+            .then(res => {
+                if (res.ok) {
+                    const item = btn.closest('.aviso-item');
+                    item.classList.remove('no-leida');
+                    btn.style.display = 'none'; // Ocultar el botón de tick
+                    actualizarContadorSeccion(item, -1);
+                    
+                    // Actualizar también el contador del header si existe la función cargarNotificaciones
+                    if (typeof cargarNotificaciones === 'function') {
+                        cargarNotificaciones();
+                    }
+                }
+            }).catch(e => console.error(e));
+        }
+
+        function actualizarContadorSeccion(item, delta) {
+            const lista = item.closest('.lista-avisos');
+            const badge = lista.querySelector('.badge-seccion');
+            if (badge) {
+                let count = parseInt(badge.innerText) + delta;
+                if (count <= 0) {
+                    badge.style.display = 'none';
+                } else {
+                    badge.innerText = count;
+                }
+            }
+        }
+
+        function borrarSeccion(tipo) {
+            let url = '/api/notificaciones/tipo/' + tipo;
+            let msg = '¿Borrar todas las notificaciones de esta sección?';
+            
+            Swal.fire({
+                title: msg,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4444',
+                cancelButtonColor: '#333',
+                confirmButtonText: 'Sí, borrar sección',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(url, { method: 'DELETE' })
+                    .then(res => {
+                        if(res.ok) {
+                            mostrarToastAviso('Se ha borrado la sección correctamente');
+                            setTimeout(() => window.location.reload(), 1500);
+                        }
+                    }).catch(e => console.error(e));
+                }
+            });
+        }
+
+        function toggleSilencioSeccion(btn, categoria) {
+            const isSilenciado = btn.classList.contains('silenciado');
+            const titulo = isSilenciado ? '¿Reactivar ' + categoria + '?' : '¿Silenciar ' + categoria + '?';
+            const confirmText = isSilenciado ? 'Sí, reactivar' : 'Sí, silenciar';
+
+            Swal.fire({
+                title: titulo,
+                text: isSilenciado ? 'Volverás a recibir notificaciones de este tipo.' : '¿Confirmas que quieres silenciar este tipo de notificaciones?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: isSilenciado ? '#39FF14' : '#00f2ff',
+                cancelButtonColor: '#333',
+                confirmButtonText: confirmText,
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a1a',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const icon = btn.querySelector('i');
+                    if (!isSilenciado) {
+                        btn.classList.add('silenciado');
+                        icon.classList.remove('fa-bell');
+                        icon.classList.add('fa-bell-slash');
+                        Swal.fire({
+                            toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000,
+                            icon: 'info', title: categoria + ' silenciado', background: '#1a1a1a', color: '#fff'
+                        });
+                    } else {
+                        btn.classList.remove('silenciado');
+                        icon.classList.remove('fa-bell-slash');
+                        icon.classList.add('fa-bell');
+                        Swal.fire({
+                            toast: true, position: 'bottom-end', showConfirmButton: false, timer: 3000,
+                            icon: 'success', title: categoria + ' reactivado', background: '#1a1a1a', color: '#fff'
+                        });
+                    }
+                }
+            });
+        }
+
+        function toggleSeccion(header) {
+            header.classList.toggle('colapsado');
+        }
+
+        function mostrarMensajeParche(event, el) {
+            event.preventDefault();
+            const textoOculto = el.querySelector('.parche-texto-oculto');
+            if (!textoOculto) return;
+            
+            Swal.fire({
+                title: '<span style="color:#39FF14;"><i class="fas fa-bullhorn"></i> Novedades del Parche</span>',
+                html: `<div style="text-align: left; font-size: 1.1rem; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding: 10px; color: #ddd; white-space: pre-wrap;">${textoOculto.innerText}</div>`,
+                background: '#1a1a1a',
+                color: '#fff',
+                confirmButtonColor: '#39FF14',
+                confirmButtonText: '<span style="color:black; font-weight:bold;">Entendido</span>',
+                customClass: {
+                    popup: 'swal-parche'
+                }
+            });
+        }
+
+        function mostrarDetalleResena(event, el) {
+            event.preventDefault();
+            const textoOculto = el.querySelector('.resena-texto-oculto');
+            const enlaceOculto = el.querySelector('.resena-enlace-oculto');
+            if (!textoOculto) return;
+
+            Swal.fire({
+                title: '<span style="color:#FFCC00;"><i class="fas fa-star"></i> Detalle de la Reseña</span>',
+                html: `<div style="text-align: left; font-size: 1.1rem; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding: 10px; color: #ddd; white-space: pre-wrap;">${textoOculto.innerText}</div>`,
+                background: '#1a1a1a',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonColor: '#FFCC00',
+                cancelButtonColor: '#333',
+                confirmButtonText: '<span style="color:black; font-weight:bold;">Ir a la reseña</span>',
+                cancelButtonText: 'Cerrar',
+                customClass: {
+                    popup: 'swal-resena'
+                }
+            }).then((result) => {
+                if (result.isConfirmed && enlaceOculto) {
+                    window.location.href = enlaceOculto.innerText;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

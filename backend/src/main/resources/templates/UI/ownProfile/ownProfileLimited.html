@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ProGrammer - Perfil limitado</title>
+
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
+
+    <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfileLimitado.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="fondo-oscuro-neon">
+
+<div th:replace="~{includes/header :: header}"></div>
+
+<main class="contenedor-limitado">
+
+    <div class="grid-limitado">
+
+        <!-- TARJETA IZQUIERDA -->
+        <div class="tarjeta-limitada tarjeta-edicion-rapida">
+
+            <div class="perfil-superior">
+
+                <!-- FOTO -->
+                <form id="formFotoLimited"
+                      action="/usuario/uploadFoto"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    <label for="fotoLimited" style="cursor:pointer;">
+                        <div class="circulo-foto">
+                            <img th:if="${usuarioLogueado.fotoPerfil != null}"
+                                 th:src="${usuarioLogueado.fotoPerfil}"
+                                 style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+
+                            <i th:if="${usuarioLogueado.fotoPerfil == null}"
+                               class="fas fa-user"
+                               style="font-size:2rem; color:#FFCC00;"></i>
+                        </div>
+                    </label>
+
+                    <input type="file"
+                           id="fotoLimited"
+                           name="foto"
+                           accept="image/*"
+                           style="display:none;"
+                           onchange="subirFotoLimited(event)">
+                </form>
+
+                <!-- USERNAME -->
+                <div class="contenedor-nombre-usuario">
+
+                    <span class="nombre-usuario"
+                          th:text="${usuarioLogueado.username}"
+                          id="usernameLimited"></span>
+
+                    <i class="fas fa-pen icono-editar-nombre"
+                       onclick="activarEditUsernameLimited()"></i>
+                </div>
+
+                <form id="formUsernameLimited"
+                      action="/usuario/updateUsername"
+                      method="post"
+                      style="display:none; width:100%;">
+
+                    <input type="text"
+                           name="username"
+                           class="input-nombre-perfil"
+                           id="inputUsernameLimited"
+                           th:value="${usuarioLogueado.username}"
+                           oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')">
+
+                    <button type="submit" class="boton-amarillo-solido">
+                        Guardar
+                    </button>
+                </form>
+
+                <!-- TEXTO INFO -->
+                <p id="textoInfoLimited" class="mensaje-secundario" style="margin-top:15px;">
+                    Estas son las funciones de edición básica para el perfil usuario. 
+                    Si deseas tener un perfil más completo deberás cambiar a perfil desarrollador o empresa.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TARJETA DERECHA -->
+        <div class="tarjeta-limitada">
+
+            <div class="icono-lock">
+                <i class="fas fa-lock"></i>
+            </div>
+
+            <h2>PERFIL LIMITADO</h2>
+
+            <p>Esta cuenta tiene acceso limitado.</p>
+
+            <p class="mensaje-secundario">
+                Si deseas ser desarrollador o empresa, ponte en contacto con un administrador.
+            </p>
+
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=programmer.soporte@gmail.com&su=Soporte%20ProGrammer&body=Hola%20equipo%20de%20ProGrammer," 
+               target="_blank" 
+               class="btn-contacto">
+                <i class="fas fa-envelope"></i> Contactar con administrador
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- TOAST -->
+<div id="toast-neon-box" class="toast-neon">
+    <i id="toast-neon-icon" class="fas fa-check-circle"></i>
+    <div>
+        <strong id="toast-neon-title">Éxito</strong>
+        <span id="toast-neon-msg" style="font-size: 0.9rem; color: #eee;"></span>
+    </div>
+</div>
+
+<style>
+.item-derecha.activo .avatar-usuario {
+    box-shadow: 0 0 20px #FFCC00 !important;
+    transform: scale(1.1) !important;
+    border-color: #FFCC00 !important;
+}
+
+.item-derecha.activo .avatar-usuario i {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+}
+
+.item-derecha.activo .texto-icono {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00, 
+                 0 0 20px #FFCC00, 
+                 0 0 40px rgba(255, 204, 0, 0.6) !important;
+    transform: scale(1.15) !important;
+}
+</style>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
+<script>
+let editandoNombre = false;
+let nombreOriginal = "";
+
+window.addEventListener('load', () => {
+    const btnPerfil = document.getElementById('link-perfil');
+    if (btnPerfil) btnPerfil.classList.add('activo');
+});
+
+/* =====================
+   TOAST NEON
+===================== */
+function mostrarToast(mensaje, tipo = "success") {
+    const toast = document.getElementById('toast-neon-box');
+    const icon = document.getElementById('toast-neon-icon');
+    const title = document.getElementById('toast-neon-title');
+    const msg = document.getElementById('toast-neon-msg');
+
+    msg.innerText = mensaje;
+
+    if (tipo === 'error') {
+        toast.classList.add('error');
+        icon.className = 'fas fa-exclamation-circle';
+        title.innerText = 'Error';
+    } else {
+        toast.classList.remove('error');
+        icon.className = 'fas fa-check-circle';
+        title.innerText = 'Éxito';
+    }
+
+    toast.classList.add('mostrar');
+    setTimeout(() => toast.classList.remove('mostrar'), 3000);
+}
+
+/* =====================
+   FOTO
+===================== */
+function subirFotoLimited(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const form = document.getElementById("formFotoLimited");
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(data => {
+        if (data === "OK") {
+            mostrarToast("Foto actualizada correctamente");
+            location.reload();
+        } else {
+            mostrarToast("Error al subir la foto", "error");
+        }
+    })
+    .catch(() => mostrarToast("Error de conexión", "error"));
+}
+
+/* =====================
+   USERNAME
+===================== */
+document.getElementById("formUsernameLimited").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const nuevoNombre = formData.get("username").trim();
+
+    if (nuevoNombre.length < 3) {
+        mostrarToast("El nombre debe tener al menos 3 caracteres", "error");
+        return;
+    }
+
+    const data = new URLSearchParams(formData);
+
+    const res = await fetch(form.action, {
+        method: "POST",
+        body: data
+    });
+
+    const text = await res.text();
+
+    if (text === "OK") {
+        mostrarToast("Nombre actualizado correctamente");
+        location.reload();
+    } else if (text === "EXISTS") {
+        mostrarToast("Ese nombre ya existe", "error");
+    } else if (text === "EMPTY") {
+        mostrarToast("El nombre no puede estar vacío", "error");
+    } else if (text === "TOO_SHORT") {
+        mostrarToast("El nombre debe tener al menos 3 caracteres", "error");
+    } else {
+        mostrarToast("Error al actualizar", "error");
+    }
+});
+
+function activarEditUsernameLimited() {
+    const display = document.getElementById('usernameLimited');
+    const form = document.getElementById('formUsernameLimited');
+    const input = document.getElementById('inputUsernameLimited');
+    const texto = document.getElementById('textoInfoLimited');
+
+    editandoNombre = true;
+    nombreOriginal = display.innerText;
+
+    display.style.display = 'none';
+    form.style.display = 'block';
+    texto.style.display = 'none';
+
+    input.focus();
+}
+
+function cancelarEdicionNombreLimited() {
+    const display = document.getElementById('usernameLimited');
+    const form = document.getElementById('formUsernameLimited');
+    const input = document.getElementById('inputUsernameLimited');
+    const texto = document.getElementById('textoInfoLimited');
+
+    editandoNombre = false;
+
+    input.value = nombreOriginal;
+
+    form.style.display = 'none';
+    display.style.display = 'block';
+    texto.style.display = 'block';
+
+    input.blur();
+}
+
+/* ESC */
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && editandoNombre) {
+        cancelarEdicionNombreLimited();
+    }
+});
+
+/* CLICK FUERA */
+document.addEventListener("mousedown", function (event) {
+    if (!editandoNombre) return;
+
+    const form = document.getElementById("formUsernameLimited");
+
+    if (!form.contains(event.target)) {
+        cancelarEdicionNombreLimited();
+    }
+});
+</script>
+
+</body>
+</html>

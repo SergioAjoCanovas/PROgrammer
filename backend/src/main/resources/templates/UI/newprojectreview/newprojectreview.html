@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProGrammer - Reseña de Proyecto</title>
+
+    <link rel="stylesheet" href="/Style/general_styles/header.css">
+    <link rel="stylesheet" href="/Style/general_styles/footer.css">
+    <link rel="stylesheet" href="/Style/newprojectreview/newprojectreview.css">
+    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">  
+    <link rel="stylesheet" href="/Style/profileView_styles/profileView.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/projectview.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/images.css">
+    <link rel="stylesheet" href="/Style/projectview_styles/images-modals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="fondo-oscuro-neon">
+
+<div th:replace="~{includes/header :: header}"></div>
+
+<div class="contenedor-volver">
+    <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" class="enlace-volver">
+        <i class="fas fa-arrow-left"></i> Volver a <span th:text="${proyecto.titulo}">Proyecto</span>
+    </a>
+</div>
+
+<main class="contenedor-principal">
+
+    <aside class="columna-perfil">
+        <div class="tarjeta-perfil tarjeta-neon-estatica">
+    
+            <div class="cabecera-tarjeta">
+    
+                <div class="foto-perfil-contenedor">
+                    <div class="circulo-foto">
+                        <img th:if="${proyecto.autor.fotoPerfil != null}"
+                             th:src="${proyecto.autor.fotoPerfil}"
+                             style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        <i th:unless="${proyecto.autor.fotoPerfil != null}"
+                           class="fas fa-user"
+                           style="font-size: 3rem; color: #aaa; display: flex; justify-content: center; align-items: center; height: 100%;"></i>
+                    </div>
+    
+                    <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != proyecto.autor.id}" 
+                         th:attr="data-id=${proyecto.autor.id}" 
+                         onclick="toggleFollowUser(this, event)">
+                         <i class="fa-heart" th:classappend="${proyecto.autor.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                    </button>
+                    </div>
+    
+                <h2 class="nombre-usuario"
+                    th:text="${proyecto.autor.username}">
+                    Usuario
+                </h2>
+    
+            </div>
+    
+            <div class="cuerpo-tarjeta">
+    
+                <div class="lista-dotted">
+                    
+                    <a th:if="${proyecto.autor.github}"
+                       th:href="${proyecto.autor.github}"
+                       target="_blank"
+                       class="item-dotted">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+    
+                    <a th:if="${proyecto.autor.linkedin}"
+                       th:href="${proyecto.autor.linkedin}"
+                       target="_blank"
+                       class="item-dotted">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+    
+                    <a th:if="${proyecto.autor.curriculum != null}"
+                       th:href="${proyecto.autor.curriculum}"
+                       target="_blank"
+                       class="item-dotted">
+                        <i class="fas fa-file-alt"></i>
+                        <span>CV</span>
+                    </a>
+    
+                </div>
+    
+            </div>
+    
+        </div>
+    </aside>
+
+    <section class="seccion-derecha-dinamica">
+
+        <div class="tarjeta-proyecto-detalle">
+
+            <div class="cabecera-proyecto">
+                <h2 th:text="${proyecto.titulo}">Nombre del Proyecto</h2>
+
+                <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}"
+                   class="boton-volver-curvo">
+                    <i class="fas fa-undo"></i>
+                </a>
+            </div>
+
+            <div class="info-superior">
+                <p>
+                    <strong>Autor:</strong>
+                    <span th:text="${proyecto.autor.username}">Autor</span>
+                </p>
+
+                <div class="estado-proyecto">
+                    <span class="badge validado"
+                          th:if="${proyecto.estaValidado}">
+                        <i class="fas fa-check-circle"></i> Validado
+                    </span>
+
+                    <a class="boton-descargar"
+                       th:if="${proyecto.repoUrl != null}"
+                       th:href="${proyecto.repoUrl}"
+                       target="_blank">
+                        <i class="fab fa-github"></i> Repositorio
+                    </a>
+                </div>
+            </div>
+
+            <div class="galeria-proyecto">
+
+                <img th:if="${proyecto.foto1}"
+                     th:src="@{${proyecto.foto1}}"
+                     class="img-proyecto" />
+
+                <img th:if="${proyecto.foto2}"
+                     th:src="@{${proyecto.foto2}}"
+                     class="img-proyecto" />
+
+                <img th:if="${proyecto.foto3}"
+                     th:src="@{${proyecto.foto3}}"
+                     class="img-proyecto" />
+
+                <img th:if="${proyecto.foto4}"
+                     th:src="@{${proyecto.foto4}}"
+                     class="img-proyecto" />
+            </div>
+
+            <div class="descripcion-proyecto">
+                <h3>Descripción</h3>
+                <p th:text="${proyecto.descripcion}"></p>
+            </div>
+
+            <div class="descripcion-proyecto tecnologias">
+
+                <h3>Tecnologías</h3>
+
+                <div class="tags" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+
+                    <span th:each="tech : ${proyecto.tecnologias}"
+                        class="tech-tag-proyecto"
+                        th:text="${tech.nombre}">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <aside class="zona-derecha">
+
+        <div class="tarjeta-formulario">
+
+            <h2><i class="fas fa-star"></i> Valorar proyecto</h2>
+
+            <form action="/project-reviews/crear" method="post" onsubmit="return confirmarEdicionResena(event, this);">
+
+                <input type="hidden" name="proyectoId"
+                       th:value="${proyecto.id}">
+
+                <div class="campo">
+                    <label>Arquitectura</label>
+                    <div class="estrellas" data-tipo="arquitectura"></div>
+                    <input type="hidden" name="arquitectura" id="input-arquitectura">
+                </div>
+
+                <div class="campo">
+                    <label>Limpieza de código</label>
+                    <div class="estrellas" data-tipo="limpieza"></div>
+                    <input type="hidden" name="limpieza" id="input-limpieza">
+                </div>
+
+                <div class="campo">
+                    <label>Documentación</label>
+                    <div class="estrellas" data-tipo="documentacion"></div>
+                    <input type="hidden" name="documentacion" id="input-documentacion">
+                </div>
+
+                <div class="campo">
+                    <label>Comentario</label>
+                    <textarea name="comentario"
+                              placeholder="Escribe tu reseña..."
+                              required th:text="${review.comentario}"></textarea>
+                </div>
+
+                <button type="submit" class="boton-ver" id="btn-submit-project-review">
+                    <i class="fas fa-paper-plane"></i> 
+                    <span th:text="${editMode ? 'Guardar edición' : 'Publicar reseña'}">Publicar reseña</span>
+                </button>
+            </form>
+        </div>
+
+    </aside>
+
+</main>
+
+<div id="miModal" class="modal">
+    <img class="contenido-modal" id="imagenFull">
+    <div id="caption-modal"></div>
+</div>
+
+<div th:replace="~{includes/footer :: footer}"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script th:inline="javascript">
+    // ============================================================
+    // LÓGICA DE SEGUIR AL USUARIO (Igual que en ProfileView)
+    // ============================================================
+    async function toggleFollowUser(btn, event) {
+        event.stopPropagation();
+        const targetId = btn.getAttribute('data-id');
+        const icon = btn.querySelector('i');
+        
+        const isFollowing = icon.classList.contains('fas');
+
+        if (isFollowing) {
+            const targetName = btn.getAttribute('data-username') || document.querySelector('.nombre-usuario').innerText;
+            // Asegúrate de que la función mostrarModalUnfollowGlobal exista de forma global o inclúyela si usas SweetAlert
+            if (typeof mostrarModalUnfollowGlobal === 'function') {
+                const result = await mostrarModalUnfollowGlobal(targetName);
+                if (!result.isConfirmed) {
+                    return;
+                }
+            } else {
+                // Fallback clásico si no detecta el modal global
+                if(!confirm(`¿Seguro que quieres dejar de seguir a ${targetName}?`)) return;
+            }
+        }
+        
+        try {
+            const formData = new FormData();
+            formData.append('targetId', targetId);
+            
+            const response = await fetch('/usuario/toggleFollow', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            
+            if (result === 'OK') {
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            } else if (result === 'NOT_LOGGED') {
+                window.location.href = '/login';
+            } else {
+                alert('Error al seguir al usuario: ' + result);
+            }
+        } catch (error) {
+            console.error('Error toggling follow:', error);
+        }
+    }
+    // ============================================================
+
+    $(document).ready(function() {
+        inicializarIdentidadYEventos();
+    });
+
+    function inicializarIdentidadYEventos() {
+        /*[+
+        const initialArq = [[${review.arquitectura != null ? review.arquitectura : 0}]];
+        const initialLim = [[${review.limpieza != null ? review.limpieza : 0}]];
+        const initialDoc = [[${review.documentacion != null ? review.documentacion : 0}]];
+        +]*/
+
+        document.querySelectorAll(".estrellas").forEach(container => {
+            const tipo = container.dataset.tipo;
+            const input = document.getElementById("input-" + tipo);
+            let initialVal = 0;
+            if (tipo === 'arquitectura') initialVal = typeof initialArq !== 'undefined' ? initialArq : 0;
+            if (tipo === 'limpieza') initialVal = typeof initialLim !== 'undefined' ? initialLim : 0;
+            if (tipo === 'documentacion') initialVal = typeof initialDoc !== 'undefined' ? initialDoc : 0;
+            
+            input.value = initialVal;
+
+            for (let i = 1; i <= 5; i++) {
+                const estrella = document.createElement("i");
+                estrella.classList.add("far", "fa-star");
+                container.appendChild(estrella);
+
+                estrella.addEventListener("click", function () {
+                    input.value = i;
+                    actualizarEstrellas(container, i);
+                });
+                
+                // Si hay valor inicial, marcarlo
+                if (i <= initialVal) {
+                    estrella.classList.remove("far");
+                    estrella.classList.add("fas", "activa");
+                }
+            }
+        });
+    }
+
+    function actualizarEstrellas(container, valor) {
+        container.querySelectorAll("i").forEach((s, index) => {
+            if (index < valor) {
+                s.classList.remove("far");
+                s.classList.add("fas", "activa");
+            } else {
+                s.classList.remove("fas");
+                s.classList.add("far");
+                s.classList.remove("activa");
+            }
+        });
+    }
+
+    // --- Lógica del Modal (se mantiene igual) ---
+    const modal = document.getElementById("miModal");
+    const modalImg = document.getElementById("imagenFull");
+    const captionText = document.getElementById("caption-modal");
+
+    document.querySelectorAll(".img-proyecto").forEach(img => {
+        img.onclick = function() {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            document.body.style.overflow = "hidden";
+        }
+    });
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+
+    function confirmarEdicionResena(event, form) {
+        /*[[${editMode}]]*/
+        const isEditMode = /*[[${editMode}]]*/ false;
+        
+        if (!isEditMode) return true; // Si no es modo edición, enviar normal
+
+        event.preventDefault();
+        Swal.fire({
+            title: '¿Seguro que quieres editar la reseña?',
+            text: "Se sobrescribirán los datos anteriores.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00f3ff',
+            cancelButtonColor: '#333',
+            confirmButtonText: 'Sí, guardar cambios',
+            cancelButtonText: 'Cancelar',
+            background: '#1a1a1a',
+            color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+        return false;
+    }
+</script>
+
+    <!-- TOAST DE ERROR PARA RESEÑAS -->
+    <div id="toast-review-error" class="toast-error-neon" style="display: none;" th:if="${error != null}">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+            <strong>Error</strong>
+            <span id="toast-review-mensaje" style="font-size: 0.9rem; color: #eee;" 
+                  th:text="${error == 'duplicado' ? 'No puedes mandar otra reseña' : (error == 'autorreview' ? 'No puedes reseñar tu propio proyecto.' : 'Error.')}">
+                No puedes mandar otra reseña
+            </span>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const toastError = document.getElementById('toast-review-error');
+            if (toastError) {
+                toastError.style.display = 'flex';
+                setTimeout(() => {
+                    toastError.classList.add('mostrar');
+                }, 100);
+
+                setTimeout(() => {
+                    toastError.classList.remove('mostrar');
+                    setTimeout(() => {
+                        toastError.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            }
+            
+            // Opcional: Desactivar el botón de submit si ya hay reseña (Y NO ES MODO EDICIÓN)
+            const isDuplicate = /*[[${isDuplicate}]]*/ false;
+            if (isDuplicate) {
+                const btnSubmit = document.querySelector('button[type="submit"]');
+                if(btnSubmit) {
+                    btnSubmit.disabled = true;
+                    btnSubmit.style.opacity = '0.5';
+                    btnSubmit.style.cursor = 'not-allowed';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

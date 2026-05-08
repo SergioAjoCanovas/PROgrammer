@@ -1,0 +1,307 @@
+/* =========================================================
+   ESTILOS GENERALES Y LAYOUT
+   ========================================================= */
+body {
+    background-color: #101010;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.contenedor-login {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================================================
+   EFECTO DE NEONES AMARILLOS DE FONDO
+   ========================================================= */
+.contenedor-login::before {
+    content: '';
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(255,204,0,0.25) 0%, rgba(255,204,0,0) 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    top: 10%;
+    left: 15%;
+    z-index: -1;
+    animation: flotarNeon 8s ease-in-out infinite;
+}
+
+.contenedor-login::after {
+    content: '';
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(249,212,35,0.2) 0%, rgba(249,212,35,0) 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    bottom: 10%;
+    right: 10%;
+    z-index: -1;
+    animation: flotarNeon 12s ease-in-out infinite reverse;
+}
+
+@keyframes flotarNeon {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+    50% { transform: translate(30px, -20px) scale(1.05); opacity: 1; }
+}
+
+/* =========================================================
+   TARJETA DE LOGIN
+   ========================================================= */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(255, 204, 0, 0.15); 
+    position: relative;
+    z-index: 2;
+}
+
+.tarjeta-acordeon {
+    background-color: #1a1a1a;
+    border: 3px solid #FFCC00;
+    border-radius: 35px;
+    padding: 40px 30px;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+}
+
+.login-logo {
+    width: 200px;
+    margin-bottom: 20px;
+    height: auto;
+}
+
+.login-card h2 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+/* =========================================================
+   FORMULARIO Y INPUTS
+   ========================================================= */
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.input-group input {
+    background-color: #222;
+    border: 2px solid #555;
+    border-radius: 15px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border-color: #FFCC00;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+/* =========================================================
+   EL OJO DENTRO DE LA CONTRASEÑA
+   ========================================================= */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+#togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%); 
+    cursor: pointer;
+    color: #f0f0f0;
+    font-size: 1.1rem;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+#togglePassword:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+}
+
+/* =========================================================
+   OPCIONES EXTRA (OLVIDO DE CONTRASEÑA) - HOVER AMARILLO
+   ========================================================= */
+.opciones-extra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-top: -5px;
+}
+
+.opciones-extra label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.opciones-extra input[type="checkbox"] {
+    accent-color: #FFCC00;
+    width: 16px;
+    height: 16px;
+}
+
+.link-olvido {
+    color: #FFCC00;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.link-olvido:hover {
+    color: #FFCC00; /* Mantenemos el amarillo */
+    transform: translateX(10px);
+    /* Resplandor puramente amarillo */
+    text-shadow: 0 0 8px #FFCC00, 0 0 15px rgba(255, 204, 0, 0.6);
+}
+
+/* =========================================================
+   BOTONES Y REGISTRO - HOVER AMARILLO
+   ========================================================= */
+.boton-ver {
+    background: #050505 !important;
+    border: 2px solid #FFCC00 !important;
+    color: #FFCC00 !important;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 15px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    width: 100%;
+}
+
+.boton-ver:hover {
+    background-color: #FFCC00 !important;
+    color: #000 !important;
+    box-shadow: 0 0 35px #FFCC00, 0 0 60px rgba(255, 204, 0, 0.6) !important;
+    transform: scale(1.04) translateY(-2px);
+}
+
+.registro-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.registro-link p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.registro-link a {
+    color: #FFCC00;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.registro-link a:hover {
+    color: #FFCC00; /* Mantenemos el amarillo */
+    transform: translateX(10px);
+    /* Resplandor puramente amarillo */
+    text-shadow: 0 0 8px #FFCC00, 0 0 15px rgba(255, 204, 0, 0.6);
+}
+
+/* =========================================================
+   DIVISOR Y BOTÓN GOOGLE
+   ========================================================= */
+.divisor {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #ccc;
+    font-size: 0.9rem;
+    margin: 10px 0;
+}
+
+.divisor::before,
+.divisor::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #555;
+}
+
+.divisor span {
+    padding: 0 10px;
+}
+
+.boton-google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: white !important;
+    color: black !important;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boton-google:hover {
+    background-color: #f1f1f1 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+#footer-placeholder {
+    width: 100%;
+}

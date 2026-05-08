@@ -1,0 +1,670 @@
+/* =========================================================
+   GENERAL Y CONTENEDORES
+   ========================================================= */
+html, body {
+    height: 100%;
+}
+
+body.fondo-oscuro-neon {
+    background-color: #000000 !important;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+/* =========================================================
+   BOTÓN VOLVER
+   ========================================================= */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.enlace-volver {
+    color: #888888;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+.contenedor-principal {
+    display: flex;
+    max-width: 1800px;
+    width: 98%;
+    margin: 20px auto 40px auto; 
+    padding: 0 20px;
+    gap: 40px; 
+    align-items: flex-start;
+    box-sizing: border-box;
+    
+    flex: 1 0 auto; 
+}
+
+#footer-placeholder {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.columna-perfil {
+    flex: 0 0 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.columna-derecha {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    /* Aseguramos que la columna no se expanda por textos largos */
+    min-width: 0;
+}
+
+/* =========================================================
+   TARJETA PERFIL (COPIA EXACTA DE proyectlist.css)
+   ========================================================= */
+.tarjeta-perfil {
+    background-color: #1a1a1a !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.2) !important;
+    overflow: visible;
+    text-align: center;
+    color: white;
+}
+
+.perfil-superior {
+    border-bottom: 2px solid #aaaaaa;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    padding: 30px 20px 20px 20px;
+    text-align: center;
+}
+
+.perfil-inferior {
+    padding: 30px;
+}
+
+.foto-perfil-contenedor {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px auto;
+}
+
+.circulo-foto {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #222;
+    border: 3px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.circulo-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contenedor-nombre-usuario {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 5px; 
+}
+
+.nombre-usuario {
+    font-size: 1.6rem !important;
+    margin: 0 !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1) !important;
+    font-weight: bold !important;
+    text-transform: none !important;
+}
+
+.followers-text {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 20px; 
+    margin-top: 10px; 
+    margin-bottom: 5px;
+}
+
+.stat-item {
+    color: #FFCC00; 
+    font-size: 1rem; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+/* =========================================================
+   OTRAS TARJETAS (Sincronizado estilo base)
+   ========================================================= */
+.tarjeta-resenas-izq, 
+.tarjeta-proyectos-contenedor, 
+.tarjeta-inferior {
+    background-color: #1a1a1a !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.2) !important;
+    overflow: hidden;
+    color: white;
+    padding: 30px;
+}
+
+/* Líneas divisorias de títulos */
+.cabecera-proyectos, 
+.cabecera-inferior,
+.tarjeta-resenas-izq h3 {
+    border-bottom: 2px solid #aaaaaa;
+    padding-bottom: 15px;
+    margin-bottom: 20px; 
+    transition: border-color 0.3s ease;
+}
+
+.tarjeta-proyectos-contenedor:hover .cabecera-proyectos {
+    border-bottom: 2px solid #FFCC00 !important;
+}
+
+
+/* =========================================================
+   LISTA DOTTED (REDES + CV)
+   ========================================================= */
+.lista-dotted {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+.item-dotted {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px dashed #FFCC00;
+    border-radius: 12px;
+    color: #ccc;
+    text-decoration: none;
+    transition: all 0.35s ease;
+}
+
+.item-dotted i {
+    color: #FFCC00;
+    transition: all 0.35s ease;
+}
+
+.item-dotted:hover {
+    background-color: rgba(255, 204, 0, 0.08);
+    color: #FFCC00;
+    transform: translateX(6px);
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+}
+
+.item-dotted:hover i {
+    transform: scale(1.2);
+}
+
+/* =========================================================
+   ENLACES NEÓN Y MENÚ ACTIVO
+   ========================================================= */
+.activo, 
+header .nav-enlaces a.activo i, 
+header .nav-enlaces a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+}
+
+.cabecera-proyectos h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.enlace-titulo-proyectos {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.enlace-titulo-proyectos:hover {
+    color: #FFCC00;
+    text-shadow: 0 0 15px #FFCC00;
+}
+
+/* =========================================================
+   TEXTAREA RESEÑAS
+   ========================================================= */
+.input-resena {
+    width: 100%;
+    height: 80px;
+    background-color: #222;
+    color: #FFFFFF;
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-resena:focus {
+    border: 1px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+}
+
+/* =========================================================
+   BOTONES NEÓN (ACTUALIZADOS)
+   ========================================================= */
+.boton-anadir,
+.boton-ver,
+#btn-toggle-resenas {
+    width: 100%;
+    padding: 12px;
+    background-color: #0e0e0e !important; 
+    color: #FFCC00 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.boton-anadir:hover,
+.boton-ver:hover,
+#btn-toggle-resenas:hover {
+    background-color: #FFCC00 !important;
+    color: #111 !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
+    transform: scale(1.05); 
+}
+
+
+/* =========================================================
+   TARJETAS MINI PROYECTO
+   ========================================================= */
+.rejilla-proyectos {
+    display: flex;
+    gap: 25px; 
+    flex-wrap: wrap;
+}
+
+.tarjeta-mini-proyecto {
+    background-color: #292929 !important;
+    border: 2px solid #FFCC00 !important;
+    border-radius: 15px;
+    padding: 25px 20px; 
+    width: calc(33.333% - 25px);
+    min-width: 260px; 
+    min-height: 220px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    box-sizing: border-box;
+}
+
+.tarjeta-mini-proyecto h3 {
+    margin: 0 0 10px 0;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+}
+
+.tarjeta-mini-proyecto p {
+    margin: 0 0 20px 0;
+    color: #ccc;
+    font-size: 0.95rem;
+    flex-grow: 1;
+    /* FIX: Fuerza el salto de línea para descripciones largas */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+.tarjeta-mini-proyecto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+}
+
+/* =========================================================
+   SECCIÓN INFERIOR Y RESEÑAS (NUEVA ANIMACIÓN SMOOTHIE)
+   ========================================================= */
+.contenedor-inferior-derecha {
+    display: flex;
+    flex-direction: row; 
+    gap: 40px; 
+    width: 100%; 
+    align-items: flex-start;
+}
+
+.tarjeta-inferior {
+    flex: 1; 
+    /* FIX: Crucial para evitar que el flex item rompa el ancho máximo por culpa del texto */
+    min-width: 0; 
+    min-height: 280px; 
+    height: auto;
+    box-sizing: border-box;
+}
+
+.contenido-inferior {
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 15px;
+    transition: all 0.3s ease;
+}
+
+.contenido-inferior::-webkit-scrollbar {
+    width: 8px;
+}
+.contenido-inferior::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+}
+.contenido-inferior::-webkit-scrollbar-thumb:hover {
+    background-color: #FFCC00;
+}
+.contenido-inferior::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+    border-radius: 10px;
+}
+
+/* FIX: Obliga a que los párrafos dentro rompan las palabras largas (tu "Sobre mí") */
+.contenido-inferior p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+/* --- ANIMACIÓN GRID (SMOOTHIE TOTAL) --- */
+.resena-extra-wrapper {
+    display: grid;
+    grid-template-rows: 0fr; /* Altura colapsada */
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resena-extra-wrapper.expandido {
+    grid-template-rows: 1fr; /* Altura real del contenido */
+}
+
+.resena-extra-inner {
+    overflow: hidden; /* Oculta el contenido mientras colapsa */
+}
+
+/* Estilos para el selector de estrellas */
+.estrellas {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    justify-content: center;
+}
+
+.estrellas i {
+    font-size: 1.5rem;
+    color: #444; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.estrellas i:hover {
+    transform: scale(1.2);
+    color: #FFF000;
+    text-shadow: 0 0 10px #FFCC00;
+}
+
+.estrellas i.activa {
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+}
+
+.resena-item {
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(255, 204, 0, 0.15);
+    border-radius: 12px;
+    padding: 15px 15px 45px 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.resena-item:hover {
+    border-color: #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
+    transform: translateY(-4px);
+    background: rgba(30, 30, 30, 0.9);
+}
+
+.resena-header {
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 5px; 
+}
+.resena-usuario { 
+    font-weight: bold; 
+    color: #00f3ff; 
+    font-size: 0.9rem; 
+}
+.resena-rating { 
+    color: #FFCC00; 
+}
+.resena-texto { 
+    font-size: 0.85rem; 
+    color: #ccc; 
+    /* FIX: Fuerza el salto de línea en comentarios larguísimos sin espacios */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* =========================================================
+   MEDIA QUERIES (RESPONSIVE)
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .contenedor-principal {
+        flex-direction: column; 
+        align-items: stretch;
+    }
+    
+    .columna-perfil {
+        flex: auto;
+        width: 100%;
+    }
+    
+    .tarjeta-mini-proyecto {
+        width: calc(50% - 15px); 
+    }
+}
+
+@media (max-width: 768px) {
+    .contenedor-principal {
+        padding: 0 10px; 
+        gap: 20px;
+    }
+
+    .contenedor-inferior-derecha {
+        flex-direction: column; 
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .tarjeta-inferior {
+        width: 100%;
+        min-height: unset !important; 
+        height: auto !important;      
+        flex: none !important;         
+    }
+
+    .contenido-inferior {
+        padding-right: 0; 
+    }
+
+    .tarjeta-mini-proyecto {
+        width: 100%; 
+        min-width: auto;
+    }
+
+    .rejilla-proyectos {
+        gap: 15px;
+    }
+    
+    .tarjeta-resenas-izq,
+    .tarjeta-proyectos-contenedor,
+    .tarjeta-inferior,
+    .tarjeta-perfil {
+        padding: 20px !important; 
+    }
+}
+
+@media (max-width: 480px) {
+    .foto-perfil-contenedor {
+        width: 100px; 
+        height: 100px;
+    }
+    
+    .nombre-usuario {
+        font-size: 1.4rem !important;
+    }
+    
+    .cabecera-proyectos h2 {
+        font-size: 1.4rem;
+        flex-direction: column; 
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .estrellas i {
+        font-size: 1.3rem; 
+    }
+}
+/* TOAST DE ERROR PARA RESE�AS */
+.toast-error-neon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(20, 0, 0, 0.95);
+    border: 1px solid #330000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border-left: 6px solid #ff4444; 
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
+
+.toast-error-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-error-neon i {
+    color: #ff4444;
+    font-size: 2rem;
+}
+
+.toast-error-neon strong {
+    display: block;
+    color: #ff4444;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+
+/* BOTONES DE EDICI�N Y ELIMINACI�N DE RESE�AS */
+.btn-accion-resena-editar {
+    background: none;
+    border: none;
+    color: #00f3ff;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.btn-accion-resena-editar:hover {
+    background: rgba(0, 243, 255, 0.1);
+    color: #fff;
+    text-shadow: 0 0 5px #00f3ff;
+}
+
+.btn-accion-resena-eliminar {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.btn-accion-resena-eliminar:hover {
+    background: rgba(255, 68, 68, 0.1);
+    color: #fff;
+    text-shadow: 0 0 5px #ff4444;
+}
+
+.resena-acciones-bottom {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    display: flex;
+    gap: 5px;
+}
+

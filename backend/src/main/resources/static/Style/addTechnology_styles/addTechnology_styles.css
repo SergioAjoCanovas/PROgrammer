@@ -1,0 +1,446 @@
+/* ============================================================
+    1. VARIABLES Y GENERAL
+   ============================================================ */
+:root {
+    --amarillo-neon: #FFCC00;
+    --amarillo-brillo: rgba(255, 204, 0, 0.4); /* El brillo equilibrado original */
+    --negro-tarjeta: #1a1a1a; 
+    --negro-input: #050505;
+    --gris-texto: #888;
+    --amarillo-pale: #FFFDDF;
+    --verde-neon: #39FF14;
+    --fondo-item: #000;
+}
+
+.cuerpo-flexible {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #0c0c0c !important;
+}
+
+.contenedor-principal-stack {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* ============================================================
+    2. TARJETA Y CABECERA
+   ============================================================ */
+.vidrio-contenedor {
+    background-color: var(--negro-tarjeta) !important;
+    border: 1px solid var(--amarillo-neon) !important; 
+    border-radius: 25px !important; 
+    padding: 35px 45px !important;
+    box-shadow: 0 0 35px rgba(255, 204, 0, 0.15) !important;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.cabecera-seccion-stack {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #333 !important;
+    padding-bottom: 15px;
+}
+
+.cabecera-seccion-stack h2 {
+    color: var(--amarillo-pale);
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.boton-volver-stack {
+    color: var(--amarillo-neon);
+    font-size: 1.6rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.boton-volver-stack:hover {
+    transform: scale(1.2) rotate(90deg);
+    text-shadow: 0 0 10px var(--amarillo-neon);
+}
+
+.subtitulo-stack {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+}
+
+/* ============================================================
+    3. GRID DE TECNOLOGÍAS
+   ============================================================ */
+.grupo-tecnologico {
+    border: none;
+    margin-bottom: 50px;
+    padding: 0;
+}
+
+.grupo-tecnologico legend {
+    color: var(--amarillo-neon);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-tecnologica {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.grid-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+    gap: 20px;
+}
+
+.item-tech {
+    cursor: pointer;
+    position: relative;
+}
+
+.item-tech input {
+    display: none;
+}
+
+.caja-diseno {
+    background-color: var(--fondo-item);
+    border: 2px solid var(--amarillo-neon); /* Borde siempre amarillo */
+    border-radius: 15px;
+    height: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.caja-diseno i {
+    font-size: 2.2rem;
+    color: var(--gris-texto);
+    transition: 0.3s;
+}
+
+.caja-diseno span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--gris-texto);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- HOVER REESTABLECIDO (AMARILLO NEÓN EQUILIBRADO) --- */
+.item-tech:hover .caja-diseno {
+    transform: translateY(-5px);
+    border-color: var(--amarillo-neon);
+    box-shadow: 0 5px 20px var(--amarillo-brillo); /* Brillo original */
+}
+
+.item-tech:hover i, 
+.item-tech:hover span {
+    color: var(--amarillo-neon);
+    text-shadow: 0 0 5px var(--amarillo-brillo);
+}
+
+/* --- ESTADO SELECCIONADO --- */
+.item-tech input:checked + .caja-diseno {
+    border-color: var(--amarillo-neon);
+    background-color: #050505;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+}
+
+.item-tech input:checked + .caja-diseno i,
+.item-tech input:checked + .caja-diseno span {
+    color: var(--amarillo-neon);
+}
+
+/* ============================================================
+    4. EL TICK MINIMALISTA
+   ============================================================ */
+.tick-minimalista {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    background-color: var(--verde-neon);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 10px var(--verde-neon);
+    z-index: 10;
+}
+
+.tick-minimalista::after {
+    content: '';
+    width: 4px;
+    height: 8px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-top: -2px;
+}
+
+.item-tech input:checked + .caja-diseno .tick-minimalista {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ============================================================
+    5. BOTÓN FINAL
+   ============================================================ */
+.contenedor-boton {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.boton-amarillo-solido {
+    background: var(--negro-input);
+    color: var(--amarillo-neon);
+    border: 2px solid var(--amarillo-neon);
+    padding: 16px 50px;
+    border-radius: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.boton-amarillo-solido:hover {
+    background: var(--amarillo-neon);
+    color: #000;
+    box-shadow: 0 0 30px var(--amarillo-neon);
+    transform: scale(1.05);
+}
+
+/* ============================================================
+    6. BOTÓN VOLVER (PEGADO A LA IZQUIERDA)
+   ============================================================ */
+.contenedor-volver {
+    width: 100%;
+    max-width: 100%;
+    margin: 30px 0 0 0;
+    padding: 0 40px; /* Margen para que no toque literalmente el píxel 0 de la pantalla */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.enlace-volver {
+    color: #888888; 
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.enlace-volver:hover {
+    color: var(--amarillo-neon); 
+    text-shadow: 0 0 8px var(--amarillo-brillo); 
+    transform: translateX(-5px); 
+}
+/* BOTONES TOGGLE TECH (Marcar/Desmarcar) */
+.btn-tech-toggle {
+    background: transparent; /* Use transparent instead of var(--negro-input) to blend better in legends */
+    padding: 6px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* MARCAR (Cyan) */
+.btn-tech-marcar {
+    color: #00f3ff;
+    border: 2px solid #00f3ff;
+}
+.btn-tech-marcar:hover, .btn-tech-marcar.activo {
+    background: #00f3ff;
+    color: #000;
+    box-shadow: 0 0 20px #00f3ff;
+    transform: scale(1.05);
+}
+
+/* DESMARCAR (Rojo) */
+.btn-tech-desmarcar {
+    color: #ff4444;
+    border: 2px solid #ff4444;
+}
+.btn-tech-desmarcar:hover, .btn-tech-desmarcar.activo {
+    background: #ff4444;
+    color: #fff;
+    box-shadow: 0 0 20px #ff4444;
+    transform: scale(1.05);
+}
+
+.botones-categoria-tech {
+    display: flex;
+    gap: 10px;
+}
+
+/* ============================================================
+    7. BOTONES GLOBALES
+   ============================================================ */
+.botones-globales-stack {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+/* ============================================================
+    8. RESPONSIVIDAD (MOBILE & TABLET)
+   ============================================================ */
+
+/* TABLETS (Hasta 992px) */
+@media (max-width: 992px) {
+    .vidrio-contenedor {
+        padding: 30px !important;
+        max-width: 90%;
+    }
+
+    .grid-checkboxes {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+}
+
+/* MÓVILES GRANDES (Hasta 768px) */
+@media (max-width: 768px) {
+    .contenedor-principal-stack {
+        padding: 40px 15px;
+    }
+
+    .vidrio-contenedor {
+        padding: 25px 20px !important;
+        border-radius: 20px !important;
+    }
+
+    .cabecera-seccion-stack {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .cabecera-seccion-stack h2 {
+        font-size: 1.1rem;
+    }
+
+    .subtitulo-stack {
+        font-size: 0.85rem;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .botones-globales-stack {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .botones-globales-stack .btn-tech-toggle {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.75rem;
+        padding: 8px 10px;
+    }
+
+    .legend-tecnologica {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .botones-categoria-tech {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .botones-categoria-tech .btn-tech-toggle {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.7rem;
+    }
+
+    .boton-amarillo-solido {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* MÓVILES PEQUEÑOS (Hasta 480px) */
+@media (max-width: 480px) {
+    .contenedor-volver {
+        padding: 0 20px;
+        margin-top: 20px;
+    }
+
+    .enlace-volver {
+        font-size: 0.9rem;
+    }
+
+    .cabecera-seccion-stack h2 {
+        font-size: 1rem;
+    }
+
+    .grid-checkboxes {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+
+    .caja-diseno {
+        height: 90px;
+        gap: 8px;
+    }
+
+    .caja-diseno i {
+        font-size: 1.8rem;
+    }
+
+    .caja-diseno span {
+        font-size: 0.55rem;
+        letter-spacing: 0.5px;
+    }
+
+    .tick-minimalista {
+        width: 18px;
+        height: 18px;
+        top: -5px;
+        right: -5px;
+    }
+}
+

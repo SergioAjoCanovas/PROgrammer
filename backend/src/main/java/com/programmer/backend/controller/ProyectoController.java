@@ -132,7 +132,7 @@ public class ProyectoController {
 
         model.addAttribute("imagenes", imagenes);
 
-        return "UI/projectView/projectView";
+        return "UI/projectview/projectview";
     }
 
     // =========================================================

@@ -7,6 +7,7 @@ import com.programmer.backend.repository.ProyectoRepository;
 import com.programmer.backend.repository.TecnologiaRepository;
 import com.programmer.backend.repository.UsuarioRepository;
 import com.programmer.backend.service.ProyectoService;
+import com.programmer.backend.service.CloudinaryService; // <-- Servicio de Cloudinary
 
 import jakarta.servlet.http.HttpSession;
 
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,17 +31,20 @@ public class ProyectoController {
     private final ProyectoService proyectoService;
     private final UsuarioRepository usuarioRepository;
     private final TecnologiaRepository tecnologiaRepository;
+    private final CloudinaryService cloudinaryService; // <-- Variable añadida
 
     public ProyectoController(
             ProyectoRepository proyectoRepository,
             ProyectoService proyectoService,
             UsuarioRepository usuarioRepository,
-            TecnologiaRepository tecnologiaRepository
+            TecnologiaRepository tecnologiaRepository,
+            CloudinaryService cloudinaryService // <-- Inyectado en el constructor
     ) {
         this.proyectoRepository = proyectoRepository;
         this.proyectoService = proyectoService;
         this.usuarioRepository = usuarioRepository;
         this.tecnologiaRepository = tecnologiaRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     // =========================================================
@@ -61,32 +64,25 @@ public class ProyectoController {
 
         proyecto.setAutor(usuario);
 
-        String uploadDir = System.getProperty("user.dir") + "/uploads/projects/";
-
+        // Subida de imágenes a Cloudinary
         try {
-            for (int i = 0; i < imagenes.length; i++) {
+            if (imagenes != null) {
+                for (int i = 0; i < imagenes.length; i++) {
+                    MultipartFile file = imagenes[i];
 
-                MultipartFile file = imagenes[i];
+                    if (file != null && !file.isEmpty()) {
+                        // Obtenemos la URL segura desde Cloudinary
+                        String imageUrl = cloudinaryService.subirImagen(file);
 
-                if (file != null && !file.isEmpty()) {
-
-                    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                    File dest = new File(uploadDir + fileName);
-
-                    dest.getParentFile().mkdirs();
-                    file.transferTo(dest);
-
-                    String ruta = "/uploads/projects/" + fileName;
-
-                    switch (i) {
-                        case 0 -> proyecto.setFoto1(ruta);
-                        case 1 -> proyecto.setFoto2(ruta);
-                        case 2 -> proyecto.setFoto3(ruta);
-                        case 3 -> proyecto.setFoto4(ruta);
+                        switch (i) {
+                            case 0 -> proyecto.setFoto1(imageUrl);
+                            case 1 -> proyecto.setFoto2(imageUrl);
+                            case 2 -> proyecto.setFoto3(imageUrl);
+                            case 3 -> proyecto.setFoto4(imageUrl);
+                        }
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,10 +124,11 @@ public class ProyectoController {
         )
         .filter(Objects::nonNull)
         .filter(f -> !f.isBlank())
-        .toList();
+        .collect(Collectors.toList()); // <-- Cambiado de .toList() para compatibilidad Java
 
         model.addAttribute("imagenes", imagenes);
 
+        // <-- SOLUCIÓN ERROR 500: Todo en minúsculas para compatibilidad con Linux/Render
         return "UI/projectview/projectview";
     }
 
@@ -246,7 +243,7 @@ public class ProyectoController {
                 proyecto.getTecnologias()
                         .stream()
                         .map(Tecnologia::getId)
-                        .toList()
+                        .collect(Collectors.toList()) // <-- Cambiado para compatibilidad
         );
 
         return "UI/createProject/createProject";
@@ -275,34 +272,24 @@ public class ProyectoController {
             proyectoExistente.setTecnologias(tecnologiasActualizadas);
         }
 
-        String uploadDir = System.getProperty("user.dir") + "/uploads/projects/";
-
+        // Subida de imágenes a Cloudinary al editar
         try {
             if (imagenes != null) {
                 for (int i = 0; i < imagenes.length; i++) {
-
                     MultipartFile file = imagenes[i];
 
                     if (file != null && !file.isEmpty()) {
-
-                        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                        File dest = new File(uploadDir + fileName);
-
-                        dest.getParentFile().mkdirs();
-                        file.transferTo(dest);
-
-                        String ruta = "/uploads/projects/" + fileName;
+                        String imageUrl = cloudinaryService.subirImagen(file);
 
                         switch (i) {
-                            case 0 -> proyectoExistente.setFoto1(ruta);
-                            case 1 -> proyectoExistente.setFoto2(ruta);
-                            case 2 -> proyectoExistente.setFoto3(ruta);
-                            case 3 -> proyectoExistente.setFoto4(ruta);
+                            case 0 -> proyectoExistente.setFoto1(imageUrl);
+                            case 1 -> proyectoExistente.setFoto2(imageUrl);
+                            case 2 -> proyectoExistente.setFoto3(imageUrl);
+                            case 3 -> proyectoExistente.setFoto4(imageUrl);
                         }
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

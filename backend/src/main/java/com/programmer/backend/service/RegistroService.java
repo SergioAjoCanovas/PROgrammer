@@ -1,15 +1,15 @@
 package com.programmer.backend.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.programmer.backend.domain.*;
 import com.programmer.backend.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
-import java.util.UUID;
+import java.util.Map;
 
 @Service
 public class RegistroService {
@@ -17,6 +17,7 @@ public class RegistroService {
     private final UsuarioRepository usuarioRepository;
     private final PerfilDesarrolladorRepository perfilDesarrolladorRepository;
     private final PerfilEmpresaRepository perfilEmpresaRepository;
+    private final Cloudinary cloudinary;
 
     public RegistroService(UsuarioRepository usuarioRepository,
                            PerfilDesarrolladorRepository perfilDesarrolladorRepository,
@@ -24,6 +25,14 @@ public class RegistroService {
         this.usuarioRepository = usuarioRepository;
         this.perfilDesarrolladorRepository = perfilDesarrolladorRepository;
         this.perfilEmpresaRepository = perfilEmpresaRepository;
+
+        // Configuración de Cloudinary (Introduce aquí tus credenciales reales)
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "dmfsfky9r",
+                "api_key", "856664266132363",
+                "api_secret", "RLm0bg2FlZW5-Vy3IpVx6_icR3Q",
+                "secure", true
+        ));
     }
 
     // --------------------------------------------------------
@@ -67,7 +76,7 @@ public class RegistroService {
     }
 
     // --------------------------------------------------------
-    // 2. FOTO PERFIL
+    // 2. FOTO PERFIL (Alojado en Cloudinary)
     // --------------------------------------------------------
     public String guardarFoto(MultipartFile archivo) throws IOException {
 
@@ -75,39 +84,30 @@ public class RegistroService {
             return null;
         }
 
-        String nombreArchivo = UUID.randomUUID() + "_" + archivo.getOriginalFilename();
+        // Subir a Cloudinary
+        @SuppressWarnings("unchecked")
+        Map<String, Object> uploadResult = cloudinary.uploader().upload(archivo.getBytes(), ObjectUtils.emptyMap());
 
-        Path directorioPath = Paths.get(System.getProperty("user.dir"), "uploads", "perfiles");
-
-        if (!Files.exists(directorioPath)) {
-            Files.createDirectories(directorioPath);
-        }
-
-        Path rutaFinal = directorioPath.resolve(nombreArchivo);
-
-        Files.copy(archivo.getInputStream(), rutaFinal);
-
-        return "/uploads/perfiles/" + nombreArchivo;
+        // Devolver la URL segura (https) generada por Cloudinary
+        return uploadResult.get("secure_url").toString();
     }
 
     // --------------------------------------------------------
-    // 3. CV
+    // 3. CV (Alojado en Cloudinary)
     // --------------------------------------------------------
     public String guardarCV(MultipartFile file) throws IOException {
 
-        String carpeta = "uploads/cv/";
-
-        File directorio = new File(carpeta);
-        if (!directorio.exists()) {
-            directorio.mkdirs();
+        if (file == null || file.isEmpty()) {
+            return null;
         }
 
-        String nombreArchivo = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        // Subir a Cloudinary (resource_type "auto" es importante para aceptar PDFs)
+        @SuppressWarnings("unchecked")
+        Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "resource_type", "auto"
+        ));
 
-        Path ruta = Paths.get(carpeta + nombreArchivo);
-
-        Files.write(ruta, file.getBytes());
-
-        return "/" + carpeta + nombreArchivo;
+        // Devolver la URL segura del PDF generado por Cloudinary
+        return uploadResult.get("secure_url").toString();
     }
 }

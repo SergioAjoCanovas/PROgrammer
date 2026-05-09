@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
 
-    <link rel="stylesheet" href="/Style/general_styles/header.css">
-    <link rel="stylesheet" href="/Style/general_styles/footer.css">
-    <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
-    <link rel="stylesheet" href="/Style/admin_styles/admin_styles.css">
+    <link rel="stylesheet" th:href="@{/Style/general_styles/header.css}">
+    <link rel="stylesheet" th:href="@{/Style/general_styles/footer.css}">
+    <link rel="stylesheet" th:href="@{/Style/general_styles/general_styles.css}">
+    <link rel="stylesheet" th:href="@{/Style/admin_styles/admin_styles.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -114,7 +114,7 @@
 <div th:replace="~{includes/header :: header}"></div>
 
 <div class="contenedor-volver">
-    <a href="/main" class="enlace-volver">
+    <a th:href="@{/main}" class="enlace-volver">
         <i class="fas fa-arrow-left"></i> Volver a inicio
     </a>
 </div>
@@ -147,9 +147,9 @@
                         <i th:if="${u.estado == 'VERIFICADO' or (u.rol != null and (u.rol.nombre == 'ADMIN' or u.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                     </h3>
                     <div style="font-size: 0.8rem; color: #FFCC00; margin-top: 5px; margin-bottom: 5px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${u.followersCountFormatted}">0</span> <span th:text="${u.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
-                    <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
+                    <p class="rol-usuario" th:text="${u.rol != null ? u.rol.nombre : 'Sin Rol'}">Rol</p>
                     <p class="email-usuario" th:text="${u.email}" style="font-size: 0.8rem; color: #ccc; margin-top: 2px; margin-bottom: 5px; word-break: break-all;">Email</p>
-                    <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
+                    <p class="fecha-usuario">Logueado: <span th:text="${u.fechaRegistro != null ? #temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm') : 'Fecha desconocida'}"></span></p>
 
                     <div class="botones-accion">
                         <a th:href="@{/profileView/{id}(id=${u.id})}" class="btn-perfil"><i class="fas fa-eye"></i></a>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${#lists.isEmpty(logueados)}" class="mensaje-vacio">
+            <div th:if="${logueados == null or #lists.isEmpty(logueados)}" class="mensaje-vacio">
                 <i class="fas fa-user-slash"></i>
                 <p>No hay usuarios logueados pendientes.</p>
             </div>
@@ -180,29 +180,27 @@
                         <i class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
                     </h3>
                     <div style="font-size: 0.8rem; color: #FFCC00; margin-top: 5px; margin-bottom: 5px; font-weight: bold;"><i class="fas fa-users"></i> <span th:text="${u.followersCountFormatted}">0</span> <span th:text="${u.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></div>
-                    <p class="rol-usuario" th:text="${u.rol.nombre}">Rol</p>
+                    <p class="rol-usuario" th:text="${u.rol != null ? u.rol.nombre : 'Sin Rol'}">Rol</p>
                     <p class="email-usuario" th:text="${u.email}" style="font-size: 0.8rem; color: #ccc; margin-top: 2px; margin-bottom: 5px; word-break: break-all;">Email</p>
-                    <p class="fecha-usuario">Logueado: <span th:text="${#temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></span></p>
+                    <p class="fecha-usuario">Logueado: <span th:text="${u.fechaRegistro != null ? #temporals.format(u.fechaRegistro, 'dd/MM/yyyy HH:mm') : 'Fecha desconocida'}"></span></p>
 
                     <div class="botones-accion">
                         <a th:href="@{/profileView/{id}(id=${u.id})}" class="btn-perfil"><i class="fas fa-eye"></i></a>
-                        <form th:if="${u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/desverificar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'desverificar');">
+                        <form th:if="${u.rol != null and u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/desverificar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'desverificar');">
                             <button type="submit" class="btn-eliminar" title="Quitar Verificación"><i class="fas fa-times"></i></button>
                         </form>
-                        <form th:if="${u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/eliminar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminar');">
+                        <form th:if="${u.rol != null and u.rol.nombre != 'ADMIN' and u.rol.nombre != '1'}" th:action="@{/adminPanel/eliminar/{id}(id=${u.id})}" method="post" onsubmit="confirmarAccion(event, this, 'eliminar');">
                             <button type="submit" class="btn-eliminar" title="Eliminar"><i class="fas fa-trash"></i></button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div th:if="${#lists.isEmpty(verificados)}" class="mensaje-vacio">
+            <div th:if="${verificados == null or #lists.isEmpty(verificados)}" class="mensaje-vacio">
                 <i class="fas fa-user-slash"></i>
                 <p>No hay usuarios verificados.</p>
             </div>
         </div>
-        </div> <!-- Fin seccion cuentas -->
-
-        <div id="seccion-proyectos" class="main-tab-content" style="display: none;">
+        </div> <div id="seccion-proyectos" class="main-tab-content" style="display: none;">
             <div class="tabs-admin sub-tabs">
                 <button class="tab-btn sub-tab-proyectos activo" onclick="mostrarTabProyectos('proyectos-pendientes')">Pendientes</button>
                 <button class="tab-btn sub-tab-proyectos" onclick="mostrarTabProyectos('proyectos-verificados')">Verificados</button>
@@ -211,7 +209,6 @@
             <div id="proyectos-pendientes" class="tab-content-proyectos activo" style="display: block;">
                 <div class="grid-usuarios">
                     <div class="card-usuario" th:each="entry : ${proyectosNoValidados}" style="align-self: start;">
-                        <!-- Info del usuario (desplegable) -->
                         <div class="usuario-proyectos-header" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #333;" th:onclick="'toggleUserProjects(' + ${entry.key.id} + ')'">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div style="position: relative; display: inline-block;">
@@ -229,7 +226,6 @@
                             <i class="fas fa-chevron-down" th:id="'icon-user-' + ${entry.key.id}"></i>
                         </div>
 
-                        <!-- Lista de proyectos del usuario -->
                         <div th:id="'proyectos-user-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
                             <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; text-align: center;">
                                 <h4 th:text="${p.titulo}" style="margin: 0 0 10px 0; color: #FFCC00; text-align: center;"></h4>
@@ -246,7 +242,7 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${proyectosNoValidados == null or proyectosNoValidados.isEmpty()}" class="mensaje-vacio">
+                <div th:if="${proyectosNoValidados == null or #maps.isEmpty(proyectosNoValidados)}" class="mensaje-vacio">
                     <i class="fas fa-folder-open"></i>
                     <p>No hay proyectos pendientes de validación.</p>
                 </div>
@@ -275,7 +271,6 @@
                         <div th:id="'proyectos-user-validados-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
                             <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; position: relative; text-align: center;">
                                 <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; text-align: center;"></h4>
-                                <!-- Div azulito de verificado -->
                                 <div style="margin-bottom: 10px; text-align: center;">
                                     <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block;">
                                         <i class="fas fa-check-circle"></i> VERIFICADO
@@ -295,13 +290,12 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${proyectosValidados == null or proyectosValidados.isEmpty()}" class="mensaje-vacio">
+                <div th:if="${proyectosValidados == null or #maps.isEmpty(proyectosValidados)}" class="mensaje-vacio">
                     <i class="fas fa-folder-open"></i>
                     <p>No hay proyectos validados.</p>
                 </div>
             </div>
-        </div> <!-- Fin seccion proyectos -->
-    </div>
+        </div> </div>
 </main>
 
 <div id="modalConfirmacion" class="modal-overlay">

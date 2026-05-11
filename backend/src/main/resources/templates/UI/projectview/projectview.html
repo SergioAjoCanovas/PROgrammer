@@ -12,60 +12,59 @@
     <link rel="stylesheet" href="/Style/projectview_styles/badgestatus.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <style>
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
+    <style>.activo,
+header .nav-enlaces a.activo i,
+header .nav-enlaces a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+}
 
-        .foto-perfil-contenedor {
-            position: relative;
-            display: block;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 20px auto;
-        }
+.foto-perfil-contenedor {
+    position: relative;
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px auto;
+}
 
-        .circulo-foto {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 3px solid #FFCC00;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
-            overflow: hidden;
-            background-color: #111;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.circulo-foto {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+    overflow: hidden;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .circulo-foto img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.circulo-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .tech-tag-azul {
-            background: rgba(0,243,255,0.05);
-            padding: 5px 12px;
-            border-radius: 6px;
-            border: 1px solid rgba(0,243,255,0.2);
-            color: white;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-        }
-        .tech-tag-azul:hover {
-            background: rgba(0,243,255,0.15);
-            border-color: #00f3ff;
-            box-shadow: 0 0 10px rgba(0,243,255,0.4);
-            transform: translateY(-2px);
-        }
-    </style>
+.tech-tag-azul {
+    background: rgba(0,243,255,0.05);
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,243,255,0.2);
+    color: white;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+.tech-tag-azul:hover {
+    background: rgba(0,243,255,0.15);
+    border-color: #00f3ff;
+    box-shadow: 0 0 10px rgba(0,243,255,0.4);
+    transform: translateY(-2px);
+}
+</style>
 </head>
 
 <body class="body-layout fondo-oscuro-neon">
@@ -180,14 +179,13 @@
                         <i class="fas fa-times-circle"></i> No validado
                     </span>
 
-                    <a th:if="${session.usuarioLogueado != null
-                        and session.usuarioLogueado.rol.nombre != 'VISITOR'
-                        and (session.usuarioLogueado.rol.nombre == 'ADMIN'
-                             or session.usuarioLogueado.id != proyecto.autor.id)}"
-                   th:href="@{/project-reviews/crear/{id}(id=${proyecto.id})}"
-                   class="btn-accion-neon">
-                    <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
-                </a>
+                    <a th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.rol.nombre == 'ADMIN' or session.usuarioLogueado.id != proyecto.autor.id)}"
+                       th:href="${session.usuarioLogueado.rol.nombre == 'VISITOR' ? 'javascript:void(0)' : '/project-reviews/crear/' + proyecto.id}"
+                       class="btn-accion-neon"
+                       th:style="${session.usuarioLogueado.rol.nombre == 'VISITOR' ? 'opacity: 0.5; cursor: not-allowed; border-color: #444; color: #888;' : ''}"
+                       th:title="${session.usuarioLogueado.rol.nombre == 'VISITOR' ? 'Los visitantes no pueden publicar reseñas' : 'Publicar nueva reseña'}">
+                        <i class="fas fa-plus-circle"></i> NUEVA RESEÑA
+                    </a>
 
                     <a th:href="@{/project-reviews/{id}(id=${proyecto.id})}" class="btn-accion-neon">
                         <i class="fas fa-comments"></i> VER RESEÑAS
@@ -296,10 +294,6 @@ function inicializarHeader() {
     if (navPerfil) navPerfil.classList.add('activo');
 }
 
-// =========================
-// MODAL ELIMINAR
-// =========================
-
 function abrirModalEliminar(btn) {
     proyectoId = btn.getAttribute("data-id");
 
@@ -348,13 +342,13 @@ async function toggleFollowUser(btn, event) {
     try {
         const formData = new FormData();
         formData.append('targetId', targetId);
-        
+
         const response = await fetch('/usuario/toggleFollow', {
             method: 'POST',
             body: formData
         });
         const result = await response.text();
-        
+
         if (result === 'OK') {
             if (icon.classList.contains('far')) {
                 icon.classList.remove('far');

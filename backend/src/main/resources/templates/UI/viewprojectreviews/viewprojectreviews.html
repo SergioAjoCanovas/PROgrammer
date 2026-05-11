@@ -27,7 +27,7 @@
 <main class="contenedor-principal">
 
     <aside class="columna-perfil">
-        
+
         <div class="tarjeta-perfil tarjeta-neon-estatica">
 
             <div class="cabecera-tarjeta">
@@ -40,7 +40,7 @@
                            class="fas fa-user"
                            style="font-size: 3rem; color: #aaa; display: flex; justify-content: center; align-items: center; height: 100%;"></i>
                     </div>
-                    
+
                     <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and autor != null and session.usuarioLogueado.id != autor.id}" 
                          th:attr="data-id=${autor.id}" 
                          onclick="toggleFollowUser(this, event)">
@@ -52,7 +52,7 @@
                     th:text="${autor != null ? autor.username : 'Dev'}">
                     Dev
                 </h2>
-                
+
                 <div class="seguidores-badge" th:if="${autor != null}">
                     <i class="fas fa-user-friends"></i> 
                     <span><span th:text="${autor.followersCountFormatted}">0</span> <span th:text="${autor.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span></span> 
@@ -210,7 +210,7 @@
                     </div>
 
                     <p class="reseña-texto" th:text="${r.comentario}"></p>
-                    
+
                     <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" 
                          style="margin-top: 10px; display: flex; gap: 10px;">
                         <a th:href="@{/project-reviews/crear/{pid}(pid=${proyecto.id}, edit='true')}" class="btn-accion-resena-editar">
@@ -241,7 +241,7 @@
 <div th:replace="~{includes/footer :: footer}"></div>
 
 <script>
-    // LÓGICA DE SEGUIR AL USUARIO
+
     async function toggleFollowUser(btn, event) {
         event.stopPropagation();
         const targetId = btn.getAttribute('data-id');
@@ -263,13 +263,13 @@
         try {
             const formData = new FormData();
             formData.append('targetId', targetId);
-            
+
             const response = await fetch('/usuario/toggleFollow', {
                 method: 'POST',
                 body: formData
             });
             const result = await response.text();
-            
+
             if (result === 'OK') {
                 if (icon.classList.contains('far')) {
                     icon.classList.remove('far');
@@ -286,7 +286,6 @@
         }
     }
 
-    // LÓGICA DEL MODAL DE IMÁGENES
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");
@@ -307,7 +306,6 @@
     }
 </script>
 
-    <!-- Toasts de éxito y error -->
     <div id="toast-success-resena" class="toast-success-neon">
         <i class="fas fa-check-circle"></i>
         <div>
@@ -324,25 +322,24 @@
         </div>
     </div>
 
-    <style>
-        .toast-success-neon, .toast-error-neon {
-            position: fixed; bottom: 30px; right: 30px; padding: 18px 28px; border-radius: 8px;
-            display: flex; align-items: center; gap: 15px; font-family: sans-serif;
-            transform: translateX(120%); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 9999;
-        }
-        .toast-success-neon { background: rgba(5, 15, 5, 0.98); border-left: 6px solid #39FF14; box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3); }
-        .toast-error-neon { background: rgba(15, 5, 5, 0.98); border-left: 6px solid #ff4444; box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); }
-        .toast-success-neon.mostrar, .toast-error-neon.mostrar { transform: translateX(0); opacity: 1; }
-        .toast-success-neon i { color: #39FF14; font-size: 2rem; }
-        .toast-error-neon i { color: #ff4444; font-size: 2rem; }
-        .toast-success-neon strong { color: #39FF14; display: block; font-size: 1.1rem; }
-        .toast-error-neon strong { color: #ff4444; display: block; font-size: 1.1rem; }
+    <style>.toast-success-neon, .toast-error-neon {
+    position: fixed; bottom: 30px; right: 30px; padding: 18px 28px; border-radius: 8px;
+    display: flex; align-items: center; gap: 15px; font-family: sans-serif;
+    transform: translateX(120%); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 9999;
+}
+.toast-success-neon { background: rgba(5, 15, 5, 0.98); border-left: 6px solid #39FF14; box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3); }
+.toast-error-neon { background: rgba(15, 5, 5, 0.98); border-left: 6px solid #ff4444; box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); }
+.toast-success-neon.mostrar, .toast-error-neon.mostrar { transform: translateX(0); opacity: 1; }
+.toast-success-neon i { color: #39FF14; font-size: 2rem; }
+.toast-error-neon i { color: #ff4444; font-size: 2rem; }
+.toast-success-neon strong { color: #39FF14; display: block; font-size: 1.1rem; }
+.toast-error-neon strong { color: #ff4444; display: block; font-size: 1.1rem; }
 
-        .btn-accion-resena-editar { color: #00f3ff; text-decoration: none; font-size: 0.85rem; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; border: 1px solid transparent; }
-        .btn-accion-resena-editar:hover { background: rgba(0, 243, 255, 0.1); border-color: #00f3ff; }
-        .btn-accion-resena-eliminar { background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.85rem; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; border: 1px solid transparent; }
-        .btn-accion-resena-eliminar:hover { background: rgba(255, 68, 68, 0.1); border-color: #ff4444; }
-    </style>
+.btn-accion-resena-editar { color: #00f3ff; text-decoration: none; font-size: 0.85rem; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; border: 1px solid transparent; }
+.btn-accion-resena-editar:hover { background: rgba(0, 243, 255, 0.1); border-color: #00f3ff; }
+.btn-accion-resena-eliminar { background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.85rem; padding: 5px 10px; border-radius: 4px; transition: all 0.3s; border: 1px solid transparent; }
+.btn-accion-resena-eliminar:hover { background: rgba(255, 68, 68, 0.1); border-color: #ff4444; }
+</style>
 
     <script>
         function confirmarBorrarResenaProyecto(event, form) {

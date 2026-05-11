@@ -1,6 +1,3 @@
-/* =========================================================
-   GENERAL Y CONTENEDORES
-   ========================================================= */
 html, body {
     height: 100%;
 }
@@ -10,15 +7,12 @@ body.fondo-oscuro-neon {
     color: #FFFFFF;
     font-family: Arial, sans-serif;
     margin: 0;
-    
+
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    min-height: 100vh;
 }
 
-/* =========================================================
-   BOTÓN VOLVER
-   ========================================================= */
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -46,20 +40,17 @@ body.fondo-oscuro-neon {
     transform: translateX(-5px);
 }
 
-/* =========================================================
-   CONTENEDOR PRINCIPAL
-   ========================================================= */
 .contenedor-principal {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    margin: 20px auto 40px auto; 
+    margin: 20px auto 40px auto;
     padding: 0 20px;
-    gap: 40px; 
+    gap: 40px;
     align-items: flex-start;
     box-sizing: border-box;
-    
-    flex: 1 0 auto; 
+
+    flex: 1 0 auto;
 }
 
 #footer-placeholder {
@@ -80,13 +71,10 @@ body.fondo-oscuro-neon {
     flex-direction: column;
     gap: 30px;
     width: 100%;
-    /* Aseguramos que la columna no se expanda por textos largos */
+
     min-width: 0;
 }
 
-/* =========================================================
-   TARJETA PERFIL (COPIA EXACTA DE proyectlist.css)
-   ========================================================= */
 .tarjeta-perfil {
     background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
@@ -137,10 +125,10 @@ body.fondo-oscuro-neon {
 }
 
 .contenedor-nombre-usuario {
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 5px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .nombre-usuario {
@@ -153,28 +141,25 @@ body.fondo-oscuro-neon {
 }
 
 .followers-text {
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 20px; 
-    margin-top: 10px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
     margin-bottom: 5px;
 }
 
 .stat-item {
-    color: #FFCC00; 
-    font-size: 1rem; 
-    font-weight: bold; 
-    display: flex; 
-    align-items: center; 
+    color: #FFCC00;
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
     gap: 8px;
 }
 
-/* =========================================================
-   OTRAS TARJETAS (Sincronizado estilo base)
-   ========================================================= */
-.tarjeta-resenas-izq, 
-.tarjeta-proyectos-contenedor, 
+.tarjeta-resenas-izq,
+.tarjeta-proyectos-contenedor,
 .tarjeta-inferior {
     background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
@@ -185,13 +170,12 @@ body.fondo-oscuro-neon {
     padding: 30px;
 }
 
-/* Líneas divisorias de títulos */
-.cabecera-proyectos, 
+.cabecera-proyectos,
 .cabecera-inferior,
 .tarjeta-resenas-izq h3 {
     border-bottom: 2px solid #aaaaaa;
     padding-bottom: 15px;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     transition: border-color 0.3s ease;
 }
 
@@ -199,10 +183,6 @@ body.fondo-oscuro-neon {
     border-bottom: 2px solid #FFCC00 !important;
 }
 
-
-/* =========================================================
-   LISTA DOTTED (REDES + CV)
-   ========================================================= */
 .lista-dotted {
     display: flex;
     flex-direction: column;
@@ -238,11 +218,8 @@ body.fondo-oscuro-neon {
     transform: scale(1.2);
 }
 
-/* =========================================================
-   ENLACES NEÓN Y MENÚ ACTIVO
-   ========================================================= */
-.activo, 
-header .nav-enlaces a.activo i, 
+.activo,
+header .nav-enlaces a.activo i,
 header .nav-enlaces a.activo span {
     color: #FFCC00 !important;
     text-shadow: 0 0 10px #FFCC00 !important;
@@ -267,9 +244,6 @@ header .nav-enlaces a.activo span {
     text-shadow: 0 0 15px #FFCC00;
 }
 
-/* =========================================================
-   TEXTAREA RESEÑAS
-   ========================================================= */
 .input-resena {
     width: 100%;
     height: 80px;
@@ -292,15 +266,12 @@ header .nav-enlaces a.activo span {
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
 }
 
-/* =========================================================
-   BOTONES NEÓN (ACTUALIZADOS)
-   ========================================================= */
 .boton-anadir,
 .boton-ver,
 #btn-toggle-resenas {
     width: 100%;
     padding: 12px;
-    background-color: #0e0e0e !important; 
+    background-color: #0e0e0e !important;
     color: #FFCC00 !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 10px;
@@ -322,16 +293,12 @@ header .nav-enlaces a.activo span {
     background-color: #FFCC00 !important;
     color: #111 !important;
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
-    transform: scale(1.05); 
+    transform: scale(1.05);
 }
 
-
-/* =========================================================
-   TARJETAS MINI PROYECTO
-   ========================================================= */
 .rejilla-proyectos {
     display: flex;
-    gap: 25px; 
+    gap: 25px;
     flex-wrap: wrap;
 }
 
@@ -339,10 +306,10 @@ header .nav-enlaces a.activo span {
     background-color: #292929 !important;
     border: 2px solid #FFCC00 !important;
     border-radius: 15px;
-    padding: 25px 20px; 
+    padding: 25px 20px;
     width: calc(33.333% - 25px);
-    min-width: 260px; 
-    min-height: 220px; 
+    min-width: 260px;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -363,7 +330,7 @@ header .nav-enlaces a.activo span {
     color: #ccc;
     font-size: 0.95rem;
     flex-grow: 1;
-    /* FIX: Fuerza el salto de línea para descripciones largas */
+
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -375,22 +342,19 @@ header .nav-enlaces a.activo span {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
-/* =========================================================
-   SECCIÓN INFERIOR Y RESEÑAS (NUEVA ANIMACIÓN SMOOTHIE)
-   ========================================================= */
 .contenedor-inferior-derecha {
     display: flex;
-    flex-direction: row; 
-    gap: 40px; 
-    width: 100%; 
+    flex-direction: row;
+    gap: 40px;
+    width: 100%;
     align-items: flex-start;
 }
 
 .tarjeta-inferior {
-    flex: 1; 
-    /* FIX: Crucial para evitar que el flex item rompa el ancho máximo por culpa del texto */
-    min-width: 0; 
-    min-height: 280px; 
+    flex: 1;
+
+    min-width: 0;
+    min-height: 280px;
     height: auto;
     box-sizing: border-box;
 }
@@ -417,7 +381,6 @@ header .nav-enlaces a.activo span {
     border-radius: 10px;
 }
 
-/* FIX: Obliga a que los párrafos dentro rompan las palabras largas (tu "Sobre mí") */
 .contenido-inferior p {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -425,22 +388,20 @@ header .nav-enlaces a.activo span {
     max-width: 100%;
 }
 
-/* --- ANIMACIÓN GRID (SMOOTHIE TOTAL) --- */
 .resena-extra-wrapper {
     display: grid;
-    grid-template-rows: 0fr; /* Altura colapsada */
+    grid-template-rows: 0fr;
     transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .resena-extra-wrapper.expandido {
-    grid-template-rows: 1fr; /* Altura real del contenido */
+    grid-template-rows: 1fr;
 }
 
 .resena-extra-inner {
-    overflow: hidden; /* Oculta el contenido mientras colapsa */
+    overflow: hidden;
 }
 
-/* Estilos para el selector de estrellas */
 .estrellas {
     display: flex;
     gap: 10px;
@@ -450,7 +411,7 @@ header .nav-enlaces a.activo span {
 
 .estrellas i {
     font-size: 1.5rem;
-    color: #444; 
+    color: #444;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -485,109 +446,105 @@ header .nav-enlaces a.activo span {
 }
 
 .resena-header {
-    display: flex; 
-    justify-content: space-between; 
-    margin-bottom: 5px; 
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
 }
-.resena-usuario { 
-    font-weight: bold; 
-    color: #00f3ff; 
-    font-size: 0.9rem; 
+.resena-usuario {
+    font-weight: bold;
+    color: #00f3ff;
+    font-size: 0.9rem;
 }
-.resena-rating { 
-    color: #FFCC00; 
+.resena-rating {
+    color: #FFCC00;
 }
-.resena-texto { 
-    font-size: 0.85rem; 
-    color: #ccc; 
-    /* FIX: Fuerza el salto de línea en comentarios larguísimos sin espacios */
+.resena-texto {
+    font-size: 0.85rem;
+    color: #ccc;
+
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
 }
 
-/* =========================================================
-   MEDIA QUERIES (RESPONSIVE)
-   ========================================================= */
-
 @media (max-width: 1024px) {
     .contenedor-principal {
-        flex-direction: column; 
+        flex-direction: column;
         align-items: stretch;
     }
-    
+
     .columna-perfil {
         flex: auto;
         width: 100%;
     }
-    
+
     .tarjeta-mini-proyecto {
-        width: calc(50% - 15px); 
+        width: calc(50% - 15px);
     }
 }
 
 @media (max-width: 768px) {
     .contenedor-principal {
-        padding: 0 10px; 
+        padding: 0 10px;
         gap: 20px;
     }
 
     .contenedor-inferior-derecha {
-        flex-direction: column; 
+        flex-direction: column;
         gap: 20px;
         align-items: stretch;
     }
 
     .tarjeta-inferior {
         width: 100%;
-        min-height: unset !important; 
-        height: auto !important;      
-        flex: none !important;         
+        min-height: unset !important;
+        height: auto !important;
+        flex: none !important;
     }
 
     .contenido-inferior {
-        padding-right: 0; 
+        padding-right: 0;
     }
 
     .tarjeta-mini-proyecto {
-        width: 100%; 
+        width: 100%;
         min-width: auto;
     }
 
     .rejilla-proyectos {
         gap: 15px;
     }
-    
+
     .tarjeta-resenas-izq,
     .tarjeta-proyectos-contenedor,
     .tarjeta-inferior,
     .tarjeta-perfil {
-        padding: 20px !important; 
+        padding: 20px !important;
     }
 }
 
 @media (max-width: 480px) {
     .foto-perfil-contenedor {
-        width: 100px; 
+        width: 100px;
         height: 100px;
     }
-    
+
     .nombre-usuario {
         font-size: 1.4rem !important;
     }
-    
+
     .cabecera-proyectos h2 {
         font-size: 1.4rem;
-        flex-direction: column; 
+        flex-direction: column;
         gap: 10px;
         align-items: flex-start;
     }
-    
+
     .estrellas i {
-        font-size: 1.3rem; 
+        font-size: 1.3rem;
     }
 }
-/* TOAST DE ERROR PARA RESE�AS */
+
 .toast-error-neon {
     position: fixed;
     bottom: 20px;
@@ -596,7 +553,7 @@ header .nav-enlaces a.activo span {
     border: 1px solid #330000;
     padding: 15px 25px;
     border-radius: 8px;
-    border-left: 6px solid #ff4444; 
+    border-left: 6px solid #ff4444;
     box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
     display: flex;
     align-items: center;
@@ -625,8 +582,6 @@ header .nav-enlaces a.activo span {
     margin-bottom: 2px;
 }
 
-
-/* BOTONES DE EDICI�N Y ELIMINACI�N DE RESE�AS */
 .btn-accion-resena-editar {
     background: none;
     border: none;
@@ -667,4 +622,3 @@ header .nav-enlaces a.activo span {
     display: flex;
     gap: 5px;
 }
-

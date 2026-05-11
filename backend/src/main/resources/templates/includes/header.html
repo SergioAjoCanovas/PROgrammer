@@ -7,184 +7,176 @@
 
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- SweetAlert2 -->
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        /* --- ESTILOS PRINCIPALES DEL HEADER (CORRECCIÓN FLUIDA) --- */
-        .encabezado-principal {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 10px 20px;
-            box-sizing: border-box;
-            background-color: rgba(26, 26, 26, 0.95); /* Color de fondo por si acaso */
-            border-bottom: 2px solid #FFCC00;
-        }
+    <style>.encabezado-principal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background-color: rgba(26, 26, 26, 0.95);
+    border-bottom: 2px solid #FFCC00;
+}
 
-        .seccion-izquierda, .seccion-derecha {
-            flex-shrink: 0; /* Evita que el logo o el menú derecho se aplasten */
-        }
+.seccion-izquierda, .seccion-derecha {
+    flex-shrink: 0;
+}
 
-        /* --- MAGIA DINÁMICA AQUÍ --- */
-        .navegacion-central {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly; 
-            align-items: center;
-            flex: 1; 
-            margin: 0 1vw; /* Margen reducido para que el Admin tenga más sitio */
-            gap: clamp(5px, 1vw, 15px); /* Espacio extra elástico */
-            min-width: 0; /* Previene desbordamientos en flexbox */
-        }
+.navegacion-central {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1;
+    margin: 0 1vw;
+    gap: clamp(5px, 1vw, 15px);
+    min-width: 0;
+}
 
-        .icono-nav {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #ffffff;
-            padding: 5px 10px;
-            transition: all 0.3s ease;
-            position: relative; /* Para el globo de notificaciones */
-        }
+.icono-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+    position: relative;
+}
 
-        .icono-nav i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
+.icono-nav i {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
 
-        .texto-icono {
-            white-space: nowrap; /* Evita que las palabras se partan */
-            font-size: clamp(10px, 0.75vw, 13px); /* Letra adaptable */
-            font-weight: bold;
-        }
+.texto-icono {
+    white-space: nowrap;
+    font-size: clamp(10px, 0.75vw, 13px);
+    font-weight: bold;
+}
 
-        .icono-nav:hover, .icono-nav:hover i, .icono-nav:hover .texto-icono {
-            color: #FFCC00;
-            transform: scale(1.05);
-        }
+.icono-nav:hover, .icono-nav:hover i, .icono-nav:hover .texto-icono {
+    color: #FFCC00;
+    transform: scale(1.05);
+}
 
-        .activo-btn, .activo-btn i, .activo-btn span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
-        }
+.activo-btn, .activo-btn i, .activo-btn span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
+}
 
-        /* --- NOTIFICACIONES --- */
-        .contenedor-avisos {
-            display: contents; /* Evita desplazamientos al ser un wrapper innecesario en flex */
-        }
+.contenedor-avisos {
+    display: contents;
+}
 
-        .panel-notificaciones {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 280px;
-            background: #1a1a1a;
-            border: 1px solid #FFCC00;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
-            border-radius: 8px;
-            margin-top: 10px;
-            z-index: 1000;
-            padding: 10px;
-        }
+.panel-notificaciones {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 280px;
+    background: #1a1a1a;
+    border: 1px solid #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+    border-radius: 8px;
+    margin-top: 10px;
+    z-index: 1000;
+    padding: 10px;
+}
 
-        .panel-notificaciones.mostrar {
-            display: block;
-        }
+.panel-notificaciones.mostrar {
+    display: block;
+}
 
-        .notificacion-item {
-            padding: 10px;
-            border-bottom: 1px solid #333;
-            color: white;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.notificacion-item {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    color: white;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .notificacion-item:last-child {
-            border-bottom: none;
-        }
+.notificacion-item:last-child {
+    border-bottom: none;
+}
 
-        .notificacion-item i {
-            color: #00f2ff;
-        }
+.notificacion-item i {
+    color: #00f2ff;
+}
 
-        .titulo-panel {
-            color: #FFCC00;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #FFCC00;
-            display: block;
-        }
+.titulo-panel {
+    color: #FFCC00;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #FFCC00;
+    display: block;
+}
 
-        /* --- SECCIÓN DERECHA (PERFIL Y LOGOUT) --- */
-        .seccion-derecha {
-            display: flex;
-            align-items: center;
-            gap: clamp(10px, 1.5vw, 20px);
-            margin-left: auto;
-        }
+.seccion-derecha {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.5vw, 20px);
+    margin-left: auto;
+}
 
-        .info-texto-usuario {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; /* Reforzamos que se alineen a la derecha y en columna */
-            text-align: right;
-            justify-content: center;
-            line-height: 1.2;
-        }
-        
-        .avatar-usuario img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #FFCC00;
-            object-fit: cover;
-        }
+.info-texto-usuario {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    justify-content: center;
+    line-height: 1.2;
+}
 
-        .avatar-usuario i {
-            font-size: 2rem;
-            color: #fff;
-        }
+.avatar-usuario img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #FFCC00;
+    object-fit: cover;
+}
 
-        .item-derecha {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #fff;
-        }
+.avatar-usuario i {
+    font-size: 2rem;
+    color: #fff;
+}
 
-        .btn-menu-movil {
-            display: none;
-            background: none;
-            border: none;
-            color: #FFCC00;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+.item-derecha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+}
 
-        /* Adaptación para pantallas más pequeñas / tablets */
-        @media (max-width: 900px) {
-            .navegacion-central {
-                margin: 0 1vw;
-            }
-            .info-texto-usuario {
-                display: none; /* Ocultar nombre en pantallas estrechas para dar espacio al menú */
-            }
-        }
-    </style>
+.btn-menu-movil {
+    display: none;
+    background: none;
+    border: none;
+    color: #FFCC00;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 
-    <style th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'USUARIO' or usuarioHeader.rol.nombre == '4')}">
-        /* Ocultar botones de seguir para el rol USUARIO en toda la web */
-        .btn-follow-heart { display: none !important; }
-    </style>
+@media (max-width: 900px) {
+    .navegacion-central {
+        margin: 0 1vw;
+    }
+    .info-texto-usuario {
+        display: none;
+    }
+}
+</style>
+
+    <style th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'USUARIO' or usuarioHeader.rol.nombre == '4')}">.btn-follow-heart { display: none !important; }
+</style>
 </head>
 
 <body>
@@ -259,18 +251,17 @@
             <i class="fas fa-sign-out-alt btn-logout-icon"></i>
             <span class="texto-icono btn-logout-texto">Cerrar Sesión</span>
 
-            <style>
-                .btn-logout-icon { color: #ffffff; font-size: 1.2rem; transition: all 0.3s ease; }
-                .btn-logout-texto { color: #ffffff; transition: all 0.3s ease; white-space: nowrap; }
-                .btn-logout:hover .btn-logout-icon, .btn-logout:hover .btn-logout-texto { color: #ff0000 !important; }
-            </style>
+            <style>.btn-logout-icon { color: #ffffff; font-size: 1.2rem; transition: all 0.3s ease; }
+.btn-logout-texto { color: #ffffff; transition: all 0.3s ease; white-space: nowrap; }
+.btn-logout:hover .btn-logout-icon, .btn-logout:hover .btn-logout-texto { color: #ff0000 !important; }
+</style>
         </a>
 
         <div th:if="${usuarioHeader != null}" class="info-texto-usuario" id="info-usuario-db">
             <span style="color:white;font-weight:bold;font-size:0.85em; display: block;" th:text="${#strings.toUpperCase(usuarioHeader.username)}"></span>
             <span style="color:#FFCC00;font-size:0.65em;font-weight:600; display: block;" th:text="${#strings.toUpperCase(usuarioHeader.rol.nombre)}"></span>
         </div>
-        
+
         <div th:unless="${usuarioHeader != null}" id="info-usuario" class="info-texto-usuario"></div>
 
         <a th:href="@{${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR' ? '/limitedProfile' : '/ownProfile'}}" class="item-derecha" id="link-perfil">
@@ -293,7 +284,6 @@
             if (nav) nav.classList.toggle('mostrar-menu');
         };
 
-        // LÓGICA DE NOTIFICACIONES AJAX (SOLO GLOBO ROJO)
         function cargarNotificaciones() {
             fetch('/api/notificaciones')
             .then(res => {
@@ -302,7 +292,7 @@
             })
             .then(data => {
                 const badge = document.getElementById('badge-avisos');
-                
+
                 if (data.noLeidas > 0) {
                     badge.innerText = data.noLeidas > 99 ? '+99' : data.noLeidas;
                     badge.style.display = 'block';
@@ -310,7 +300,7 @@
                     badge.style.display = 'none';
                 }
             })
-            .catch(e => { /* Ignorar error de no logueado */ });
+            .catch(e => {  });
         }
 
         window.cerrarSesionLocal = function(event) {
@@ -327,10 +317,9 @@
             } else if (path.startsWith('/adminPanel')) {
                 document.getElementById('nav-admin')?.classList.add('activo-btn');
             }
-            
-            // Iniciar notificaciones
+
             cargarNotificaciones();
-            // Refrescar avisos cada 30 segundos
+
             setInterval(cargarNotificaciones, 30000);
         });
 
@@ -366,14 +355,13 @@
 
             const contenedorInfo = document.getElementById('info-usuario');
             const contenedorDb = document.getElementById('info-usuario-db');
-            
+
             if (username && contenedorInfo && !contenedorDb) {
                 let nombreRol = window.rol;
                 if (window.rol == '1') nombreRol = 'ADMIN';
                 if (window.rol == '2') nombreRol = 'DEVELOPER';
                 if (window.rol == '3') nombreRol = 'COMPANY';
 
-                /* display: block; en los span para forzar el salto de línea en JavaScript */
                 contenedorInfo.innerHTML = `
                     <span style="color: white; font-weight: bold; font-size: 0.85em; display: block;">${username.toUpperCase()}</span>
                     <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600; display: block;">${nombreRol}</span>
@@ -382,7 +370,6 @@
         })();
     </script>
 
-    <!-- MODAL GLOBAL DE UNFOLLOW (Dejar de Seguir) -->
     <div id="modalUnfollowGlobal" class="modal-overlay">
         <div class="modal-box modal-eliminar" id="modalBoxUnfollow">
             <h3><i class="fas fa-heart-crack"></i> Dejar de Seguir</h3>
@@ -401,7 +388,7 @@
                 const btnConfirmar = document.getElementById('btnConfirmarUnfollow');
                 const btnCancelar = document.getElementById('btnCancelarUnfollow');
                 const modalMessage = document.getElementById('modalUnfollowMessage');
-                
+
                 modalMessage.innerText = `¿Seguro que quieres dejar de seguir a este usuario (${targetName})?`;
 
                 modal.classList.add('mostrar');
@@ -411,7 +398,7 @@
                     cleanup();
                     resolve({ isConfirmed: true });
                 };
-                
+
                 const onCancel = () => {
                     modal.classList.remove('mostrar');
                     cleanup();

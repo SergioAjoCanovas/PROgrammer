@@ -36,7 +36,6 @@
             Define tu arsenal técnico para destacar en la comunidad.
         </p>
 
-        <!-- BOTONES GLOBALES -->
         <div class="botones-globales-stack">
             <button type="button" id="btn-global-marcar" class="btn-tech-toggle btn-tech-marcar" onclick="toggleAllTechs(true)">
                 <i class="fas fa-check-double"></i> Marcar todas
@@ -113,10 +112,10 @@
         const allCheckboxes = document.querySelectorAll('.grupo-tecnologico input[type="checkbox"]');
         const allCheckedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length;
         const totalCount = allCheckboxes.length;
-        
+
         const btnGlobalMarcar = document.getElementById('btn-global-marcar');
         const btnGlobalDesmarcar = document.getElementById('btn-global-desmarcar');
-        
+
         if (btnGlobalMarcar && btnGlobalDesmarcar) {
             if (totalCount > 0 && allCheckedCount === totalCount) {
                 btnGlobalMarcar.classList.add('activo');
@@ -131,10 +130,10 @@
             const checkboxes = fieldset.querySelectorAll('input[type="checkbox"]');
             const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
             const total = checkboxes.length;
-            
+
             const btnMarcar = fieldset.querySelector('.btn-cat-marcar');
             const btnDesmarcar = fieldset.querySelector('.btn-cat-desmarcar');
-            
+
             if (btnMarcar && btnDesmarcar) {
                 if (total > 0 && checkedCount === total) {
                     btnMarcar.classList.add('activo');
@@ -166,7 +165,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         updateButtonStates();
-        
+
         document.querySelectorAll('.grupo-tecnologico input[type="checkbox"]').forEach(cb => {
             cb.addEventListener('change', updateButtonStates);
         });
@@ -175,8 +174,3 @@
 
 </body>
 </html>
-
-
-
-
-

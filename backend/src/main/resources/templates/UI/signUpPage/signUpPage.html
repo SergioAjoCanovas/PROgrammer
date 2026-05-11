@@ -3,65 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
     <link rel="stylesheet" href="/Style/loginPage_styles/loginPage.css">
     <link rel="stylesheet" href="/Style/signUpPage_styles/signUpPage.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <title>Registro - PROgrammer</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        /* ESTILO DEL TOAST DE ERROR NEÓN */
-        .toast-error-neon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(15, 5, 5, 0.98); /* Fondo muy oscuro con tinte rojizo */
-            color: white;
-            padding: 18px 28px;
-            border-radius: 8px;
-            border-left: 6px solid #ff4444; /* Rojo neón */
-            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); /* Resplandor rojo */
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: sans-serif;
-            transform: translateX(120%);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999;
-        }
+    <style>.toast-error-neon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(15, 5, 5, 0.98);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 8px;
+    border-left: 6px solid #ff4444;
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
 
-        .toast-error-neon.mostrar {
-            transform: translateX(0);
-            opacity: 1;
-        }
+.toast-error-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
 
-        .toast-error-neon i {
-            color: #ff4444;
-            font-size: 2rem;
-        }
+.toast-error-neon i {
+    color: #ff4444;
+    font-size: 2rem;
+}
 
-        .toast-error-neon strong {
-            display: block;
-            color: #ff4444;
-            font-size: 1.1rem;
-            margin-bottom: 2px;
-        }
-    </style>
+.toast-error-neon strong {
+    display: block;
+    color: #ff4444;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+</style>
 </head>
 <body class="fondo-oscuro-neon">
 
     <main class="contenedor-login">
         <div class="login-card tarjeta-acordeon">
             <img src="/Img/logo_sin_silla_de_ruedas-removebg-preview.png" alt="Logotipo PROgrammer" class="login-logo"/>
-            
+
             <h2>Crear cuenta</h2>
-            
+
             <form th:action="@{/api/auth/signup}" method="POST" class="login-form" enctype="multipart/form-data">
-                
+
                 <div class="input-group">
                     <label for="username">Nombre de usuario</label>
                     <input type="text" id="username" name="username" placeholder="Ej: John Doe" required/>
@@ -110,12 +108,12 @@
                         <input type="password" id="password" name="password" placeholder="Crea una contraseña segura" required>
                         <i class="far fa-eye toggle-password" data-target="password"></i>
                     </div>
-                    <!-- CONTENEDOR MEDIDOR NEÓN -->
+
                     <div class="password-strength">
                         <div id="strength-bar" class="strength-bar"></div>
                     </div>
                     <span id="strength-text" class="strength-text"></span>
-                    
+
                     <ul class="password-requirements">
                         <li id="req-length" class="invalid"><i class="fas fa-times"></i> Min: 8 caracteres</li>
                         <li id="req-start" class="invalid"><i class="fas fa-times"></i> Que no empiece en número</li>
@@ -135,7 +133,7 @@
                 </div>
 
                 <button type="submit" class="boton-ver" style="margin-top: 10px; width: 100%;">Registrarme</button>
-                
+
                 <div class="registro-link">
                     <p>¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
                 </div>
@@ -155,7 +153,7 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        // --- 1. LÓGICA MOSTRAR/OCULTAR CONTRASEÑA ---
+
         const togglePasswords = document.querySelectorAll('.toggle-password');
 
         togglePasswords.forEach(function(icon) {
@@ -165,17 +163,15 @@
 
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
-                
-                // Cambiar el icono
+
                 this.classList.toggle('fa-eye-slash');
                 this.classList.toggle('fa-eye');
             });
         });
 
-        // --- 1.5 LOGICA DE FOTO DE PERFIL ---
         const fileInput = document.getElementById('foto');
         const fileWrapper = document.getElementById('file-wrapper');
-        
+
         fileInput.addEventListener('change', function() {
             if (this.files && this.files.length > 0) {
                 fileWrapper.classList.add('file-selected');
@@ -184,7 +180,6 @@
             }
         });
 
-        // --- 2. VALIDACIÓN Y FUERZA DE CONTRASEÑA ---
         const form = document.querySelector('.login-form');
         const passwordInput = document.getElementById('password');
         const usernameInput = document.getElementById('username');
@@ -192,32 +187,30 @@
         const strengthBar = document.getElementById('strength-bar');
         const strengthText = document.getElementById('strength-text');
 
-        // Elementos de la lista de requisitos
         const reqLength = document.getElementById('req-length');
         const reqStart = document.getElementById('req-start');
         const reqUpper = document.getElementById('req-upper');
         const reqLower = document.getElementById('req-lower');
         const reqNumber = document.getElementById('req-number');
         const reqSpecial = document.getElementById('req-special');
-        
+
         const reqUsernameMin = document.getElementById('req-username-min');
         const reqUsernameNumber = document.getElementById('req-username-number');
         const reqUsernameSpecial = document.getElementById('req-username-special');
         const reqUsernameUpper = document.getElementById('req-username-upper');
-        
+
         const reqEmailStart = document.getElementById('req-email-start');
         const reqEmailLength = document.getElementById('req-email-length');
         const reqEmailSpecials = document.getElementById('req-email-specials');
         const reqEmailFormat = document.getElementById('req-email-format');
 
-        // Requisitos mínimos
         const minLength = 8;
         const hasUpper = /[A-Z]/;
         const hasLower = /[a-z]/;
         const hasNumber = /[0-9]/;
         const hasSpecial = /[^A-Za-z0-9]/;
         const startsWithNumber = /^[0-9]/;
-        // Nueva Regex para email: permite números al inicio/final, mín 6 alfanuméricos
+
         const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._+-]*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,10}$/;
 
         let passwordIsValid = false;
@@ -243,12 +236,12 @@
                 const containsNumber = hasNumber.test(val);
                 const containsSpecial = /[^a-zA-Z0-9\s]/.test(val);
                 const firstCharIsUpper = /^[A-Z]/.test(val);
-                
+
                 updateReq(reqUsernameMin, meetsMinLength);
                 updateReq(reqUsernameNumber, !containsNumber);
                 updateReq(reqUsernameSpecial, !containsSpecial);
                 updateReq(reqUsernameUpper, firstCharIsUpper);
-                
+
                 usernameIsValid = meetsMinLength && !containsNumber && !containsSpecial;
             } else {
                 usernameIsValid = false;
@@ -264,24 +257,23 @@
             if (val.length > 0) {
                 const parts = val.split('@');
                 const localPart = parts[0] || '';
-                
+
                 const startsWithAlnum = /^[a-zA-Z0-9]/.test(localPart);
                 const alnumCount = (localPart.match(/[a-zA-Z0-9]/g) || []).length;
                 const meetsMinLength = alnumCount >= 4;
-                
-                // No dos seguidos, no al final
+
                 const noConsecutiveSpecials = !/[._+-]{2}/.test(localPart);
                 const noSpecialAtEnd = !/[._+-]$/.test(localPart);
                 const specialsValid = noConsecutiveSpecials && noSpecialAtEnd;
-                
+
                 const hasValidFormat = emailRegex.test(val);
                 const fullValid = hasValidFormat && meetsMinLength && specialsValid && startsWithAlnum;
-                
+
                 updateReq(reqEmailStart, startsWithAlnum);
                 updateReq(reqEmailLength, meetsMinLength);
                 updateReq(reqEmailSpecials, specialsValid);
                 updateReq(reqEmailFormat, fullValid);
-                
+
                 emailIsValid = fullValid;
             } else {
                 emailIsValid = false;
@@ -295,7 +287,7 @@
         passwordInput.addEventListener('input', function() {
             const val = this.value;
             let level = 0;
-            
+
             if (val.length > 0) {
                 const meetsMinLength = val.length >= minLength;
                 const meetsUpper = hasUpper.test(val);
@@ -303,44 +295,42 @@
                 const meetsNumber = hasNumber.test(val);
                 const meetsSpecial = hasSpecial.test(val);
                 const doesntStartWithNumber = !startsWithNumber.test(val);
-                
+
                 updateReq(reqLength, meetsMinLength);
                 updateReq(reqStart, doesntStartWithNumber);
                 updateReq(reqUpper, meetsUpper);
                 updateReq(reqLower, meetsLower);
                 updateReq(reqNumber, meetsNumber);
                 updateReq(reqSpecial, meetsSpecial);
-                
+
                 let rulesMet = 0;
                 if (meetsUpper) rulesMet++;
                 if (meetsLower) rulesMet++;
                 if (meetsNumber) rulesMet++;
                 if (meetsSpecial) rulesMet++;
-                
-                // Determinamos el nivel
+
                 if (val.length < 6) {
-                    level = 1; // Muy débil (Rojo)
+                    level = 1;
                 } else if (!meetsMinLength || rulesMet < 3 || !doesntStartWithNumber) {
-                    level = 2; // Débil (Naranja)
+                    level = 2;
                 } else if (meetsMinLength && meetsUpper && meetsLower && meetsNumber && doesntStartWithNumber) {
-                    level = 3; // Normal (Amarillo) - Cumple lo mínimo requerido
-                    
+                    level = 3; 
+
                     if (meetsSpecial || val.length >= 10) {
-                        level = 4; // Buena (Pistacho)
+                        level = 4;
                     }
                     if (meetsSpecial && val.length >= 12) {
-                        level = 5; // Muy Buena (Verde Oscuro)
+                        level = 5;
                     }
                 } else {
                     level = 1;
                 }
-                
-                // Actualizamos validez
+
                 passwordIsValid = meetsMinLength && meetsUpper && meetsLower && meetsNumber && doesntStartWithNumber;
             } else {
                 level = 0;
                 passwordIsValid = false;
-                
+
                 updateReq(reqLength, false);
                 updateReq(reqStart, false);
                 updateReq(reqUpper, false);
@@ -349,10 +339,9 @@
                 updateReq(reqSpecial, false);
             }
 
-            // Actualizar UI
-            strengthBar.className = 'strength-bar'; // Reset classes
+            strengthBar.className = 'strength-bar';
             strengthText.className = 'strength-text';
-            
+
             switch(level) {
                 case 1:
                     strengthBar.classList.add('strength-1');
@@ -390,11 +379,10 @@
             const icon = toast.querySelector('i');
             document.getElementById('toast-error-titulo').textContent = title;
             document.getElementById('toast-error-mensaje').textContent = message;
-            
-            // Reset classes
+
             toast.className = 'toast-error-neon';
             icon.className = 'fas';
-            
+
             if (type === 'info') {
                 toast.style.borderLeftColor = '#00f2ff';
                 toast.style.boxShadow = '0 8px 32px rgba(0, 242, 255, 0.3)';
@@ -410,8 +398,7 @@
             }
 
             toast.classList.add('mostrar');
-            
-            // Ocultar después de 5 segundos
+
             setTimeout(() => {
                 toast.classList.remove('mostrar');
             }, 5000);
@@ -422,10 +409,8 @@
             const pass = passwordInput.value;
             const confirmPass = document.getElementById('confirm_password').value;
 
-            // Prevenir siempre al principio para validar nosotros
             e.preventDefault();
 
-            // 1. VALIDACIONES
             if (!usernameIsValid) {
                 showToast("Usuario no válido", "El nombre de usuario debe tener mínimo 3 caracteres y no contener números.");
                 return;
@@ -451,7 +436,6 @@
                 return;
             }
 
-            // 2. AVISO PARA DESARROLLADORES (SweetAlert2 Amarillo)
             if (rolSelect.value === "2") {
                 Swal.fire({
                     title: '<span style="color:#FFCC00;"><i class="fas fa-exclamation-triangle"></i> ¡Atención Desarrollador!</span>',
@@ -472,30 +456,28 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        form.submit(); // Enviar de verdad tras confirmar
+                        form.submit(); 
                     }
                 });
             } else {
-                // Si no es desarrollador, enviamos directamente
+
                 form.submit();
             }
         });
 
-        // --- 3. LÓGICA PARA DETECTAR ERRORES EN LA URL Y MOSTRAR EL TOAST ---
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const toast = document.getElementById('toast-signup-error');
-            
+
             if (urlParams.has('error')) {
                 const errorType = urlParams.get('error');
-                
+
                 if (errorType === 'security') {
                     showToast("Intento no autorizado", "No tienes permisos para registrarte con ese rol. El intento ha sido bloqueado.");
                 } else {
                     showToast("Error de registro", "El usuario o email ya existen.");
                 }
 
-                // Limpiar la URL para que no vuelva a salir al recargar
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         });

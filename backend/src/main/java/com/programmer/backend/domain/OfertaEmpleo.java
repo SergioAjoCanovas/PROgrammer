@@ -18,7 +18,7 @@ public class OfertaEmpleo {
     private String titulo;
     private String descripcion;
     
-    // --- NUEVOS CAMPOS ---
+    
     @Column(columnDefinition = "TEXT")
     private String requisitos;
 

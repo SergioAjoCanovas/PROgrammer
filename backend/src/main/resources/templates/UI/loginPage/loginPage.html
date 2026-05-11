@@ -8,45 +8,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Login - PROgrammer</title>
 
-    <style>
-        /* ESTILO DEL TOAST DE ERROR NEÓN */
-        .toast-error-neon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(15, 5, 5, 0.98); /* Fondo muy oscuro con tinte rojizo */
-            color: white;
-            padding: 18px 28px;
-            border-radius: 8px;
-            border-left: 6px solid #ff4444; /* Rojo neón */
-            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3); /* Resplandor rojo */
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: sans-serif;
-            transform: translateX(120%);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999;
-        }
+    <style>.toast-error-neon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(15, 5, 5, 0.98);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 8px;
+    border-left: 6px solid #ff4444;
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
 
-        .toast-error-neon.mostrar {
-            transform: translateX(0);
-            opacity: 1;
-        }
+.toast-error-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
 
-        .toast-error-neon i {
-            color: #ff4444;
-            font-size: 2rem;
-        }
+.toast-error-neon i {
+    color: #ff4444;
+    font-size: 2rem;
+}
 
-        .toast-error-neon strong {
-            display: block;
-            color: #ff4444;
-            font-size: 1.1rem;
-            margin-bottom: 2px;
-        }
-    </style>
+.toast-error-neon strong {
+    display: block;
+    color: #ff4444;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+</style>
 </head>
 <body>
     <main class="contenedor-login">
@@ -81,7 +79,7 @@
                 <div class="divisor">
                     <span>o</span>
                 </div>
-                
+
                 <a href="/oauth2/authorization/google" class="boton-google">
                     <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google logo" width="20" height="20">
                     Iniciar sesión con Google
@@ -113,7 +111,7 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        // Lógica para mostrar/ocultar contraseña
+
         const togglePassword = document.querySelector('#togglePassword');
         const passwordInput = document.querySelector('#password');
 
@@ -124,12 +122,11 @@
             this.classList.toggle('fa-eye');
         });
 
-        // LÓGICA PARA DETECTAR ERRORES EN LA URL Y MOSTRAR EL TOAST
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const toastError = document.getElementById('toast-login-error');
             const toastSuccess = document.getElementById('toast-login-success');
-            
+
             if (toastSuccess) {
                 setTimeout(() => {
                     toastSuccess.classList.add('mostrar');
@@ -138,12 +135,10 @@
                     toastSuccess.classList.remove('mostrar');
                 }, 5000);
             }
-            
-            // Si la URL tiene ?error o ?error=true
+
             if (urlParams.has('error')) {
                 const errorType = urlParams.get('error');
-                
-                // Personalización del mensaje
+
                 if (errorType === 'auth' || errorType === 'true') {
                     document.getElementById('toast-error-mensaje').innerText = "Credenciales incorrectas. Si te registraste con Google, por favor usa el botón de 'Iniciar sesión con Google'.";
                 } else if (errorType === 'invalid') {
@@ -153,16 +148,13 @@
                 } else if (errorType === 'not_registered') {
                     document.getElementById('toast-error-mensaje').innerText = "Esa cuenta de Google no está registrada en nuestra base de datos. Por favor, regístrate primero.";
                 }
-                
-                // Mostrar el toast
+
                 setTimeout(() => {
                     toastError.classList.add('mostrar');
                 }, 100);
 
-                // Limpiar la URL para que no vuelva a salir al recargar
                 window.history.replaceState({}, document.title, window.location.pathname);
 
-                // Ocultar automáticamente tras 5 segundos
                 setTimeout(() => {
                     toastError.classList.remove('mostrar');
                 }, 5000);
@@ -171,10 +163,9 @@
     </script>
 
     <script>
-        // Si usas el fragmento de Thymeleaf de arriba (th:replace), este bloque fetch es redundante pero lo mantengo
-        // por si lo necesitas para el header que no estaba definido arriba.
-        const headerPath = "http://localhost:8080/includes/header.html";
-        // fetch(headerPath)... etc
+
+        const headerPath = "http:// localhost:8080/includes/header.html";
+
     </script>
 </body>
 </html>

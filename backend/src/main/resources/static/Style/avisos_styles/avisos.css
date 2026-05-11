@@ -1,8 +1,5 @@
-/* =========================================================
-   GENERAL Y LAYOUT
-   ========================================================= */
-.activo, 
-header a.activo i, 
+.activo,
+header a.activo i,
 header a.activo span {
     color: #FFCC00 !important;
     text-shadow: 0 0 10px #FFCC00 !important;
@@ -19,11 +16,8 @@ body {
     min-height: 100vh;
 }
 
-/* =========================================================
-   BOTÓN VOLVER
-   ========================================================= */
 .contenedor-volver {
-    max-width: 1800px; 
+    max-width: 1800px;
     width: 98%;
     margin: 30px auto 0 auto;
     padding: 0 20px;
@@ -33,7 +27,7 @@ body {
 }
 
 .enlace-volver {
-    color: #888888; 
+    color: #888888;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -44,14 +38,11 @@ body {
 }
 
 .enlace-volver:hover {
-    color: #FFCC00; 
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
-    transform: translateX(-5px); 
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
 }
 
-/* =========================================================
-   CONTENEDOR PRINCIPAL Y HEADER DE SECCIÓN
-   ========================================================= */
 .contenedor-avisos-page {
     max-width: 800px;
     margin: 20px auto 40px auto;
@@ -80,9 +71,6 @@ body {
     gap: 15px;
 }
 
-/* =========================================================
-   CONTROLES Y BOTONES
-   ========================================================= */
 .controles-avisos {
     display: flex;
     gap: 15px;
@@ -107,21 +95,21 @@ body {
     border-color: #FFCC00;
 }
 
-.btn-borrar { 
-    color: #ff4444; 
-    border-color: #ff4444; 
+.btn-borrar {
+    color: #ff4444;
+    border-color: #ff4444;
 }
 
-.btn-borrar:hover { 
+.btn-borrar:hover {
     background: #ff4444;
     color: white;
     box-shadow: 0 0 20px rgba(255, 68, 68, 0.6);
     border-color: #ff4444 !important;
 }
 
-.btn-silenciar { 
-    color: #00f2ff; 
-    border-color: #00f2ff; 
+.btn-silenciar {
+    color: #00f2ff;
+    border-color: #00f2ff;
 }
 
 .btn-silenciar:hover {
@@ -131,9 +119,9 @@ body {
     border-color: #00f2ff !important;
 }
 
-.btn-silenciar.silenciado { 
-    color: #ff4444; 
-    border-color: #ff4444; 
+.btn-silenciar.silenciado {
+    color: #ff4444;
+    border-color: #ff4444;
 }
 
 .btn-silenciar.silenciado:hover {
@@ -198,16 +186,12 @@ body {
     transform: scale(1.1);
 }
 
-/* =========================================================
-   LISTA DE AVISOS E ITEMS
-   ========================================================= */
 .lista-avisos {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Encabezados de sección con acciones */
 .header-lista-avisos {
     display: flex;
     justify-content: space-between;
@@ -236,9 +220,9 @@ body {
 .contenido-seccion-desplegable {
     transition: all 0.3s ease;
     overflow: hidden;
-    max-height: 2000px; /* Suficiente para la mayoría de listas */
+    max-height: 2000px;
     opacity: 1;
-    padding: 10px 20px; /* Espacio para que el hover no se corte */
+    padding: 10px 20px;
     box-sizing: border-box;
 }
 
@@ -329,8 +313,8 @@ body {
     position: relative;
     text-decoration: none;
     color: white;
-    margin-bottom: 20px; /* Más separación entre ellos */
-    width: calc(100% - 10px); /* Un poco menos ancho para el efecto visual */
+    margin-bottom: 20px;
+    width: calc(100% - 10px);
     margin-left: auto;
     margin-right: auto;
 }
@@ -344,16 +328,15 @@ body {
 .aviso-item::before {
     content: '';
     position: absolute;
-    left: -1px; /* Ajuste para cubrir el borde del padre */
-    top: -1px;  /* Ajuste para cubrir el borde del padre */
-    height: calc(100% + 2px); /* Ajuste para cubrir el borde del padre */
+    left: -1px;
+    top: -1px;
+    height: calc(100% + 2px);
     width: 4px;
     background: #FFCC00;
     box-shadow: 0 0 10px #FFCC00;
     border-radius: 10px 0 0 10px;
 }
 
-/* Tipos de avisos */
 .aviso-icono {
     background: rgba(255, 204, 0, 0.1);
     color: #FFCC00;
@@ -367,27 +350,22 @@ body {
     flex-shrink: 0;
 }
 
-/* --- SEGUIDOR (Cian) --- */
 .aviso-icono.tipo-seguidor { color: #00f2ff; background: rgba(0, 242, 255, 0.1); }
 .aviso-item.tipo-seguidor::before { background: #00f2ff; box-shadow: 0 0 10px #00f2ff; }
 .aviso-item.tipo-seguidor:hover { border-color: #00f2ff; box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
 
-/* --- OFERTA (Rosa/Magenta) --- */
 .aviso-icono.tipo-oferta { color: #ff00aa; background: rgba(255, 0, 170, 0.1); }
 .aviso-item.tipo-oferta::before { background: #ff00aa; box-shadow: 0 0 10px #ff00aa; }
 .aviso-item.tipo-oferta:hover { border-color: #ff00aa; box-shadow: 0 0 15px rgba(255, 0, 170, 0.2); }
 
-/* --- PARCHE / ACEPTADA (Verde) --- */
 .aviso-icono.tipo-parche, .aviso-icono.tipo-aceptada { color: #39FF14; background: rgba(57, 255, 20, 0.1); }
 .aviso-item.tipo-parche::before, .aviso-item.tipo-aceptada::before { background: #39FF14; box-shadow: 0 0 10px #39FF14; }
 .aviso-item.tipo-parche:hover, .aviso-item.tipo-aceptada:hover { border-color: #39FF14; box-shadow: 0 0 15px rgba(57, 255, 20, 0.2); }
 
-/* --- RESEÑA / POSTULACIÓN (Amarillo/Oro) --- */
 .aviso-icono.tipo-resena, .aviso-icono.tipo-postulacion { color: #FFCC00; background: rgba(255, 204, 0, 0.1); }
 .aviso-item.tipo-resena::before, .aviso-item.tipo-postulacion::before { background: #FFCC00; box-shadow: 0 0 10px #FFCC00; }
 .aviso-item.tipo-resena:hover, .aviso-item.tipo-postulacion:hover { border-color: #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.2); }
 
-/* --- RECHAZADA (Rojo) --- */
 .aviso-icono.tipo-rechazada { color: #ff4444; background: rgba(255, 68, 68, 0.1); }
 .aviso-item.tipo-rechazada::before { background: #ff4444; box-shadow: 0 0 10px #ff4444; }
 .aviso-item.tipo-rechazada:hover { border-color: #ff4444; box-shadow: 0 0 15px rgba(255, 68, 68, 0.2); }
@@ -408,9 +386,6 @@ body {
     margin: 0;
 }
 
-/* =========================================================
-   ESTADO VACÍO
-   ========================================================= */
 .aviso-vacio {
     text-align: center;
     padding: 50px;
@@ -426,9 +401,6 @@ body {
     color: #444;
 }
 
-/* =========================================================
-   TOAST Y FEEDBACK
-   ========================================================= */
 .toast-success-neon {
     position: fixed;
     bottom: 30px;

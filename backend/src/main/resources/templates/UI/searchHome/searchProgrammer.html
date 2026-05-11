@@ -9,113 +9,111 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/homePage_styles/searchProgrammer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <style>
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-            opacity: 1 !important;
-        }
 
-        .no-resultados-container {
-            grid-column: 1 / -1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            border: 1px dashed rgba(0, 243, 255, 0.3);
-            border-radius: 15px;
-            background: rgba(0, 243, 255, 0.05);
-            margin: 20px 0;
-            width: 100%;
-        }
+    <style>.activo,
+header .nav-enlaces a.activo i,
+header .nav-enlaces a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+    opacity: 1 !important;
+}
 
-        .no-resultados-container i {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            color: #ff003c; 
-            text-shadow: 0 0 10px #ff003c;
-        }
+.no-resultados-container {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px dashed rgba(0, 243, 255, 0.3);
+    border-radius: 15px;
+    background: rgba(0, 243, 255, 0.05);
+    margin: 20px 0;
+    width: 100%;
+}
 
-        .no-resultados-container p {
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+.no-resultados-container i {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    color: #ff003c;
+    text-shadow: 0 0 10px #ff003c;
+}
 
-        .foto-perfil-wrapper {
-            position: relative;
-            display: inline-block;
-        }
+.no-resultados-container p {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 
-        .btn-follow-heart {
-            position: absolute;
-            bottom: 5px;
-            right: 0px;
-            background: rgba(15, 5, 5, 0.8);
-            border: 1px solid #ff4444;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #ff4444;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
-            z-index: 10;
-        }
+.foto-perfil-wrapper {
+    position: relative;
+    display: inline-block;
+}
 
-        .btn-follow-heart:hover {
-            background: #ff4444;
-            color: white;
-            transform: scale(1.1);
-        }
+.btn-follow-heart {
+    position: absolute;
+    bottom: 5px;
+    right: 0px;
+    background: rgba(15, 5, 5, 0.8);
+    border: 1px solid #ff4444;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ff4444;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+    z-index: 10;
+}
 
-        .btn-follow-heart i.fas {
-            color: #ff4444;
-        }
-        .btn-follow-heart:hover i.fas {
-            color: white;
-        }
+.btn-follow-heart:hover {
+    background: #ff4444;
+    color: white;
+    transform: scale(1.1);
+}
 
-        .tarjeta-perfil-neon {
-            position: relative;
-            cursor: pointer;
-        }
+.btn-follow-heart i.fas {
+    color: #ff4444;
+}
+.btn-follow-heart:hover i.fas {
+    color: white;
+}
 
-        .link-absoluto-tarjeta {
-            position: absolute;
-            inset: 0;
-            z-index: 5;
-            text-decoration: none;
-        }
+.tarjeta-perfil-neon {
+    position: relative;
+    cursor: pointer;
+}
 
-        /* Aseguramos que los elementos interactivos estén por encima del link absoluto */
-        .btn-follow-heart, 
-        .bio-recortada, 
-        .tech-toggle, 
-        .btn-perfil,
-        .tags span,
-        .vista-todas-techs,
-        .vista-bio-completa {
-            z-index: 10;
-        }
+.link-absoluto-tarjeta {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    text-decoration: none;
+}
 
-        .bio-recortada, .tech-toggle, .btn-perfil, .tags span, .vista-todas-techs, .vista-bio-completa {
-            position: relative;
-        }
-    </style>
+.btn-follow-heart,
+.bio-recortada,
+.tech-toggle,
+.btn-perfil,
+.tags span,
+.vista-todas-techs,
+.vista-bio-completa {
+    z-index: 10;
+}
+
+.bio-recortada, .tech-toggle, .btn-perfil, .tags span, .vista-todas-techs, .vista-bio-completa {
+    position: relative;
+}
+</style>
 </head>
 <body class="body-layout fondo-oscuro-neon">
-    
+
     <div th:replace="~{includes/header :: header}"></div>
 
     <div class="contenedor-volver">
@@ -127,7 +125,7 @@
     <main class="contenedor-busqueda">
         <section class="seccion-buscador-central">
             <h1 class="titulo-neon">CONECTA CON <span class="resaltado">PROGRAMADORES</span></h1>
-            
+
             <form action="/searchProgrammer/search" method="get" class="caja-busqueda-neon" autocomplete="off" id="searchForm">
                 <div class="input-wrapper">
                     <button type="button" class="funnel-icon" id="funnelBtn">
@@ -161,7 +159,7 @@
             <h2 class="subtitulo-neon" 
                 th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} ? 'Resultados de Búsqueda' : 'Perfiles Destacados'">
             </h2>
-            
+
             <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !#lists.isEmpty(developers)}" class="contador-resultados-azul">
                 <div class="contenedor-texto-contador">
                     <span class="texto-etiqueta">PROGRAMADORES ENCONTRADOS:</span>
@@ -180,21 +178,21 @@
 
             <div th:unless="${#lists.isEmpty(developers)}" 
                  th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-wrapper' : 'grid-resultados'">
-                
+
                 <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav prev" onclick="moverCarrusel(-1)">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                
+
                 <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-contenedor' : ''">
                     <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
                          th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-resultados-inner'">
-                        
+
                         <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
                              th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
                                      esLarga=${#strings.length(fullBio) > 60}">
-                            
+
                             <a th:href="@{/profileView/{id}(id=${developer.usuario != null ? developer.usuario.id : 0})}" class="link-absoluto-tarjeta"></a>
-                            
+
                             <div class="contenido-perfil">
                                 <div class="foto-perfil-wrapper">
                                     <img th:src="${developer.usuario != null and developer.usuario.fotoPerfil != null ? developer.usuario.fotoPerfil : '/Img/stock/default-profile.svg'}" alt="Foto de perfil" class="foto-perfil">
@@ -212,12 +210,12 @@
                                 <div style="text-align: center; margin-top: 2px; margin-bottom: 10px; color: #FFCC00; font-size: 0.8em; font-weight: bold;">
                                     <i class="fas fa-users"></i> <span th:text="${developer.usuario != null ? developer.usuario.followersCountFormatted : '0'}">0</span> <span th:text="${developer.usuario != null and developer.usuario.followersCount == 1 ? 'Seguidor' : 'Seguidores'}">Seguidores</span>
                                 </div>
-                                
+
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
                                      th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
                                     <p th:text="${esLarga ? #strings.substring(fullBio,0,60) + '...' : fullBio}"></p>
                                 </div>
-                                
+
                                 <div class="tags-container">
                                     <div class="tags">
                                         <span th:each="tech, iterStat : ${developer.tecnologias}" th:if="${iterStat.index < 3}" th:text="${tech.nombre}"></span>
@@ -245,7 +243,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <button th:if="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())}" class="btn-nav next" onclick="moverCarrusel(1)">
                     <i class="fas fa-chevron-right"></i>
                 </button>
@@ -332,8 +330,7 @@
 
     function actualizarCarrusel() {
         if(!track) return;
-        
-        // Si estamos en móvil, apagamos el JS para que el CSS nativo haga el trabajo suave
+
         if (window.innerWidth <= 768) {
             track.style.transform = 'none';
             return;
@@ -341,14 +338,13 @@
 
         const tarjetas = track.querySelectorAll('.tarjeta-perfil-neon');
         if (tarjetas.length === 0) return;
-        
+
         const visibleCards = window.innerWidth <= 1050 ? 2 : 3;
         const maxIndex = Math.max(0, tarjetas.length - visibleCards);
-        
+
         if (index > maxIndex) index = 0;
         if (index < 0) index = maxIndex;
 
-        // Calculo Dinámico del tamaño de la tarjeta (ancho real + el espacio de separación que es 30)
         const cardWidth = tarjetas[0].offsetWidth;
         const gap = 30; 
         const cardStep = cardWidth + gap;
@@ -363,7 +359,7 @@
     }
 
     function startAutoPlay() {
-        if(!track || window.innerWidth <= 768) return; // No auto-reproducir en móviles (molesta el scroll táctil)
+        if(!track || window.innerWidth <= 768) return; 
         autoPlayInterval = setInterval(() => {
             index--;
             actualizarCarrusel();
@@ -401,13 +397,13 @@
         try {
             const formData = new FormData();
             formData.append('targetId', targetId);
-            
+
             const response = await fetch('/usuario/toggleFollow', {
                 method: 'POST',
                 body: formData
             });
             const result = await response.text();
-            
+
             if (result === 'OK') {
                 if (icon.classList.contains('far')) {
                     icon.classList.remove('far');

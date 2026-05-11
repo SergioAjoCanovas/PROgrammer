@@ -31,9 +31,9 @@
 
     <aside class="columna-perfil">
         <div class="tarjeta-perfil tarjeta-neon-estatica">
-    
+
             <div class="cabecera-tarjeta">
-    
+
                 <div class="foto-perfil-contenedor">
                     <div class="circulo-foto">
                         <img th:if="${proyecto.autor.fotoPerfil != null}"
@@ -43,25 +43,25 @@
                            class="fas fa-user"
                            style="font-size: 3rem; color: #aaa; display: flex; justify-content: center; align-items: center; height: 100%;"></i>
                     </div>
-    
+
                     <button class="btn-follow-heart" th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != proyecto.autor.id}" 
                          th:attr="data-id=${proyecto.autor.id}" 
                          onclick="toggleFollowUser(this, event)">
                          <i class="fa-heart" th:classappend="${proyecto.autor.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
                     </button>
                     </div>
-    
+
                 <h2 class="nombre-usuario"
                     th:text="${proyecto.autor.username}">
                     Usuario
                 </h2>
-    
+
             </div>
-    
+
             <div class="cuerpo-tarjeta">
-    
+
                 <div class="lista-dotted">
-                    
+
                     <a th:if="${proyecto.autor.github}"
                        th:href="${proyecto.autor.github}"
                        target="_blank"
@@ -69,7 +69,7 @@
                         <i class="fab fa-github"></i>
                         <span>GitHub</span>
                     </a>
-    
+
                     <a th:if="${proyecto.autor.linkedin}"
                        th:href="${proyecto.autor.linkedin}"
                        target="_blank"
@@ -77,7 +77,7 @@
                         <i class="fab fa-linkedin"></i>
                         <span>LinkedIn</span>
                     </a>
-    
+
                     <a th:if="${proyecto.autor.curriculum != null}"
                        th:href="${proyecto.autor.curriculum}"
                        target="_blank"
@@ -85,11 +85,11 @@
                         <i class="fas fa-file-alt"></i>
                         <span>CV</span>
                     </a>
-    
+
                 </div>
-    
+
             </div>
-    
+
         </div>
     </aside>
 
@@ -205,7 +205,10 @@
                               required th:text="${review.comentario}"></textarea>
                 </div>
 
-                <button type="submit" class="boton-ver" id="btn-submit-project-review">
+                <button type="submit" class="boton-ver" id="btn-submit-project-review"
+                        th:disabled="${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR'}"
+                        th:style="${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR' ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
+                        th:title="${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR' ? 'Los visitantes no pueden publicar reseñas' : (editMode ? 'Guardar edición' : 'Publicar reseña')}">
                     <i class="fas fa-paper-plane"></i> 
                     <span th:text="${editMode ? 'Guardar edición' : 'Publicar reseña'}">Publicar reseña</span>
                 </button>
@@ -226,40 +229,38 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script th:inline="javascript">
-    // ============================================================
-    // LÓGICA DE SEGUIR AL USUARIO (Igual que en ProfileView)
-    // ============================================================
+
     async function toggleFollowUser(btn, event) {
         event.stopPropagation();
         const targetId = btn.getAttribute('data-id');
         const icon = btn.querySelector('i');
-        
+
         const isFollowing = icon.classList.contains('fas');
 
         if (isFollowing) {
             const targetName = btn.getAttribute('data-username') || document.querySelector('.nombre-usuario').innerText;
-            // Asegúrate de que la función mostrarModalUnfollowGlobal exista de forma global o inclúyela si usas SweetAlert
+
             if (typeof mostrarModalUnfollowGlobal === 'function') {
                 const result = await mostrarModalUnfollowGlobal(targetName);
                 if (!result.isConfirmed) {
                     return;
                 }
             } else {
-                // Fallback clásico si no detecta el modal global
+
                 if(!confirm(`¿Seguro que quieres dejar de seguir a ${targetName}?`)) return;
             }
         }
-        
+
         try {
             const formData = new FormData();
             formData.append('targetId', targetId);
-            
+
             const response = await fetch('/usuario/toggleFollow', {
                 method: 'POST',
                 body: formData
             });
             const result = await response.text();
-            
+
             if (result === 'OK') {
                 if (icon.classList.contains('far')) {
                     icon.classList.remove('far');
@@ -277,18 +278,16 @@
             console.error('Error toggling follow:', error);
         }
     }
-    // ============================================================
+
+    const initialArq = [[${review.arquitectura != null ? review.arquitectura : 0}]];
+    const initialLim = [[${review.limpieza != null ? review.limpieza : 0}]];
+    const initialDoc = [[${review.documentacion != null ? review.documentacion : 0}]];
 
     $(document).ready(function() {
         inicializarIdentidadYEventos();
     });
 
     function inicializarIdentidadYEventos() {
-        /*[+
-        const initialArq = [[${review.arquitectura != null ? review.arquitectura : 0}]];
-        const initialLim = [[${review.limpieza != null ? review.limpieza : 0}]];
-        const initialDoc = [[${review.documentacion != null ? review.documentacion : 0}]];
-        +]*/
 
         document.querySelectorAll(".estrellas").forEach(container => {
             const tipo = container.dataset.tipo;
@@ -297,7 +296,7 @@
             if (tipo === 'arquitectura') initialVal = typeof initialArq !== 'undefined' ? initialArq : 0;
             if (tipo === 'limpieza') initialVal = typeof initialLim !== 'undefined' ? initialLim : 0;
             if (tipo === 'documentacion') initialVal = typeof initialDoc !== 'undefined' ? initialDoc : 0;
-            
+
             input.value = initialVal;
 
             for (let i = 1; i <= 5; i++) {
@@ -309,8 +308,7 @@
                     input.value = i;
                     actualizarEstrellas(container, i);
                 });
-                
-                // Si hay valor inicial, marcarlo
+
                 if (i <= initialVal) {
                     estrella.classList.remove("far");
                     estrella.classList.add("fas", "activa");
@@ -332,7 +330,6 @@
         });
     }
 
-    // --- Lógica del Modal (se mantiene igual) ---
     const modal = document.getElementById("miModal");
     const modalImg = document.getElementById("imagenFull");
     const captionText = document.getElementById("caption-modal");
@@ -353,14 +350,11 @@
     }
 
     function confirmarEdicionResena(event, form) {
-        /*[[${editMode}]]*/
-        const isEditMode = /*[[${editMode}]]*/ false;
-        
-        if (!isEditMode) return true; // Si no es modo edición, enviar normal
-
+        const isEditMode = [[${editMode}]];
+        if (!isEditMode) return true;
         event.preventDefault();
         Swal.fire({
-            title: '¿Seguro que quieres editar la reseña?',
+            title: '¿Seguro que quieres editar el contenido de la reseña?',
             text: "Se sobrescribirán los datos anteriores.",
             icon: 'question',
             showCancelButton: true,
@@ -379,7 +373,6 @@
     }
 </script>
 
-    <!-- TOAST DE ERROR PARA RESEÑAS -->
     <div id="toast-review-error" class="toast-error-neon" style="display: none;" th:if="${error != null}">
         <i class="fas fa-exclamation-triangle"></i>
         <div>
@@ -407,9 +400,8 @@
                     }, 500);
                 }, 5000);
             }
-            
-            // Opcional: Desactivar el botón de submit si ya hay reseña (Y NO ES MODO EDICIÓN)
-            const isDuplicate = /*[[${isDuplicate}]]*/ false;
+
+            const isDuplicate =  false;
             if (isDuplicate) {
                 const btnSubmit = document.querySelector('button[type="submit"]');
                 if(btnSubmit) {

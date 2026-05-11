@@ -1,7 +1,3 @@
-/* =========================================
-   ESTILOS PARA LA PÁGINA: CREAR PROYECTO
-   ========================================= */
-
 :root {
     --amarillo-neon: #FFCC00;
     --negro-puro: #000000;
@@ -9,10 +5,9 @@
     --negro-input: #050505;
     --gris-texto: #ccc;
     --amarillo-pale: #FFFDDF;
-    --fondo-naranjita: #1a160f; 
+    --fondo-naranjita: #1a160f;
 }
 
-/* --- FONDO ANIMADO --- */
 .bolas-fondo {
     position: fixed;
     top: 0;
@@ -39,11 +34,10 @@
 .bola:nth-child(3) { top: 30%; left: 50%; animation-delay: -10s; }
 
 @keyframes moverBolas {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(80px, 150px) scale(1.1); }
+0% { transform: translate(0, 0) scale(1); }
+100% { transform: translate(80px, 150px) scale(1.1); }
 }
 
-/* --- BOTÓN VOLVER (Alineado igual que en jobsearching) --- */
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -57,7 +51,7 @@
 }
 
 .enlace-volver {
-    color: #888888; 
+    color: #888888;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -68,22 +62,20 @@
 }
 
 .enlace-volver:hover {
-    color: #FFCC00; 
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
-    transform: translateX(-5px); 
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
 .contenedor-principal-edicion {
     background: transparent;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 30px 0 50px 0; /* Un poco menos de padding arriba para que el botón volver no quede tan despegado */
+    padding: 30px 0 50px 0;
     min-height: 100vh;
 }
 
-/* --- TARJETA DE FORMULARIO --- */
 .tarjeta-edicion {
     background-color: var(--negro-tarjeta) !important;
     width: 90%;
@@ -125,7 +117,6 @@
     text-shadow: 0 0 10px var(--amarillo-neon);
 }
 
-/* --- CAMPOS E INPUTS --- */
 .campo {
     margin-bottom: 25px;
     display: flex;
@@ -146,8 +137,8 @@ label {
     text-transform: uppercase;
 }
 
-input[type="text"], 
-input[type="url"], 
+input[type="text"],
+input[type="url"],
 textarea {
     background-color: var(--negro-input) !important;
     border: 1px solid #444;
@@ -164,7 +155,6 @@ input:focus, textarea:focus {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
 }
 
-/* --- PORTADA DE IMAGEN (ICONO CENTRADO) --- */
 .portada-contenedor {
     position: relative;
     width: 100%;
@@ -186,14 +176,14 @@ input:focus, textarea:focus {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
     z-index: 10;
 }
 
 .overlay-subir-portada label {
     background-color: rgba(5, 5, 5, 0.7);
     color: var(--amarillo-neon);
-    width: 60px; 
+    width: 60px;
     height: 60px;
     display: flex;
     justify-content: center;
@@ -212,7 +202,6 @@ input:focus, textarea:focus {
     transform: scale(1.1);
 }
 
-/* --- TECNOLOGÍAS --- */
 .contenedor-checkboxes {
     background-color: var(--negro-input);
     border: 1px solid #444;
@@ -238,11 +227,10 @@ input:focus, textarea:focus {
 
 .item-check:hover { color: var(--amarillo-neon); }
 
-/* --- BOTÓN GUARDAR (CENTRADÍSIMO) --- */
 .contenedor-botones {
     display: flex;
-    justify-content: center; 
-    align-items: center;     
+    justify-content: center;
+    align-items: center;
     width: 100%;
     margin-top: 30px;
 }
@@ -271,11 +259,9 @@ input:focus, textarea:focus {
     transform: scale(1.05) translateY(-3px);
 }
 
-/* --- SCROLLBAR --- */
 .contenedor-checkboxes::-webkit-scrollbar { width: 6px; }
 .contenedor-checkboxes::-webkit-scrollbar-thumb { background: var(--amarillo-neon); border-radius: 10px; }
 
-/* ----CSS PARA IMAGENES ---*/
 .grid-imagenes {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -331,10 +317,8 @@ input:focus, textarea:focus {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: none; 
+    display: none;
 }
-
-/* TOASTS */
 
 .toast {
     position: fixed;
@@ -364,8 +348,6 @@ input:focus, textarea:focus {
     color: #fff;
 }
 
-/*CHECKBOXES*/
-
 .item-check {
     display: flex;
     align-items: center;
@@ -382,10 +364,9 @@ input:focus, textarea:focus {
     cursor: pointer;
 }
 
-/* RESPONSIVE BOTÓN VOLVER */
 @media (max-width: 900px) {
     .contenedor-volver {
-        margin-top: 15px; 
-        padding: 0 20px; 
+        margin-top: 15px;
+        padding: 0 20px;
     }
 }

@@ -48,9 +48,7 @@ public class Proyecto {
     @Column(name = "esta_validado")
     private Boolean estaValidado;
 
-    // ==========================================
-    // AÑADIDO: Relación exacta con tu base de datos
-    // ==========================================
+    
     @ManyToMany
     @JoinTable(
         name = "proyecto_tecnologias", 

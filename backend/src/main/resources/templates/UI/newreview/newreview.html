@@ -75,7 +75,10 @@
                         <textarea name="comentario" placeholder="Cuéntanos tu experiencia con este profesional..." required></textarea>
                     </div>
 
-                    <button type="submit" class="boton-ver">
+                    <button type="submit" class="boton-ver" 
+                            th:disabled="${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR'}"
+                            th:style="${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR' ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
+                            th:title="${usuarioHeader != null and usuarioHeader.rol.nombre == 'VISITOR' ? 'Los visitantes no pueden publicar reseñas' : 'Publicar reseña'}">
                         <i class="fas fa-paper-plane"></i> PUBLICAR RESEÑA
                     </button>
                 </form>
@@ -97,7 +100,7 @@
 
                 <div class="contenedor-reseñas">
                     <p th:if="${#lists.isEmpty(reviews)}" class="sin-reseñas">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
-                    
+
                     <div class="reseña" th:each="r : ${reviews}">
                         <div class="reseña-header">
                             <span class="usuario-autor">
@@ -123,7 +126,6 @@
             inicializarSistemaEstrellas();
         });
 
-        // --- 1. LÓGICA DE SELECCIÓN DE ESTRELLAS ---
         function inicializarSistemaEstrellas() {
             const estrellas = document.querySelectorAll("#estrellas i");
             const inputRating = document.getElementById("rating");
@@ -133,7 +135,6 @@
                     const val = e.dataset.value;
                     inputRating.value = val;
 
-                    // Resetear y pintar
                     estrellas.forEach((s, index) => {
                         if (index < val) {
                             s.classList.remove("far");

@@ -21,9 +21,7 @@ public class PerfilDesarrolladorService {
         this.tecnologiaRepository = tecnologiaRepository;
     }
 
-    // =========================
-    // GET OR CREATE PROFILE
-    // =========================
+   
     public PerfilDesarrollador getOrCreateProfile(Usuario usuario) {
 
         return devRepo.findByUsuarioIdWithTecnologias(usuario.getId())
@@ -34,9 +32,7 @@ public class PerfilDesarrolladorService {
                 });
     }
 
-    // =========================
-    // GET TECHNOLOGIES ORDERED
-    // =========================
+   
     public List<Tecnologia> getTecnologiasOrdenadas(PerfilDesarrollador perfil) {
 
         return perfil.getTecnologias().stream()
@@ -44,9 +40,7 @@ public class PerfilDesarrolladorService {
                 .toList();
     }
 
-    // =========================
-    // ASSIGN TECHNOLOGIES
-    // =========================
+   
     @Transactional
     public void asignarTecnologias(Long perfilId, List<Long> techIds) {
 

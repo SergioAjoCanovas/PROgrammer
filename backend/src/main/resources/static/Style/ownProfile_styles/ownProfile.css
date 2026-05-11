@@ -1,18 +1,15 @@
-/* ============================================================
-    1. VARIABLES Y CONFIGURACIÓN GLOBAL
-   ============================================================ */
 :root {
     --amarillo-neon: #FFCC00;
     --negro-puro: #000000;
-    --negro-tarjeta: #1a1a1a; 
+    --negro-tarjeta: #1a1a1a;
     --negro-input: #050505;
     --gris-texto: #ccc;
     --amarillo-pale: #FFFDDF;
-    --fondo-naranjita: #211c12; 
+    --fondo-naranjita: #211c12;
 }
 
 body.fondo-oscuro-neon {
-    background-color: #1a1a1a !important; 
+    background-color: #1a1a1a !important;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -21,19 +18,18 @@ body.fondo-oscuro-neon {
     font-family: Arial, sans-serif;
 }
 
-/* --- BOTÓN VOLVER A INICIO --- */
 .contenedor-volver {
     max-width: 1800px;
-    width: 98%;       
+    width: 98%;
     margin: 30px auto 0 auto;
-    padding: 0 20px;  
+    padding: 0 20px;
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;
 }
 
 .enlace-volver {
-    color: #888888; 
+    color: #888888;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -44,48 +40,42 @@ body.fondo-oscuro-neon {
 }
 
 .enlace-volver:hover {
-    color: #FFCC00; 
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
-    transform: translateX(-5px); 
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
 }
 
-/* ============================================================
-    2. ESTRUCTURA Y CONTENEDORES
-   ============================================================ */
 .contenedor-principal { display: flex; flex-direction: column;
     max-width: 1550px;
     width: 95%;
     margin: 30px auto;
-    gap: 30px; 
+    gap: 30px;
     align-items: flex-start;
-    flex: 1; 
+    flex: 1;
 }
 
-.columna-perfil { 
-    flex: 0 0 320px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 20px; 
+.columna-perfil {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.columna-derecha { 
-    flex: 1; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 20px; 
-    min-width: 0; 
+.columna-derecha {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
 }
 
-/* ============================================================
-    3. TARJETAS (ACORDEÓN / PANEL)
-   ============================================================ */
 .tarjeta-acordeon {
     background-color: var(--negro-tarjeta) !important;
-    border: 1px solid var(--amarillo-neon) !important; 
-    border-radius: 25px !important; 
+    border: 1px solid var(--amarillo-neon) !important;
+    border-radius: 25px !important;
     padding: 25px !important;
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.15),
-                0 0 5px rgba(255, 204, 0, 0.05) inset !important;
+    0 0 5px rgba(255, 204, 0, 0.05) inset !important;
     color: white;
 }
 
@@ -98,7 +88,7 @@ body.fondo-oscuro-neon {
     margin-bottom: 20px;
 }
 
-.cabecera-tarjeta h2, 
+.cabecera-tarjeta h2,
 .cabecera-tarjeta h3 {
     font-size: 1.3rem !important;
     text-transform: uppercase;
@@ -108,13 +98,10 @@ body.fondo-oscuro-neon {
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
-/* ============================================================
-    4. PERFIL DE USUARIO (IZQUIERDA)
-   ============================================================ */
 .perfil-superior {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     gap: 15px;
     border-bottom: 2px solid #aaaaaa !important;
     padding-bottom: 15px;
@@ -126,15 +113,15 @@ body.fondo-oscuro-neon {
     height: 90px;
     border: 3px solid var(--amarillo-neon);
     border-radius: 50% !important;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: center;
     background: var(--negro-input);
     transition: transform 0.3s ease;
 }
 
-.circulo-foto:hover { 
-    transform: scale(1.05); 
+.circulo-foto:hover {
+    transform: scale(1.05);
 }
 
 .nombre-usuario {
@@ -145,23 +132,20 @@ body.fondo-oscuro-neon {
     color: var(--amarillo-neon);
 }
 
-.redes-sociales { 
-    list-style: none; 
-    padding: 0; 
-    margin-bottom: 20px; 
+.redes-sociales {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
 }
 
 .redes-sociales li {
     padding: 10px 0;
-    display: flex; 
+    display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     color: var(--gris-texto);
 }
 
-/* ============================================================
-   EDITAR NOMBRE DE USUARIO
-   ============================================================ */
 .contenedor-nombre-usuario {
     display: flex;
     align-items: center;
@@ -201,9 +185,6 @@ body.fondo-oscuro-neon {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
-/* ============================================================
-    EDITAR REDES SOCIALES
-    ============================================================ */
 .campo-red {
     position: relative;
     display: flex;
@@ -219,7 +200,7 @@ body.fondo-oscuro-neon {
 
 .acciones-red {
     display: flex;
-    gap: 6px; 
+    gap: 6px;
     margin-left: auto;
 }
 
@@ -258,9 +239,6 @@ body.fondo-oscuro-neon {
     color: white;
 }
 
-/* ============================================================
-APARTADO DE CURRICULUM
-============================================================ */
 .cv-container {
     margin-top: 10px;
     display: flex;
@@ -269,10 +247,10 @@ APARTADO DE CURRICULUM
 }
 
 .cv-link {
-    color: white; 
+    color: white;
     text-decoration: underline;
     text-decoration-style: dotted;
-    text-decoration-color: var(--amarillo-neon); 
+    text-decoration-color: var(--amarillo-neon);
     cursor: pointer;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
@@ -282,9 +260,6 @@ APARTADO DE CURRICULUM
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
 }
 
-/* ============================================================
-    APARTADO DE BIOGRAFIA
-    ============================================================ */
 #bio-edit textarea {
     width: 100%;
     min-height: 120px;
@@ -302,8 +277,8 @@ APARTADO DE CURRICULUM
 
 .bio-footer {
     display: flex;
-    flex-direction: column; 
-    align-items: flex-end; 
+    flex-direction: column;
+    align-items: flex-end;
     margin-top: 8px;
     font-size: 12px;
     color: #FFCC00;
@@ -319,7 +294,7 @@ APARTADO DE CURRICULUM
     width: 100%;
     overflow-wrap: anywhere;
     word-break: break-word;
-    white-space: pre-wrap; 
+    white-space: pre-wrap;
 }
 
 #bio-edit textarea::-webkit-scrollbar {
@@ -355,10 +330,7 @@ p, span, div, h1, h2, h3, h4 {
     word-break: break-word;
     max-width: 100%;
 }
-    
-/* ============================================================
-    5. REJILLA DE PROYECTOS (DERECHA)
-   ============================================================ */
+
 .rejilla-proyectos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -367,7 +339,7 @@ p, span, div, h1, h2, h3, h4 {
 
 .tarjeta-mini-proyecto {
     background-color: #292929 !important;
-    border: 1px solid #333; 
+    border: 1px solid #333;
     border-radius: 15px;
     padding: 20px;
     text-align: center;
@@ -394,26 +366,23 @@ p, span, div, h1, h2, h3, h4 {
     color: var(--gris-texto);
 }
 
-.tarjeta-anadir { 
-    border: 2px dashed var(--amarillo-neon) !important; 
-    background: #535353 !important; 
+.tarjeta-anadir {
+    border: 2px dashed var(--amarillo-neon) !important;
+    background: #535353 !important;
 }
 
-.tarjeta-anadir i { 
-    font-size: 2.5rem; 
-    color: var(--amarillo-neon); 
-    margin-bottom: 10px; 
+.tarjeta-anadir i {
+    font-size: 2.5rem;
+    color: var(--amarillo-neon);
+    margin-bottom: 10px;
 }
 
-.acciones-proyecto { 
-    display: flex; 
-    gap: 10px; 
-    margin-top: 15px; 
+.acciones-proyecto {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-/* ============================================================
-    6. BOTONES NEÓN
-   ============================================================ */
 .boton-amarillo-solido {
     background-color: var(--negro-input) !important;
     color: var(--amarillo-neon) !important;
@@ -423,7 +392,7 @@ p, span, div, h1, h2, h3, h4 {
     font-weight: 900;
     text-transform: uppercase;
     cursor: pointer;
-    width: 100% !important; 
+    width: 100% !important;
     margin-top: 10px !important;
     letter-spacing: 2px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -455,9 +424,6 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 15px var(--amarillo-neon) !important;
 }
 
-/* ============================================================
-    7. TECNOLOGÍAS (TAGS)
-   ============================================================ */
 .tags-tecnologias {
     display: flex;
     flex-wrap: wrap;
@@ -466,16 +432,16 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 .tag-tech {
-    background-color: rgba(33, 28, 18, 0.8) !important; 
-    color: var(--amarillo-neon) !important; 
+    background-color: rgba(33, 28, 18, 0.8) !important;
+    color: var(--amarillo-neon) !important;
     border: 1px solid var(--amarillo-neon) !important;
-    border-radius: 10px !important; 
-    padding: 8px 18px !important; 
+    border-radius: 10px !important;
+    padding: 8px 18px !important;
     font-weight: 800;
     font-size: 0.9rem;
     text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4), 
-                inset 0 0 8px rgba(255, 204, 0, 0.2) !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4),
+    inset 0 0 8px rgba(255, 204, 0, 0.2) !important;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -488,12 +454,10 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
-/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÍAS */
 .tech-oculta {
     display: none !important;
 }
 
-/* ESTILOS PARA LOS BOTONES MÁS Y MENOS */
 .tag-mas, .tag-menos {
     background-color: transparent !important;
     border: 1px dashed var(--amarillo-neon) !important;
@@ -507,67 +471,61 @@ p, span, div, h1, h2, h3, h4 {
     transform: scale(1.05);
 }
 
-/* ============================================================
-    8. MEDIA QUERIES (RESPONSIVE MEJORADO)
-   ============================================================ */
 .fila-inferior {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    align-items: start; 
+    align-items: start;
 }
 
-/* --- TABLETS Y PORTÁTILES PEQUEÑOS --- */
 @media (max-width: 1024px) {
-    .contenedor-principal { 
-        align-items: stretch; /* Permite que las columnas llenen el espacio */
+    .contenedor-principal {
+        align-items: stretch;
     }
-    
-    /* Forzamos que se apilen y ocupen el 100% */
-    .columna-perfil { 
-        flex: 1 1 100%; 
-        width: 100%; 
+
+    .columna-perfil {
+        flex: 1 1 100%;
+        width: 100%;
     }
-    
-    .columna-derecha { 
-        flex: 1 1 100%; 
-        width: 100%; 
+
+    .columna-derecha {
+        flex: 1 1 100%;
+        width: 100%;
     }
-    
-    .rejilla-proyectos { 
-        grid-template-columns: repeat(2, 1fr); 
+
+    .rejilla-proyectos {
+        grid-template-columns: repeat(2, 1fr);
     }
-    
-    .fila-inferior { 
-        grid-template-columns: 1fr; 
+
+    .fila-inferior {
+        grid-template-columns: 1fr;
     }
 }
 
-/* --- TABLETS VERTICALES Y MÓVILES GRANDES --- */
 @media (max-width: 768px) {
-    .contenedor-principal { 
+    .contenedor-principal {
         margin: 15px auto;
         padding: 0 10px;
         width: 100%;
     }
 
     .vidrio-contenedor-perfil {
-        padding: 15px; /* Menos margen interno para aprovechar pantalla */
+        padding: 15px;
         border-radius: 10px;
     }
 
-    .rejilla-proyectos { 
-        grid-template-columns: 1fr; /* Una sola columna para proyectos */
+    .rejilla-proyectos {
+        grid-template-columns: 1fr;
         gap: 15px;
     }
 
     .tabs-neon {
-        flex-wrap: wrap; /* Permite que los botones bajen si no caben */
+        flex-wrap: wrap;
         gap: 10px;
     }
 
     .tab-btn {
-        flex: 1 1 calc(50% - 10px); /* Dos botones por fila */
+        flex: 1 1 calc(50% - 10px);
         font-size: 0.95rem;
         padding: 10px 15px;
         text-align: center;
@@ -578,10 +536,9 @@ p, span, div, h1, h2, h3, h4 {
     }
 }
 
-/* --- MÓVILES PEQUEÑOS --- */
 @media (max-width: 480px) {
     .tabs-neon {
-        flex-direction: column; /* Apila todos los botones de las pestañas */
+        flex-direction: column;
     }
 
     .tab-btn {
@@ -598,7 +555,7 @@ p, span, div, h1, h2, h3, h4 {
         font-size: 1.4rem !important;
     }
 
-    .cabecera-tarjeta h2, 
+    .cabecera-tarjeta h2,
     .cabecera-tarjeta h3 {
         font-size: 1.15rem !important;
     }
@@ -608,13 +565,10 @@ p, span, div, h1, h2, h3, h4 {
     }
 
     .grid-usuarios-seguimiento {
-        grid-template-columns: 1fr; /* 1 sola columna para seguimiento */
+        grid-template-columns: 1fr;
     }
 }
 
-/* ============================================================
-    9. LÓGICA DE ESTADO ACTIVO Y RESEÑAS
-   ============================================================ */
 .activo-neon, .activo-neon i {
     color: var(--amarillo-neon) !important;
     text-shadow: 0 0 10px var(--amarillo-neon) !important;
@@ -622,11 +576,11 @@ p, span, div, h1, h2, h3, h4 {
 
 .activo-btn, .activo-btn i, .activo-btn span {
     color: var(--amarillo-neon) !important;
-    text-shadow: 0 0 15px var(--amarillo-neon), 
-                 0 0 30px rgba(255, 204, 0, 0.6) !important;
+    text-shadow: 0 0 15px var(--amarillo-neon),
+    0 0 30px rgba(255, 204, 0, 0.6) !important;
     opacity: 1 !important;
     border-color: var(--amarillo-neon) !important;
-    animation: none !important; 
+    animation: none !important;
     transform: none !important;
 }
 
@@ -663,12 +617,11 @@ p, span, div, h1, h2, h3, h4 {
 }
 
 .contenedor-resenas-scroll {
-    max-height: 300px; /* Altura aproximada para 3 reseñas */
+    max-height: 300px;
     overflow-y: auto;
     padding-right: 10px;
 }
 
-/* Scrollbar personalizado para las reseñas */
 .contenedor-resenas-scroll::-webkit-scrollbar {
     width: 6px;
 }
@@ -682,25 +635,20 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 5px var(--amarillo-neon);
 }
 
-/* --- ANIMACIÓN GRID (SMOOTHIE) PARA RESEÑAS PROPIAS --- */
 .resena-extra-wrapper-own {
     display: grid;
-    grid-template-rows: 0fr; /* Altura colapsada */
+    grid-template-rows: 0fr;
     transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .resena-extra-wrapper-own.expandido {
-    grid-template-rows: 1fr; /* Altura real del contenido */
+    grid-template-rows: 1fr;
 }
 
 .resena-extra-inner-own {
-    overflow: hidden; /* Oculta el contenido mientras colapsa */
+    overflow: hidden;
 }
 
-
-/* ============================================================
-    10. TOAST DE AVISO
-   ============================================================ */
 .toast {
     position: fixed;
     bottom: 30px;
@@ -727,7 +675,7 @@ p, span, div, h1, h2, h3, h4 {
 
 .toast-success {
     background: #00e676;
-    color: #000; 
+    color: #000;
     border: 1px solid #00e676;
     box-shadow: 0 0 15px rgba(0, 230, 118, 0.6);
 }
@@ -737,18 +685,13 @@ p, span, div, h1, h2, h3, h4 {
     transform: translateY(0);
 }
 
-/* ============================================================
-    10. REJILLA DE PROYECTOS
-   ============================================================ */
-
-   .proyecto-card {
+.proyecto-card {
     display: flex;
     flex-direction: column;
     gap: 15px;
     min-height: 280px;
 }
 
-/* DESCRIPCIÓN CON SCROLL COMO BIO */
 .proyecto-desc {
     max-height: 70px;
     overflow-y: auto;
@@ -757,7 +700,6 @@ p, span, div, h1, h2, h3, h4 {
     padding-right: 5px;
 }
 
-/* SCROLL bonito */
 .proyecto-desc::-webkit-scrollbar {
     width: 6px;
 }
@@ -767,7 +709,6 @@ p, span, div, h1, h2, h3, h4 {
     border-radius: 10px;
 }
 
-/* CARRUSEL PEQUEÑO */
 .carousel-proyecto {
     width: 100%;
     height: 90px;
@@ -787,7 +728,6 @@ p, span, div, h1, h2, h3, h4 {
     display: block;
 }
 
-/* TECNOLOGÍAS PROYECTO */
 .tech-proyecto {
     display: flex;
     flex-wrap: wrap;
@@ -799,7 +739,6 @@ p, span, div, h1, h2, h3, h4 {
     padding: 5px 10px !important;
 }
 
-/* ocultas */
 .tech-extra-proyecto {
     display: none;
 }
@@ -810,12 +749,11 @@ p, span, div, h1, h2, h3, h4 {
     transition: all 0.3s ease;
 }
 
-/* Hover estilo neón como el resto */
 .icono-grid-top:hover {
     transform: scale(1.2);
     color: #ffffff;
     text-shadow: 0 0 10px var(--amarillo-neon),
-                 0 0 20px var(--amarillo-neon);
+    0 0 20px var(--amarillo-neon);
 }
 
 .icono-lapiz {
@@ -826,7 +764,7 @@ p, span, div, h1, h2, h3, h4 {
 .icono-lapiz:hover {
     color: #ffffff !important;
     text-shadow: 0 0 8px #ffffff,
-                 0 0 18px rgba(255, 255, 255, 0.6);
+    0 0 18px rgba(255, 255, 255, 0.6);
     transform: scale(1.2);
 }
 
@@ -838,12 +776,10 @@ p, span, div, h1, h2, h3, h4 {
 .icono-papelera:hover {
     color: #ff3b3b !important;
     text-shadow: 0 0 8px #ff3b3b,
-                 0 0 18px rgba(255, 59, 59, 0.6);
+    0 0 18px rgba(255, 59, 59, 0.6);
     transform: scale(1.2);
 }
-/* ============================================================
-    PESTAÑAS (TABS) EN OWN PROFILE
-   ============================================================ */
+
 .tabs-neon {
     display: flex;
     gap: 20px;
@@ -878,9 +814,6 @@ p, span, div, h1, h2, h3, h4 {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
-/* ============================================================
-    SECCIÓN SEGUIMIENTO (CARDS DE USUARIOS)
-   ============================================================ */
 .seccion-seguimiento-grupo {
     margin-bottom: 40px;
 }
@@ -962,10 +895,6 @@ p, span, div, h1, h2, h3, h4 {
     transform: scale(1.2);
 }
 
-
-/* ============================================================
-    CONTENEDOR VIDRIO (Como en Admin)
-   ============================================================ */
 .vidrio-contenedor-perfil {
     background: rgba(26, 26, 26, 0.85);
     backdrop-filter: blur(10px);

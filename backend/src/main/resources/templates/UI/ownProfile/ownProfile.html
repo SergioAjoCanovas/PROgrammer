@@ -10,330 +10,323 @@
     <link rel="stylesheet" href="/Style/ownProfile_styles/ownProfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .icono-grid-top:hover {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00;
-            transform: scale(1.1);
-        }
+    <style>.icono-grid-top:hover {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00;
+    transform: scale(1.1);
+}
 
-        /* Hover amarillo neón para los iconos de lápiz */
-        .icono-lapiz {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .icono-lapiz:hover {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-            transform: scale(1.15);
-        }
+.icono-lapiz {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.icono-lapiz:hover {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+    transform: scale(1.15);
+}
 
-        /* Estilos para iluminar el icono de perfil en el header */
-        .item-derecha.activo .avatar-usuario {
-            box-shadow: 0 0 20px #FFCC00 !important;
-            transform: scale(1.1) !important;
-            border-color: #FFCC00 !important;
-        }
+.item-derecha.activo .avatar-usuario {
+    box-shadow: 0 0 20px #FFCC00 !important;
+    transform: scale(1.1) !important;
+    border-color: #FFCC00 !important;
+}
 
-        /* Si no tiene foto y muestra el fa-user-circle, iluminarlo también */
-        .item-derecha.activo .avatar-usuario i {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
+.item-derecha.activo .avatar-usuario i {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+}
 
-        /* Iluminar caja de texto de mensaje de parche/bio al escribir */
-        #parche-textarea:focus, #bio-textarea:focus {
-            outline: none !important;
-            border-color: #FFCC00 !important;
-            box-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
-        }
+#parche-textarea:focus, #bio-textarea:focus {
+    outline: none !important;
+    border-color: #FFCC00 !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
+}
 
-        .item-derecha.activo .texto-icono {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00, 
-                         0 0 20px #FFCC00, 
-                         0 0 40px rgba(255, 204, 0, 0.6) !important;
-            transform: scale(1.15) !important;
-        }
-            /* ESTILO DEL TOAST NEÓN */
-        .toast-neon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(5, 15, 5, 0.98);
-            color: white;
-            padding: 18px 28px;
-            border-radius: 8px;
-            border-left: 6px solid #39FF14;
-            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: sans-serif;
-            transform: translateX(120%);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999;
-        }
-        .toast-neon.mostrar {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        .toast-neon.error {
-            border-left-color: #ff4444;
-            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
-            background-color: rgba(15, 5, 5, 0.98);
-        }
-        .toast-neon i {
-            color: #39FF14;
-            font-size: 2rem;
-        }
-        .toast-neon.error i {
-            color: #ff4444;
-        }
-        .toast-neon strong {
-            display: block;
-            color: #39FF14;
-            font-size: 1.1rem;
-            margin-bottom: 2px;
-        }
-        .toast-neon.error strong {
-            color: #ff4444;
-        }
+.item-derecha.activo .texto-icono {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00,
+    0 0 20px #FFCC00,
+    0 0 40px rgba(255, 204, 0, 0.6) !important;
+    transform: scale(1.15) !important;
+}
 
-        /* OVERLAY TECNOLOGÍAS PROYECTO */
-        .tarjeta-mini-proyecto {
-            position: relative;
-            overflow: hidden; /* Volvemos a ocultar el desborde */
-        }
+.toast-neon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(5, 15, 5, 0.98);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 8px;
+    border-left: 6px solid #39FF14;
+    box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
+.toast-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+.toast-neon.error {
+    border-left-color: #ff4444;
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    background-color: rgba(15, 5, 5, 0.98);
+}
+.toast-neon i {
+    color: #39FF14;
+    font-size: 2rem;
+}
+.toast-neon.error i {
+    color: #ff4444;
+}
+.toast-neon strong {
+    display: block;
+    color: #39FF14;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+.toast-neon.error strong {
+    color: #ff4444;
+}
 
-        .vista-todas-techs {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0; /* Volvemos a fijar el fondo */
-            background: #1a1a1a;
-            z-index: 100;
-            padding: 20px;
-            display: none; 
-            flex-direction: column;
-            border-radius: 20px;
-            border: 1px solid #FFCC00;
-            box-shadow: inset 0 0 15px rgba(255, 204, 0, 0.2);
-        }
+.tarjeta-mini-proyecto {
+    position: relative;
+    overflow: hidden;
+}
 
-        .carousel-proyecto {
-            margin: 15px 0; /* Más separación entre imagen y el resto */
-        }
+.vista-todas-techs {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #1a1a1a;
+    z-index: 100;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    border-radius: 20px;
+    border: 1px solid #FFCC00;
+    box-shadow: inset 0 0 15px rgba(255, 204, 0, 0.2);
+}
 
-        .tarjeta-mini-proyecto.tech-expanded .vista-todas-techs {
-            display: flex;
-        }
+.carousel-proyecto {
+    margin: 15px 0;
+}
 
-        .vista-bio-completa {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #1a1a1a;
-            z-index: 100;
-            padding: 20px;
-            display: none; 
-            flex-direction: column;
-            border-radius: 20px;
-            border: 1px solid #FFCC00;
-            box-shadow: inset 0 0 15px rgba(255, 204, 0, 0.2);
-        }
+.tarjeta-mini-proyecto.tech-expanded .vista-todas-techs {
+    display: flex;
+}
 
-        .tarjeta-mini-proyecto.bio-expanded .vista-bio-completa {
-            display: flex;
-        }
+.vista-bio-completa {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #1a1a1a;
+    z-index: 100;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    border-radius: 20px;
+    border: 1px solid #FFCC00;
+    box-shadow: inset 0 0 15px rgba(255, 204, 0, 0.2);
+}
 
-        /* Ocultar contenido original al expandir techs o bio */
-        .tarjeta-mini-proyecto.tech-expanded .contenido-proyecto-card,
-        .tarjeta-mini-proyecto.bio-expanded .contenido-proyecto-card {
-            display: none;
-        }
+.tarjeta-mini-proyecto.bio-expanded .vista-bio-completa {
+    display: flex;
+}
 
-        .close-overlay {
-            align-self: flex-end;
-            color: #FFCC00;
-            font-size: 1.4rem;
-            cursor: pointer;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-        }
-        .close-overlay:hover {
-            transform: scale(1.2);
-            text-shadow: 0 0 10px #FFCC00;
-        }
+.tarjeta-mini-proyecto.tech-expanded .contenido-proyecto-card,
+.tarjeta-mini-proyecto.bio-expanded .contenido-proyecto-card {
+    display: none;
+}
 
-        .titulo-overlay {
-            color: #fff;
-            font-size: 1rem;
-            text-transform: uppercase;
-            border-bottom: 1px solid #FFCC00;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+.close-overlay {
+    align-self: flex-end;
+    color: #FFCC00;
+    font-size: 1.4rem;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+}
+.close-overlay:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px #FFCC00;
+}
 
-        .grid-techs-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            width: 100%;
-            overflow-y: auto; 
-            max-height: 280px; 
-            padding-right: 5px;
-        }
+.titulo-overlay {
+    color: #fff;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid #FFCC00;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-        .grid-techs-3::-webkit-scrollbar {
-            width: 4px;
-        }
-        .grid-techs-3::-webkit-scrollbar-thumb {
-            background: #FFCC00;
-            border-radius: 10px;
-        }
+.grid-techs-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 280px;
+    padding-right: 5px;
+}
 
-        .grid-techs-3 span {
-            text-align: center;
-            font-size: 0.7rem;
-            padding: 6px 2px;
-            background: rgba(255, 204, 0, 0.1);
-            color: #FFCC00;
-            border: 1px solid rgba(255, 204, 0, 0.2);
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-        .grid-techs-3 span:hover {
-            background: #FFCC00;
-            color: #000;
-            box-shadow: 0 0 15px #FFCC00;
-        }
+.grid-techs-3::-webkit-scrollbar {
+    width: 4px;
+}
+.grid-techs-3::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+}
 
-        .proyecto-desc.interactiva {
-            cursor: pointer;
-            transition: color 0.3s ease;
-            color: #bbb;
-        }
-        .proyecto-desc.interactiva:hover {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
-        }
-        .proyecto-desc.interactiva p {
-            color: inherit;
-        }
+.grid-techs-3 span {
+    text-align: center;
+    font-size: 0.7rem;
+    padding: 6px 2px;
+    background: rgba(255, 204, 0, 0.1);
+    color: #FFCC00;
+    border: 1px solid rgba(255, 204, 0, 0.2);
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+.grid-techs-3 span:hover {
+    background: #FFCC00;
+    color: #000;
+    box-shadow: 0 0 15px #FFCC00;
+}
 
-        .caja-bio-full {
-            width: 100%;
-            overflow-y: auto;
-            color: #ccc;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            text-align: left;
-            max-height: 280px;
-        }
-        .caja-bio-full::-webkit-scrollbar {
-            width: 4px;
-        }
-        .caja-bio-full::-webkit-scrollbar-thumb {
-            background: #FFCC00;
-            border-radius: 10px;
-        }
-        .cv-chip {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 204, 0, 0.05);
-            border: 1px solid rgba(255, 204, 0, 0.3);
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-top: 15px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .cv-chip:hover {
-            background: rgba(255, 204, 0, 0.1);
-            border-color: #FFCC00;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
-            transform: translateY(-2px);
-        }
-        .cv-icon {
-            color: #FFCC00;
-            font-size: 1.4rem;
-        }
-        .cv-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .cv-name {
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 150px;
-        }
-        .cv-action-text {
-            color: #888;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .cv-delete {
-            color: #ff4444;
-            cursor: pointer;
-            padding: 5px;
-            transition: all 0.3s;
-        }
-        .cv-delete:hover {
-            color: #ff0000;
-            transform: scale(1.2);
-            text-shadow: 0 0 10px #ff0000;
-        }
-        /* REDES SOCIALES MEJORADAS */
-        .valor-red {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .valor-red:hover .red-titulo {
-            text-shadow: 0 0 10px #FFCC00;
-        }
-        .valor-red:hover .red-url {
-            color: #FFCC00;
-        }
-        .red-titulo {
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: #FFCC00;
-            transition: all 0.3s;
-        }
-        .red-url {
-            font-size: 0.75rem;
-            color: #888;
-            max-width: 1800px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        .icono-chat-amigo {
-            color: #28a745;
-            font-size: 1.4rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .icono-chat-amigo:hover {
-            color: #39FF14;
-            text-shadow: 0 0 10px #39FF14, 0 0 20px rgba(57, 255, 20, 0.5);
-            transform: scale(1.2);
-        }
+.proyecto-desc.interactiva {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: #bbb;
+}
+.proyecto-desc.interactiva:hover {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+}
+.proyecto-desc.interactiva p {
+    color: inherit;
+}
+
+.caja-bio-full {
+    width: 100%;
+    overflow-y: auto;
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: left;
+    max-height: 280px;
+}
+.caja-bio-full::-webkit-scrollbar {
+    width: 4px;
+}
+.caja-bio-full::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+}
+.cv-chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 204, 0, 0.05);
+    border: 1px solid rgba(255, 204, 0, 0.3);
+    padding: 10px 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.cv-chip:hover {
+    background: rgba(255, 204, 0, 0.1);
+    border-color: #FFCC00;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+    transform: translateY(-2px);
+}
+.cv-icon {
+    color: #FFCC00;
+    font-size: 1.4rem;
+}
+.cv-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.cv-name {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+.cv-action-text {
+    color: #888;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.cv-delete {
+    color: #ff4444;
+    cursor: pointer;
+    padding: 5px;
+    transition: all 0.3s;
+}
+.cv-delete:hover {
+    color: #ff0000;
+    transform: scale(1.2);
+    text-shadow: 0 0 10px #ff0000;
+}
+
+.valor-red {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.valor-red:hover .red-titulo {
+    text-shadow: 0 0 10px #FFCC00;
+}
+.valor-red:hover .red-url {
+    color: #FFCC00;
+}
+.red-titulo {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #FFCC00;
+    transition: all 0.3s;
+}
+.red-url {
+    font-size: 0.75rem;
+    color: #888;
+    max-width: 1800px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s;
+}
+.icono-chat-amigo {
+    color: #28a745;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icono-chat-amigo:hover {
+    color: #39FF14;
+    text-shadow: 0 0 10px #39FF14, 0 0 20px rgba(57, 255, 20, 0.5);
+    transform: scale(1.2);
+}
 </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -421,7 +414,7 @@
                     <span class="tag-tech" th:each="tech, iterStat : ${tecnologiasUsuario}" 
                           th:text="${tech.nombre}"
                           th:classappend="${iterStat.index >= 6 ? 'tech-oculta tech-extra' : ''}"></span>
-                    
+
                     <span class="tag-tech tag-mas" id="btn-mas-techs" th:if="${#lists.size(tecnologiasUsuario) > 6}" onclick="mostrarMasTechs()">
                         +<span th:text="${#lists.size(tecnologiasUsuario) - 6}"></span>
                     </span>
@@ -452,27 +445,27 @@
                             CREAR AHORA
                         </button>
                     </div>
-                
+
                     <div th:each="p : ${ultimosProyectos}"
                         th:with="descLarga=${p.descripcion != null and #strings.length(p.descripcion) > 40}"
                         class="tarjeta-mini-proyecto proyecto-card"
                         th:attr="data-id=${p.id}" style="position: relative; padding-top: 40px;">
-                        
+
                         <div class="contenido-proyecto-card">
                             <span th:if="${p.estaValidado}" style="position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0, 242, 255, 0.9); color: black; border-radius: 4px; padding: 3px 8px; font-size: 0.65em; font-weight: bold; box-shadow: 0 0 10px rgba(0,242,255,0.5);">
                                 <i class="fas fa-check-circle"></i> VERIFICADO
                             </span>
-                    
+
                             <h3>
                                 <span th:text="${p.nombre}">Nombre proyecto</span>
                             </h3>
-                    
+
                             <div class="proyecto-desc" 
                                  th:classappend="${descLarga} ? 'interactiva' : ''"
                                  th:onclick="${descLarga} ? 'event.stopPropagation(); this.closest(\'.tarjeta-mini-proyecto\').classList.add(\'bio-expanded\')' : ''">
                                 <p th:text="${descLarga ? #strings.substring(p.descripcion, 0, 40) + '...' : p.descripcion}"></p>
                             </div>
-                    
+
                             <div class="carousel-proyecto"
                                     th:if="${p.imagenes != null and !p.imagenes.isEmpty()}"
                                     th:attr="data-id=${p.id}">
@@ -480,14 +473,14 @@
                                         th:src="${img}"
                                         class="carousel-img">
                             </div>
-                    
+
                             <div class="tech-proyecto">
                                 <span th:each="t,iter : ${p.tecnologias}"
                                       th:if="${iter.index < 3}"
                                       class="tag-tech small"
                                       th:text="${t.nombre}">
                                 </span>
-                    
+
                                 <span th:if="${#lists.size(p.tecnologias) > 3}"
                                       class="tag-tech tag-mas"
                                       onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.add('tech-expanded')">
@@ -496,7 +489,6 @@
                             </div>
                         </div>
 
-                        <!-- OVERLAY DE TODAS LAS TECHS (COMO EN SEARCH) -->
                         <div class="vista-todas-techs" th:if="${#lists.size(p.tecnologias) > 3}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('tech-expanded')"></i>
                             <h4 class="titulo-overlay">Tecnologías</h4>
@@ -505,7 +497,6 @@
                             </div>
                         </div>
 
-                        <!-- OVERLAY DE DESCRIPCIÓN COMPLETA (NUEVO) -->
                         <div class="vista-bio-completa" th:if="${descLarga}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('bio-expanded')"></i>
                             <h4 class="titulo-overlay">Descripción del Proyecto</h4>
@@ -513,9 +504,9 @@
                                 <p th:text="${p.descripcion}"></p>
                             </div>
                         </div>
-                
+
                     </div>
-                
+
                 </div>
             </section>
 
@@ -533,7 +524,7 @@
                     <div class="cabecera-tarjeta">
                         <h3>RESEÑAS RECIBIDAS</h3>
                     </div>
-                    
+
                     <div id="contenedor-resenas-own" class="contenedor-resenas-scroll">
                         <div th:if="${#lists.isEmpty(reviews)}">
                             <p style="color: #888; font-style: italic;">Aún nadie ha valorado tu perfil. ¡Sigue programando!</p>
@@ -556,7 +547,7 @@
             </div>
         </div> 
         </div> <div id="seccion-seguimiento" style="display: none; width: 100%; flex-direction: column;">
-            
+
             <div class="seccion-seguimiento-grupo">
                 <h2 style="color: #FFCC00; border-bottom: 2px solid #333; padding-bottom: 10px;"><i class="fas fa-handshake"></i> Amigos (<span th:text="${amigos != null ? amigos.size() : 0}">0</span>)</h2>
                 <div class="grid-usuarios-seguimiento" id="grid-amigos" th:if="${amigos != null and !amigos.isEmpty()}">
@@ -668,32 +659,31 @@
 
     <script>
         function mostrarMasTechs() {
-            // Quita la clase 'tech-oculta' a las extras
+
             const ocultas = document.querySelectorAll('.tech-extra');
             ocultas.forEach(span => {
                 span.classList.remove('tech-oculta');
             });
-            // Oculta el botón de MÁS y muestra el de MENOS
+
             document.getElementById('btn-mas-techs').style.display = 'none';
             document.getElementById('btn-menos-techs').style.display = 'inline-flex';
         }
 
         function mostrarMenosTechs() {
-            // Vuelve a añadir la clase 'tech-oculta' a las extras
+
             const extras = document.querySelectorAll('.tech-extra');
             extras.forEach(span => {
                 span.classList.add('tech-oculta');
             });
-            // Oculta el botón de MENOS y muestra el de MÁS
+
             document.getElementById('btn-menos-techs').style.display = 'none';
             document.getElementById('btn-mas-techs').style.display = 'inline-flex';
         }
 
-        // --- LÓGICA DE PESTAÑAS (TABS) ---
         function mostrarSeccion(seccion) {
             document.getElementById('seccion-personalizacion').style.display = (seccion === 'personalizacion') ? 'flex' : 'none';
             document.getElementById('seccion-seguimiento').style.display = (seccion === 'seguimiento') ? 'flex' : 'none';
-            
+
             const seccionMensajes = document.getElementById('seccion-mensajes');
             if (seccionMensajes) {
                 seccionMensajes.style.display = (seccion === 'mensajes') ? 'flex' : 'none';
@@ -701,33 +691,30 @@
 
             document.getElementById('btn-tab-personalizacion').classList.toggle('active', seccion === 'personalizacion');
             document.getElementById('btn-tab-seguimiento').classList.toggle('active', seccion === 'seguimiento');
-            
+
             const btnMensajes = document.getElementById('btn-tab-mensajes');
             if (btnMensajes) {
                 btnMensajes.classList.toggle('active', seccion === 'mensajes');
             }
         }
 
-        // --- LÓGICA DE SEGUIMIENTO (SWEETALERT2) ---
         function toggleFollowUserSeguimiento(btn, event) {
             event.stopPropagation();
             const targetId = btn.getAttribute('data-id');
             const targetName = btn.getAttribute('data-username');
-            
-            // Asumimos que si estamos en la vista de seguimiento (amigos o siguiendo), ya los seguimos.
-            // Para "seguidores", el color del icono indica si los seguimos o no.
+
             const icon = btn.querySelector('i');
             const isFollowing = icon.classList.contains('fas');
 
             if (isFollowing) {
-                // Confirmación para dejar de seguir
+
                 mostrarModalUnfollowGlobal(targetName).then((result) => {
                     if (result.isConfirmed) {
                         ejecutarToggleFollow(targetId, btn, false);
                     }
                 });
             } else {
-                // Seguir sin confirmación
+
                 ejecutarToggleFollow(targetId, btn, true);
             }
         }
@@ -735,7 +722,7 @@
         function ejecutarToggleFollow(targetId, btn, isFollowingNow) {
             const formData = new FormData();
             formData.append('targetId', targetId);
-            
+
             fetch('/usuario/toggleFollow', {
                 method: 'POST',
                 body: formData
@@ -750,11 +737,10 @@
             .catch(err => console.error(err));
         }
 
-        // --- LÓGICA DE PAGINACIÓN SEGUIMIENTO (6 en 6) ---
         function initSeguimientoGrid(claseItem) {
             const items = document.querySelectorAll('.' + claseItem);
             if(items.length === 0) return;
-            
+
             let btn = items[0].parentElement.querySelector('.btn-load-more');
             if(!btn) return;
 
@@ -814,15 +800,12 @@
         let valorOriginalRed = "";
 
     window.addEventListener('load', () => {
-        // renderizarDatosUsuario(); // ¡Esta función no existe y bloqueaba la ejecución!
-        
-        // SOLO ILUMINAR AJUSTES
+
         const btnAjustes = document.getElementById('btn-ajustes-header');
         if (btnAjustes) {
             btnAjustes.classList.add('activo-btn');
         }
 
-        // Iluminamos el icono de Perfil en el header
         const btnPerfil = document.getElementById('link-perfil');
         if (btnPerfil) {
             btnPerfil.classList.add('activo');
@@ -930,28 +913,28 @@
 
         valor = valor.trim().replace(/\s/g, "");
 
-        if (valor.startsWith("http://") || valor.startsWith("https://")) {
+        if (valor.startsWith("http:// ") || valor.startsWith("https://")) {
             return valor;
         }
 
         if (valor.startsWith("www.")) {
-            return "https://" + valor;
+            return "https:
         }
 
         if (valor.startsWith("github.com/")) {
-            return "https://" + valor;
+            return "https:
         }
 
         if (valor.startsWith("linkedin.com/")) {
-            return "https://" + valor;
+            return "https:
         }
 
         if (tipo === "github") {
-            return "https://github.com/" + valor;
+            return "https:
         }
 
         if (tipo === "linkedin") {
-            return "https://www.linkedin.com/in/" + valor;
+            return "https:
         }
 
         return valor;
@@ -1013,7 +996,7 @@
 
     function eliminarRed(tipo) {
         const nombreBonito = tipo === "github" ? "GitHub" : "LinkedIn";
-        
+
         Swal.fire({
             title: '¿Eliminar ' + nombreBonito + '?',
             text: "Se quitará el enlace de tu perfil público.",
@@ -1064,7 +1047,6 @@
         editandoRed = null;
     }
 
-    //---- FUNCIONES PARA EL CV
     function subirCV(event) {
         const file = event.target.files[0];
 
@@ -1091,7 +1073,7 @@
         .then(data => {
             if (data.startsWith("OK")) {
 
-                const url = data.split("|")[1]; // backend devuelve: OK|url
+                const url = data.split("|")[1];
 
                 renderizarCV(file.name, url);
 
@@ -1155,8 +1137,6 @@
         });
     }
 
-    //-----EVENTS LISTENER PARA EL NOMBRE
-
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape" && editandoNombre) {
             cancelarEdicionNombre();
@@ -1177,8 +1157,6 @@
             cancelarEdicionNombre();
         }
     });
-
-    //-----EVENTS LISTENER PARA LAS REDES SOCIALES
 
     document.addEventListener("keypress", function (e) {
         if (e.key === "Enter" && editandoRed) {
@@ -1233,8 +1211,6 @@
         }
     });
 
-    //TOAST DE AVISO
-
     function mostrarToast(msg, tipo = "success") {
         const toast = document.getElementById("toast");
 
@@ -1260,7 +1236,6 @@
         const bioEdit = document.getElementById("bio-edit");
         const bioView = document.getElementById("bio-view");
 
-        // Si ya está desplegado, lo cerramos
         if (bioEdit.style.display === "block") {
             bioEdit.style.display = "none";
             bioView.style.display = "block";
@@ -1340,7 +1315,6 @@ function guardarBio() {
     });
 }
 
-// CARRUSEL AUTOMÁTICO SIMPLE
 function iniciarCarruseles() {
     document.querySelectorAll(".carousel-proyecto").forEach(carousel => {
         const imgs = carousel.querySelectorAll("img");
@@ -1360,15 +1334,14 @@ function iniciarCarruseles() {
 
 window.addEventListener("load", iniciarCarruseles);
 
-// EXPANDIR TECNOLOGÍAS PROYECTO
         function mostrarToast(mensaje, tipo = "success") {
             const toast = document.getElementById('toast-neon-box');
             const icon = document.getElementById('toast-neon-icon');
             const title = document.getElementById('toast-neon-title');
             const msg = document.getElementById('toast-neon-msg');
-            
+
             msg.innerText = mensaje;
-            
+
             if (tipo === 'error') {
                 toast.classList.add('error');
                 icon.className = 'fas fa-exclamation-circle';
@@ -1378,16 +1351,13 @@ window.addEventListener("load", iniciarCarruseles);
                 icon.className = 'fas fa-check-circle';
                 title.innerText = 'Éxito';
             }
-            
+
             toast.classList.add('mostrar');
             setTimeout(() => {
                 toast.classList.remove('mostrar');
             }, 3000);
         }
 
-
-
-// LOGICA DE PARCHES PARA ADMINS
 function actualizarContadorParche() {
     const textarea = document.getElementById("parche-textarea");
     const counter = document.getElementById("parche-counter");
@@ -1457,7 +1427,6 @@ document.addEventListener("click", function (e) {
     const card = e.target.closest(".proyecto-card");
     if (!card) return;
 
-    // Evita que clics en botones internos disparen la navegación
     if (e.target.closest("button, a, .tag-tech, .tag-mas, .vista-todas-techs")) {
         return;
     }

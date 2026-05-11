@@ -1,7 +1,3 @@
-/* =========================================================
-   profile.css (Estilo unificado y amplio)
-   ========================================================= */
-
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
@@ -15,7 +11,7 @@ body.fondo-oscuro-neon {
     width: 98%;
     margin: 40px auto;
     padding: 0 20px;
-    gap: 60px; /* Amplitud entre izquierda y derecha */
+    gap: 60px;
     align-items: flex-start;
 }
 
@@ -23,7 +19,7 @@ body.fondo-oscuro-neon {
     flex: 0 0 380px;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Tarjetas más juntas */
+    gap: 15px;
 }
 
 .tarjeta-perfil {
@@ -40,36 +36,35 @@ body.fondo-oscuro-neon {
 .perfil-superior {
     padding: 30px 20px 20px 20px !important;
     text-align: center;
-    border-bottom: 2px solid #aaaaaa !important; /* Línea separadora gris */
+    border-bottom: 2px solid #aaaaaa !important;
     margin-bottom: 20px !important;
 }
 
-/* Foto de 90px que no se deforma */
 .foto-perfil-contenedor {
     position: relative;
-    width: 90px !important; 
-    height: 90px !important; 
-    min-width: 90px !important; 
-    min-height: 90px !important; 
-    flex-shrink: 0 !important; 
+    width: 90px !important;
+    height: 90px !important;
+    min-width: 90px !important;
+    min-height: 90px !important;
+    flex-shrink: 0 !important;
     margin: 0 auto 15px auto;
 }
 
 .circulo-foto {
     width: 100%;
     height: 100%;
-    border-radius: 50% !important; 
+    border-radius: 50% !important;
     background-color: #222;
     border: 3px solid #FFCC00 !important;
 }
 
 .icono-corazon {
     position: absolute;
-    bottom: -2px; 
-    right: -2px;  
+    bottom: -2px;
+    right: -2px;
     background-color: #333;
     color: #FFCC00;
-    width: 28px; 
+    width: 28px;
     height: 28px;
     border-radius: 50%;
     display: flex;
@@ -81,8 +76,8 @@ body.fondo-oscuro-neon {
 }
 
 .nombre-usuario {
-    font-size: 1.5rem; 
-    margin: 5px 0 0 0; 
+    font-size: 1.5rem;
+    margin: 5px 0 0 0;
     color: #FFFFFF;
 }
 

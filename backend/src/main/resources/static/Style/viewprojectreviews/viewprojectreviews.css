@@ -1,7 +1,3 @@
-/* =========================================================
-   1. FONDO Y ESTRUCTURA (UNIFICADO CON GRID)
-   ========================================================= */
-
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
     color: #FFFFFF;
@@ -21,16 +17,13 @@ body.fondo-oscuro-neon::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-image:
+    linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
     z-index: -1;
 }
 
-/* =========================================================
-   BOTÓN VOLVER
-   ========================================================= */
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -62,29 +55,24 @@ body.fondo-oscuro-neon::before {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    margin: 30px auto 60px auto; 
+    margin: 30px auto 60px auto;
     padding: 0 20px;
     gap: 30px;
     align-items: flex-start;
     flex: 1 0 auto;
 }
 
-/* =========================================================
-   2. TARJETAS NEÓN Y PERFIL
-   ========================================================= */
-
-.tarjeta-perfil, 
-.tarjeta-proyecto-detalle, 
+.tarjeta-perfil,
+.tarjeta-proyecto-detalle,
 .tarjeta-reseñas-ver {
     background-color: #1a1a1a !important;
-    border: 1px solid #FFCC00 !important; 
+    border: 1px solid #FFCC00 !important;
     border-radius: 20px;
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.25) !important; 
-    padding: 30px 25px; 
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.25) !important;
+    padding: 30px 25px;
     transition: all 0.4s ease;
 }
 
-/* Efecto hover suave para el brillo (sin desplazar la tarjeta entera) */
 .tarjeta-perfil:hover,
 .tarjeta-proyecto-detalle:hover,
 .tarjeta-reseñas-ver:hover {
@@ -116,7 +104,7 @@ body.fondo-oscuro-neon::before {
     border-radius: 50%;
     border: 3px solid #FFCC00;
     background: #222;
-    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4); 
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
     overflow: hidden;
 }
 
@@ -147,19 +135,19 @@ body.fondo-oscuro-neon::before {
 }
 
 .btn-follow-heart i.fas {
-    color: #ff4444; 
+    color: #ff4444;
 }
 
 .btn-follow-heart i.far {
-    color: #ff4444; 
+    color: #ff4444;
 }
 
 .btn-follow-heart:hover i.far {
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 .btn-follow-heart:hover i.fas {
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 .nombre-usuario {
@@ -182,14 +170,11 @@ body.fondo-oscuro-neon::before {
 
 .separador-perfil {
     border: none;
-    border-top: 1px solid #555; 
+    border-top: 1px solid #555;
     width: 100%;
     margin: 25px 0;
 }
 
-/* =========================================================
-   ENLACES DOTTED (El efecto de desplazamiento individual está aquí)
-   ========================================================= */
 .lista-dotted {
     display: flex;
     flex-direction: column;
@@ -219,17 +204,13 @@ body.fondo-oscuro-neon::before {
 .item-dotted:hover {
     background-color: rgba(255, 204, 0, 0.08);
     color: #FFCC00;
-    transform: translateX(6px); /* Aquí está el desplazamiento de los recuadros */
+    transform: translateX(6px);
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
 }
 
 .item-dotted:hover i {
-    transform: scale(1.2); /* El icono crece un poco */
+    transform: scale(1.2);
 }
-
-/* =========================================================
-   3. BOTONES Y ACCIONES
-   ========================================================= */
 
 .btn-accion-neon {
     padding: 10px 20px;
@@ -263,7 +244,7 @@ body.fondo-oscuro-neon::before {
     align-items: center;
 }
 
-.btn-accion-neon:hover, 
+.btn-accion-neon:hover,
 .boton-curriculum:hover {
     background: #FFCC00;
     color: #111;
@@ -321,10 +302,6 @@ body.fondo-oscuro-neon::before {
     font-weight: bold;
 }
 
-/* =========================================================
-   4. GALERÍA Y DESCRIPCIÓN
-   ========================================================= */
-
 .galeria-capturas {
     display: flex;
     gap: 20px;
@@ -380,10 +357,6 @@ body.fondo-oscuro-neon::before {
     padding-left: 5px;
     margin: 0;
 }
-
-/* =========================================================
-   5. SECCIÓN RESEÑAS / FEEDBACK
-   ========================================================= */
 
 .medias-reseñas-ver {
     background: rgba(255, 204, 0, 0.05);
@@ -462,15 +435,11 @@ body.fondo-oscuro-neon::before {
     font-size: 0.95rem;
 }
 
-/* =========================================================
-   ANIMACIÓN SMOOTHIE CARGA POR LOTES
-   ========================================================= */
-
 .resena-extra-wrapper {
     display: grid;
-    grid-template-rows: 0fr; /* Altura colapsada */
+    grid-template-rows: 0fr;
     transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    visibility: hidden; /* Evita parpadeos antes de animar */
+    visibility: hidden;
 }
 
 .resena-extra-wrapper.resena-visible {
@@ -478,16 +447,12 @@ body.fondo-oscuro-neon::before {
 }
 
 .resena-extra-wrapper.expandido {
-    grid-template-rows: 1fr; /* Altura real del contenido */
+    grid-template-rows: 1fr;
 }
 
 .resena-extra-inner {
     overflow: hidden;
 }
-
-/* =========================================================
-   6. MODAL NEÓN
-   ========================================================= */
 
 .modal {
     display: none;
@@ -555,15 +520,11 @@ body.fondo-oscuro-neon::before {
     letter-spacing: 2px;
 }
 
-/* =========================================================
-   7. RESPONSIVE
-   ========================================================= */
-
 @media (max-width: 1100px) {
     .contenedor-principal {
         flex-direction: column;
     }
-    .columna-perfil, 
+    .columna-perfil,
     .zona-derecha {
         width: 100%;
     }
@@ -572,7 +533,6 @@ body.fondo-oscuro-neon::before {
     }
 }
 
-/* FIX ESTRELLAS */
 .estrellas {
     display: flex;
     gap: 3px;
@@ -590,7 +550,7 @@ body.fondo-oscuro-neon::before {
 .estrellas i.empty {
     color: #333;
 }
-/* Estilo de scroll para contenedor de rese�as */
+
 .contenedor-rese�as {
     max-height: 400px;
     overflow-y: auto;
@@ -611,4 +571,3 @@ body.fondo-oscuro-neon::before {
     background-color: #1a1a1a;
     border-radius: 10px;
 }
-

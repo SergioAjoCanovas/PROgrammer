@@ -20,9 +20,9 @@ public class ProyectoService {
         this.proyectoRepository = proyectoRepository;
     }
 
-    // ==========================================
-    // BORRADO REAL (FIX DEFINITIVO)
-    // ==========================================
+    // =============
+    // BORRADO REAL 
+    // =============
     @Transactional
     public void eliminarProyecto(Proyecto proyecto) {
     
@@ -46,9 +46,9 @@ public class ProyectoService {
         }
     }
 
-    // ==========================================
+    // =========
     // DTO
-    // ==========================================
+    // =========
     public static class ProyectoDTO {
 
         private Long id;

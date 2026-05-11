@@ -1,6 +1,3 @@
-/* =========================================================
-   1. FONDO Y ESTRUCTURA (FOOTER SIEMPRE ABAJO)
-   ========================================================= */
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
     color: #FFFFFF;
@@ -17,14 +14,13 @@ body.fondo-oscuro-neon::before {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
-        linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+    background-image:
+    linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
     z-index: -1;
 }
 
-/* --- BOTÓN VOLVER (Añadido estilo grisáceo) --- */
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -35,7 +31,7 @@ body.fondo-oscuro-neon::before {
 }
 
 .enlace-volver {
-    color: #888888; 
+    color: #888888;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -46,26 +42,23 @@ body.fondo-oscuro-neon::before {
 }
 
 .enlace-volver:hover {
-    color: #FFCC00; 
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
-    transform: translateX(-5px); 
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
 }
 
 .contenedor-principal {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    /* Reducido el margen superior de 40px a 15px para acercarlo al botón de volver */
+
     margin: 15px auto 40px auto;
     padding: 0 20px;
-    gap: 45px; 
+    gap: 45px;
     align-items: flex-start;
-    flex: 1 0 auto; /* Empuja el footer al fondo */
+    flex: 1 0 auto;
 }
 
-/* =========================================================
-   2. TARJETAS NEÓN ESTÁTICAS
-   ========================================================= */
 .tarjeta-neon-estatica {
     background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
@@ -76,9 +69,6 @@ body.fondo-oscuro-neon::before {
     flex-direction: column;
 }
 
-/* =========================================================
-   3. COLUMNA IZQUIERDA (PERFIL Y MINI RESEÑA)
-   ========================================================= */
 .columna-perfil {
     flex: 0 0 380px;
     display: flex;
@@ -95,9 +85,6 @@ body.fondo-oscuro-neon::before {
 .foto-perfil-contenedor { position: relative; width: 140px; height: 140px; margin: 0 auto 20px auto; }
 .circulo-foto { width: 100%; height: 100%; border-radius: 50%; background-color: #222; border: 3px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
 
-/* =========================================================
-   BOTÓN SEGUIR (CORAZÓN ESTILO PROFILEVIEW)
-   ========================================================= */
 .btn-follow-heart {
     position: absolute;
     bottom: 5px;
@@ -125,19 +112,19 @@ body.fondo-oscuro-neon::before {
 }
 
 .btn-follow-heart i.fas {
-    color: #ff4444; 
+    color: #ff4444;
 }
 
 .btn-follow-heart i.far {
-    color: #ff4444; 
+    color: #ff4444;
 }
 
 .btn-follow-heart:hover i.far {
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 .btn-follow-heart:hover i.fas {
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 .nombre-usuario { font-size: 1.6rem; color: #FFFFFF; font-weight: bold; text-align: center; margin: 0; }
@@ -151,9 +138,6 @@ body.fondo-oscuro-neon::before {
 }
 .input-resena:focus { border: 1px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
 
-/* =========================================================
-   4. BOTONES NEÓN
-   ========================================================= */
 .btn-accion-neon {
     width: 100%; padding: 12px; background-color: #0e0e0e !important; color: #FFCC00 !important;
     border: 2px solid #FFCC00 !important; border-radius: 10px; font-weight: bold;
@@ -164,21 +148,18 @@ body.fondo-oscuro-neon::before {
 .btn-accion-neon:hover {
     background-color: #FFCC00 !important; color: #111 !important;
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.8) !important;
-    transform: scale(1.06) translateY(-2px); 
+    transform: scale(1.06) translateY(-2px);
 }
 
 a {
     text-decoration: none;
 }
 
-/* =========================================================
-   5. SECCIÓN DERECHA (DETALLES)
-   ========================================================= */
 .seccion-derecha-dinamica { flex: 1; }
-.cabecera-proyecto { 
-    display: flex; justify-content: space-between; align-items: center; 
-    border-bottom: 2px solid #aaaaaa; 
-    padding-bottom: 20px; margin-bottom: 25px; 
+.cabecera-proyecto {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 2px solid #aaaaaa;
+    padding-bottom: 20px; margin-bottom: 25px;
 }
 
 .cabecera-proyecto h2 { font-size: 2.2rem; margin: 0; color: #fff; }
@@ -195,73 +176,61 @@ a {
 .fila-botones-neon { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 45px; }
 .fila-botones-neon .btn-accion-neon { width: auto; padding: 10px 22px; border-radius: 12px; }
 
-.badge-validado { 
-    border: 2px solid #00FF00; color: #00FF00; padding: 10px 22px; 
-    border-radius: 50px; font-weight: bold; display: flex; align-items: center; gap: 8px; 
+.badge-validado {
+    border: 2px solid #00FF00; color: #00FF00; padding: 10px 22px;
+    border-radius: 50px; font-weight: bold; display: flex; align-items: center; gap: 8px;
 }
 
-/* =========================================================
-   6. GALERÍA DE CAPTURAS
-   ========================================================= */
 .galeria-capturas { display: flex; gap: 25px; margin-bottom: 45px; }
-.marco-captura { 
-    flex: 1; max-width: 350px; height: 190px; border-radius: 15px; 
-    overflow: hidden; cursor: pointer; transition: all 0.4s ease; 
-    border: 2px solid transparent; 
+.marco-captura {
+    flex: 1; max-width: 350px; height: 190px; border-radius: 15px;
+    overflow: hidden; cursor: pointer; transition: all 0.4s ease;
+    border: 2px solid transparent;
 }
 .marco-captura:hover { transform: translateY(-10px); border-color: #FFCC00; box-shadow: 0 10px 25px rgba(255, 204, 0, 0.5); }
 .marco-captura img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
 .marco-captura:hover img { transform: scale(1.1); }
 
-/* =========================================================
-   7. TEXTOS (MÁS ESPACIADO Y ENLACE + ICONO BLANCO)
-   ========================================================= */
 .bloque-texto-informativo { margin-top: 50px; }
 
-.titulo-seccion { 
-    font-size: 1.7rem; margin-bottom: 25px; color: #fff; 
-    border-left: 4px solid #FFCC00; padding-left: 15px; 
+.titulo-seccion {
+    font-size: 1.7rem; margin-bottom: 25px; color: #fff;
+    border-left: 4px solid #FFCC00; padding-left: 15px;
 }
 
-.texto-parrafo { 
-    color: #ccc; line-height: 1.8; margin-bottom: 50px; 
+.texto-parrafo {
+    color: #ccc; line-height: 1.8; margin-bottom: 50px;
     font-size: 1.1rem; text-align: justify;
 }
 
-/* El enlace ahora controla el color de todo su contenido */
-.enlace-repositorio { 
-    color: #FFFFFF !important; 
-    text-decoration: none; 
-    font-size: 1.2rem; 
-    font-weight: 500; 
-    transition: all 0.3s ease; 
-    display: inline-flex; 
-    align-items: center; 
+.enlace-repositorio {
+    color: #FFFFFF !important;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
     gap: 12px;
 }
 
-/* Forzamos que el icono sea blanco inicialmente */
-.enlace-repositorio i { 
-    color: #FFFFFF; 
-    transition: color 0.3s ease; 
+.enlace-repositorio i {
+    color: #FFFFFF;
+    transition: color 0.3s ease;
 }
 
-/* Al pasar el ratón, AMBOS cambian a amarillo */
-.enlace-repositorio:hover { 
-    color: #FFCC00 !important; 
-    text-shadow: 0 0 15px rgba(255, 204, 0, 0.8); 
-    transform: translateX(8px); 
+.enlace-repositorio:hover {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+    transform: translateX(8px);
 }
 
-.enlace-repositorio:hover i { 
-    color: #FFCC00; 
+.enlace-repositorio:hover i {
+    color: #FFCC00;
 }
 
-/* =========================================================
-   8. MODAL (VISTA AMPLIADA)
-   ========================================================= */
 .modal {
-    display: none; position: fixed; z-index: 9999; 
+    display: none; position: fixed; z-index: 9999;
     left: 0; top: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
     justify-content: center; align-items: center; flex-direction: column;
@@ -276,20 +245,17 @@ a {
 }
 
 @keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+from { transform: scale(0.8); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
 }
 
 #caption-modal { text-align: center; color: #FFCC00; padding: 25px; font-weight: bold; font-size: 1.3rem; text-transform: uppercase; }
 
-/* =========================================================
-   9. RESPONSIVE
-   ========================================================= */
 @media (max-width: 1200px) {
-    .contenedor-principal { flex-direction: column; align-items: center; }
-    .columna-perfil { width: 100%; max-width: 600px; }
-    .galeria-capturas { flex-direction: column; align-items: center; }
-    .marco-captura { width: 100%; max-width: 500px; height: 250px; }
+.contenedor-principal { flex-direction: column; align-items: center; }
+.columna-perfil { width: 100%; max-width: 600px; }
+.galeria-capturas { flex-direction: column; align-items: center; }
+.marco-captura { width: 100%; max-width: 500px; height: 250px; }
 }
 
 body {
@@ -307,9 +273,9 @@ img {
 }
 
 .texto-parrafo {
-    white-space: pre-wrap;       
-    overflow-wrap: anywhere;     
-    word-break: break-word;    
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     max-width: 100%;
 }
 
@@ -339,18 +305,14 @@ img {
 
     box-sizing: border-box;
 
-    display: inline-flex; 
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
     vertical-align: middle;
 }
 
-/* =========================
-   MODAL ELIMINAR - MEJORADO
-   ========================= */
-
-   .contenido-modal-confirmacion {
+.contenido-modal-confirmacion {
     background-color: #1a1a1a;
     border: 2px solid #FFCC00;
     border-radius: 20px;
@@ -365,7 +327,6 @@ img {
     box-shadow: 0 0 25px rgba(255, 204, 0, 0.3);
 }
 
-/* Texto del modal */
 .contenido-modal-confirmacion p {
     font-size: 1.3rem;
     color: #ffffff;
@@ -374,14 +335,12 @@ img {
     margin: 0;
 }
 
-/* Contenedor botones */
 .botones-confirmacion {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 }
 
-/* Botones dentro del modal */
 .botones-confirmacion .btn-accion-neon {
     flex: 1;
     padding: 12px;
@@ -399,18 +358,13 @@ img {
     color: #111 !important;
 }
 
-/* =========================================================
-   LISTA DOTTED (REDES + CV ESTILO UNIFICADO)
-   ========================================================= */
-
-   .lista-dotted {
+.lista-dotted {
     display: flex;
     flex-direction: column;
     gap: 18px;
     margin-top: 10px;
 }
 
-/* ITEM */
 .item-dotted {
     display: flex;
     align-items: center;
@@ -429,13 +383,11 @@ img {
     transition: all 0.35s ease;
 }
 
-/* ICONO */
 .item-dotted i {
     color: #FFCC00;
     transition: all 0.35s ease;
 }
 
-/* HOVER */
 .item-dotted:hover {
     background-color: rgba(255, 204, 0, 0.08);
     color: #FFCC00;

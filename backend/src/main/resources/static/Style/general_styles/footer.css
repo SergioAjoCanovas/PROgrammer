@@ -1,9 +1,6 @@
-/* =========================================================
-   FOOTER DEFINITIVO Y UNIFICADO
-   ========================================================= */
 .footer-principal {
-    background-color: #1a1a1a !important; 
-    border-top: 2px solid #FFCC00; 
+    background-color: #1a1a1a !important;
+    border-top: 2px solid #FFCC00;
     padding: 30px 25px;
     width: 100%;
     box-sizing: border-box;
@@ -22,7 +19,6 @@
     margin: 0 auto;
 }
 
-/* Alineación de la izquierda (Logo y nombres) */
 .footer-seccion {
     display: flex;
     align-items: center;
@@ -30,26 +26,25 @@
 }
 
 .footer-logo {
-    max-height: 50px; 
+    max-height: 50px;
     width: auto;
 }
 
 .footer-texto p {
-    margin: 0 !important; 
+    margin: 0 !important;
     line-height: 1.4;
 }
 
 .footer-texto p:first-of-type {
     font-weight: bold;
-    color: #ffffff; 
+    color: #ffffff;
 }
 
 .footer-texto p:last-of-type {
     font-size: 0.85rem;
-    color: #ffffff; 
+    color: #ffffff;
 }
 
-/* Enlaces centrales */
 .footer-links a {
     color: #eee !important;
     text-decoration: none;
@@ -64,24 +59,21 @@
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
-/* Iconos redes sociales */
 .footer-redes a {
-    color: #eee !important; 
+    color: #eee !important;
     font-size: 1.5rem;
     margin-left: 15px;
     transition: 0.3s;
     display: inline-block;
 }
 
-/* HOVER REDES SOCIALES (RESTABLECIDO AL ESTILO NEÓN) */
 .footer-redes a:hover {
-    color: #FFCC00 !important; 
-    text-shadow: 0 0 15px #FFCC00; 
-    transform: translateY(-3px); 
+    color: #FFCC00 !important;
+    text-shadow: 0 0 15px #FFCC00;
+    transform: translateY(-3px);
     filter: brightness(1.2);
 }
 
-/* AJUSTE PARA MÓVILES */
 @media (max-width: 768px) {
     .footer-contenido {
         flex-direction: column;

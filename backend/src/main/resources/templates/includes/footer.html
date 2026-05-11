@@ -39,7 +39,7 @@
     </footer>
 
     <script>
-        // Configurar el favicon de la pestaña
+
         (function() {
             let link = document.querySelector("link[rel~='icon']");
             if (!link) {
@@ -53,7 +53,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const path = window.location.pathname;
-            
+
             if (path.includes('/nosotros')) {
                 document.getElementById('footer-nosotros')?.classList.add('activo-footer');
             } else if (path.includes('/privacidad')) {

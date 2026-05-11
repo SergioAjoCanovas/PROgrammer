@@ -1,4 +1,3 @@
-/* --- ESTILOS GENERALES --- */
 * {
     margin: 0;
     padding: 0;
@@ -7,29 +6,27 @@
 }
 
 body {
-    background-color: #000; 
+    background-color: #000;
     color: white;
 }
 
-/* --- LOGOTIPO --- */
 .contenedor-logotipo {
     display: flex;
     align-items: center;
 }
 
 .imagen-logotipo {
-    max-height: 85px; 
-    width: auto; 
+    max-height: 85px;
+    width: auto;
     display: block;
 }
 
-/* --- ENCABEZADO PRINCIPAL --- */
 .encabezado-principal {
-    background-color: #1a1a1a; 
+    background-color: #1a1a1a;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 40px; 
+    padding: 10px 40px;
     border-bottom: 3px solid #FFCC00;
     box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
 }
@@ -38,62 +35,60 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    flex: 1; 
+    flex: 1;
 }
 
-/* --- NAVEGACIÓN CENTRAL --- */
 .navegacion-central {
     display: flex;
-    /* ESTA ES LA MAGIA: Sustituimos el gap: 70px fijo por uno elástico */
-    gap: clamp(10px, 1.5vw, 50px); 
+
+    gap: clamp(10px, 1.5vw, 50px);
     justify-content: center;
-    flex: 2; 
-    min-width: 0; /* Permite que los elementos se encojan sin desbordar */
+    flex: 2;
+    min-width: 0;
 }
 
 .navegacion-central a {
     color: white;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    gap: 5px; 
-    position: relative; /* Asegura que los globos de notificación se posicionen bien */
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    position: relative;
 }
 
 .navegacion-central a i {
-    font-size: 1.8rem; 
-    height: 42px; 
+    font-size: 1.8rem;
+    height: 42px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
 }
 
 .texto-icono {
-    /* Hacemos la fuente elástica para que encaje el Admin */
-    font-size: clamp(10px, 0.75vw, 12px); 
+
+    font-size: clamp(10px, 0.75vw, 12px);
     font-weight: 600;
-    text-transform: uppercase; 
+    text-transform: uppercase;
     letter-spacing: 0.5px;
-    white-space: nowrap; /* EVITA QUE EL TEXTO SALTE DE LÍNEA */
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .navegacion-central a:hover {
     color: #FFCC00;
-    transform: scale(1.15); 
-    text-shadow: 0 0 10px #FFCC00, 
-                  0 0 20px #FFCC00, 
-                  0 0 40px rgba(255, 204, 0, 0.6);
+    transform: scale(1.15);
+    text-shadow: 0 0 10px #FFCC00,
+    0 0 20px #FFCC00,
+    0 0 40px rgba(255, 204, 0, 0.6);
 }
 
-/* --- SECCIÓN DERECHA --- */
 .seccion-derecha {
     display: flex;
     align-items: center;
-    /* Volvemos el gap elástico para que ceda espacio al Admin */
-    gap: clamp(15px, 2vw, 30px); 
+
+    gap: clamp(15px, 2vw, 30px);
     justify-content: flex-end;
     flex: 1;
 }
@@ -104,16 +99,15 @@ body {
     align-items: center;
     gap: 5px;
     cursor: pointer;
-    text-decoration: none; 
-    background: none;      
-    border: none;          
+    text-decoration: none;
+    background: none;
+    border: none;
 }
 
 .item-derecha .texto-icono {
     color: white;
 }
 
-/* --- ESTILOS DE LOS ICONOS DERECHOS --- */
 .avatar-usuario {
     width: 42px;
     height: 42px;
@@ -126,28 +120,25 @@ body {
     transition: all 0.3s ease;
 }
 
-/* LA CAJA DEL ICONO (Estática) */
 .icono-engranaje {
     color: white;
     font-size: 1.8rem;
-    height: 42px; 
-    width: 42px; 
+    height: 42px;
+    width: 42px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     position: relative;
-    top: 9px; 
+    top: 9px;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* EL DIBUJO DEL ICONO (Lo que realmente gira) */
 .icono-engranaje::before {
     display: inline-block;
     transition: transform 0.3s ease;
     transform-origin: center center;
 }
 
-/* --- ANIMACIONES EN CONJUNTO --- */
 .item-derecha:hover .avatar-usuario {
     box-shadow: 0 0 20px #FFCC00;
     transform: scale(1.1);
@@ -159,21 +150,16 @@ body {
 }
 
 .item-derecha:hover .icono-engranaje::before {
-    transform: rotate(180deg); 
+    transform: rotate(180deg);
 }
 
 .item-derecha:hover .texto-icono {
     color: #FFCC00;
-    transform: scale(1.15); 
-    text-shadow: 0 0 10px #FFCC00, 
-                 0 0 20px #FFCC00, 
-                 0 0 40px rgba(255, 204, 0, 0.6);
+    transform: scale(1.15);
+    text-shadow: 0 0 10px #FFCC00,
+    0 0 20px #FFCC00,
+    0 0 40px rgba(255, 204, 0, 0.6);
 }
-
-
-/* =========================================
-   SISTEMA DE NOTIFICACIONES (AVISOS) - ANIMACIÓN SUAVE
-   ========================================= */
 
 .contenedor-avisos {
     position: relative;
@@ -196,12 +182,11 @@ body {
     pointer-events: none;
 }
 
-/* --- PANEL CON ANIMACIÓN DE ENTRADA Y SALIDA --- */
 .panel-notificaciones {
-    visibility: hidden; 
+    visibility: hidden;
     opacity: 0;
-    transform: translateY(-15px) scale(0.98); 
-    
+    transform: translateY(-15px) scale(0.98);
+
     position: absolute;
     top: 65px;
     right: -100px;
@@ -209,12 +194,12 @@ body {
     background-color: #1a1a1a;
     border: 1px solid #333;
     border-radius: 12px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8); 
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
     z-index: 9999;
     overflow: hidden;
     cursor: default;
-    
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .panel-notificaciones.activo {
@@ -229,17 +214,16 @@ body {
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #222;
-    background: linear-gradient(180deg, #1f1f1f 0%, #151515 100%); 
+    background: linear-gradient(180deg, #1f1f1f 0%, #151515 100%);
 }
 
 .cabecera-notificaciones h4 {
     color: white;
-    font-size: 1.1rem; 
+    font-size: 1.1rem;
     margin: 0;
     letter-spacing: 0.5px;
 }
 
-/* --- Botón "Marcar como leído" horizontal --- */
 .marcar-leido {
     background-color: #2a2a2a;
     color: #aaa;
@@ -248,11 +232,11 @@ body {
     padding: 6px 14px;
     border-radius: 20px;
     display: flex;
-    flex-direction: row !important; 
+    flex-direction: row !important;
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
-    height: auto !important; 
+    height: auto !important;
 }
 
 .marcar-leido i {
@@ -354,10 +338,6 @@ body {
     font-size: 1.2rem;
 }
 
-/* =========================================================
-   RESPONSIVE PARA MOVILES Y TABLETS 
-   ========================================================= */
-
 .btn-menu-movil {
     display: none;
     background: none;
@@ -375,15 +355,15 @@ body {
 
 @media (max-width: 1100px) {
     .navegacion-central {
-        /* Distancia dinámica aún más pequeña para tablets apaisadas */
-        gap: clamp(5px, 1vw, 20px); 
+
+        gap: clamp(5px, 1vw, 20px);
     }
 }
 
 @media (max-width: 900px) {
     .encabezado-principal {
         padding: 10px 20px;
-        position: relative; 
+        position: relative;
     }
 
     .seccion-derecha {
@@ -391,11 +371,11 @@ body {
     }
 
     .info-texto-usuario {
-        display: none !important; 
+        display: none !important;
     }
 
     .btn-logout-texto, .texto-perfil-movil {
-        display: none; 
+        display: none;
     }
 
     .btn-logout {
@@ -403,11 +383,11 @@ body {
     }
 
     .imagen-logotipo {
-        max-height: 55px; 
+        max-height: 55px;
     }
 
     .btn-menu-movil {
-        display: block; 
+        display: block;
     }
 
     .navegacion-central {
@@ -422,7 +402,7 @@ body {
         border-bottom: 3px solid #FFCC00;
         box-shadow: 0 10px 25px rgba(0,0,0,0.8);
         z-index: 1000;
-        display: none; 
+        display: none;
     }
 
     .navegacion-central.mostrar-menu {
@@ -431,19 +411,19 @@ body {
     }
 
     .navegacion-central a {
-        flex-direction: row; 
+        flex-direction: row;
         justify-content: flex-start;
         padding: 15px 30px;
-        border-bottom: 1px solid #333; 
+        border-bottom: 1px solid #333;
     }
 
     .navegacion-central a:hover {
         background-color: #222;
-        transform: scale(1); 
+        transform: scale(1);
     }
 
     .navegacion-central a i {
-        width: 40px; 
+        width: 40px;
         height: auto;
         justify-content: center;
         font-size: 1.5rem;
@@ -454,17 +434,17 @@ body {
     }
 
     .contenedor-avisos {
-        display: contents; /* Permite que el enlace interno se comporte como un hijo directo del nav */
+        display: contents;
     }
 
     #badge-avisos {
         top: 10px !important;
         right: auto !important;
-        left: 50px !important; /* Posicionado sobre el icono en modo fila */
+        left: 50px !important;
     }
 
     .panel-notificaciones {
-        right: -80px; 
+        right: -80px;
         width: 280px;
     }
 }
@@ -485,6 +465,6 @@ body {
 }
 
 @keyframes deslizarAbajo {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
 }

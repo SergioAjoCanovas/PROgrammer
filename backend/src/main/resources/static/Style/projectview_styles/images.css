@@ -9,7 +9,7 @@
     width: 100%;
     height: 180px;
     object-fit: cover;
-    border-radius: 20px; /* Igual que los contenedores */
+    border-radius: 20px;
     border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.3s ease;

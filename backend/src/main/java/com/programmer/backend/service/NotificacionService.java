@@ -22,10 +22,10 @@ public class NotificacionService {
 
     @Transactional
     public void enviarNotificacion(Usuario receptor, String mensaje, String tipo, String enlace) {
-        // Recargar usuario para asegurar que tenemos el estado más reciente (especialmente silenciarNotificaciones)
+        
         Usuario u = usuarioRepository.findById(receptor.getId()).orElse(receptor);
         
-        // Si el usuario tiene silenciadas las notificaciones, no la creamos (excepto si es un parche, pero eso se maneja aparte)
+        
         if (u.isSilenciarNotificaciones() && !"NUEVO_PARCHE".equals(tipo)) {
             return;
         }

@@ -10,18 +10,16 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/menu_styles/menu_styles.css">
 
-    <style>
-        /* Estilo para que el icono del MENÚ brille en amarillo neón */
-        .activo, 
-        header .nav-enlaces a.activo i, 
-        header .nav-enlaces a.activo span {
-            color: #FFCC00 !important;
-            text-shadow: 0 0 10px #FFCC00 !important;
-        }
-    </style>
+    <style>.activo,
+header .nav-enlaces a.activo i,
+header .nav-enlaces a.activo span {
+    color: #FFCC00 !important;
+    text-shadow: 0 0 10px #FFCC00 !important;
+}
+</style>
 </head>
 <body class="fondo-oscuro-neon"> 
-    
+
     <div th:replace="~{includes/header :: header}"></div>
 
     <div class="contenedor-volver">
@@ -35,7 +33,7 @@
             <div class="cabecera-menu">
                 <h2><i class="fas fa-th"></i> Menú de Herramientas</h2>
             </div>
-            
+
             <p class="introduccion-menu">Accede rápidamente a las funciones secundarias y recursos exclusivos de la plataforma profesional.</p>
 
             <div class="grid-menu-completo">
@@ -95,14 +93,12 @@
     <script>
         function inicializarInterfazMenu() {
             const contenedorHeader = document.getElementById('info-usuario');
-            const navMenu = document.getElementById('nav-menu'); // Asegúrate que el link en el header tenga este ID
+            const navMenu = document.getElementById('nav-menu'); 
 
-
-            // 2. Iluminar icono de Menú
             if (navMenu) {
                 navMenu.classList.add('activo');
             } else {
-                // Alternativa por URL si el ID no está presente
+
                 const links = document.querySelectorAll('header a');
                 links.forEach(l => {
                     if (l.getAttribute('href')?.includes('menu')) {
@@ -112,7 +108,6 @@
             }
         }
 
-        // Ejecutar cuando el DOM esté listo
         window.addEventListener('load', () => {
             setTimeout(inicializarInterfazMenu, 100);
         });

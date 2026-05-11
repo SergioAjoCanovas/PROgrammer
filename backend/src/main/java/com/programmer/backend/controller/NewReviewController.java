@@ -28,8 +28,6 @@ public class NewReviewController {
         this.notificacionService = notificacionService;
     }
 
-    // El método verPerfil se mantiene por compatibilidad, 
-    // pero ahora el flujo principal irá por ProfileController
     @GetMapping("/{id}")
     public String verPerfil(@PathVariable Long id, Model model) {
         return "redirect:/profileView/" + id;
@@ -97,7 +95,7 @@ public class NewReviewController {
         NewReview review = reviewRepository.findById(reviewId).orElse(null);
         
         if (review != null && review.getAutor().getId().equals(autor.getId())) {
-            // Validar y actualizar campos (Permitimos rating 0 en edición)
+            // Validar y actualizar campos
             if (rating >= 0 && rating <= 5 && comentario != null && !comentario.trim().isEmpty()) {
                 
                 review.setRating(rating);

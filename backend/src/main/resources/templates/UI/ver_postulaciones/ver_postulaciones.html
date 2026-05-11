@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Postulaciones - ProGrammer</title>
-    
+
     <link rel="stylesheet" href="/Style/general_styles/header.css">
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/general_styles/footer.css">
@@ -39,13 +39,12 @@
             </button>
         </div>
 
-        <!-- SECCIÓN PENDIENTES -->
         <div id="seccion-pendientes" style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
             <div class="candidato-card" th:each="post : ${postulaciones}" th:if="${post.estado == 'PENDIENTE'}">
                 <div style="position: relative;">
                     <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="avatar-candidato" alt="Avatar">
                 </div>
-                
+
                 <div style="flex: 1;">
                     <div class="cabecera-card">
                         <h3>
@@ -54,9 +53,9 @@
                         </h3>
                         <span class="fecha-postulacion" th:text="${#dates.format(post.fechaPostulacion, 'dd/MM/yyyy HH:mm')}">10/05/2026</span>
                     </div>
-                    
+
                     <p class="email-candidato"><i class="fas fa-envelope"></i> <span th:text="${post.desarrollador.email}">email@ejemplo.com</span></p>
-                    
+
                     <div class="caja-mensaje" th:if="${post.mensajeAdjunto != null && !post.mensajeAdjunto.isEmpty()}">
                         <p th:text="${post.mensajeAdjunto}">Mensaje del candidato...</p>
                     </div>
@@ -72,14 +71,13 @@
                 <div class="acciones-candidato">
                     <div class="estado-postulacion-badge badge-pendiente">PENDIENTE</div>
                     <a th:href="@{'/profileView/' + ${post.desarrollador.id}}" class="btn-ver-perfil"><i class="fas fa-user"></i> VER PERFIL</a>
-                    
-                    <!-- Botón de CV: Prioriza el específico de la oferta, si no el general del perfil -->
+
                     <a th:if="${post.cvAdjunto != null || (post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty())}" 
                        th:href="${post.cvAdjunto != null ? post.cvAdjunto : post.desarrollador.curriculum}" 
                        target="_blank" class="btn-ver-cv">
                         <i class="fas fa-file-pdf"></i> CURRÍCULUM
                     </a>
-                    
+
                     <div class="botones-decision">
                         <button class="btn-aceptar" th:onclick="'gestionarPostulacion(' + ${post.id} + ', \'ACEPTADA\')'">
                             <i class="fas fa-check"></i> ACEPTAR
@@ -96,20 +94,19 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ACEPTADAS -->
         <div id="seccion-aceptadas" style="display: none; flex: 1; flex-direction: column; gap: 20px;">
             <div class="candidato-card" th:each="post : ${postulaciones}" th:if="${post.estado == 'ACEPTADA'}" style="border-color: rgba(0, 230, 118, 0.3);">
                 <div style="position: relative;">
                     <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="avatar-candidato" style="border-color: #00e676;">
                 </div>
-                
+
                 <div style="flex: 1;">
                     <div class="cabecera-card">
                         <h3 th:text="${post.desarrollador.username}">Nombre Usuario</h3>
                         <span class="fecha-postulacion" th:text="${#dates.format(post.fechaPostulacion, 'dd/MM/yyyy HH:mm')}">10/05/2026</span>
                     </div>
                     <p class="email-candidato"><i class="fas fa-envelope"></i> <span th:text="${post.desarrollador.email}">email@ejemplo.com</span></p>
-                    
+
                     <div th:if="${post.proyectoVinculado != null}" class="caja-proyecto" style="border-color: rgba(0, 230, 118, 0.2); background: rgba(0, 230, 118, 0.05);">
                         <i class="fas fa-code-branch" style="color: #00e676;"></i> Proyecto: <strong th:text="${post.proyectoVinculado.titulo}" style="color: #00e676;">Proyecto X</strong>
                     </div>
@@ -118,7 +115,7 @@
                 <div class="acciones-candidato">
                     <div class="estado-postulacion-badge badge-aceptada">ACEPTADA</div>
                     <a th:href="@{'/profileView/' + ${post.desarrollador.id}}" class="btn-ver-perfil"><i class="fas fa-user"></i> VER PERFIL</a>
-                    
+
                     <a th:if="${post.cvAdjunto != null || (post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty())}" 
                        th:href="${post.cvAdjunto != null ? post.cvAdjunto : post.desarrollador.curriculum}" 
                        target="_blank" class="btn-ver-cv">
@@ -135,7 +132,6 @@
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-    <!-- TOAST NEÓN -->
     <div id="toast-notificacion" class="toast-neon" style="display: none;">
         <i class="fas fa-check-circle"></i>
         <div>
@@ -148,7 +144,7 @@
         function mostrarSeccion(seccion) {
             document.getElementById('seccion-pendientes').style.display = (seccion === 'pendientes') ? 'flex' : 'none';
         document.getElementById('seccion-aceptadas').style.display = (seccion === 'aceptadas') ? 'flex' : 'none';
-            
+
             document.getElementById('btn-tab-pendientes').classList.toggle('active', seccion === 'pendientes');
             document.getElementById('btn-tab-aceptadas').classList.toggle('active', seccion === 'aceptadas');
         }
@@ -156,7 +152,7 @@
         function gestionarPostulacion(id, nuevoEstado) {
             const accion = nuevoEstado === 'ACEPTADA' ? 'aceptar' : 'rechazar';
             const color = nuevoEstado === 'ACEPTADA' ? '#00e676' : '#ff4444';
-            
+
             Swal.fire({
                 title: '¿Confirmar acción?',
                 text: `¿Estás seguro de que quieres ${accion} a este candidato?`,
@@ -172,7 +168,7 @@
                 if (result.isConfirmed) {
                     const formData = new FormData();
                     formData.append('estado', nuevoEstado);
-                    
+
                     fetch(`/api/postulaciones/${id}/update-status`, {
                         method: 'POST',
                         body: formData
@@ -193,7 +189,7 @@
             const titulo = document.getElementById('toast-titulo');
             const mensaje = document.getElementById('toast-mensaje');
             const icono = toast.querySelector('i');
-            
+
             toast.style.display = 'flex';
             if (estado === 'ACEPTADA') {
                 titulo.innerText = "¡Candidato Aceptado!";
@@ -208,10 +204,10 @@
                 toast.style.borderLeftColor = "#ff4444";
                 icono.style.color = "#ff4444";
             }
-            
+
             toast.style.opacity = '1';
             toast.style.transform = 'translateX(0)';
-            
+
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateX(120%)';

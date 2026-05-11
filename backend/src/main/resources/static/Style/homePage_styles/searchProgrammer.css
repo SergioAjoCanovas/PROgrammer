@@ -1,6 +1,3 @@
-/* =========================================
-   1. ESTRUCTURA BASE
-   ========================================= */
 body.fondo-oscuro-neon {
     background-color: #000 !important;
     color: #fff;
@@ -12,7 +9,6 @@ body.fondo-oscuro-neon {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* --- BOTÓN VOLVER --- */
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -24,7 +20,7 @@ body.fondo-oscuro-neon {
 }
 
 .enlace-volver {
-    color: #888888; 
+    color: #888888;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -35,14 +31,14 @@ body.fondo-oscuro-neon {
 }
 
 .enlace-volver:hover {
-    color: #FFCC00; 
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
-    transform: translateX(-5px); 
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
 }
 
 .contenedor-busqueda {
-    flex: 1; 
-    padding: 20px 20px 60px 20px; 
+    flex: 1;
+    padding: 20px 20px 60px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,9 +47,6 @@ body.fondo-oscuro-neon {
     box-sizing: border-box;
 }
 
-/* =========================================
-   2. SECCIÓN BUSCADOR Y FILTROS
-   ========================================= */
 .seccion-buscador-central {
     width: 100%;
     max-width: 700px;
@@ -73,7 +66,7 @@ body.fondo-oscuro-neon {
 }
 
 .caja-busqueda-neon {
-    background: #1a1a1a; 
+    background: #1a1a1a;
     border: 2px solid #FFCC00;
     border-radius: 30px;
     padding: 5px;
@@ -113,15 +106,15 @@ body.fondo-oscuro-neon {
     font-size: 1.2rem;
     transition: all 0.3s ease;
 }
-.funnel-icon:hover, .funnel-icon.active { 
-    color: #FFCC00; 
+.funnel-icon:hover, .funnel-icon.active {
+    color: #FFCC00;
     text-shadow: 0 0 15px #FFCC00;
 }
 
 .btn-buscar-neon {
-    background: #050505; 
-    border: 1px solid #FFCC00; 
-    color: #FFCC00; 
+    background: #050505;
+    border: 1px solid #FFCC00;
+    color: #FFCC00;
     padding: 10px 25px;
     border-radius: 40px;
     font-weight: bold;
@@ -140,7 +133,7 @@ body.fondo-oscuro-neon {
     background: #1a1a1a;
     border-top: 1px solid rgba(255, 204, 0, 0.2);
     padding: 20px;
-    display: none; 
+    display: none;
     box-sizing: border-box;
     border-radius: 0 0 25px 25px;
 }
@@ -197,60 +190,56 @@ body.fondo-oscuro-neon {
     transition: 0.2s;
 }
 
-.item-tech.selected { 
-    background: rgba(255, 204, 0, 0.1); 
-    border-color: #FFCC00; 
+.item-tech.selected {
+    background: rgba(255, 204, 0, 0.1);
+    border-color: #FFCC00;
 }
 
 .item-tech input { display: none; }
 .item-tech span { font-size: 0.75rem; color: #888; }
 .item-tech.selected span { color: #fff; }
 
-.tick-minimalista { 
-    width: 18px; 
-    height: 18px; 
-    border: 2px solid rgba(255, 204, 0, 0.4); 
-    border-radius: 4px; 
-    display: flex; 
-    align-items: center; 
+.tick-minimalista {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 204, 0, 0.4);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    background: transparent; 
+    background: transparent;
     transition: all 0.2s ease;
 }
 
-.tick-minimalista i { 
-    color: #000; 
-    font-size: 0.7rem; 
-    opacity: 0; 
+.tick-minimalista i {
+    color: #000;
+    font-size: 0.7rem;
+    opacity: 0;
 }
 
-.item-tech.selected .tick-minimalista { 
-    background: #FFCC00; 
-    border-color: #FFCC00; 
+.item-tech.selected .tick-minimalista {
+    background: #FFCC00;
+    border-color: #FFCC00;
 }
 
-.item-tech.selected .tick-minimalista i { 
-    opacity: 1; 
+.item-tech.selected .tick-minimalista i {
+    opacity: 1;
 }
 
-/* =========================================
-   3. SECCIÓN TARJETAS Y CARRUSEL
-   ========================================= */
-.seccion-carrusel { 
-    width: 100%; 
-    max-width: 900px; 
+.seccion-carrusel {
+    width: 100%;
+    max-width: 900px;
     box-sizing: border-box;
 }
 
 .subtitulo-neon {
     color: #fff;
-    margin-bottom: 50px; 
+    margin-bottom: 50px;
     font-size: 1.8rem;
     border-left: 5px solid #FFCC00;
     padding-left: 15px;
 }
 
-/* --- CONTADOR ESTILO PROGRAMADORES (AZUL) --- */
 .contador-resultados-azul {
     width: 100%;
     display: flex;
@@ -263,7 +252,7 @@ body.fondo-oscuro-neon {
     align-items: center;
     gap: 15px;
     position: relative;
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
 }
 
 .contenedor-texto-contador::after {
@@ -272,7 +261,7 @@ body.fondo-oscuro-neon {
     bottom: 0;
     left: 75%;
     transform: translateX(-110%);
-    width: 45%; 
+    width: 45%;
     height: 2px;
     background: #00f3ff;
     box-shadow: 0 0 10px #00f3ff;
@@ -301,20 +290,18 @@ body.fondo-oscuro-neon {
     text-shadow: 0 0 5px #fff;
 }
 
-/* ------------------------------------------- */
-
 .carrusel-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    width: 100%; 
+    width: 100%;
 }
 
 .carrusel-contenedor { overflow: hidden; width: 100%; }
 
-.carrusel-track { 
-    display: flex; 
-    gap: 30px; 
+.carrusel-track {
+    display: flex;
+    gap: 30px;
     transition: transform 0.6s ease;
     padding: 10px 5px;
 }
@@ -326,13 +313,12 @@ body.fondo-oscuro-neon {
     width: 100%;
 }
 
-/* ESTILO TARJETA FLUIDO */
 .tarjeta-perfil-neon {
-    background: #1a1a1a; 
+    background: #1a1a1a;
     border: 1px solid rgba(255, 204, 0, 0.4);
     border-radius: 20px;
-    width: 100%; 
-    min-height: 430px; 
+    width: 100%;
+    min-height: 430px;
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
@@ -340,15 +326,14 @@ body.fondo-oscuro-neon {
     box-sizing: border-box;
 }
 
-/* Limitamos el tamaño solo si está dentro de la vista carrusel */
 .carrusel-track .tarjeta-perfil-neon {
     max-width: 290px;
 }
 
-.tarjeta-perfil-neon:hover { 
-    border-color: #FFCC00; 
+.tarjeta-perfil-neon:hover {
+    border-color: #FFCC00;
     transform: translateY(-8px);
-    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6); 
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
 .contenido-perfil {
@@ -384,11 +369,11 @@ body.fondo-oscuro-neon {
 
 .tags-container { position: relative; margin-bottom: 15px; width: 100%; }
 
-.tags { 
-    display: flex; 
-    flex-wrap: wrap; 
+.tags {
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    justify-content: center; 
+    justify-content: center;
     width: 100%;
 }
 
@@ -400,7 +385,7 @@ body.fondo-oscuro-neon {
     border-radius: 5px;
     font-size: 0.75rem;
     border: 1px solid rgba(255, 204, 0, 0.2);
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
 }
 
 .tags span:hover, .grid-techs-3 span:hover {
@@ -411,21 +396,21 @@ body.fondo-oscuro-neon {
 }
 .tags span:hover { transform: translateY(-5px); }
 
-.tech-toggle { 
-    cursor: pointer; 
-    color: #fff; 
-    margin-top: 10px; 
-    font-size: 1.3rem; 
-    transition: all 0.3s ease; 
+.tech-toggle {
+    cursor: pointer;
+    color: #fff;
+    margin-top: 10px;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
 }
-.tech-toggle:hover { 
-    color: #FFCC00; 
+.tech-toggle:hover {
+    color: #FFCC00;
     text-shadow: 0 0 10px #FFCC00;
-    transform: scale(1.3); 
+    transform: scale(1.3);
 }
 
 .btn-perfil {
-    background: #050505; 
+    background: #050505;
     border: 2px solid #FFCC00;
     color: #FFCC00;
     padding: 12px;
@@ -437,9 +422,9 @@ body.fondo-oscuro-neon {
     transition: all 0.3s ease;
     margin-top: auto;
 }
-.btn-perfil:hover { 
-    background: #FFCC00; 
-    color: #000; 
+.btn-perfil:hover {
+    background: #FFCC00;
+    color: #000;
     box-shadow: 0 0 20px #FFCC00;
     transform: scale(1.02);
 }
@@ -470,14 +455,13 @@ body.fondo-oscuro-neon {
 .prev { left: -60px; }
 .next { right: -60px; }
 
-/* OVERLAYS */
 .vista-todas-techs, .vista-bio-completa {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: #1a1a1a;
     z-index: 15;
     padding: 20px;
-    display: none; 
+    display: none;
     flex-direction: column;
     border-radius: 20px;
 }
@@ -511,8 +495,8 @@ body.fondo-oscuro-neon {
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     width: 100%;
-    overflow-y: auto; 
-    max-height: 280px; 
+    overflow-y: auto;
+    max-height: 280px;
 }
 
 .grid-techs-3 span {
@@ -531,36 +515,30 @@ body.fondo-oscuro-neon {
     max-height: 280px;
 }
 
-/* =========================================
-   DISEÑO RESPONSIVE Y MÓVIL (CORREGIDO)
-   ========================================= */
-
 @media (max-width: 1050px) {
-    .btn-nav { display: none !important; }
+.btn-nav { display: none !important; }
 }
 
 @media (max-width: 768px) {
-    /* Ajustes generales de texto */
-    .titulo-neon { font-size: 2rem; }
-    .subtitulo-neon { font-size: 1.5rem; text-align: center; border-left: none; padding-left: 0; }
 
-    /* Barra de búsqueda adaptada sin solapamientos */
+.titulo-neon { font-size: 2rem; }
+.subtitulo-neon { font-size: 1.5rem; text-align: center; border-left: none; padding-left: 0; }
+
     .caja-busqueda-neon {
         border-radius: 20px;
         padding: 15px;
     }
-    .input-wrapper { 
-        flex-direction: column; 
-        gap: 15px; 
+    .input-wrapper {
+        flex-direction: column;
+        gap: 15px;
         padding: 0;
     }
-    
-    /* Centrar icono de embudo dentro del marco sin overflow */
-    .funnel-icon { 
+
+    .funnel-icon {
         position: relative;
-        background: rgba(255, 204, 0, 0.1); 
-        border-radius: 50%; 
-        border: 1px solid #FFCC00; 
+        background: rgba(255, 204, 0, 0.1);
+        border-radius: 50%;
+        border: 1px solid #FFCC00;
         width: 45px;
         height: 45px;
         display: flex;
@@ -568,53 +546,49 @@ body.fondo-oscuro-neon {
         justify-content: center;
         margin: 0 auto;
     }
-    
-    .caja-busqueda-neon input { 
-        padding: 10px; 
-        text-align: center; 
-        font-size: 1rem; 
+
+    .caja-busqueda-neon input {
+        padding: 10px;
+        text-align: center;
+        font-size: 1rem;
         border-bottom: 1px solid rgba(255,204,0,0.3);
     }
-    .btn-buscar-neon { width: 100%; padding: 12px; font-size: 1rem; }
-    
-    /* Filtros Dropdown */
-    .grid-checkboxes { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-    .controles-globales { flex-direction: column; align-items: stretch; }
-    .btn-control { text-align: center; padding: 10px; }
+.btn-buscar-neon { width: 100%; padding: 12px; font-size: 1rem; }
 
-    /* Adaptación contadores */
-    .contenedor-texto-contador { flex-direction: column; text-align: center; padding-bottom: 20px; }
-    .contenedor-texto-contador::after { left: 50%; transform: translateX(-50%); width: 80%; }
+.grid-checkboxes { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+.controles-globales { flex-direction: column; align-items: stretch; }
+.btn-control { text-align: center; padding: 10px; }
 
-    /* Cuadrícula Resultados (1-2 columnas fluidas) */
+.contenedor-texto-contador { flex-direction: column; text-align: center; padding-bottom: 20px; }
+.contenedor-texto-contador::after { left: 50%; transform: translateX(-50%); width: 80%; }
+
     .grid-resultados-inner {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 20px;
     }
 
-    /* Magia para el carrusel en móvil (Scroll táctil nativo y fluido) */
     .carrusel-contenedor {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        padding-bottom: 20px; 
-        width: 100%; /* Ajustado para que no cause overflow general */
-        /* Custom scrollbar para móviles */
-        scrollbar-width: none; 
+        padding-bottom: 20px;
+        width: 100%;
+
+        scrollbar-width: none;
     }
     .carrusel-contenedor::-webkit-scrollbar {
         display: none;
     }
-    
+
     .carrusel-track {
-        transform: none !important; 
+        transform: none !important;
         width: max-content;
         gap: 20px;
         padding: 10px;
     }
-    
+
     .carrusel-track .tarjeta-perfil-neon {
-        width: 80vw; 
+        width: 80vw;
         max-width: 300px;
         scroll-snap-align: center;
         margin: 0;
@@ -622,11 +596,11 @@ body.fondo-oscuro-neon {
 }
 
 @media (max-width: 480px) {
-    .titulo-neon { font-size: 1.6rem; }
-    .subtitulo-neon { font-size: 1.3rem; }
-    .carrusel-track .tarjeta-perfil-neon { width: 85vw; }
-    
+.titulo-neon { font-size: 1.6rem; }
+.subtitulo-neon { font-size: 1.3rem; }
+.carrusel-track .tarjeta-perfil-neon { width: 85vw; }
+
     .grid-resultados-inner {
-        grid-template-columns: 1fr; /* Forzar 1 columna si la pantalla es enana */
+        grid-template-columns: 1fr;
     }
 }

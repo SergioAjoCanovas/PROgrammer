@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy; // Importante añadir esta importación
+import org.springframework.context.annotation.Lazy; 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -40,7 +40,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private RegistroService registroService;
 
     @Autowired
-    @Lazy // <-- Esto soluciona el error de "Circular Reference" de tu terminal
+    @Lazy 
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -50,7 +50,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
-        String picture = oAuth2User.getAttribute("picture"); // URL de la foto de Google
+        String picture = oAuth2User.getAttribute("picture"); 
 
         if (name != null) {
             name = name.replace(" ", "").toLowerCase();

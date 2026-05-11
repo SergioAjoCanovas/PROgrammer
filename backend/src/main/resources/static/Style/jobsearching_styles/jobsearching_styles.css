@@ -1,6 +1,3 @@
-/* =========================================================
-   1. ESTRUCTURA BASE Y LAYOUT
-   ========================================================= */
 html, body {
     height: 100%;
     margin: 0;
@@ -13,7 +10,6 @@ html, body {
     background-color: #000;
 }
 
-/* --- BOTÓN VOLVER (1800px para que se pegue a la izquierda global de la pantalla) --- */
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -25,7 +21,7 @@ html, body {
 }
 
 .enlace-volver {
-    color: #888888; 
+    color: #888888;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
@@ -36,9 +32,9 @@ html, body {
 }
 
 .enlace-volver:hover {
-    color: #FFCC00; 
-    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); 
-    transform: translateX(-5px); 
+    color: #FFCC00;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+    transform: translateX(-5px);
 }
 
 .contenedor-principal-ofertas {
@@ -46,16 +42,13 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding: 20px 25px 40px 25px; 
+    padding: 20px 25px 40px 25px;
     max-width: 1000px;
     margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
 }
 
-/* =========================================================
-   2. CABECERA SUPERIOR (FILTROS + GESTIÓN EMPRESA)
-   ========================================================= */
 .cabecera-filtros {
     display: flex;
     flex-direction: column;
@@ -177,9 +170,6 @@ html, body {
     transform: scale(1.02);
 }
 
-/* =========================================================
-   3. TARJETAS DE OFERTA
-   ========================================================= */
 .tarjeta-oferta {
     display: flex;
     align-items: center;
@@ -319,9 +309,6 @@ html, body {
     transform: translateY(-2px);
 }
 
-/* =========================================================
-   4. ACCIONES DE LA TARJETA (ESTADO Y BOTÓN)
-   ========================================================= */
 .acciones-oferta {
     flex-shrink: 0;
     display: flex;
@@ -370,16 +357,15 @@ html, body {
 }
 
 .boton-postular:disabled {
-    background-color: #2a2a2a !important; 
-    color: #666 !important;               
-    border: 2px solid #444 !important;    
-    cursor: not-allowed;                  
-    opacity: 0.5;                         
+    background-color: #2a2a2a !important;
+    color: #666 !important;
+    border: 2px solid #444 !important;
+    cursor: not-allowed;
+    opacity: 0.5;
     box-shadow: none !important;
     transform: none !important;
 }
 
-/* --- BOTONES DE RESULTADO DE POSTULACIÓN --- */
 .boton-postular.btn-resultado-aceptada {
     border-color: #00e676 !important;
     color: #00e676 !important;
@@ -408,25 +394,21 @@ html, body {
     transform: scale(1.02);
 }
 
-/* =========================================================
-   5. RESPONSIVE Y ESTADO ACTIVO HEADER (AQUÍ ESTÁ LA MAGIA)
-   ========================================================= */
-.activo, 
-header a.activo i, 
+.activo,
+header a.activo i,
 header a.activo span {
     color: #FFCC00 !important;
     text-shadow: 0 0 10px #FFCC00 !important;
     opacity: 1 !important;
 }
 
-/* --- Ajustes para Tablets (hasta 768px) --- */
 @media (max-width: 768px) {
     .cabecera-filtros {
         flex-direction: column-reverse;
         gap: 15px;
         align-items: stretch;
     }
-    
+
     .filtro-contenedor {
         flex-wrap: wrap;
         justify-content: center;
@@ -468,7 +450,6 @@ header a.activo span {
     }
 }
 
-/* --- Ajustes para Móviles (hasta 480px) --- */
 @media (max-width: 480px) {
     .contenedor-volver {
         margin: 15px auto 0 auto;
@@ -499,8 +480,8 @@ header a.activo span {
         width: 100%;
         padding: 12px 20px;
     }
-    
+
     .acciones-oferta > div {
-        width: 100% !important; 
+        width: 100% !important;
     }
 }

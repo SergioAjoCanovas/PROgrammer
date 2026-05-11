@@ -216,7 +216,6 @@ public class OfertaController {
         return "redirect:/jobsearching";
     }
 
-    // --- AQUÍ ESTÁ LA MAGIA PARA EL CV ---
     @PostMapping("/api/postular")
     public String enviarPostulacion(@RequestParam("ofertaId") Long ofertaId, 
                                     @RequestParam("username") String username,

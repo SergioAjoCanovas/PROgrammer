@@ -15,12 +15,12 @@ public class ProjectReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 👤 Usuario que escribe la reseña
+    // Usuario que escribe la reseña
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario autor;
 
-    // 📦 Proyecto reseñado
+    // Proyecto reseñado
     @ManyToOne
     @JoinColumn(name = "proyecto_id", nullable = false)
     private Proyecto proyecto;

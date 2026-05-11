@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categorias")
-@CrossOrigin(origins = "*") // Para que no te dé el error de conexión de antes
+@CrossOrigin(origins = "*") // Para que no de un error de conexion
 public class CategoriaController {
 
     @Autowired

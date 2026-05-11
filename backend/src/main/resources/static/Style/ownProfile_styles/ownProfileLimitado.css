@@ -1,7 +1,3 @@
-/* ============================================================
-   CONTENEDOR PRINCIPAL
-============================================================ */
-
 .contenedor-limitado {
     display: flex;
     justify-content: center;
@@ -9,10 +5,6 @@
     min-height: 80vh;
     padding: 20px;
 }
-
-/* ============================================================
-   TARJETA CENTRAL (MISMO ESTILO QUE TU APP)
-============================================================ */
 
 .tarjeta-limitada {
     background-color: #1a1a1a;
@@ -24,15 +16,11 @@
     text-align: center;
 
     box-shadow:
-        0 0 20px rgba(255, 204, 0, 0.2),
-        inset 0 0 10px rgba(255, 204, 0, 0.05);
+    0 0 20px rgba(255, 204, 0, 0.2),
+    inset 0 0 10px rgba(255, 204, 0, 0.05);
 
     animation: fadeIn 0.6s ease;
 }
-
-/* ============================================================
-   ICONO
-============================================================ */
 
 .icono-lock {
     font-size: 3rem;
@@ -40,10 +28,6 @@
     margin-bottom: 20px;
     text-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
 }
-
-/* ============================================================
-   TEXTOS
-============================================================ */
 
 .tarjeta-limitada h2 {
     color: #FFFDDF;
@@ -66,10 +50,6 @@
     margin-bottom: 25px;
     color: #aaa;
 }
-
-/* ============================================================
-   BOTÓN NEÓN
-============================================================ */
 
 .btn-contacto {
     display: inline-flex;
@@ -96,15 +76,11 @@
     color: #000;
 
     box-shadow:
-        0 0 20px #FFCC00,
-        0 0 40px rgba(255, 204, 0, 0.6);
+    0 0 20px #FFCC00,
+    0 0 40px rgba(255, 204, 0, 0.6);
 
     transform: scale(1.05);
 }
-
-/* ============================================================
-   ANIMACIÓN
-============================================================ */
 
 @keyframes fadeIn {
     from {
@@ -121,25 +97,16 @@
     max-width: 320px;
 }
 
-/* ============================================================
-   TARJETA EDICIÓN PERFIL (ESTILO PRO)
-============================================================ */
-
 .tarjeta-edicion-rapida {
     max-width: 360px;
 }
 
-/* bloque superior tipo perfil */
 .perfil-superior {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
 }
-
-/* ============================================================
-   FOTO PERFIL (más pro)
-============================================================ */
 
 .circulo-foto {
     width: 110px;
@@ -162,22 +129,16 @@
     box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
 }
 
-/* imagen dentro */
 .circulo-foto img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* icono usuario */
 .circulo-foto i {
     font-size: 2.5rem !important;
     color: #FFCC00;
 }
-
-/* ============================================================
-   NOMBRE USUARIO (más elegante)
-============================================================ */
 
 .contenedor-nombre-usuario {
     display: flex;
@@ -192,7 +153,6 @@
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.3);
 }
 
-/* icono editar */
 .icono-editar-nombre {
     color: #FFCC00;
     cursor: pointer;
@@ -203,10 +163,6 @@
     transform: scale(1.2);
     text-shadow: 0 0 10px #FFCC00;
 }
-
-/* ============================================================
-   INPUT EDICIÓN (look moderno)
-============================================================ */
 
 .input-nombre-perfil {
     width: 100%;
@@ -231,10 +187,6 @@
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
-/* ============================================================
-   BOTÓN GUARDAR (más integrado)
-============================================================ */
-
 .boton-amarillo-solido {
     margin-top: 10px;
     width: 100%;
@@ -257,20 +209,15 @@
     box-shadow: 0 0 15px #FFCC00;
 }
 
-/* ============================================================
-   GRID DOS TARJETAS (SIN ROMPER FUNCIONALIDAD)
-============================================================ */
-
 .grid-limitado {
     display: flex;
-    gap: 30px; /* separación */
+    gap: 30px;
     justify-content: center;
-    align-items: stretch; /* misma altura */
+    align-items: stretch;
     width: 100%;
     max-width: 900px;
 }
 
-/* ambas tarjetas ocupan lo mismo */
 .grid-limitado .tarjeta-limitada {
     flex: 1;
     display: flex;
@@ -288,16 +235,11 @@
     transition: opacity 0.3s ease;
 }
 
-/* responsive */
 @media (max-width: 768px) {
     .grid-limitado {
         flex-direction: column;
     }
 }
-
-/* ============================================================
-   TOAST NEÓN (IGUAL QUE OWN PROFILE)
-============================================================ */
 
 .toast-neon {
     position: fixed;
@@ -333,14 +275,12 @@
     opacity: 1;
 }
 
-/* ERROR (ROJO) */
 .toast-neon.error {
     border-left-color: #ff4444;
     box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
     background-color: rgba(15, 5, 5, 0.98);
 }
 
-/* ICONO */
 .toast-neon i {
     color: #39FF14;
     font-size: 2rem;
@@ -350,7 +290,6 @@
     color: #ff4444;
 }
 
-/* TITULO */
 .toast-neon strong {
     display: block;
     color: #39FF14;

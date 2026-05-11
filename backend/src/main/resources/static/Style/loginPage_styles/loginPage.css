@@ -1,6 +1,3 @@
-/* =========================================================
-   ESTILOS GENERALES Y LAYOUT
-   ========================================================= */
 body {
     background-color: #101010;
     margin: 0;
@@ -21,9 +18,6 @@ body {
     z-index: 1;
 }
 
-/* =========================================================
-   EFECTO DE NEONES AMARILLOS DE FONDO
-   ========================================================= */
 .contenedor-login::before {
     content: '';
     position: absolute;
@@ -53,20 +47,17 @@ body {
 }
 
 @keyframes flotarNeon {
-    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
-    50% { transform: translate(30px, -20px) scale(1.05); opacity: 1; }
+0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+50% { transform: translate(30px, -20px) scale(1.05); opacity: 1; }
 }
 
-/* =========================================================
-   TARJETA DE LOGIN
-   ========================================================= */
 .login-card {
     width: 100%;
     max-width: 420px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 10px 40px rgba(255, 204, 0, 0.15); 
+    box-shadow: 0 10px 40px rgba(255, 204, 0, 0.15);
     position: relative;
     z-index: 2;
 }
@@ -93,9 +84,6 @@ body {
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
-/* =========================================================
-   FORMULARIO Y INPUTS
-   ========================================================= */
 .login-form {
     width: 100%;
     display: flex;
@@ -133,9 +121,6 @@ body {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
 }
 
-/* =========================================================
-   EL OJO DENTRO DE LA CONTRASEÑA
-   ========================================================= */
 .password-wrapper {
     position: relative;
     width: 100%;
@@ -149,7 +134,7 @@ body {
     position: absolute;
     right: 15px;
     top: 50%;
-    transform: translateY(-50%); 
+    transform: translateY(-50%);
     cursor: pointer;
     color: #f0f0f0;
     font-size: 1.1rem;
@@ -162,9 +147,6 @@ body {
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
 }
 
-/* =========================================================
-   OPCIONES EXTRA (OLVIDO DE CONTRASEÑA) - HOVER AMARILLO
-   ========================================================= */
 .opciones-extra {
     display: flex;
     justify-content: space-between;
@@ -195,15 +177,12 @@ body {
 }
 
 .link-olvido:hover {
-    color: #FFCC00; /* Mantenemos el amarillo */
+    color: #FFCC00;
     transform: translateX(10px);
-    /* Resplandor puramente amarillo */
+
     text-shadow: 0 0 8px #FFCC00, 0 0 15px rgba(255, 204, 0, 0.6);
 }
 
-/* =========================================================
-   BOTONES Y REGISTRO - HOVER AMARILLO
-   ========================================================= */
 .boton-ver {
     background: #050505 !important;
     border: 2px solid #FFCC00 !important;
@@ -248,15 +227,12 @@ body {
 }
 
 .registro-link a:hover {
-    color: #FFCC00; /* Mantenemos el amarillo */
+    color: #FFCC00;
     transform: translateX(10px);
-    /* Resplandor puramente amarillo */
+
     text-shadow: 0 0 8px #FFCC00, 0 0 15px rgba(255, 204, 0, 0.6);
 }
 
-/* =========================================================
-   DIVISOR Y BOTÓN GOOGLE
-   ========================================================= */
 .divisor {
     display: flex;
     align-items: center;
@@ -299,9 +275,6 @@ body {
     box-shadow: 0 6px 12px rgba(255, 255, 255, 0.2);
 }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
 #footer-placeholder {
     width: 100%;
 }

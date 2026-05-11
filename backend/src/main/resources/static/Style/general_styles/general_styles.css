@@ -1,8 +1,3 @@
-/* =========================================================
-   ESTILO GLOBAL: ATMÓSFERA NEÓN AMARILLA (SIN CUADRÍCULA)
-   ========================================================= */
-
-/* Bloqueo vital de scroll horizontal en todo el sitio web para móviles */
 html, body {
     max-width: 100%;
     overflow-x: hidden;
@@ -19,16 +14,11 @@ body.fondo-oscuro-neon {
     z-index: 0;
 }
 
-/* Transparencia total de contenedores para no tapar el fondo */
 .contenedor-principal, .contenedor-selector, main, section {
     background: transparent !important;
     position: relative;
     z-index: 10;
 }
-
-/* =========================================================
-   LAS 5 BOLAS (Amarillo con Super-Difusión)
-   ========================================================= */
 
 body.fondo-oscuro-neon::before,
 body.fondo-oscuro-neon::after {
@@ -39,25 +29,23 @@ body.fondo-oscuro-neon::after {
     pointer-events: none;
 }
 
-/* 🟢 CAPA ALTA: 3 Bolas Grandes (Efecto Nube Suave) 🟢 */
 body.fondo-oscuro-neon::before {
     width: 500px;
     height: 500px;
     background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, rgba(255, 204, 0, 0.05) 50%, rgba(0, 0, 0, 0) 80%);
-    filter: blur(90px); 
+    filter: blur(90px);
     top: -15%;
     left: -15%;
 
-    box-shadow: 
-        1100px 400px 200px rgba(255, 204, 0, 0.1), 
-        500px 900px 220px rgba(255, 204, 0, 0.08),
-        200px 400px 1px rgba(255, 204, 0, 0.2),
-        800px 100px 1px rgba(255, 204, 0, 0.2) !important;
+    box-shadow:
+    1100px 400px 200px rgba(255, 204, 0, 0.1),
+    500px 900px 220px rgba(255, 204, 0, 0.08),
+    200px 400px 1px rgba(255, 204, 0, 0.2),
+    800px 100px 1px rgba(255, 204, 0, 0.2) !important;
 
     animation: viajeGranDiagonal 50s linear infinite !important;
 }
 
-/* 🟡 CAPA BAJA: 2 Bolas pequeñas (Contraste Controlado) 🟡 */
 body.fondo-oscuro-neon::after {
     width: 200px;
     height: 200px;
@@ -66,22 +54,21 @@ body.fondo-oscuro-neon::after {
     top: 35%;
     right: -250px;
 
-    box-shadow: 
-        -1000px 400px 100px rgba(255, 204, 0, 0.2),
-        -400px -200px 1px rgba(255, 204, 0, 0.2) !important;
+    box-shadow:
+    -1000px 400px 100px rgba(255, 204, 0, 0.2),
+    -400px -200px 1px rgba(255, 204, 0, 0.2) !important;
 
     animation: viajeLateral 35s ease-in-out infinite alternate !important;
 }
 
-/* Ajuste de orbs para móviles (Mejora el rendimiento y evita bugs visuales) */
 @media (max-width: 768px) {
     body.fondo-oscuro-neon::before {
         width: 300px;
         height: 300px;
         filter: blur(50px);
-        box-shadow: 
-            300px 200px 100px rgba(255, 204, 0, 0.1), 
-            100px 400px 100px rgba(255, 204, 0, 0.08) !important;
+        box-shadow:
+        300px 200px 100px rgba(255, 204, 0, 0.1),
+        100px 400px 100px rgba(255, 204, 0, 0.08) !important;
     }
     body.fondo-oscuro-neon::after {
         width: 150px;
@@ -91,25 +78,18 @@ body.fondo-oscuro-neon::after {
     }
 }
 
-/* =========================================================
-   ANIMACIONES (Suavizadas)
-   ========================================================= */
-
 @keyframes viajeGranDiagonal {
-    0% { transform: translate(-5vw, -5vh) rotate(0deg); }
-    50% { transform: translate(105vw, 105vh) rotate(180deg); }
-    100% { transform: translate(-5vw, -5vh) rotate(360deg); }
+0% { transform: translate(-5vw, -5vh) rotate(0deg); }
+50% { transform: translate(105vw, 105vh) rotate(180deg); }
+100% { transform: translate(-5vw, -5vh) rotate(360deg); }
 }
 
 @keyframes viajeLateral {
-    0% { transform: translateX(0) scale(1); opacity: 0.4; }
-    50% { transform: translateX(-120vw) scale(1.1); opacity: 0.7; }
-    100% { transform: translateX(10vw) scale(1); opacity: 0.4; }
+0% { transform: translateX(0) scale(1); opacity: 0.4; }
+50% { transform: translateX(-120vw) scale(1.1); opacity: 0.7; }
+100% { transform: translateX(10vw) scale(1); opacity: 0.4; }
 }
 
-/* =========================================================
-   BOTONES NEÓN GLOBALES (Amarillo #FFCC00)
-   ========================================================= */
 .boton-curriculum, .boton-anadir, .boton-ver {
     background-color: #1a1a1a !important;
     color: #FFCC00 !important;
@@ -129,29 +109,25 @@ body.fondo-oscuro-neon::after {
     box-shadow: 0 0 30px #FFCC00 !important;
     transform: translateY(-5px) scale(1.05);
 }
-/* Animaci�n de Coraz�n Roto */
+
 @keyframes romperCorazon {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3) rotate(-15deg); color: #ff8888; }
-    100% { transform: scale(1) rotate(0deg); color: #ff4444; }
+0% { transform: scale(1); opacity: 1; }
+50% { transform: scale(1.3) rotate(-15deg); color: #ff8888; }
+100% { transform: scale(1) rotate(0deg); color: #ff4444; }
 }
 
 .corazon-roto {
     animation: romperCorazon 0.4s ease-out forwards;
 }
 
-/* Efecto hover CSS puro para dejar de seguir */
 .btn-follow-heart:hover i.fas.fa-heart::before {
-    content: "\f7a9"; /* Unicode para fa-heart-crack en FontAwesome 6 */
+    content: "\f7a9";
 }
 .btn-follow-heart:hover i.fas.fa-heart {
     animation: romperCorazon 0.4s ease-out forwards;
-    color: #ff4444; /* Asegura el color rojo */
+    color: #ff4444;
 }
 
-/* ============================================================
-   ESTILOS GLOBALES PARA MODAL (ej: Confirmaciones)
-   ============================================================ */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -212,7 +188,6 @@ body.fondo-oscuro-neon::after {
     transition: all 0.3s;
 }
 
-/* Tema Eliminar / Dejar de seguir (Rojo Ne�n) */
 .modal-eliminar {
     border-color: #ff003c;
     box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
@@ -221,7 +196,6 @@ body.fondo-oscuro-neon::after {
 .modal-eliminar .btn-confirmar-modal { background: rgba(255, 0, 60, 0.1); border: 1px solid #ff003c; color: #ff003c; }
 .modal-eliminar .btn-confirmar-modal:hover { background: #ff003c; color: #fff; box-shadow: 0 0 15px #ff003c; }
 
-/* Tema Verificar (Azul Ne�n) */
 .modal-verificar {
     border-color: #00f2ff;
     box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);

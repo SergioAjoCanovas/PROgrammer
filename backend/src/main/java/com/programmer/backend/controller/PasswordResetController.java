@@ -50,11 +50,11 @@ public class PasswordResetController {
 
         Usuario usuario = usuarioOpt.get();
 
-        // Borramos token antiguo si lo hay
+        
         Optional<PasswordResetToken> existingToken = tokenRepository.findByUsuario(usuario);
         existingToken.ifPresent(token -> tokenRepository.delete(token));
 
-        // Creamos nuevo token
+        
         String token = UUID.randomUUID().toString();
         PasswordResetToken resetToken = new PasswordResetToken(token, usuario);
         tokenRepository.save(resetToken);

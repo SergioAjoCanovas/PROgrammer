@@ -283,6 +283,6 @@ CREATE TABLE favoritos (
 
 -- Inserción de administradores por defecto
 INSERT INTO usuarios (username, email, password, foto_perfil, id_rol) VALUES 
-('Sergio Ajo', 'sergiowork47@gmail.com', '$2a$12$$2a$12$osg0yoVo26.Pq7PoshFyJ.SpwWfQ3f3crGXFFRsCKYQGPAD3pPSlO', '/Img/perfiles/SergioAjo.jpg', 1),
+('Sergio Ajo', 'sergiowork47@gmail.com', '$2a$12$Lqd4idhkrjzBAVubxdMTfu1p6z3dR/tojyPyza4o15lpRzHf8w9w2', '/Img/perfiles/SergioAjo.jpg', 1),
 ('David Alcázar', 'davidalcazar2015@gmail.com', '$2a$12$qJWqybbDpYHU5k4j8rO5xu/hHb2HzOqk1hM9w.DihIglbgILg2P5y', '/Img/perfiles/DavidAlcazar.jpg', 1),
 ('Cristian Escobar', 'crisescobardominguez@gmail.com', '$2a$12$sanMgW3WUX4uXuoEpO3yGeqXPHwlg2JEIN9Mju1wedAdSIzrhc3ou', '/Img/perfiles/CristianEscobar.jpg', 1);

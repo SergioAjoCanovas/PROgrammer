@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/company_styles/publishOffer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         .activo, header .navegacion-central a.activo i, header .navegacion-central a.activo span { 
@@ -66,6 +67,41 @@
             display: flex;
             gap: 10px;
         }
+
+        /* TOAST DE ERROR NEÓN */
+        .toast-error-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(15, 5, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #ff4444;
+            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-error-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-error-neon i {
+            color: #ff4444;
+            font-size: 2rem;
+        }
+        .toast-error-neon strong {
+            display: block;
+            color: #ff4444;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -99,10 +135,13 @@
                 </div>
 
                 <div class="grupo-input">
-                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción</label>
+                    <label for="descripcion">
+                        <i class="fas fa-file-alt"></i> Descripción 
+                        <span id="char-counter" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 250</span>
+                    </label>
                     <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta textarea-grande" 
-                              th:text="${oferta?.descripcion}" rows="4" 
-                              placeholder="Describe las funciones principales y los objetivos de la posición..." required></textarea>
+                               th:text="${oferta?.descripcion}" rows="4" 
+                               placeholder="Describe las funciones principales y los objetivos de la posición..." required></textarea>
                 </div>
 
                 <div class="grupo-input">
@@ -158,6 +197,15 @@
             </form>
         </section>
     </main>
+
+    <!-- TOAST DE ERROR PERSONALIZADO -->
+    <div id="toast-error-caracteres" class="toast-error-neon">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+            <strong>Error de validación</strong>
+            <span style="font-size: 0.9rem; color: #eee;">No se pueden superar los 250 caracteres en la descripción.</span>
+        </div>
+    </div>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
@@ -299,6 +347,52 @@
                 updateButtonStates();
             }
         }
+
+        // --- CONTADOR DE CARACTERES Y VALIDACIÓN ---
+        const descTextarea = document.getElementById('descripcion');
+        const charCounter = document.getElementById('char-counter');
+        const maxChars = 250;
+
+        function updateCounter() {
+            const currentLength = descTextarea.value.length;
+            charCounter.textContent = `${currentLength} / ${maxChars}`;
+            
+            if (currentLength > maxChars) {
+                charCounter.style.color = '#ff4444';
+                charCounter.style.textShadow = '0 0 5px #ff4444';
+            } else {
+                charCounter.style.color = '#888';
+                charCounter.style.textShadow = 'none';
+            }
+        }
+
+        descTextarea.addEventListener('input', updateCounter);
+        
+        // Inicializar al cargar
+        updateCounter();
+
+        // Validación al enviar
+        document.querySelector('.formulario-oferta').addEventListener('submit', function(e) {
+            if (descTextarea.value.length > maxChars) {
+                e.preventDefault();
+                
+                const toast = document.getElementById('toast-error-caracteres');
+                toast.style.display = 'flex';
+                
+                // Pequeño delay para que la transición de opacidad funcione
+                setTimeout(() => {
+                    toast.classList.add('mostrar');
+                }, 10);
+
+                // Ocultar tras 5 segundos
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                    setTimeout(() => {
+                        toast.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            }
+        });
     </script>
 </body>
 </html>

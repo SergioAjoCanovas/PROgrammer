@@ -13,10 +13,13 @@
 </head>
 
 <body class="fondo-oscuro-neon"
-      th:attr="data-user1=${user1}, data-user2=${user2 != null ? user2 : ''}">
+      th:attr="data-user1=${user1}, 
+               data-user2=${user2 != null ? user2 : ''},
+               data-user2-name=${receptorNombre != null ? receptorNombre : ''},
+               data-user2-avatar=${receptorAvatar != null ? receptorAvatar : ''}">
 
 <div th:replace="~{includes/header :: header}"></div>
-
+<!--adadadad-->
 <div class="contenedor-volver">
     <a href="/main" class="enlace-volver">
         <i class="fas fa-arrow-left"></i> Volver a inicio
@@ -62,9 +65,11 @@
             </div>
 
             <div class="area-mensajes" id="chatBox">
-                <p style="opacity:0.5; text-align:center; margin-top:20px;">
-                    Selecciona un chat para empezar
-                </p>
+                <div class="chat-vacio-placeholder">
+                    <i class="fas fa-comments"></i>
+                    <h2>Tus Mensajes</h2>
+                    <p>Selecciona una conversación de la lista para empezar a chatear.</p>
+                </div>
             </div>
 
             <div class="zona-input-chat">
@@ -113,6 +118,22 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 
 <script>
+function inicializarHeader() {
+    const navChats = document.getElementById('nav-chats'); 
+    if (navChats) {
+        navChats.classList.add('activo');
+    } else {
+        const links = document.querySelectorAll('header a');
+        links.forEach(link => {
+            if (link.getAttribute('href')?.includes('chats')) {
+                link.classList.add('activo');
+            }
+        });
+    }
+}
+
+// Ejecutar al cargar
+window.addEventListener('load', inicializarHeader);
 
 const chatBox = document.getElementById("chatBox");
 const listaChats = document.getElementById("listaChats");
@@ -163,7 +184,13 @@ function pintarMensaje(m) {
 async function cargarMensajes() {
 
     if (!hayChatActivo()) {
-        chatBox.innerHTML = "<p style='opacity:0.5;text-align:center'>Selecciona un chat</p>";
+        chatBox.innerHTML = `
+            <div class="chat-vacio-placeholder">
+                <i class="fas fa-comments"></i>
+                <h2>Tus Mensajes</h2>
+                <p>Selecciona una conversación para empezar.</p>
+            </div>
+        `;
         return;
     }
 
@@ -240,7 +267,7 @@ function actualizarPreviewChat(m) {
 async function enviarMensaje() {
 
     if (!hayChatActivo()) {
-        alert("Selecciona un chat primero");
+        mostrarToast("Selecciona un chat primero");
         return;
     }
 
@@ -420,7 +447,13 @@ function obtenerDia(fecha) {
 async function cargarMensajes() {
 
     if (!hayChatActivo()) {
-        chatBox.innerHTML = "<p style='opacity:0.5;text-align:center'>Selecciona un chat</p>";
+        chatBox.innerHTML = `
+            <div class="chat-vacio-placeholder">
+                <i class="fas fa-comments"></i>
+                <h2>Tus Mensajes</h2>
+                <p>Selecciona una conversación para empezar.</p>
+            </div>
+        `;
         return;
     }
 
@@ -486,6 +519,17 @@ document.getElementById("mensajeInput").addEventListener("keypress", e => {
 cargarChats();
 
 if (hayChatActivo()) {
+    const preName = document.body.dataset.user2Name;
+    const preAvatar = document.body.dataset.user2Avatar;
+
+    if (preName) {
+        document.getElementById("chatNombre").innerText = preName;
+        document.querySelector(".subtitulo-estado").innerText = "Chateando ahora";
+    }
+    if (preAvatar && preAvatar !== "") {
+        document.getElementById("chatAvatar").src = preAvatar;
+    }
+
     cargarMensajes();
 }
 </script>

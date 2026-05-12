@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/chats")
 public class ChatViewController {
 
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.programmer.backend.repository.UsuarioRepository usuarioRepo;
+
     @GetMapping
     public String chats(Model model, HttpSession session) {
 
@@ -44,6 +47,13 @@ public class ChatViewController {
 
         model.addAttribute("user1", usuario.getId());
         model.addAttribute("user2", user2);
+
+        // Añadir info del receptor para que el chat cargue su cabecera directamente
+        com.programmer.backend.domain.Usuario receptor = usuarioRepo.findById(user2).orElse(null);
+        if (receptor != null) {
+            model.addAttribute("receptorNombre", receptor.getUsername());
+            model.addAttribute("receptorAvatar", receptor.getFotoPerfil());
+        }
 
         return "UI/chats/chats";
     }

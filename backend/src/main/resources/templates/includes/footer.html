@@ -39,6 +39,18 @@
     </footer>
 
     <script>
+        // Configurar el favicon de la pestaña
+        (function() {
+            let link = document.querySelector("link[rel~='icon']");
+            if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                link.type = 'image/png';
+                document.getElementsByTagName('head')[0].appendChild(link);
+            }
+            link.href = '/Img/SILLARUEDASFONDOGRIS.png';
+        })();
+
         document.addEventListener("DOMContentLoaded", function () {
             const path = window.location.pathname;
             

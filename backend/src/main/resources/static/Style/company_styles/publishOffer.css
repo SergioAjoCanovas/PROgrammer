@@ -97,6 +97,19 @@
     margin-right: 5px;
 }
 
+.char-counter {
+    float: right;
+    font-size: 0.85rem;
+    color: #888;
+    transition: all 0.3s ease;
+}
+
+.char-counter.error {
+    color: #ff4444 !important;
+    text-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+    font-weight: bold;
+}
+
 /* --- Inputs Neón --- */
 .input-neon {
     background-color: rgba(0, 0, 0, 0.3);

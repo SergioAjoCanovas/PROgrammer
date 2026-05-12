@@ -285,18 +285,18 @@
 
     function inicializarIdentidadYEventos() {
         /*[+
-        const initialArq = [[${review.arquitectura != null ? review.arquitectura : 0}]];
-        const initialLim = [[${review.limpieza != null ? review.limpieza : 0}]];
-        const initialDoc = [[${review.documentacion != null ? review.documentacion : 0}]];
+        const initialArq = [[${review.arquitectura != null ? review.arquitectura : 1}]];
+        const initialLim = [[${review.limpieza != null ? review.limpieza : 1}]];
+        const initialDoc = [[${review.documentacion != null ? review.documentacion : 1}]];
         +]*/
 
         document.querySelectorAll(".estrellas").forEach(container => {
             const tipo = container.dataset.tipo;
             const input = document.getElementById("input-" + tipo);
-            let initialVal = 0;
-            if (tipo === 'arquitectura') initialVal = typeof initialArq !== 'undefined' ? initialArq : 0;
-            if (tipo === 'limpieza') initialVal = typeof initialLim !== 'undefined' ? initialLim : 0;
-            if (tipo === 'documentacion') initialVal = typeof initialDoc !== 'undefined' ? initialDoc : 0;
+            let initialVal = 1;
+            if (tipo === 'arquitectura') initialVal = typeof initialArq !== 'undefined' && initialArq !== 0 ? initialArq : 1;
+            if (tipo === 'limpieza') initialVal = typeof initialLim !== 'undefined' && initialLim !== 0 ? initialLim : 1;
+            if (tipo === 'documentacion') initialVal = typeof initialDoc !== 'undefined' && initialDoc !== 0 ? initialDoc : 1;
             
             input.value = initialVal;
 

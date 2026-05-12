@@ -105,6 +105,13 @@ body.fondo-oscuro-neon::before {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 15px;
+}
+
+.cabecera-proyecto h2 {
+    margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .categoria {
@@ -183,6 +190,8 @@ body.fondo-oscuro-neon::before {
     color: #ccc;
     padding-left: 15px;
     line-height: 1.6;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 /* FORMULARIO */

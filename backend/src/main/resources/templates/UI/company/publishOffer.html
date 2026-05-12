@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="/Style/company_styles/publishOffer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         .activo, header .navegacion-central a.activo i, header .navegacion-central a.activo span { 
@@ -67,44 +66,6 @@
             display: flex;
             gap: 10px;
         }
-
-        /* ESTILO DEL TOAST DE ERROR NEÓN (COPIADO DE SIGNUP) */
-        .toast-error-neon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: rgba(15, 5, 5, 0.98);
-            color: white;
-            padding: 18px 28px;
-            border-radius: 8px;
-            border-left: 6px solid #ff4444;
-            box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: sans-serif;
-            transform: translateX(120%);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 9999;
-        }
-
-        .toast-error-neon.mostrar {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .toast-error-neon i {
-            color: #ff4444;
-            font-size: 2rem;
-        }
-
-        .toast-error-neon strong {
-            display: block;
-            color: #ff4444;
-            font-size: 1.1rem;
-            margin-bottom: 2px;
-        }
     </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -138,10 +99,7 @@
                 </div>
 
                 <div class="grupo-input">
-                    <label for="descripcion">
-                        <i class="fas fa-file-alt"></i> Descripción
-                        <span id="char-counter" class="char-counter">0/250</span>
-                    </label>
+                    <label for="descripcion"><i class="fas fa-file-alt"></i> Descripción</label>
                     <textarea id="descripcion" name="descripcion" class="input-neon textarea-oferta textarea-grande" 
                               th:text="${oferta?.descripcion}" rows="4" 
                               placeholder="Describe las funciones principales y los objetivos de la posición..." required></textarea>
@@ -200,14 +158,6 @@
             </form>
         </section>
     </main>
-
-    <div id="toast-publish-error" class="toast-error-neon">
-        <i class="fas fa-exclamation-circle"></i>
-        <div>
-            <strong id="toast-error-titulo">Error en la oferta</strong>
-            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">La descripción es demasiado larga.</span>
-        </div>
-    </div>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
@@ -348,46 +298,6 @@
                 });
                 updateButtonStates();
             }
-        }
-
-        // --- LÓGICA DEL CONTADOR DE CARACTERES ---
-        const descInput = document.getElementById('descripcion');
-        const counter = document.getElementById('char-counter');
-        const form = document.querySelector('.formulario-oferta');
-
-        function updateCounter() {
-            const count = descInput.value.length;
-            counter.innerText = `${count}/250`;
-            
-            if (count > 250) {
-                counter.classList.add('error');
-            } else {
-                counter.classList.remove('error');
-            }
-        }
-
-        descInput.addEventListener('input', updateCounter);
-        
-        // Inicializar al cargar (por si estamos editando)
-        updateCounter();
-
-        form.addEventListener('submit', function(e) {
-            if (descInput.value.length > 250) {
-                e.preventDefault();
-                showPublishToast("Descripción demasiado larga", "La descripción solo puede tener 250 caracteres de máximo");
-            }
-        });
-
-        function showPublishToast(title, message) {
-            const toast = document.getElementById('toast-publish-error');
-            document.getElementById('toast-error-titulo').textContent = title;
-            document.getElementById('toast-error-mensaje').textContent = message;
-            
-            toast.classList.add('mostrar');
-            
-            setTimeout(() => {
-                toast.classList.remove('mostrar');
-            }, 5000);
         }
     </script>
 </body>

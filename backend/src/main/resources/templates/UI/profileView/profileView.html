@@ -355,13 +355,13 @@
                     <div class="campo">
                         <label style="color: #FFCC00; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Tu valoración</label>
                         <div class="estrellas" id="estrellas-selector">
-                            <i class="far fa-star" data-value="1"></i>
+                            <i class="fas fa-star activa" data-value="1"></i>
                             <i class="far fa-star" data-value="2"></i>
                             <i class="far fa-star" data-value="3"></i>
                             <i class="far fa-star" data-value="4"></i>
                             <i class="far fa-star" data-value="5"></i>
                         </div>
-                        <input type="hidden" th:field="*{rating}" value="0">
+                        <input type="hidden" th:field="*{rating}" value="1">
                     </div>
 
                     <textarea class="input-resena" th:field="*{comentario}" placeholder="Cuéntanos tu experiencia..." required></textarea>
@@ -564,6 +564,11 @@
             // Selector de estrellas
             const estrellas = document.querySelectorAll("#estrellas-selector i");
             const inputRating = document.getElementById("rating");
+
+            // Asegurar que si está en 0 o vacío (por defecto), se marque 1 estrella
+            if (inputRating && (inputRating.value === "0" || inputRating.value === "")) {
+                inputRating.value = "1";
+            }
 
             estrellas.forEach(star => {
                 star.addEventListener("click", () => {

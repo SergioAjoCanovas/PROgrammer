@@ -276,8 +276,6 @@ html, body {
     font-size: 0.85rem;
     margin-bottom: 2px;
     text-transform: uppercase;
-    overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 .titulo-puesto {
@@ -285,16 +283,15 @@ html, body {
     font-size: 1.25rem;
     margin-bottom: 4px;
     font-weight: bold;
-    overflow-wrap: break-word;
-    word-break: break-word;
 }
 
 .descripcion-puesto {
     color: #aaa;
     font-size: 0.9rem;
-    line-height: 1.4;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .tech-tags {
@@ -313,9 +310,6 @@ html, body {
     font-size: 0.75rem;
     transition: all 0.3s ease;
     cursor: default;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    max-width: 100%;
 }
 
 .tech-tags span:hover {

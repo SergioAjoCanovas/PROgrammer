@@ -57,12 +57,12 @@
 
                 <form th:action="@{/reviews/crear}" method="post">
                     <input type="hidden" name="receptorId" th:value="${usuario.id}">
-                    <input type="hidden" name="rating" id="rating" value="0" required>
+                    <input type="hidden" name="rating" id="rating" value="1" required>
 
                     <div class="campo">
                         <label>Tu valoración</label>
                         <div class="estrellas" id="estrellas">
-                            <i class="far fa-star" data-value="1"></i>
+                            <i class="fas fa-star activa" data-value="1"></i>
                             <i class="far fa-star" data-value="2"></i>
                             <i class="far fa-star" data-value="3"></i>
                             <i class="far fa-star" data-value="4"></i>
@@ -127,6 +127,10 @@
         function inicializarSistemaEstrellas() {
             const estrellas = document.querySelectorAll("#estrellas i");
             const inputRating = document.getElementById("rating");
+
+            if (inputRating && (inputRating.value === "0" || inputRating.value === "")) {
+                inputRating.value = "1";
+            }
 
             estrellas.forEach(e => {
                 e.addEventListener("click", () => {

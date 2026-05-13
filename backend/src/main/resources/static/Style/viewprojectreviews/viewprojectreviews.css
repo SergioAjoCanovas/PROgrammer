@@ -84,6 +84,16 @@ body.fondo-oscuro-neon::before {
     transition: all 0.4s ease;
 }
 
+.tarjeta-proyecto-detalle {
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tarjeta-proyecto-detalle * {
+    max-width: 100%;
+}
+
 /* Efecto hover suave para el brillo (sin desplazar la tarjeta entera) */
 .tarjeta-perfil:hover,
 .tarjeta-proyecto-detalle:hover,
@@ -97,6 +107,8 @@ body.fondo-oscuro-neon::before {
 
 .seccion-central {
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .zona-derecha {
@@ -376,9 +388,13 @@ body.fondo-oscuro-neon::before {
     color: #FFFFFF;
     line-height: 1.8;
     font-size: 1.1rem;
-    text-align: justify;
+    text-align: left;
     padding-left: 5px;
     margin: 0;
+    white-space: pre-wrap;       
+    overflow-wrap: anywhere;     
+    word-break: break-word;    
+    max-width: 100%;
 }
 
 /* =========================================================
@@ -460,6 +476,9 @@ body.fondo-oscuro-neon::before {
     color: #eee;
     line-height: 1.4;
     font-size: 0.95rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 /* =========================================================
@@ -590,25 +609,23 @@ body.fondo-oscuro-neon::before {
 .estrellas i.empty {
     color: #333;
 }
-/* Estilo de scroll para contenedor de rese�as */
-.contenedor-rese�as {
-    max-height: 400px;
+/* Estilo de scroll para contenedor de reseñas */
+.contenedor-reseñas {
+    max-height: 380px;
     overflow-y: auto;
     padding-right: 15px;
+    padding-top: 15px;
 }
 
-.contenedor-rese�as::-webkit-scrollbar {
-    width: 8px;
+.contenedor-reseñas::-webkit-scrollbar {
+    width: 6px;
 }
-.contenedor-rese�as::-webkit-scrollbar-thumb {
-    background-color: #555;
+.contenedor-reseñas::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
 }
-.contenedor-rese�as::-webkit-scrollbar-thumb:hover {
-    background-color: #FFCC00;
-}
-.contenedor-rese�as::-webkit-scrollbar-track {
-    background-color: #1a1a1a;
+.contenedor-reseñas::-webkit-scrollbar-thumb {
+    background: #FFCC00;
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
-

@@ -17,6 +17,12 @@
             transform: scale(1.1);
         }
 
+        .titulo-mis-proyectos:hover {
+            color: #FFCC00 !important;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+            transform: translateX(5px);
+        }
+
         /* Hover amarillo neón para los iconos de lápiz */
         .icono-lapiz {
             transition: all 0.3s ease;
@@ -428,7 +434,9 @@
         <div class="columna-derecha">
             <section class="tarjeta-acordeon card-proyectos-principal">
                 <div class="cabecera-tarjeta">
-                    <h2>MIS PROYECTOS</h2>
+                    <h2 onclick="window.location.href='/proyectos/projectList'" 
+                        style="cursor: pointer; transition: all 0.3s;" 
+                        class="titulo-mis-proyectos">MIS PROYECTOS</h2>
                     <i class="fas fa-th icono-grid-top" style="color: white; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;" onclick="window.location.href='/proyectos/projectList'"></i>
                 </div>
                 <div class="rejilla-proyectos">

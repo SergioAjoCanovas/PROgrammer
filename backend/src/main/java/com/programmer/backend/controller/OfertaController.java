@@ -37,7 +37,7 @@ public class OfertaController {
 
     @GetMapping("/jobsearching")
     public String verOfertas(Model model) {
-        List<OfertaEmpleo> listaOfertas = ofertaRepository.findAll();
+        List<OfertaEmpleo> listaOfertas = ofertaRepository.findAllByOrderByIdDesc();
         model.addAttribute("ofertas", listaOfertas != null ? listaOfertas : List.of());
         return "UI/jobsearching/jobsearching"; 
     }
@@ -48,7 +48,7 @@ public class OfertaController {
         boolean esAdmin = usuarioLogueado != null && usuarioLogueado.getRol() != null && 
                           ("ADMIN".equalsIgnoreCase(usuarioLogueado.getRol().getNombre()) || "1".equals(usuarioLogueado.getRol().getNombre()));
 
-        List<OfertaEmpleo> allOfertas = ofertaRepository.findAll();
+        List<OfertaEmpleo> allOfertas = ofertaRepository.findAllByOrderByIdDesc();
         
         if (esAdmin) {
             // Mis Ofertas (las creadas por el admin)

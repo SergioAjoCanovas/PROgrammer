@@ -364,7 +364,8 @@
                         <input type="hidden" th:field="*{rating}" value="1">
                     </div>
 
-                    <textarea class="input-resena" th:field="*{comentario}" placeholder="Cuéntanos tu experiencia..." required></textarea>
+                    <textarea class="input-resena" th:field="*{comentario}" id="textarea-resena" placeholder="Cuéntanos tu experiencia..." required maxlength="600"></textarea>
+                    <div id="char-counter" style="text-align: right; font-size: 0.75rem; color: #aaa; margin-top: -15px; margin-bottom: 15px; transition: color 0.3s;">0 / 500</div>
                     
                     <button type="submit" id="btn-submit-review" class="boton-anadir">
                         <i class="fas fa-paper-plane"></i> Publicar reseña
@@ -412,13 +413,48 @@
                                 <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" th:text="${proyecto.nombre}" class="enlace-proyecto-titulo" onclick="event.stopPropagation();">Nombre del Proyecto</a>
                             </h3>
                             
-                            <p th:text="${proyecto.descripcion}">Descripción del proyecto.</p>
+                            <p class="parrafo-desc-proyecto" 
+                               th:if="${proyecto.descripcion.length() > 50}"
+                               onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')"
+                               style="cursor: pointer;">
+                                <span th:text="${#strings.substring(proyecto.descripcion, 0, 50) + '...'}"></span>
+                                <span class="ver-mas-desc" style="color: #00f2ff; font-weight: bold; margin-left: 5px;">Ver más</span>
+                            </p>
+                            <p th:unless="${proyecto.descripcion.length() > 50}" th:text="${proyecto.descripcion}"></p>
+
+                            <!-- Contenedor expandido para la DESCRIPCIÓN -->
+                            <div th:if="${proyecto.descripcion.length() > 50}" class="desc-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')">
+                                <div class="tech-expanded-header">
+                                    <h4 th:text="${proyecto.nombre}">Proyecto</h4>
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="desc-expanded-content">
+                                    <p th:text="${proyecto.descripcion}"></p>
+                                </div>
+                            </div>
                             
-                            <div th:if="${proyecto.tecnologias != null and !proyecto.tecnologias.isEmpty()}" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
-                                <span th:each="tech : ${proyecto.tecnologias}" 
+                            <div th:if="${proyecto.tecnologias != null and !proyecto.tecnologias.isEmpty()}" class="tech-tags-container" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <span th:each="tech, iterStat : ${proyecto.tecnologias}" 
+                                      th:if="${iterStat.index < 4}" 
                                       th:text="${tech.nombre}" 
                                       class="tech-tag-proyecto">
                                 </span>
+                                <div th:if="${proyecto.tecnologias.size() > 4}" class="tech-more-overlay-proyecto" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('tech-expanded')">
+                                    <span class="tech-more-count-proyecto" th:text="'+' + (${proyecto.tecnologias.size()} - 4)"></span>
+                                </div>
+                            </div>
+
+                            <!-- Contenedor expandido que se muestra al hacer click (Ahora fuera para cubrir todo) -->
+                            <div th:if="${proyecto.tecnologias.size() > 4}" class="tech-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('tech-expanded')">
+                                <div class="tech-expanded-header">
+                                    <h4 th:text="${proyecto.nombre}">Proyecto</h4>
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="tech-expanded-list">
+                                    <span th:each="tech : ${proyecto.tecnologias}" 
+                                          th:text="${tech.nombre}" 
+                                          class="tech-tag-proyecto"></span>
+                                </div>
                             </div>
 
                             <div>
@@ -457,7 +493,8 @@
                             <p>No hay reseñas aún.</p>
                         </div>
                         
-                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index < 2}" class="resena-item">
+                        <!-- Lista única de reseñas con scroll -->
+                        <div th:each="r : ${reviews}" class="resena-item">
                             <div class="resena-header">
                                 <span class="resena-usuario">
                                     <span th:text="${r.autor.username}">Usuario</span>
@@ -476,38 +513,6 @@
                                 </form>
                             </div>
                         </div>
-
-                        <div th:each="r, iterStat : ${reviews}" th:if="${iterStat.index >= 2}" class="resena-extra-wrapper">
-                            <div class="resena-extra-inner">
-                                <div class="resena-item">
-                                    <div class="resena-header">
-                                        <span class="resena-usuario">
-                                            <span th:text="${r.autor.username}">Usuario</span>
-                                            <i th:if="${r.autor.estado == 'VERIFICADO' or (r.autor.rol != null and (r.autor.rol.nombre == 'ADMIN' or r.autor.rol.nombre == '1'))}" class="fas fa-check-circle" style="color: #00f2ff; margin-left: 5px; font-size: 0.85em;" title="Usuario Verificado"></i>
-                                        </span>
-                                        <span class="resena-rating" th:if="${r.rating != null and r.rating > 0}">
-                                            <span th:each="i : ${#numbers.sequence(1, r.rating)}">⭐</span>
-                                        </span>
-                                    </div>
-                                    <p class="resena-texto" th:text="${r.comentario}">Comentario...</p>
-                                    <div th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == r.autor.id or (session.usuarioLogueado.rol != null and session.usuarioLogueado.rol.nombre == 'ADMIN'))}" class="resena-acciones-bottom">
-                                        <button type="button" class="btn-accion-resena-editar" th:attr="data-id=${r.id}, data-rating=${r.rating}, data-comentario=${r.comentario}" onclick="editarResena(this)"><i class="fas fa-edit"></i> Editar</button>
-                                        <form th:action="@{/reviews/eliminar}" method="post" style="display:inline;" onsubmit="return confirmarBorrarResena(event, this);">
-                                            <input type="hidden" name="reviewId" th:value="${r.id}"/>
-                                            <button type="submit" class="btn-accion-resena-eliminar"><i class="fas fa-trash"></i> Eliminar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div th:if="${reviews != null and #lists.size(reviews) > 2}" style="text-align: center; margin-top: 15px;">
-                            <button id="btn-toggle-resenas" data-state="more" style="display: inline-flex; align-items: center; justify-content: center;">
-                                <span id="texto-toggle-resenas" style="margin-right: 8px;">Ver más reseñas</span>
-                                <i id="icono-toggle-resenas" class="fas fa-chevron-down" style="transition: transform 0.3s ease;"></i>
-                            </button>
-                        </div>
-
                     </div>
                 </div>
 
@@ -587,55 +592,21 @@
                 });
             });
 
-            // Lógica de carga por lotes con expansión Grid Smoothie
-            const btnToggleResenas = document.getElementById('btn-toggle-resenas');
-            const resenasExtra = document.querySelectorAll('.resena-extra-wrapper');
-            const textoToggle = document.getElementById('texto-toggle-resenas');
-            const iconoToggle = document.getElementById('icono-toggle-resenas');
-            
-            let indiceActual = 0;
-            const lote = 5;
+            // Lógica del contador de caracteres para la reseña
+            const textareaResena = document.getElementById('textarea-resena');
+            const charCounter = document.getElementById('char-counter');
 
-            if (btnToggleResenas) {
-                btnToggleResenas.addEventListener('click', () => {
-                    const estado = btnToggleResenas.getAttribute('data-state');
+            if (textareaResena && charCounter) {
+                textareaResena.addEventListener('input', () => {
+                    const count = textareaResena.value.length;
+                    charCounter.textContent = `${count} / 500`;
 
-                    if (estado === 'more') {
-                        const finalLote = Math.min(indiceActual + lote, resenasExtra.length);
-                        
-                        for(let i = indiceActual; i < finalLote; i++) {
-                            const item = resenasExtra[i];
-                            item.classList.add('resena-visible');
-                            
-                            // Activamos la expansión 0fr -> 1fr de forma fluida
-                            requestAnimationFrame(() => {
-                                item.classList.add('expandido');
-                            });
-                        }
-
-                        indiceActual = finalLote;
-
-                        if (indiceActual >= resenasExtra.length) {
-                            textoToggle.textContent = 'Ocultar reseñas';
-                            iconoToggle.style.transform = 'rotate(180deg)';
-                            btnToggleResenas.setAttribute('data-state', 'hide');
-                        }
+                    if (count > 500) {
+                        charCounter.style.color = '#ff4444';
+                        charCounter.style.fontWeight = 'bold';
                     } else {
-                        // Resetear suavemente hacia arriba
-                        resenasExtra.forEach(item => {
-                            item.classList.remove('expandido');
-                            setTimeout(() => {
-                                if (!item.classList.contains('expandido')) {
-                                    item.classList.remove('resena-visible');
-                                }
-                            }, 500); 
-                        });
-                        indiceActual = 0;
-                        textoToggle.textContent = 'Ver más reseñas';
-                        iconoToggle.style.transform = 'rotate(0deg)';
-                        btnToggleResenas.setAttribute('data-state', 'more');
-                        
-                        document.getElementById('contenedor-resenas').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        charCounter.style.color = '#aaa';
+                        charCounter.style.fontWeight = 'normal';
                     }
                 });
             }
@@ -731,6 +702,11 @@ function editarResena(btn) {
     textarea.value = comentario;
     estaEditandoResena = true;
 
+    // Actualizar contador de caracteres al editar
+    if (typeof textarea.dispatchEvent === 'function') {
+        textarea.dispatchEvent(new Event('input'));
+    }
+
     btnSubmit.innerHTML = "<i class=\"fas fa-save\"></i> Guardar edición";
     btnSubmit.style.backgroundColor = "#FFCC00";
     btnSubmit.style.color = "#000";
@@ -753,6 +729,13 @@ function editarResena(btn) {
 }
 
 function confirmarGuardadoResena(event, form) {
+    const textarea = document.getElementById('textarea-resena');
+    if (textarea && textarea.value.length > 500) {
+        event.preventDefault();
+        mostrarToastError("Has superado el límite de 500 caracteres.");
+        return false;
+    }
+
     if (estaEditandoResena) {
         event.preventDefault();
         Swal.fire({
@@ -795,6 +778,25 @@ function confirmarBorrarResena(event, form) {
         }
     });
     return false;
+}
+
+function mostrarToastError(mensaje) {
+    // Creamos el toast si no existe (aunque ya hay uno en el HTML, pero por si acaso o para varios mensajes)
+    const toast = document.createElement('div');
+    toast.className = 'toast-error-neon mostrar';
+    toast.innerHTML = `
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+            <strong>Error de validación</strong>
+            <span>${mensaje}</span>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.remove('mostrar');
+        setTimeout(() => toast.remove(), 500);
+    }, 4000);
 }
 </script>
 

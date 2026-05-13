@@ -200,9 +200,10 @@
 
                 <div class="campo">
                     <label>Comentario</label>
-                    <textarea name="comentario"
+                    <textarea name="comentario" id="textarea-comentario" class="input-comentario-neon"
                               placeholder="Escribe tu reseña..."
-                              required th:text="${review.comentario}"></textarea>
+                              required th:text="${review.comentario}" maxlength="600"></textarea>
+                    <div id="char-counter" style="text-align: right; font-size: 0.75rem; color: #aaa; margin-top: 5px; transition: color 0.3s;">0 / 500</div>
                 </div>
 
                 <button type="submit" class="boton-ver" id="btn-submit-project-review">
@@ -317,6 +318,28 @@
                 }
             }
         });
+
+        // Lógica del contador de caracteres
+        const textareaComentario = document.getElementById('textarea-comentario');
+        const charCounter = document.getElementById('char-counter');
+
+        if (textareaComentario && charCounter) {
+            const updateCounter = () => {
+                const count = textareaComentario.value.length;
+                charCounter.textContent = `${count} / 500`;
+                if (count > 500) {
+                    charCounter.style.color = '#ff4444';
+                    charCounter.style.fontWeight = 'bold';
+                } else {
+                    charCounter.style.color = '#aaa';
+                    charCounter.style.fontWeight = 'normal';
+                }
+            };
+
+            textareaComentario.addEventListener('input', updateCounter);
+            // Inicializar por si hay texto (modo edición)
+            updateCounter();
+        }
     }
 
     function actualizarEstrellas(container, valor) {
@@ -353,6 +376,13 @@
     }
 
     function confirmarEdicionResena(event, form) {
+        const textarea = document.getElementById('textarea-comentario');
+        if (textarea && textarea.value.length > 500) {
+            event.preventDefault();
+            mostrarToastErrorManual("Has superado el límite de 500 caracteres.");
+            return false;
+        }
+
         /*[[${editMode}]]*/
         const isEditMode = /*[[${editMode}]]*/ false;
         
@@ -377,10 +407,24 @@
         });
         return false;
     }
+
+    function mostrarToastErrorManual(mensaje) {
+        const toast = document.getElementById('toast-review-error');
+        const msgSpan = document.getElementById('toast-review-mensaje');
+        if (toast && msgSpan) {
+            msgSpan.innerText = mensaje;
+            toast.style.display = 'flex';
+            setTimeout(() => toast.classList.add('mostrar'), 10);
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+                setTimeout(() => toast.style.display = 'none', 500);
+            }, 4000);
+        }
+    }
 </script>
 
     <!-- TOAST DE ERROR PARA RESEÑAS -->
-    <div id="toast-review-error" class="toast-error-neon" style="display: none;" th:if="${error != null}">
+    <div id="toast-review-error" class="toast-error-neon" style="display: none;">
         <i class="fas fa-exclamation-triangle"></i>
         <div>
             <strong>Error</strong>
@@ -393,8 +437,11 @@
 
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
+            /*[[${error != null}]]*/
+            const hasServerError = /*[[${error != null}]]*/ false;
             const toastError = document.getElementById('toast-review-error');
-            if (toastError) {
+            
+            if (hasServerError && toastError) {
                 toastError.style.display = 'flex';
                 setTimeout(() => {
                     toastError.classList.add('mostrar');

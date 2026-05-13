@@ -138,6 +138,9 @@ public class ProfileController {
         model.addAttribute("usuario", usuarioDestino);
 
         List<NewReview> reviews = reviewRepository.findByReceptor(usuarioDestino);
+        if (reviews != null) {
+            reviews.sort(Comparator.comparing(NewReview::getId).reversed());
+        }
         Double media = reviewRepository.getAverageRating(usuarioDestino);
 
         model.addAttribute("reviews", reviews);

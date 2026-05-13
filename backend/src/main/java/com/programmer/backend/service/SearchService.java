@@ -59,7 +59,7 @@ public class SearchService {
                 .sorted((p1, p2) -> Integer.compare(
                         p2.getUsuario().getFollowersCount(),
                         p1.getUsuario().getFollowersCount()))
-                .limit(10)
+                .limit(20)
                 .peek(this::sortTecnologiasByPriority)
                 .collect(Collectors.toList());
     }

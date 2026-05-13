@@ -93,11 +93,19 @@
                         </a>
                     </div>
 
-                    <div id="mensaje-no-dev" class="mensaje-bloqueo-rol" style="display: none;">
+                    <div id="mensaje-no-dev" class="mensaje-bloqueo-rol" th:if="${session.usuarioLogueado == null or oferta.empresa == null or session.usuarioLogueado.id != oferta.empresa.id}" style="display: none;">
                         <i class="fas fa-lock"></i>
                         <h3 style="margin: 0 0 10px 0; font-size: 1.3rem;">Acceso Restringido</h3>
                         <p style="font-size: 0.95rem; color: #ccc; margin: 0; line-height: 1.5;">
                             Solo los perfiles registrados como <strong>Desarrollador</strong> pueden enviar postulaciones a las ofertas de empleo.
+                        </p>
+                    </div>
+
+                    <div th:if="${session.usuarioLogueado != null and oferta.empresa != null and session.usuarioLogueado.id == oferta.empresa.id}" class="mensaje-bloqueo-rol-propietario">
+                        <i class="fas fa-user-tie"></i>
+                        <h3 style="margin: 0 0 10px 0; font-size: 1.3rem;">Tu propia oferta</h3>
+                        <p style="font-size: 0.95rem; color: #ccc; margin: 0; line-height: 1.5;">
+                            Has publicado esta oferta. No puedes postularte a tus propias vacantes.
                         </p>
                     </div>
 
@@ -137,8 +145,9 @@
                         </div>
                     </div>
 
-                    <!-- Solo mostramos el formulario si está PENDIENTE o si no existe postulación -->
-                    <form th:if="${postulacionExistente == null || postulacionExistente.estado == 'PENDIENTE'}" th:action="@{/api/postular}" method="POST" enctype="multipart/form-data" class="bloque-postulacion" id="form-postulacion" onsubmit="return confirmarEnvioPostulacion(event)">
+                    <!-- Solo mostramos el formulario si no es el autor, y si está PENDIENTE o no existe postulación -->
+                    <form th:if="${(session.usuarioLogueado == null or oferta.empresa == null or session.usuarioLogueado.id != oferta.empresa.id) and (postulacionExistente == null || postulacionExistente.estado == 'PENDIENTE')}" 
+                          th:action="@{/api/postular}" method="POST" enctype="multipart/form-data" class="bloque-postulacion" id="form-postulacion" onsubmit="return confirmarEnvioPostulacion(event)">
                         
                         <input type="hidden" name="ofertaId" th:value="${oferta.id}">
                         <input type="hidden" name="username" id="input-username" value="">

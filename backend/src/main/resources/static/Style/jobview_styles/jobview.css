@@ -110,6 +110,20 @@ body.fondo-oscuro-neon::before {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 20px;
+    flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
+    margin-bottom: 5px;
+}
+
+.cabecera-proyecto h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    flex: 1;
+    min-width: 200px; /* Asegura que tenga espacio antes de saltar los tags */
 }
 
 .categoria {
@@ -336,6 +350,33 @@ textarea { height: 120px; resize: none; }
     max-height: 280px; 
 }
 
+/* Scrollbar personalizado azul neón para la grid de tecnologías */
+.grid-techs-3::-webkit-scrollbar {
+    width: 6px;
+}
+
+.grid-techs-3::-webkit-scrollbar-track {
+    background: rgba(0, 242, 255, 0.05);
+    border-radius: 10px;
+}
+
+.grid-techs-3::-webkit-scrollbar-thumb {
+    background: #00f2ff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+.grid-techs-3::-webkit-scrollbar-thumb:hover {
+    background: #80f9ff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.8);
+}
+
+/* Firefox */
+.grid-techs-3 {
+    scrollbar-width: thin;
+    scrollbar-color: #00f2ff rgba(0, 242, 255, 0.05);
+}
+
 .grid-techs-3 span {
     text-align: center;
     font-size: 0.75rem;
@@ -526,6 +567,40 @@ header .nav-enlaces a.activo span {
     color: #FFCC00;
     font-size: 2.5rem;
     margin-bottom: 15px;
+}
+
+.mensaje-bloqueo-rol-propietario {
+    background: rgba(255, 204, 0, 0.05);
+    border: 1px solid rgba(255, 204, 0, 0.3);
+    border-left: 5px solid #FFCC00;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.1);
+}
+
+.mensaje-bloqueo-rol-propietario i {
+    font-size: 3rem;
+    color: #FFCC00;
+    text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+}
+
+.mensaje-bloqueo-rol-propietario h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.mensaje-bloqueo-rol-propietario p {
+    margin: 0;
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
 /* =========================================================

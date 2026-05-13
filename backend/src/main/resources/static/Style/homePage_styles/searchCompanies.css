@@ -334,6 +334,9 @@ body.fondo-oscuro-neon {
 
 .bio-recortada {
     font-size: 0.85rem; color: #ccc; height: 60px; margin-bottom: 15px; overflow: hidden; width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .bio-recortada.interactiva:hover { color: #FFCC00; cursor: pointer; }
 
@@ -393,9 +396,67 @@ body.fondo-oscuro-neon {
 
 .close-overlay { align-self: flex-end; color: #FFCC00; font-size: 1.4rem; cursor: pointer; margin-bottom: 10px; }
 .titulo-overlay { color: #fff; font-size: 1rem; text-transform: uppercase; border-bottom: 1px solid #FFCC00; padding-bottom: 8px; margin-bottom: 30px; text-align: center; }
-.grid-techs-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; overflow-y: auto; }
+.grid-techs-3 { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 12px; 
+    overflow-y: auto; 
+    max-height: 280px;
+}
+
+/* Scrollbar personalizado amarillo neón para la grid de tecnologías */
+.grid-techs-3::-webkit-scrollbar {
+    width: 6px;
+}
+
+.grid-techs-3::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.grid-techs-3::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.grid-techs-3::-webkit-scrollbar-thumb:hover {
+    background: #ffe066;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+}
 .grid-techs-3 span { padding: 8px 5px; font-size: 0.7rem; text-align: center; }
-.caja-bio-full { overflow-y: auto; color: #ccc; font-size: 0.9rem; line-height: 1.5; text-align: left; }
+.caja-bio-full { 
+    overflow-y: auto; 
+    color: #ccc; 
+    font-size: 0.9rem; 
+    line-height: 1.5; 
+    text-align: left; 
+    max-height: 280px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Scrollbar personalizado amarillo neón para la biografía completa */
+.caja-bio-full::-webkit-scrollbar {
+    width: 6px;
+}
+
+.caja-bio-full::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.caja-bio-full::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.caja-bio-full::-webkit-scrollbar-thumb:hover {
+    background: #ffe066;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+}
 
 /* =========================================
    DISEÑO RESPONSIVE Y MÓVIL (CORREGIDO)

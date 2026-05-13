@@ -163,19 +163,21 @@
             </h2>
             
             <div th:if="${((searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())) and !#lists.isEmpty(developers)}" class="contador-resultados-azul">
-                <div class="contenedor-texto-contador">
-                    <span class="texto-etiqueta">PROGRAMADORES ENCONTRADOS:</span>
-                    <div class="caja-numero">
-                        <span class="numero" th:text="${#lists.size(developers)}">0</span>
-                    </div>
+                <div class="texto-contador">
+                    Programadores encontrados: <span class="numero" th:text="${#lists.size(developers)}">0</span>
                 </div>
+                <div class="linea-neon-azul"></div>
             </div>
 
-            <div th:if="${#lists.isEmpty(developers)}" class="no-resultados-container">
-                <i class="fas fa-user-slash"></i>
+            <div th:if="${#lists.isEmpty(developers)}" class="no-resultados-container-azul">
+                <div class="no-resultados-box-azul">
+                    <i class="fas fa-user-slash icon-city"></i>
+                    <i class="fas fa-ban icono-overlay-rojo"></i>
+                </div>
                 <p th:text="${(searchQuery != null and !searchQuery.isEmpty()) or (selectedTechIds != null and !selectedTechIds.isEmpty())} 
                             ? 'No se ha encontrado a nadie que coincida con tu búsqueda' 
                             : 'No se han encontrado perfiles destacados'"></p>
+                <div class="linea-decorativa-azul"></div>
             </div>
 
             <div th:unless="${#lists.isEmpty(developers)}" 
@@ -191,7 +193,10 @@
                         
                         <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
                              th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
-                                     esLarga=${#strings.length(fullBio) > 60}">
+                                     words=${#strings.arraySplit(fullBio, ' ')},
+                                     bioWords=${#lists.size(words) > 10 ? #strings.arrayJoin(#lists.subList(words, 0, 10), ' ') : fullBio},
+                                     bioFinal=${#strings.length(bioWords) > 50 ? #strings.substring(bioWords, 0, 50) : bioWords},
+                                     esLarga=${#strings.length(fullBio.trim()) > #strings.length(bioFinal.trim())}">
                             
                             <a th:href="@{/profileView/{id}(id=${developer.usuario != null ? developer.usuario.id : 0})}" class="link-absoluto-tarjeta"></a>
                             
@@ -215,7 +220,7 @@
                                 
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
                                      th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
-                                    <p th:text="${esLarga ? #strings.substring(fullBio,0,60) + '...' : fullBio}"></p>
+                                    <p th:text="${esLarga ? bioFinal.trim() + '...' : fullBio}"></p>
                                 </div>
                                 
                                 <div class="tags-container">

@@ -418,17 +418,8 @@
             <div class="tarjeta-acordeon">
                 <div class="cabecera-tarjeta"><h3>MIS TECNOLOGÍAS</h3><i class="fas fa-laptop-code"></i></div>
                 <div class="tags-tecnologias">
-                    <span class="tag-tech" th:each="tech, iterStat : ${tecnologiasUsuario}" 
-                          th:text="${tech.nombre}"
-                          th:classappend="${iterStat.index >= 6 ? 'tech-oculta tech-extra' : ''}"></span>
-                    
-                    <span class="tag-tech tag-mas" id="btn-mas-techs" th:if="${#lists.size(tecnologiasUsuario) > 6}" onclick="mostrarMasTechs()">
-                        +<span th:text="${#lists.size(tecnologiasUsuario) - 6}"></span>
-                    </span>
-
-                    <span class="tag-tech tag-menos" id="btn-menos-techs" style="display: none;" onclick="mostrarMenosTechs()">
-                        <i class="fas fa-minus" style="margin-right: 5px;"></i> Menos
-                    </span>
+                    <span class="tag-tech" th:each="tech : ${tecnologiasUsuario}" 
+                          th:text="${tech.nombre}"></span>
                 </div>
                 <button onclick="window.location.href='/stack'" class="boton-amarillo-solido">AÑADIR TECNOLOGÍA</button>
             </div>
@@ -667,27 +658,7 @@
     <div th:replace="~{includes/footer :: footer}"></div>
 
     <script>
-        function mostrarMasTechs() {
-            // Quita la clase 'tech-oculta' a las extras
-            const ocultas = document.querySelectorAll('.tech-extra');
-            ocultas.forEach(span => {
-                span.classList.remove('tech-oculta');
-            });
-            // Oculta el botón de MÁS y muestra el de MENOS
-            document.getElementById('btn-mas-techs').style.display = 'none';
-            document.getElementById('btn-menos-techs').style.display = 'inline-flex';
-        }
 
-        function mostrarMenosTechs() {
-            // Vuelve a añadir la clase 'tech-oculta' a las extras
-            const extras = document.querySelectorAll('.tech-extra');
-            extras.forEach(span => {
-                span.classList.add('tech-oculta');
-            });
-            // Oculta el botón de MENOS y muestra el de MÁS
-            document.getElementById('btn-menos-techs').style.display = 'none';
-            document.getElementById('btn-mas-techs').style.display = 'inline-flex';
-        }
 
         // --- LÓGICA DE PESTAÑAS (TABS) ---
         function mostrarSeccion(seccion) {

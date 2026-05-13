@@ -16,6 +16,10 @@
     transform: translateX(-5px); 
 }
 
+.tarjeta-oferta {
+    margin-bottom: 20px;
+}
+
 /* --- ESTILOS DEL BOTÓN TOGGLE (ACTIVA/CERRADA) --- */
 
 .estado-contenedor {

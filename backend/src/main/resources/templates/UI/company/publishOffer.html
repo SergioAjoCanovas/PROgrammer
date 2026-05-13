@@ -148,21 +148,21 @@
                     <label for="requisitos"><i class="fas fa-list-check"></i> Requisitos</label>
                     <textarea id="requisitos" name="requisitos" class="input-neon textarea-oferta textarea-mediano" 
                               th:text="${oferta?.requisitos}" rows="5"
-                              placeholder="Indica las tecnologías, años de experiencia y aptitudes necesarias..."></textarea>
+                              placeholder="Indica las tecnologías, años de experiencia y aptitudes necesarias..." required></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="ofrecemos"><i class="fas fa-gift"></i> ¿Qué ofrecemos?</label>
                     <textarea id="ofrecemos" name="ofrecemos" class="input-neon textarea-oferta textarea-mediano" 
                               th:text="${oferta?.ofrecemos}" rows="5"
-                              placeholder="Describe los beneficios: tipo de contrato, flexibilidad, retos del equipo..."></textarea>
+                              placeholder="Describe los beneficios: tipo de contrato, flexibilidad, retos del equipo..." required></textarea>
                 </div>
 
                 <div class="grupo-input">
                     <label for="rango_salarial"><i class="fas fa-money-bill-wave"></i> Rango Salarial</label>
                     <input type="text" id="rango_salarial" name="rango_salarial" class="input-neon" 
                            th:value="${oferta?.rangoSalarial}"
-                           placeholder="Ej: 35.000€ - 45.000€ o A convenir">
+                           placeholder="Ej: 35.000€ - 45.000€ o A convenir" required>
                 </div>
 
                 <div class="grupo-input">

@@ -104,8 +104,15 @@
                     <h4 class="titulo-puesto" th:text="${oferta.titulo}">Título del Puesto</h4>
                     <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción de la oferta...</p>
                     
-                    <div class="tech-tags">
-                        <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">Tech</span>
+                    <div class="tags-container" th:if="${oferta.tecnologias != null and !oferta.tecnologias.isEmpty()}">
+                        <div class="tech-tags">
+                            <span th:each="tech, iterStat : ${oferta.tecnologias}" 
+                                  th:if="${iterStat.index < 7}" 
+                                  th:text="${tech.nombre}"></span>
+                        </div>
+                        <i th:if="${#lists.size(oferta.tecnologias) > 7}" 
+                           class="fas fa-plus tech-toggle" 
+                           onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
                     </div>
                 </div>
                 
@@ -124,6 +131,15 @@
                         </span>
                     </div>
                     <button class="boton-postular" th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">VER POSTULACIONES</button>
+                </div>
+
+                <!-- OVERLAY DE TODAS LAS TECHS (COMO EN JOBSEARCHING) -->
+                <div class="vista-todas-techs" th:if="${#lists.size(oferta.tecnologias) > 7}">
+                    <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
+                    <h4 class="titulo-overlay">Tecnologías</h4>
+                    <div class="grid-techs-3">
+                        <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -147,8 +163,15 @@
                         <div class="info-oferta" style="flex: 2;">
                             <h4 class="titulo-puesto" th:text="${oferta.titulo}" style="margin-top: 0;">Título</h4>
                             <p class="descripcion-puesto" th:text="${oferta.descripcion}">Descripción</p>
-                            <div class="tech-tags">
-                                <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}">Tech</span>
+                            <div class="tags-container" th:if="${oferta.tecnologias != null and !oferta.tecnologias.isEmpty()}">
+                                <div class="tech-tags">
+                                    <span th:each="tech, iterStat : ${oferta.tecnologias}" 
+                                          th:if="${iterStat.index < 7}" 
+                                          th:text="${tech.nombre}"></span>
+                                </div>
+                                <i th:if="${#lists.size(oferta.tecnologias) > 7}" 
+                                   class="fas fa-plus tech-toggle" 
+                                   onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
                             </div>
                         </div>
                         <div class="acciones-oferta">
@@ -166,6 +189,15 @@
                                 </span>
                             </div>
                             <button class="boton-postular" th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">VER POSTULACIONES</button>
+                        </div>
+
+                        <!-- OVERLAY DE TODAS LAS TECHS (COMO EN JOBSEARCHING) -->
+                        <div class="vista-todas-techs" th:if="${#lists.size(oferta.tecnologias) > 7}">
+                            <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
+                            <h4 class="titulo-overlay">Tecnologías</h4>
+                            <div class="grid-techs-3">
+                                <span th:each="tech : ${oferta.tecnologias}" th:text="${tech.nombre}"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -281,6 +313,13 @@
                 list.style.display = 'block';
                 icon.style.transform = 'rotate(180deg)';
                 header.style.background = '#2a2a2a';
+            }
+        }
+
+        function toggleTechExpansion(element) {
+            const tarjeta = element.closest('.tarjeta-oferta');
+            if (tarjeta) {
+                tarjeta.classList.toggle('tech-expanded');
             }
         }
     </script>

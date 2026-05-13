@@ -314,13 +314,27 @@ body.fondo-oscuro-neon::before {
 .estrellas i { font-size: 1.5rem; color: #444; cursor: pointer; margin-right: 8px; transition: 0.2s; }
 .estrellas i.activa { color: #FFCC00; text-shadow: 0 0 12px rgba(255, 204, 0, 0.6); }
 
-textarea {
+textarea, .input-comentario-neon {
     width: 100%; background: #050505; border: 1px solid #444; border-radius: 12px; 
     padding: 18px; color: white; resize: none; height: 140px; transition: all 0.3s ease; box-sizing: border-box;
 }
-textarea:focus {
+textarea:focus, .input-comentario-neon:focus {
     outline: none; border: 2px solid #FFCC00; 
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); background: #0a0a0a;
+}
+
+/* Scrollbar personalizado neón para el textarea */
+.input-comentario-neon::-webkit-scrollbar, textarea::-webkit-scrollbar {
+    width: 6px;
+}
+.input-comentario-neon::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.input-comentario-neon::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
 /* =========================================================
@@ -392,6 +406,9 @@ textarea:focus {
     font-size: 1.1rem;
     margin: 0;
     padding-left: 5px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .repo a {

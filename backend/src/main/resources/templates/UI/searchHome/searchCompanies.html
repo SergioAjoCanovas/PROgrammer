@@ -163,23 +163,25 @@
                 <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-contenedor' : ''">
                     <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
                          th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-inner-empresas'">
-                        
-                        <div class="tarjeta-perfil-neon" th:each="company : ${companies}"
+                                               <div class="tarjeta-perfil-neon" th:each="company : ${companies}"
                              th:with="fullBio=${company.usuario.biografia != null and !#strings.isEmpty(company.usuario.biografia.trim()) ? company.usuario.biografia : 'Sin descripción'},
-                                     esLarga=${#strings.length(fullBio) > 60}">
+                                     words=${#strings.arraySplit(fullBio, ' ')},
+                                     bioWords=${#lists.size(words) > 10 ? #strings.arrayJoin(#lists.subList(words, 0, 10), ' ') : fullBio},
+                                     bioFinal=${#strings.length(bioWords) > 50 ? #strings.substring(bioWords, 0, 50) : bioWords},
+                                     esLarga=${#strings.length(fullBio.trim()) > #strings.length(bioFinal.trim())}">
                             
                             <a th:href="@{/profileView/{id}(id=${company.usuario.id})}" class="link-absoluto-tarjeta"></a>
                             
                             <div class="contenido-perfil">
                                 <div class="foto-perfil-container">
                                     <img th:src="${company.usuario.fotoPerfil != null ? company.usuario.fotoPerfil : '/Img/stock/default-company.png'}" 
-                                         class="foto-perfil-img" alt="Logo">
+                                          class="foto-perfil-img" alt="Logo">
                                     <button th:if="${session.usuarioLogueado != null and session.usuarioLogueado.id != company.usuario.id}"
-                                            class="btn-follow-heart" 
-                                            th:attr="data-id=${company.usuario.id}" 
-                                            onclick="toggleFollowUser(this, event)">
-                                        <i class="fa-heart" th:classappend="${company.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
-                                    </button>
+                                             class="btn-follow-heart" 
+                                             th:attr="data-id=${company.usuario.id}" 
+                                             onclick="toggleFollowUser(this, event)">
+                                         <i class="fa-heart" th:classappend="${company.usuario.seguidores.contains(session.usuarioLogueado) ? 'fas' : 'far'}"></i>
+                                     </button>
                                 </div>
                                 <h3>
                                     <span th:text="${company.usuario.username}"></span>
@@ -192,7 +194,7 @@
                                 
                                 <div th:class="${esLarga} ? 'bio-recortada interactiva' : 'bio-recortada'" 
                                      th:onclick="${esLarga} ? 'toggleBioExpansion(this)' : ''">
-                                    <p th:text="${esLarga ? #strings.substring(fullBio,0,60) + '...' : fullBio}"></p>
+                                    <p th:text="${esLarga ? bioFinal.trim() + '...' : fullBio}"></p>
                                 </div>
 
                                 <div class="tags-container">

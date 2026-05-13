@@ -238,7 +238,7 @@ body.fondo-oscuro-neon {
    ========================================= */
 .seccion-carrusel { 
     width: 100%; 
-    max-width: 900px; 
+    max-width: 1000px; 
     box-sizing: border-box;
 }
 
@@ -252,53 +252,69 @@ body.fondo-oscuro-neon {
 
 /* --- CONTADOR ESTILO PROGRAMADORES (AZUL) --- */
 .contador-resultados-azul {
-    width: 100%;
+    margin-bottom: 25px;
     display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
-}
-
-.contenedor-texto-contador {
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
-    position: relative;
-    padding-bottom: 10px; 
 }
 
-.contenedor-texto-contador::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 75%;
-    transform: translateX(-110%);
-    width: 45%; 
-    height: 2px;
-    background: #00f3ff;
-    box-shadow: 0 0 10px #00f3ff;
-}
-
-.texto-etiqueta {
-    color: #00f3ff;
+.contador-resultados-azul .texto-contador {
+    color: #00d2ff;
+    font-size: 1.1rem;
     font-weight: bold;
-    letter-spacing: 1.5px;
-    font-size: 1rem;
-    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+    margin-bottom: 8px;
+    text-align: center;
 }
 
-.caja-numero {
-    border: 1px solid #00f3ff;
-    border-radius: 4px;
-    padding: 2px 10px;
-    background: rgba(0, 243, 255, 0.1);
-    box-shadow: inset 0 0 5px rgba(0, 243, 255, 0.2);
-}
-
-.caja-numero .numero {
+.contador-resultados-azul .numero {
     color: #fff;
-    font-weight: bold;
+    background: rgba(0, 210, 255, 0.2);
+    padding: 2px 10px;
+    border-radius: 5px;
+    border: 1px solid #00d2ff;
+}
+
+.linea-neon-azul {
+    width: 150px;
+    height: 2px;
+    background: #00d2ff;
+    box-shadow: 0 0 15px #00d2ff;
+}
+
+/* --- NO RESULTADOS --- */
+.no-resultados-container-azul {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(0, 210, 255, 0.05);
+    border-radius: 20px;
+    border: 1px dashed rgba(0, 210, 255, 0.3);
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.no-resultados-box-azul {
+    position: relative;
+    display: inline-block;
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.icon-city { color: #ff004c; text-shadow: 0 0 20px rgba(255, 0, 76, 0.5); }
+.icono-overlay-rojo { position: absolute; top: -10px; right: -15px; color: #ff004c; font-size: 2.5rem; text-shadow: 0 0 15px rgba(255, 0, 76, 0.6); }
+
+.no-resultados-container-azul p {
+    color: #ffffff;
     font-size: 1.2rem;
-    text-shadow: 0 0 5px #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.linea-decorativa-azul {
+    width: 60px; height: 3px; background: #00d2ff; margin: 15px auto 0; border-radius: 2px; box-shadow: 0 0 10px #00d2ff;
 }
 
 /* ------------------------------------------- */
@@ -321,7 +337,7 @@ body.fondo-oscuro-neon {
 
 .grid-resultados-inner {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 30px;
     width: 100%;
 }
@@ -377,6 +393,9 @@ body.fondo-oscuro-neon {
     margin-bottom: 15px;
     overflow: hidden;
     width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .bio-recortada.interactiva { cursor: pointer; }
@@ -515,6 +534,27 @@ body.fondo-oscuro-neon {
     max-height: 280px; 
 }
 
+/* Scrollbar personalizado amarillo neón para la grid de tecnologías */
+.grid-techs-3::-webkit-scrollbar {
+    width: 6px;
+}
+
+.grid-techs-3::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.grid-techs-3::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.grid-techs-3::-webkit-scrollbar-thumb:hover {
+    background: #ffe066;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+}
+
 .grid-techs-3 span {
     text-align: center;
     font-size: 0.7rem;
@@ -529,6 +569,30 @@ body.fondo-oscuro-neon {
     line-height: 1.5;
     text-align: left;
     max-height: 280px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Scrollbar personalizado amarillo neón para la biografía completa */
+.caja-bio-full::-webkit-scrollbar {
+    width: 6px;
+}
+
+.caja-bio-full::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.caja-bio-full::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.caja-bio-full::-webkit-scrollbar-thumb:hover {
+    background: #ffe066;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
 }
 
 /* =========================================

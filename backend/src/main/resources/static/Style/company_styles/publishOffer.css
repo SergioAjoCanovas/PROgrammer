@@ -125,6 +125,33 @@
     min-height: 100px;
 }
 
+/* --- Scrollbar personalizado neón para Textareas --- */
+.input-neon::-webkit-scrollbar {
+    width: 6px;
+}
+
+.input-neon::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.input-neon::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.input-neon::-webkit-scrollbar-thumb:hover {
+    background: #ffe066;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+}
+
+/* Para Firefox */
+.input-neon {
+    scrollbar-width: thin;
+    scrollbar-color: #FFCC00 rgba(255, 255, 255, 0.05);
+}
+
 select.input-neon option {
     background-color: #1e1e28;
     color: white;

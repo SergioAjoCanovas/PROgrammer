@@ -425,7 +425,7 @@
                             <!-- Contenedor expandido para la DESCRIPCIÓN -->
                             <div th:if="${proyecto.descripcion.length() > 50}" class="desc-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')">
                                 <div class="tech-expanded-header">
-                                    <h4 th:text="${proyecto.nombre}">Proyecto</h4>
+                                    <h4>Descripción</h4>
                                     <i class="fas fa-times"></i>
                                 </div>
                                 <div class="desc-expanded-content">
@@ -447,7 +447,7 @@
                             <!-- Contenedor expandido que se muestra al hacer click (Ahora fuera para cubrir todo) -->
                             <div th:if="${proyecto.tecnologias.size() > 4}" class="tech-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('tech-expanded')">
                                 <div class="tech-expanded-header">
-                                    <h4 th:text="${proyecto.nombre}">Proyecto</h4>
+                                    <h4>Tecnologías</h4>
                                     <i class="fas fa-times"></i>
                                 </div>
                                 <div class="tech-expanded-list">

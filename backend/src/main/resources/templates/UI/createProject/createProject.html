@@ -202,14 +202,20 @@
                 </div>
 
                 <div class="campo">
-                    <label>Título del Proyecto</label>
-                    <input type="text" name="titulo" placeholder="Ej. Sistema de Gestión de Inventarios" 
+                    <label>
+                        Título del Proyecto
+                        <span id="char-counter-titulo" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 30</span>
+                    </label>
+                    <input type="text" id="titulo-proyecto" name="titulo" placeholder="Ej. Sistema de Gestión de Inventarios" 
                            th:value="${proyecto != null ? proyecto.titulo : ''}" required>
                 </div>
                 
                 <div class="campo">
-                    <label>Descripción del Proyecto</label>
-                    <textarea name="descripcion" placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" 
+                    <label>
+                        Descripción del Proyecto 
+                        <span id="char-counter-desc" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 750</span>
+                    </label>
+                    <textarea id="descripcion-proyecto" name="descripcion" placeholder="Describe brevemente de qué trata tu proyecto..." rows="5" 
                               th:text="${proyecto != null ? proyecto.descripcion : ''}" required></textarea>
                 </div>
 
@@ -286,6 +292,46 @@
             if (typeof mostrarImagenesExistentes === "function") {
                 mostrarImagenesExistentes();
             }
+            // --- LÓGICA DE CONTADOR DE CARACTERES ---
+            const descTextarea = document.getElementById("descripcion-proyecto");
+            const counterSpan = document.getElementById("char-counter-desc");
+            const maxChars = 750;
+
+            function updateCounter() {
+                const currentLength = descTextarea.value.length;
+                counterSpan.innerText = `${currentLength} / ${maxChars}`;
+                
+                if (currentLength > maxChars) {
+                    counterSpan.style.color = '#ff4444';
+                    counterSpan.style.textShadow = '0 0 10px #ff4444';
+                } else {
+                    counterSpan.style.color = '#888';
+                    counterSpan.style.textShadow = 'none';
+                }
+            }
+
+            descTextarea.addEventListener('input', updateCounter);
+            updateCounter(); // Inicializar
+
+            // --- LÓGICA DE CONTADOR PARA TÍTULO ---
+            const tituloInput = document.getElementById("titulo-proyecto");
+            const tituloCounter = document.getElementById("char-counter-titulo");
+            const maxTitulo = 30;
+
+            function updateTituloCounter() {
+                const len = tituloInput.value.length;
+                tituloCounter.innerText = `${len} / ${maxTitulo}`;
+                if (len > maxTitulo) {
+                    tituloCounter.style.color = '#ff4444';
+                    tituloCounter.style.textShadow = '0 0 10px #ff4444';
+                } else {
+                    tituloCounter.style.color = '#888';
+                    tituloCounter.style.textShadow = 'none';
+                }
+            }
+
+            tituloInput.addEventListener('input', updateTituloCounter);
+            updateTituloCounter();
         });
     
         // -------------------- TOAST --------------------
@@ -329,12 +375,25 @@
                 return;
             }
     
-            const titulo = document.querySelector("[name='titulo']").value.trim();
-            const desc = document.querySelector("[name='descripcion']").value.trim();
+            const tituloInput = document.getElementById("titulo-proyecto");
+            const titulo = tituloInput.value.trim();
+            const desc = document.getElementById("descripcion-proyecto").value.trim();
     
             if (!titulo || !desc) {
                 e.preventDefault();
                 mostrarToast("Rellena título y descripción", "error");
+                return;
+            }
+
+            if (titulo.length > 30) {
+                e.preventDefault();
+                mostrarToast("El título no puede superar los 30 caracteres", "error");
+                return;
+            }
+
+            if (desc.length > 750) {
+                e.preventDefault();
+                mostrarToast("La descripción no puede superar los 750 caracteres", "error");
                 return;
             }
     

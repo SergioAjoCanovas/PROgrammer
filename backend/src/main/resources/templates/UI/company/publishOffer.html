@@ -128,7 +128,10 @@
                 <input type="hidden" id="username_empresa" name="username_empresa" value="">
 
                 <div class="grupo-input">
-                    <label for="titulo"><i class="fas fa-signature"></i> Título del Puesto</label>
+                    <label for="titulo">
+                        <i class="fas fa-signature"></i> Título del Puesto
+                        <span id="char-counter-titulo" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 60</span>
+                    </label>
                     <input type="text" id="titulo" name="titulo" class="input-neon" 
                            th:value="${oferta?.titulo}" 
                            placeholder="Ej: Desarrollador Backend Senior (Java)" required>
@@ -145,21 +148,30 @@
                 </div>
 
                 <div class="grupo-input">
-                    <label for="requisitos"><i class="fas fa-list-check"></i> Requisitos</label>
+                    <label for="requisitos">
+                        <i class="fas fa-list-check"></i> Requisitos
+                        <span id="char-counter-requisitos" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 750</span>
+                    </label>
                     <textarea id="requisitos" name="requisitos" class="input-neon textarea-oferta textarea-mediano" 
                               th:text="${oferta?.requisitos}" rows="5"
-                              placeholder="Indica las tecnologías, años de experiencia y aptitudes necesarias..." required></textarea>
+                              placeholder="Indica las tecnologias, años de experiencia y aptitudes necesarias..." required></textarea>
                 </div>
 
                 <div class="grupo-input">
-                    <label for="ofrecemos"><i class="fas fa-gift"></i> ¿Qué ofrecemos?</label>
+                    <label for="ofrecemos">
+                        <i class="fas fa-gift"></i> ¿Qué ofrecemos?
+                        <span id="char-counter-ofrecemos" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 750</span>
+                    </label>
                     <textarea id="ofrecemos" name="ofrecemos" class="input-neon textarea-oferta textarea-mediano" 
                               th:text="${oferta?.ofrecemos}" rows="5"
                               placeholder="Describe los beneficios: tipo de contrato, flexibilidad, retos del equipo..." required></textarea>
                 </div>
 
                 <div class="grupo-input">
-                    <label for="rango_salarial"><i class="fas fa-money-bill-wave"></i> Rango Salarial</label>
+                    <label for="rango_salarial">
+                        <i class="fas fa-money-bill-wave"></i> Rango Salarial
+                        <span id="char-counter-salario" style="margin-left: 10px; font-size: 0.8rem; color: #888;">0 / 100</span>
+                    </label>
                     <input type="text" id="rango_salarial" name="rango_salarial" class="input-neon" 
                            th:value="${oferta?.rangoSalarial}"
                            placeholder="Ej: 35.000€ - 45.000€ o A convenir" required>
@@ -203,7 +215,7 @@
         <i class="fas fa-exclamation-triangle"></i>
         <div>
             <strong>Error de validación</strong>
-            <span style="font-size: 0.9rem; color: #eee;">No se pueden superar los 250 caracteres en la descripción.</span>
+            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">No se pueden superar los límites de caracteres permitidos.</span>
         </div>
     </div>
 
@@ -349,42 +361,68 @@
         }
 
         // --- CONTADOR DE CARACTERES Y VALIDACIÓN ---
-        const descTextarea = document.getElementById('descripcion');
-        const charCounter = document.getElementById('char-counter');
-        const maxChars = 250;
+        function initCharCounter(textareaId, counterId, max) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
 
-        function updateCounter() {
-            const currentLength = descTextarea.value.length;
-            charCounter.textContent = `${currentLength} / ${maxChars}`;
-            
-            if (currentLength > maxChars) {
-                charCounter.style.color = '#ff4444';
-                charCounter.style.textShadow = '0 0 5px #ff4444';
-            } else {
-                charCounter.style.color = '#888';
-                charCounter.style.textShadow = 'none';
+            if (!textarea || !counter) return;
+
+            function update() {
+                const currentLength = textarea.value.length;
+                counter.textContent = `${currentLength} / ${max}`;
+                
+                if (currentLength > max) {
+                    counter.style.color = '#ff4444';
+                    counter.style.textShadow = '0 0 5px #ff4444';
+                } else {
+                    counter.style.color = '#888';
+                    counter.style.textShadow = 'none';
+                }
             }
+
+            textarea.addEventListener('input', update);
+            update(); // Inicializar
         }
 
-        descTextarea.addEventListener('input', updateCounter);
-        
-        // Inicializar al cargar
-        updateCounter();
+        // Inicializar contadores
+        initCharCounter('titulo', 'char-counter-titulo', 60);
+        initCharCounter('descripcion', 'char-counter', 250);
+        initCharCounter('requisitos', 'char-counter-requisitos', 750);
+        initCharCounter('ofrecemos', 'char-counter-ofrecemos', 750);
+        initCharCounter('rango_salarial', 'char-counter-salario', 100);
 
         // Validación al enviar
         document.querySelector('.formulario-oferta').addEventListener('submit', function(e) {
-            if (descTextarea.value.length > maxChars) {
+            const fields = [
+                { id: 'titulo', max: 60, name: 'el título del puesto' },
+                { id: 'descripcion', max: 250, name: 'la descripción' },
+                { id: 'requisitos', max: 750, name: 'los requisitos' },
+                { id: 'ofrecemos', max: 750, name: 'el apartado "¿Qué ofrecemos?"' },
+                { id: 'rango_salarial', max: 100, name: 'el rango salarial' }
+            ];
+
+            let errorMsg = '';
+            for (const field of fields) {
+                const val = document.getElementById(field.id).value;
+                if (val.length > field.max) {
+                    errorMsg = `No se pueden superar los ${field.max} caracteres en ${field.name}.`;
+                    break;
+                }
+            }
+
+            if (errorMsg) {
                 e.preventDefault();
                 
                 const toast = document.getElementById('toast-error-caracteres');
+                const mensaje = document.getElementById('toast-error-mensaje');
+                mensaje.textContent = errorMsg;
+                
                 toast.style.display = 'flex';
                 
-                // Pequeño delay para que la transición de opacidad funcione
                 setTimeout(() => {
                     toast.classList.add('mostrar');
                 }, 10);
 
-                // Ocultar tras 5 segundos
                 setTimeout(() => {
                     toast.classList.remove('mostrar');
                     setTimeout(() => {

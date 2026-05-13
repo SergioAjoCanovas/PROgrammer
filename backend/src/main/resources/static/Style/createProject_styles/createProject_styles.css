@@ -164,6 +164,33 @@ input:focus, textarea:focus {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
 }
 
+/* --- Scrollbar personalizado neón para Textareas --- */
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: var(--amarillo-neon);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #ffe066;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+}
+
+/* Para Firefox */
+textarea {
+    scrollbar-width: thin;
+    scrollbar-color: var(--amarillo-neon) rgba(255, 255, 255, 0.05);
+}
+
 /* --- PORTADA DE IMAGEN (ICONO CENTRADO) --- */
 .portada-contenedor {
     position: relative;

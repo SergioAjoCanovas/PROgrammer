@@ -145,6 +145,8 @@ input:checked + .slider:before {
     color: white;
     margin-bottom: 10px;
     font-size: 1.3rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .modal-box p {
@@ -219,4 +221,10 @@ input:checked + .slider:before {
     background: #ff4444;
     color: white;
     box-shadow: 0 0 10px #ff4444;
+}
+
+/* --- WRAPPING PARA TÍTULOS GENERALES --- */
+h2, h3, h4, .titulo-puesto {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }

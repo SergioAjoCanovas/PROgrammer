@@ -463,6 +463,23 @@ p, span, div, h1, h2, h3, h4 {
     flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 20px;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Scrollbar personalizado neón para las tecnologías */
+.tags-tecnologias::-webkit-scrollbar {
+    width: 6px;
+}
+.tags-tecnologias::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+.tags-tecnologias::-webkit-scrollbar-thumb {
+    background: var(--amarillo-neon);
+    border-radius: 10px;
+    box-shadow: 0 0 5px var(--amarillo-neon);
 }
 
 .tag-tech {
@@ -484,28 +501,10 @@ p, span, div, h1, h2, h3, h4 {
 
 .tag-tech:hover {
     background-color: rgba(255, 204, 0, 0.15) !important;
-    transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6) !important;
 }
 
-/* NUEVO: ESTILOS PARA OCULTAR/MOSTRAR TECNOLOGÍAS */
-.tech-oculta {
-    display: none !important;
-}
 
-/* ESTILOS PARA LOS BOTONES MÁS Y MENOS */
-.tag-mas, .tag-menos {
-    background-color: transparent !important;
-    border: 1px dashed var(--amarillo-neon) !important;
-    cursor: pointer;
-    font-weight: 900;
-    box-shadow: none !important;
-}
-
-.tag-mas:hover, .tag-menos:hover {
-    background-color: rgba(255, 204, 0, 0.1) !important;
-    transform: scale(1.05);
-}
 
 /* ============================================================
     8. MEDIA QUERIES (RESPONSIVE MEJORADO)

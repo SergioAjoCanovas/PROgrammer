@@ -1,6 +1,16 @@
 /* =========================================================
-   1. BOTÓN VOLVER (ESTILO UNIFICADO)
+   1. ESTRUCTURA Y BOTÓN VOLVER (ESTILO UNIFICADO)
    ========================================================= */
+.contenedor-volver {
+    max-width: 1800px;
+    width: 98%;
+    margin: 30px auto 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
 .enlace-volver {
     color: #888888; 
     text-decoration: none;

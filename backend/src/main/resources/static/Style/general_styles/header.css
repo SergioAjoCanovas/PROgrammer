@@ -457,7 +457,7 @@ body {
         display: contents; /* Permite que el enlace interno se comporte como un hijo directo del nav */
     }
 
-    #badge-avisos {
+    #badge-avisos, #badge-chats {
         top: 10px !important;
         right: auto !important;
         left: 50px !important; /* Posicionado sobre el icono en modo fila */

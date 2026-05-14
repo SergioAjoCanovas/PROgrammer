@@ -23,6 +23,9 @@ public class NotificacionController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private com.programmer.backend.service.ChatService chatService;
+
     @GetMapping
     public ResponseEntity<?> getNotificaciones(HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
@@ -32,10 +35,12 @@ public class NotificacionController {
         
         List<Notificacion> notificaciones = notificacionRepository.findByUsuarioOrderByFechaCreacionDesc(usuario);
         long noLeidas = notificacionRepository.countByUsuarioAndLeidaFalse(usuario);
+        int noLeidasChat = chatService.contarTodosNoLeidos(usuario.getId());
         
         return ResponseEntity.ok(Map.of(
             "notificaciones", notificaciones,
-            "noLeidas", noLeidas
+            "noLeidas", noLeidas,
+            "noLeidasChat", noLeidasChat
         ));
     }
 

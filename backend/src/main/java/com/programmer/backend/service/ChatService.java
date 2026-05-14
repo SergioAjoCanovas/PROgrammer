@@ -84,6 +84,10 @@ public class ChatService {
         mensajeRepository.vaciarChat(userId, otroId);
     }
 
+    public int contarTodosNoLeidos(Long userId) {
+        return mensajeRepository.countAllNoLeidos(userId);
+    }
+
     private Mensaje guardarMensaje(Long emisorId, Long receptorId, String contenido) {
 
         Usuario emisor = usuarioRepository.findById(emisorId)

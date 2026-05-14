@@ -53,4 +53,9 @@ public class ChatController {
                         @RequestParam Long otroId) {
         chatService.vaciarChat(userId, otroId);
     }
+
+    @GetMapping("/unread-count")
+    public int getUnreadCount(@RequestParam Long userId) {
+        return chatService.contarTodosNoLeidos(userId);
+    }
 }

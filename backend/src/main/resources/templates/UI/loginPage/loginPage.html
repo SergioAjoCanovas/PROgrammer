@@ -130,6 +130,33 @@
             const toastError = document.getElementById('toast-login-error');
             const toastSuccess = document.getElementById('toast-login-success');
             
+            // --- NUEVO: Lógica de Recordar Contraseña ---
+            const rememberCheckbox = document.querySelector('input[name="remember"]');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginForm = document.querySelector('.login-form');
+
+            // 1. Cargar datos si existen
+            if (localStorage.getItem('rememberMe') === 'true') {
+                usernameInput.value = localStorage.getItem('rememberUsername') || '';
+                passwordInput.value = localStorage.getItem('rememberPassword') || '';
+                rememberCheckbox.checked = true;
+            }
+
+            // 2. Guardar datos al enviar el formulario
+            loginForm.addEventListener('submit', () => {
+                if (rememberCheckbox.checked) {
+                    localStorage.setItem('rememberMe', 'true');
+                    localStorage.setItem('rememberUsername', usernameInput.value);
+                    localStorage.setItem('rememberPassword', passwordInput.value);
+                } else {
+                    localStorage.removeItem('rememberMe');
+                    localStorage.removeItem('rememberUsername');
+                    localStorage.removeItem('rememberPassword');
+                }
+            });
+            // --------------------------------------------
+
             if (toastSuccess) {
                 setTimeout(() => {
                     toastSuccess.classList.add('mostrar');

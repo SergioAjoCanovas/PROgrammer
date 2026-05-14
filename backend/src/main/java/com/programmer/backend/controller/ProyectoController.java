@@ -265,6 +265,7 @@ public class ProyectoController {
 
         proyectoExistente.setTitulo(proyecto.getTitulo());
         proyectoExistente.setDescripcion(proyecto.getDescripcion());
+        proyectoExistente.setRepoUrl(proyecto.getRepoUrl());
 
         if (tecnologias != null) {
             List<Tecnologia> tecnologiasActualizadas = tecnologias.stream()

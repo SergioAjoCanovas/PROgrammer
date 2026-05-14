@@ -339,15 +339,28 @@
 
         function startAutoPlay() {
             if(!track || window.innerWidth <= 768) return; 
+            
+            // Evitar múltiples intervalos
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+            
             autoPlayInterval = setInterval(() => {
-                index--;
+                index++;
                 actualizarCarrusel();
-            }, 4000);
+            }, 3000);
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
         }
 
         function reiniciarAutoPlay() {
-            clearInterval(autoPlayInterval);
+            stopAutoPlay();
             startAutoPlay();
+        }
+
+        if (track) {
+            track.addEventListener('mouseenter', stopAutoPlay);
+            track.addEventListener('mouseleave', startAutoPlay);
         }
 
         window.addEventListener('resize', actualizarCarrusel);

@@ -370,9 +370,123 @@
 ::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
+/* BOTÓN VOLVER EN MOBILE */
+.btn-volver-lista {
+    display: none;
+    background: none;
+    border: none;
+    color: #FFCC00;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+}
+
+.btn-volver-lista:hover {
+    transform: translateX(-3px);
+}
+
+/* =========================================================
+   RESPONSIVIDAD (Tablets y Móviles)
+   ========================================================= */
+
+/* Tabletas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .tarjeta-chats {
+        max-width: 95%;
+    }
+    
+    .panel-contactos {
+        width: 40%;
+        min-width: 250px;
+    }
+    
+    .panel-conversacion {
+        width: 60%;
+    }
+}
+
+/* Móviles (hasta 800px) - Sistema de paneles alternos */
 @media (max-width: 800px) {
-    .panel-contactos { width: 100%; }
-    .panel-conversacion { display: none; }
+    .contenedor-principal-chats {
+        padding: 10px 10px 30px 10px;
+        height: calc(100vh - 120px);
+    }
+
+    .tarjeta-chats {
+        height: 100%;
+        border-radius: 10px;
+    }
+
+    .panel-contactos {
+        width: 100%;
+        min-width: 0;
+        display: flex; /* Visible por defecto */
+    }
+
+    .panel-conversacion {
+        width: 100%;
+        display: none; /* Oculto por defecto */
+    }
+
+    /* Cuando queremos ver el chat */
+    .tarjeta-chats.ver-chat-mobile .panel-contactos {
+        display: none;
+    }
+
+    .tarjeta-chats.ver-chat-mobile .panel-conversacion {
+        display: flex;
+    }
+
+    .btn-volver-lista {
+        display: block;
+    }
+
+    .cabecera-chat-activo {
+        padding: 10px 15px;
+    }
+
+    .info-chat h4 {
+        font-size: 1.1rem;
+    }
+
+    .mensaje {
+        max-width: 85%;
+    }
+
+    .zona-input-chat {
+        padding: 10px 15px;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .cabecera-contactos h2 {
+        font-size: 1.1rem;
+    }
+
+    .item-chat {
+        padding: 12px 15px;
+    }
+
+    .avatar-chat {
+        width: 40px;
+        height: 40px;
+    }
+
+    .burbuja {
+        padding: 10px 14px;
+        font-size: 0.95rem;
+    }
+
+    .contenedor-volver {
+        margin: 15px auto 0 auto;
+        padding: 0 15px;
+    }
+
+    .enlace-volver {
+        font-size: 0.95rem;
+    }
 }
 
 .activo, 

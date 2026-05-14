@@ -64,6 +64,15 @@ public interface MensajeRepository extends JpaRepository<Mensaje, Long> {
         AND m.borradoPorReceptor = false
         """)
         int countNoLeidos(Long userId, Long otroId);
+    
+    @Query("""
+        SELECT COUNT(m)
+        FROM Mensaje m
+        WHERE m.receptor.id = :userId
+        AND m.leido = false
+        AND m.borradoPorReceptor = false
+        """)
+    int countAllNoLeidos(Long userId);
 
     // =========================================
     // MARCAR MENSAJES COMO LEIDOS

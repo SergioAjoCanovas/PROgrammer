@@ -571,3 +571,111 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
 .item-dotted:hover i {
     transform: scale(1.2);
 }
+
+/* =========================================================
+   RESPONSIVE PARA MOVILES Y TABLETS 
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .contenedor-principal {
+        gap: 20px;
+    }
+    .columna-perfil {
+        flex: 0 0 320px;
+    }
+}
+
+@media (max-width: 900px) {
+    .contenedor-principal {
+        flex-direction: column;
+        margin: 20px auto;
+        gap: 30px;
+    }
+
+    .columna-perfil {
+        width: 100%;
+        flex: none;
+    }
+
+    .tarjeta-perfil {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .perfil-superior {
+        border-bottom: none;
+        border-right: 2px solid #aaaaaa;
+        padding: 0 20px 0 0;
+        margin-bottom: 0;
+        flex: 1;
+    }
+
+    .perfil-inferior {
+        padding: 0 0 0 20px;
+        flex: 1;
+    }
+
+    .foto-perfil-contenedor {
+        width: 100px;
+        height: 100px;
+    }
+
+    .nombre-usuario {
+        font-size: 1.3rem;
+    }
+
+    .cabecera-acordeon h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .tarjeta-perfil {
+        flex-direction: column;
+    }
+
+    .perfil-superior {
+        border-right: none;
+        border-bottom: 2px solid #aaaaaa;
+        padding: 0 0 20px 0;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .perfil-inferior {
+        padding: 0;
+        width: 100%;
+    }
+
+    .tarjeta-acordeon-contenedor {
+        padding: 20px;
+    }
+
+    .botones-proyecto {
+        flex-direction: column;
+    }
+
+    body.fondo-oscuro-neon .boton-ver-proyecto,
+    body.fondo-oscuro-neon .boton-editar-proyecto,
+    body.fondo-oscuro-neon .boton-eliminar-proyecto {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    .contenido-modal-confirmacion {
+        min-width: 90%;
+        padding: 25px;
+    }
+
+    .botones-confirmacion {
+        flex-direction: column;
+    }
+
+    #acordeon-proyectos .ui-accordion-header {
+        white-space: normal !important;
+        height: auto !important;
+        display: block !important;
+    }
+}

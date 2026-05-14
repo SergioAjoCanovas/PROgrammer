@@ -227,13 +227,14 @@
         <a href="/chats" class="icono-nav" id="nav-chats">
             <i class="fas fa-comment"></i>
             <span class="texto-icono">Chats</span>
+            <span class="globo-notificacion" id="badge-chats" style="display: none; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 2px; right: 2px;">0</span>
         </a>
 
         <div class="contenedor-avisos">
             <a href="/avisos" class="icono-nav" id="link-avisos">
                 <i class="fas fa-bell"></i>
                 <span class="texto-icono">Avisos</span>
-                <span class="globo-notificacion" id="badge-avisos" style="display: none; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 0; right: 5px;">0</span>
+                <span class="globo-notificacion" id="badge-avisos" style="display: none; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 2px; right: 2px;">0</span>
             </a>
         </div>
 
@@ -302,12 +303,20 @@
             })
             .then(data => {
                 const badge = document.getElementById('badge-avisos');
+                const badgeChat = document.getElementById('badge-chats');
                 
                 if (data.noLeidas > 0) {
                     badge.innerText = data.noLeidas > 99 ? '+99' : data.noLeidas;
                     badge.style.display = 'block';
                 } else {
                     badge.style.display = 'none';
+                }
+
+                if (data.noLeidasChat > 0) {
+                    badgeChat.innerText = data.noLeidasChat > 99 ? '+99' : data.noLeidasChat;
+                    badgeChat.style.display = 'block';
+                } else {
+                    badgeChat.style.display = 'none';
                 }
             })
             .catch(e => { /* Ignorar error de no logueado */ });

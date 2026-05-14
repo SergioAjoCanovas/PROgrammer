@@ -46,6 +46,9 @@
             <div class="cabecera-chat-activo">
 
                 <div class="info-usuario-activo">
+                    <button class="btn-volver-lista" onclick="mostrarListaMobile()" title="Volver a la lista">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
                     <img id="chatAvatar" class="avatar-pequeno"
                     src="/Img/default-avatar.png"
                     onerror="this.src='/Img/stock/default-profile.svg'">
@@ -311,6 +314,13 @@ async function cambiarChat(nuevoUser2, nombre, avatar) {
     }
 
     cargarMensajes();
+
+    // En móvil, mostramos el panel de conversación
+    document.querySelector('.tarjeta-chats').classList.add('ver-chat-mobile');
+}
+
+function mostrarListaMobile() {
+    document.querySelector('.tarjeta-chats').classList.remove('ver-chat-mobile');
 }
 
 function limpiarNoLeido(userId) {
@@ -531,6 +541,11 @@ if (hayChatActivo()) {
     }
 
     cargarMensajes();
+
+    // Si venimos de fuera con un chat activo, mostramos el chat en mobile
+    if (window.innerWidth <= 800) {
+        document.querySelector('.tarjeta-chats').classList.add('ver-chat-mobile');
+    }
 }
 </script>
 

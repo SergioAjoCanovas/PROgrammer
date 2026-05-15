@@ -16,10 +16,10 @@
         .carrusel-proyecto {
             position: relative;
             width: 100%;
-            height: 160px;
+            height: 100px;
             overflow: hidden;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid rgba(0, 243, 255, 0.2);
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
@@ -107,12 +107,12 @@
             background: transparent;
             color: #00f3ff;
             border: 1px solid rgba(0, 243, 255, 0.5);
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 5px;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
-            margin-top: 15px;
+            margin-top: 10px;
             cursor: pointer;
         }
         .btn-ver-proyecto:hover {
@@ -166,41 +166,7 @@
             color: white;
         }
         
-        .lista-dotted {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            margin-top: 10px;
-        }
-
-        .item-dotted {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border: 1px dashed #FFCC00;
-            border-radius: 12px;
-            color: #ccc;
-            text-decoration: none;
-            transition: all 0.35s ease;
-        }
-
-        .item-dotted i {
-            color: #FFCC00;
-            font-size: 1.1rem; 
-            width: 22px;       
-            text-align: center;
-            transition: all 0.35s ease;
-        }
-
-        .item-dotted:hover {
-            background-color: rgba(255, 204, 0, 0.08);
-            color: #FFCC00;
-            transform: translateX(6px);
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
-        }
-
-        .item-dotted:hover i { transform: scale(1.2); }
+        /* Los estilos de .lista-dotted y .item-dotted se han movido a profileView.css */
 
         /* TOAST DE EXITO NEÓN */
         .toast-success-neon {
@@ -381,17 +347,36 @@
             <section class="seccion-proyectos">
                 <div class="tarjeta-proyectos-contenedor">
                     <div class="cabecera-proyectos" style="display: flex; justify-content: space-between; align-items: center;">
-                        <h2 th:onclick="'window.location.href=\'/proyectos/projectList/' + ${usuario.id} + '\''" class="texto-enlace-proyectos" style="cursor: pointer; transition: all 0.3s; margin: 0;">PROYECTOS</h2>
-                        <i class="fas fa-th icono-grid-top" th:onclick="'window.location.href=\'/proyectos/projectList/' + ${usuario.id} + '\''" style="color: white; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;"></i>
+                        <h2 th:onclick="'window.location.href=\'/proyectos/projectList/' + ${usuario.id} + '\''" 
+                            class="texto-enlace-proyectos" 
+                            style="cursor: pointer; transition: all 0.3s; margin: 0;"
+                            th:text="${totalProyectos == 0 ? 'Ningún proyecto publicado' : (totalProyectos == 1 ? 'Ultimo proyecto' : (totalProyectos == 2 ? 'Ultimos 2 proyectos' : 'Ultimos 3 proyectos'))}">
+                            Ultimos 3 Proyectos
+                        </h2>
+                        
+                        <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" th:onclick="'window.location.href=\'/proyectos/projectList/' + ${usuario.id} + '\''">
+                            <span th:if="${totalProyectos > 3}" 
+                                  style="color: #FFCC00; font-weight: bold; font-size: 1rem; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);"
+                                  th:text="'+' + (${totalProyectos} - 3)">
+                            </span>
+                            <i class="fas fa-th icono-grid-top" style="color: white; font-size: 1.5rem; transition: all 0.3s;"></i>
+                        </div>
                     </div>
                     <div class="rejilla-proyectos">
                         
-                        <div th:if="${ultimosProyectos == null or #lists.isEmpty(ultimosProyectos)}" class="tarjeta-mini-proyecto">
-                            <h3 style="color: #ccc;">Próximamente</h3>
-                            <p style="color: #ccc; font-style: italic;">Este usuario aún no tiene proyectos publicados.</p>
+                        <!-- Mensaje cuando no hay proyectos -->
+                        <div th:if="${#lists.isEmpty(ultimosProyectos)}" class="contenedor-vacio-proyectos">
+                            <div class="wrapper-icono-vacio">
+                                <i class="fas fa-folder-open icono-base"></i>
+                                <i class="fas fa-ban icono-prohibido"></i>
+                            </div>
+                            <p>Este usuario aún no ha publicado ningún proyecto</p>
+                            <div class="barra-acento-vacio"></div>
                         </div>
 
-                        <div th:each="proyecto : ${ultimosProyectos}" 
+                        <!-- Proyectos Reales -->
+                        <div th:each="proyecto, iterStat : ${ultimosProyectos}" 
+                             th:if="${iterStat.index < 3}"
                              class="tarjeta-mini-proyecto" 
                              style="position: relative; padding-top: 40px; cursor: pointer;" 
                              th:onclick="'window.location.href=\'/proyectos/proyecto/' + ${proyecto.id} + '\''">
@@ -410,29 +395,18 @@
                             </div>
 
                             <h3 style="margin-top: 10px;">
-                                <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" th:text="${proyecto.nombre}" class="enlace-proyecto-titulo" onclick="event.stopPropagation();">Nombre del Proyecto</a>
+                                <a th:href="@{/proyectos/proyecto/{id}(id=${proyecto.id})}" th:text="${proyecto.nombre != null ? proyecto.nombre : proyecto.titulo}" class="enlace-proyecto-titulo" onclick="event.stopPropagation();">Nombre del Proyecto</a>
                             </h3>
                             
                             <p class="parrafo-desc-proyecto" 
-                               th:if="${proyecto.descripcion.length() > 50}"
+                               th:if="${proyecto.descripcion != null and proyecto.descripcion.length() > 50}"
                                onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')"
                                style="cursor: pointer;">
                                 <span th:text="${#strings.substring(proyecto.descripcion, 0, 50) + '...'}"></span>
                                 <span class="ver-mas-desc" style="color: #00f2ff; font-weight: bold; margin-left: 5px;">Ver más</span>
                             </p>
-                            <p th:unless="${proyecto.descripcion.length() > 50}" th:text="${proyecto.descripcion}"></p>
+                            <p th:if="${proyecto.descripcion != null and proyecto.descripcion.length() <= 50}" th:text="${proyecto.descripcion}"></p>
 
-                            <!-- Contenedor expandido para la DESCRIPCIÓN -->
-                            <div th:if="${proyecto.descripcion.length() > 50}" class="desc-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')">
-                                <div class="tech-expanded-header">
-                                    <h4>Descripción</h4>
-                                    <i class="fas fa-times"></i>
-                                </div>
-                                <div class="desc-expanded-content">
-                                    <p th:text="${proyecto.descripcion}"></p>
-                                </div>
-                            </div>
-                            
                             <div th:if="${proyecto.tecnologias != null and !proyecto.tecnologias.isEmpty()}" class="tech-tags-container" style="margin-top: 15px; display: flex; gap: 8px; flex-wrap: wrap;">
                                 <span th:each="tech, iterStat : ${proyecto.tecnologias}" 
                                       th:if="${iterStat.index < 4}" 
@@ -444,8 +418,19 @@
                                 </div>
                             </div>
 
-                            <!-- Contenedor expandido que se muestra al hacer click (Ahora fuera para cubrir todo) -->
-                            <div th:if="${proyecto.tecnologias.size() > 4}" class="tech-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('tech-expanded')">
+                            <!-- Contenedor expandido para la DESCRIPCIÓN -->
+                            <div th:if="${proyecto.descripcion != null and proyecto.descripcion.length() > 50}" class="desc-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')">
+                                <div class="tech-expanded-header">
+                                    <h4>Descripción</h4>
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="desc-expanded-content">
+                                    <p th:text="${proyecto.descripcion}"></p>
+                                </div>
+                            </div>
+
+                            <!-- Contenedor expandido que se muestra al hacer click -->
+                            <div th:if="${proyecto.tecnologias != null and proyecto.tecnologias.size() > 4}" class="tech-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('tech-expanded')">
                                 <div class="tech-expanded-header">
                                     <h4>Tecnologías</h4>
                                     <i class="fas fa-times"></i>
@@ -463,20 +448,6 @@
                                 </a>
                             </div>
 
-                        </div>
-                        <div th:if="${ultimosProyectos != null and ultimosProyectos.size() == 1}" 
-                             class="tarjeta-mini-proyecto" 
-                             style="border: 1px dashed rgba(0, 243, 255, 0.3); background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0.8; min-height: 250px;">
-                             
-                            <i class="fas fa-laptop-code" style="font-size: 3rem; color: rgba(0, 243, 255, 0.2); margin-bottom: 15px;"></i>
-                            <h3 style="color: #888; font-size: 1.1rem; margin-bottom: 5px;">En desarrollo...</h3>
-                            <p style="color: #666; font-size: 0.85rem; padding: 0 10px;">Creando nuevas líneas de código. Nuevos proyectos próximamente.</p>
-                            
-                            <a th:if="${usuario.github != null and !usuario.github.isEmpty()}" 
-                               th:href="${usuario.github}" target="_blank" 
-                               style="margin-top: 20px; color: #00f3ff; text-decoration: none; font-size: 0.8rem; border: 1px solid rgba(0,243,255,0.4); padding: 5px 15px; border-radius: 5px; transition: all 0.3s ease;">
-                                <i class="fab fa-github"></i> Explorar repositorios
-                            </a>
                         </div>
 
                     </div>
@@ -610,6 +581,16 @@
                     }
                 });
             }
+            
+            // Auto-scroll para carruseles de proyectos cada 3 segundos
+            setInterval(() => {
+                const carruseles = document.querySelectorAll('[id^="carrusel-inner-"]');
+                carruselEstados
+                carruseles.forEach(c => {
+                    const id = c.id.replace('carrusel-inner-', '');
+                    moverCarruselProyecto(id, 1);
+                });
+            }, 3000);
             
         });
 

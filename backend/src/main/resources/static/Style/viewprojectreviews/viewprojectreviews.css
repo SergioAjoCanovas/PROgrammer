@@ -224,7 +224,9 @@ body.fondo-oscuro-neon::before {
 
 .item-dotted i {
     color: #FFCC00;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
     transition: all 0.35s ease;
 }
 

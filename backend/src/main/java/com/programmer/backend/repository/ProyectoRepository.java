@@ -16,7 +16,9 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Long> {
     // Añade esta línea: Spring Boot generará automáticamente la consulta SQL
     List<Proyecto> findByAutorId(Long autorId);
     List<Proyecto> findTop2ByAutorOrderByIdDesc(Usuario autor);
+    List<Proyecto> findTop3ByAutorOrderByIdDesc(Usuario autor);
     List<Proyecto> findByAutorUsername(String username);
+    long countByAutor(Usuario autor);
 
     @Modifying
     @Query(value = "DELETE FROM proyecto_tecnologias WHERE proyecto_id = :id", nativeQuery = true)

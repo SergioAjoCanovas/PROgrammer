@@ -70,6 +70,7 @@ public class ProfileController {
                 proyectoService.obtenerUltimosProyectos(usuario);
 
         model.addAttribute("ultimosProyectos", ultimosProyectos);
+        model.addAttribute("totalProyectos", proyectoService.contarProyectos(usuario));
 
         // SEGUIMIENTO
         Set<Usuario> seguidores = usuario.getSeguidores() != null ? usuario.getSeguidores() : new HashSet<>();
@@ -151,6 +152,7 @@ public class ProfileController {
                 proyectoService.obtenerUltimosProyectos(usuarioDestino);
 
         model.addAttribute("ultimosProyectos", ultimosProyectos);
+        model.addAttribute("totalProyectos", proyectoService.contarProyectos(usuarioDestino));
 
         devRepo.findByUsuarioIdWithTecnologias(id).ifPresent(perfilDev -> {
 

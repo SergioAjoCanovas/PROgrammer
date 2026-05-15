@@ -1,6 +1,4 @@
-/* =========================================================
-   1. ESTILO GLOBAL Y ATMÓSFERA NEÓN (FONDO)
-   ========================================================= */
+
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
     color: #FFFFFF;
@@ -15,7 +13,7 @@ body.fondo-oscuro-neon {
     flex-direction: column;
 }
 
-/* Bolas de fondo animadas */
+
 body.fondo-oscuro-neon::before,
 body.fondo-oscuro-neon::after {
     content: '';
@@ -61,11 +59,9 @@ body.fondo-oscuro-neon::after {
     100% { transform: translateX(10vw); opacity: 0.4; }
 }
 
-/* =========================================================
-   NUEVO: ESTILOS DEL BOTÓN VOLVER (Mismos píxeles que las otras vistas)
-   ========================================================= */
+
 .contenedor-volver {
-    max-width: 1800px; /* Alineado a la izquierda global */
+    max-width: 1800px; 
     width: 98%;
     margin: 30px auto 0 auto;
     padding: 0 20px;
@@ -93,9 +89,7 @@ body.fondo-oscuro-neon::after {
     transform: translateX(-5px); 
 }
 
-/* =========================================================
-   2. CONTENEDORES DEL MENÚ
-   ========================================================= */
+
 .contenedor-principal-menu {
     background-color: transparent !important;
     display: flex;
@@ -144,9 +138,7 @@ body.fondo-oscuro-neon::after {
     font-size: 1.1rem;
 }
 
-/* =========================================================
-   3. GRID Y TARJETAS INTERNAS (ITEMS)
-   ========================================================= */
+
 .grid-menu-completo {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -207,9 +199,7 @@ body.fondo-oscuro-neon::after {
     line-height: 1.4;
 }
 
-/* =========================================================
-   4. RESPONSIVE
-   ========================================================= */
+
 @media (max-width: 1100px) {
     .grid-menu-completo { grid-template-columns: repeat(2, 1fr); }
 }
@@ -221,9 +211,7 @@ body.fondo-oscuro-neon::after {
     .contenedor-principal-menu { padding: 30px 15px; }
 }
 
-/* =========================================================
-   5. ESTILO ENLACE ACTIVO (HEADER)
-   ========================================================= */
+
 #header-placeholder a.activo, 
 #header-placeholder a.activo i, 
 #header-placeholder a.activo span {

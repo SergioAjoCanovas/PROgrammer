@@ -1,8 +1,6 @@
-/* =========================================================
-   GENERAL Y CONTENEDORES
-   ========================================================= */
+
 html, body {
-    height: 100%; /* Obligatorio para que el c谩lculo funcione */
+    height: 100%; 
 }
 
 body.fondo-oscuro-neon {
@@ -11,7 +9,7 @@ body.fondo-oscuro-neon {
     font-family: Arial, sans-serif;
     margin: 0;
     
-    /* ESTO ES LO QUE PEGA EL FOOTER */
+    
     display: flex;
     flex-direction: column;
     min-height: 100vh; 
@@ -26,12 +24,12 @@ body.fondo-oscuro-neon {
     gap: 40px; 
     align-items: flex-start;
     
-    /* ESTO EMPUJA EL FOOTER HACIA ABAJO */
+    
     flex: 1 0 auto; 
 }
 
 #footer-placeholder {
-    /* Evita que el footer se encoja */
+    
     flex-shrink: 0;
     width: 100%;
 }
@@ -50,9 +48,7 @@ body.fondo-oscuro-neon {
     overflow-x: hidden;
 }
 
-/* =========================================================
-   TARJETAS BASE
-   ========================================================= */
+
 .tarjeta-perfil, 
 .tarjeta-resenas-izq, 
 .tarjeta-acordeon-contenedor {
@@ -75,9 +71,7 @@ body.fondo-oscuro-neon {
     margin-bottom: 20px;
 }
 
-/* =========================================================
-   PERFIL
-   ========================================================= */
+
 .perfil-superior { 
     padding: 30px 20px 20px 20px; 
     text-align: center; 
@@ -135,9 +129,7 @@ body.fondo-oscuro-neon {
     font-size: 1.05rem; 
 }
 
-/* =========================================================
-   BOTONES UNIFICADOS
-   ========================================================= */
+
    body.fondo-oscuro-neon .boton-anadir,
    body.fondo-oscuro-neon .boton-ver-proyecto,
    body.fondo-oscuro-neon .boton-editar-proyecto { 
@@ -185,7 +177,7 @@ body.fondo-oscuro-neon .boton-editar-proyecto {
     align-self: center !important;
 }
 
-/* Hover de los botones */
+
 body.fondo-oscuro-neon .boton-curriculum:hover, 
 body.fondo-oscuro-neon .boton-anadir:hover,
 body.fondo-oscuro-neon .boton-ver-proyecto:hover, 
@@ -208,9 +200,7 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     flex: 1;
 }
 
-/* =========================================================
-   ACORDE脫N Y BOT脫N VOLVER
-   ========================================================= */
+
 .cabecera-acordeon { 
     display: flex; 
     justify-content: space-between; 
@@ -244,7 +234,7 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     transform: scale(1.1) rotate(-15deg); 
 }
 
-/* T铆tulos del Acorde贸n */
+
 #acordeon-proyectos .ui-accordion-header {
     background-color: #292929 !important; 
     color: #FFCC00 !important;
@@ -264,14 +254,14 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     box-sizing: border-box;
 }
 
-/* Animaci贸n Hover: Solo se aplica si NO tiene la clase active */
+
 #acordeon-proyectos .ui-accordion-header:not(.ui-accordion-header-active):hover {
     transform: translateY(-5px) scaleY(1.02);
     background-color: #292929 !important;
     box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
 }
 
-/* Cuando est谩 abierto: Se quita la animaci贸n y se queda fijo */
+
 #acordeon-proyectos .ui-accordion-header-active { 
     background-color: #FFCC00 !important;
     color: #111 !important;
@@ -281,7 +271,7 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     transform: translateY(0) scale(1) !important; 
 }
 
-/* Contenido del Acorde贸n */
+
 #acordeon-proyectos .ui-accordion-content {
     background-color: #111 !important;
     color: white !important;
@@ -293,7 +283,7 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     box-shadow: 0 10px 20px -10px rgba(255, 204, 0, 0.5);
 }
 
-/* EFECTO FOCUS & ZOOM INTERNO */
+
 .inner-content {
     opacity: 0;
     filter: blur(15px);
@@ -339,9 +329,7 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     overflow-wrap: anywhere;
 }
 
-/* =========================
-   FIX ACORDE脫N UI JQUERY
-   ========================= */
+
 
    #acordeon-proyectos {
     width: 100%;
@@ -349,7 +337,7 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     overflow-x: visible;
 }
 
-/* HEADER DEL ACORDE脫N */
+
 .ui-accordion .ui-accordion-header {
     display: flex !important;
     align-items: center;
@@ -369,15 +357,13 @@ body.fondo-oscuro-neon .botones-proyecto .boton-eliminar-proyecto {
     transform-origin: center;
 }
 
-/* CONTENIDO */
+
 .ui-accordion .ui-accordion-content {
     max-width: 100%;
     overflow-x: hidden;
 }
 
-/* =========================
-   BOT脫N BORRAR PROYECTO (IGUAL AL DE VER PROYECTO)
-   ========================= */
+
 
    body.fondo-oscuro-neon .boton-eliminar-proyecto {
     display: inline-block;
@@ -418,9 +404,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
 }
 
 
-/* =========================
-   MODAL ELIMINAR - FIX REAL
-   ========================= */
+
 
    .contenido-modal-confirmacion {
     background-color: #1a1a1a;
@@ -446,14 +430,14 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     margin: 0;
 }
 
-/* CONTENEDOR BOTONES */
+
 .botones-confirmacion {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 }
 
-/* 馃敟 FORZAMOS TODOS LOS BOTONES DEL MODAL */
+
 #modal-eliminar button {
     flex: 1;
 
@@ -477,13 +461,13 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     border: 2px solid #FFCC00;
 }
 
-/* BOT脫N ELIMINAR */
+
 #modal-eliminar .btn-eliminar {
     border: 2px solid #ff3b3b !important;
     color: #ff3b3b !important;
 }
 
-/* HOVER ELIMINAR */
+
 #modal-eliminar .btn-eliminar:hover {
     background-color: #ff3b3b !important;
     color: #111 !important;
@@ -491,7 +475,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     transform: translateY(-2px);
 }
 
-/* HOVER CANCELAR */
+
 #modal-eliminar button:not(.btn-eliminar):hover {
     background-color: #FFCC00;
     color: #050505;
@@ -499,9 +483,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     transform: translateY(-2px);
 }
 
-/* =========================
-   OVERLAY OSCURECIDO MODAL
-   ========================= */
+
 #modal-eliminar {
     position: fixed;
     top: 0;
@@ -509,7 +491,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     width: 100vw;
     height: 100vh;
 
-    /* 馃敟 CASI NEGRO (como quieres) */
+    
     background: rgba(0, 0, 0, 0.96);
 
     display: none;
@@ -575,9 +557,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     transform: scale(1.2);
 }
 
-/* =========================================================
-   RESPONSIVE PARA MOVILES Y TABLETS 
-   ========================================================= */
+
 
 @media (max-width: 1100px) {
     .contenedor-principal {
@@ -682,9 +662,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
         display: block !important;
     }
 }
-/* =========================================================
-   SCROLL NE覰 AMARILLO (SOLO SI > 6 PROYECTOS)
-   ========================================================= */
+
 .contenedor-scroll-neon {
     max-height: 480px;
     overflow-y: auto;
@@ -718,9 +696,7 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
     scrollbar-color: #FFCC00 rgba(26, 26, 26, 0.8);
 }
 
-/* =========================================================
-   ESTILOS PARA MENSAJE DE PROYECTOS VAC蚈S
-   ========================================================= */
+
 .contenedor-vacio-proyectos, .contenedor-vacio-proyectos * {`n    user-select: none;
     width: 100%;
     min-height: 250px;

@@ -1,6 +1,4 @@
-/* =========================================================
-   1. FONDO Y ESTRUCTURA (FOOTER SIEMPRE ABAJO)
-   ========================================================= */
+
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
     color: #FFFFFF;
@@ -24,7 +22,7 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
-/* --- BOTÓN VOLVER (Añadido estilo grisáceo) --- */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -55,17 +53,15 @@ body.fondo-oscuro-neon::before {
     display: flex;
     max-width: 1800px;
     width: 98%;
-    /* Reducido el margen superior de 40px a 15px para acercarlo al botón de volver */
+    
     margin: 15px auto 40px auto;
     padding: 0 20px;
     gap: 45px; 
     align-items: flex-start;
-    flex: 1 0 auto; /* Empuja el footer al fondo */
+    flex: 1 0 auto; 
 }
 
-/* =========================================================
-   2. TARJETAS NEÓN ESTÁTICAS
-   ========================================================= */
+
 .tarjeta-neon-estatica {
     background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
@@ -76,9 +72,7 @@ body.fondo-oscuro-neon::before {
     flex-direction: column;
 }
 
-/* =========================================================
-   3. COLUMNA IZQUIERDA (PERFIL Y MINI RESEÑA)
-   ========================================================= */
+
 .columna-perfil {
     flex: 0 0 380px;
     display: flex;
@@ -95,9 +89,7 @@ body.fondo-oscuro-neon::before {
 .foto-perfil-contenedor { position: relative; width: 140px; height: 140px; margin: 0 auto 20px auto; }
 .circulo-foto { width: 100%; height: 100%; border-radius: 50%; background-color: #222; border: 3px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
 
-/* =========================================================
-   BOTÓN SEGUIR (CORAZÓN ESTILO PROFILEVIEW)
-   ========================================================= */
+
 .btn-follow-heart {
     position: absolute;
     bottom: 5px;
@@ -151,9 +143,7 @@ body.fondo-oscuro-neon::before {
 }
 .input-resena:focus { border: 1px solid #FFCC00; box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
 
-/* =========================================================
-   4. BOTONES NEÓN
-   ========================================================= */
+
 .btn-accion-neon {
     width: 100%; padding: 12px; background-color: #0e0e0e !important; color: #FFCC00 !important;
     border: 2px solid #FFCC00 !important; border-radius: 10px; font-weight: bold;
@@ -171,9 +161,7 @@ a {
     text-decoration: none;
 }
 
-/* =========================================================
-   5. SECCIÓN DERECHA (DETALLES)
-   ========================================================= */
+
 .seccion-derecha-dinamica { flex: 1; }
 .cabecera-proyecto { 
     display: flex; justify-content: space-between; align-items: center; 
@@ -206,9 +194,7 @@ a {
     border-radius: 50px; font-weight: bold; display: flex; align-items: center; gap: 8px; 
 }
 
-/* =========================================================
-   6. GALERÍA DE CAPTURAS
-   ========================================================= */
+
 .galeria-capturas { display: flex; gap: 25px; margin-bottom: 45px; }
 .marco-captura { 
     flex: 1; max-width: 350px; height: 190px; border-radius: 15px; 
@@ -219,9 +205,7 @@ a {
 .marco-captura img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
 .marco-captura:hover img { transform: scale(1.1); }
 
-/* =========================================================
-   7. TEXTOS (MÁS ESPACIADO Y ENLACE + ICONO BLANCO)
-   ========================================================= */
+
 .bloque-texto-informativo { margin-top: 50px; }
 
 .titulo-seccion { 
@@ -237,7 +221,7 @@ a {
     word-break: break-word;
 }
 
-/* El enlace ahora controla el color de todo su contenido */
+
 .enlace-repositorio { 
     color: #FFFFFF !important; 
     text-decoration: none; 
@@ -249,13 +233,13 @@ a {
     gap: 12px;
 }
 
-/* Forzamos que el icono sea blanco inicialmente */
+
 .enlace-repositorio i { 
     color: #FFFFFF; 
     transition: color 0.3s ease; 
 }
 
-/* Al pasar el ratón, AMBOS cambian a amarillo */
+
 .enlace-repositorio:hover { 
     color: #FFCC00 !important; 
     text-shadow: 0 0 15px rgba(255, 204, 0, 0.8); 
@@ -266,9 +250,7 @@ a {
     color: #FFCC00; 
 }
 
-/* =========================================================
-   8. MODAL (VISTA AMPLIADA)
-   ========================================================= */
+
 .modal {
     display: none; position: fixed; z-index: 9999; 
     left: 0; top: 0; width: 100%; height: 100%;
@@ -291,9 +273,7 @@ a {
 
 #caption-modal { text-align: center; color: #FFCC00; padding: 25px; font-weight: bold; font-size: 1.3rem; text-transform: uppercase; }
 
-/* =========================================================
-   9. RESPONSIVE COMPLETO
-   ========================================================= */
+
 
 @media (max-width: 1200px) {
     .contenedor-principal {
@@ -428,9 +408,7 @@ a {
     }
 }
 
-/* =========================================================
-   7. LISTA DOTTED (GITHUB / LINKEDIN)
-   ========================================================= */
+
 .lista-dotted {
     display: flex;
     flex-direction: column;
@@ -467,4 +445,4 @@ a {
 
 .item-dotted:hover i {
     transform: scale(1.2);
-}
+}

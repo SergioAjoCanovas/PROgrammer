@@ -7,11 +7,11 @@
 
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- SweetAlert2 -->
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* --- ESTILOS PRINCIPALES DEL HEADER (CORRECCIÓN FLUIDA) --- */
+        
         .encabezado-principal {
             display: flex;
             justify-content: space-between;
@@ -19,24 +19,24 @@
             width: 100%;
             padding: 10px 20px;
             box-sizing: border-box;
-            background-color: rgba(26, 26, 26, 0.95); /* Color de fondo por si acaso */
+            background-color: rgba(26, 26, 26, 0.95); 
             border-bottom: 2px solid #FFCC00;
         }
 
         .seccion-izquierda, .seccion-derecha {
-            flex-shrink: 0; /* Evita que el logo o el menú derecho se aplasten */
+            flex-shrink: 0; 
         }
 
-        /* --- MAGIA DINÁMICA AQUÍ --- */
+        
         .navegacion-central {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly; 
             align-items: center;
             flex: 1; 
-            margin: 0 1vw; /* Margen reducido para que el Admin tenga más sitio */
-            gap: clamp(5px, 1vw, 15px); /* Espacio extra elástico */
-            min-width: 0; /* Previene desbordamientos en flexbox */
+            margin: 0 1vw; 
+            gap: clamp(5px, 1vw, 15px); 
+            min-width: 0; 
         }
 
         .icono-nav {
@@ -47,7 +47,7 @@
             color: #ffffff;
             padding: 5px 10px;
             transition: all 0.3s ease;
-            position: relative; /* Para el globo de notificaciones */
+            position: relative; 
         }
 
         .icono-nav i {
@@ -56,8 +56,8 @@
         }
 
         .texto-icono {
-            white-space: nowrap; /* Evita que las palabras se partan */
-            font-size: clamp(10px, 0.75vw, 13px); /* Letra adaptable */
+            white-space: nowrap; 
+            font-size: clamp(10px, 0.75vw, 13px); 
             font-weight: bold;
         }
 
@@ -71,9 +71,9 @@
             text-shadow: 0 0 10px rgba(255, 204, 0, 0.8) !important;
         }
 
-        /* --- NOTIFICACIONES --- */
+        
         .contenedor-avisos {
-            display: contents; /* Evita desplazamientos al ser un wrapper innecesario en flex */
+            display: contents; 
         }
 
         .panel-notificaciones {
@@ -123,7 +123,7 @@
             display: block;
         }
 
-        /* --- SECCIÓN DERECHA (PERFIL Y LOGOUT) --- */
+        
         .seccion-derecha {
             display: flex;
             align-items: center;
@@ -134,7 +134,7 @@
         .info-texto-usuario {
             display: flex;
             flex-direction: column;
-            align-items: flex-end; /* Reforzamos que se alineen a la derecha y en columna */
+            align-items: flex-end; 
             text-align: right;
             justify-content: center;
             line-height: 1.2;
@@ -170,19 +170,19 @@
             cursor: pointer;
         }
 
-        /* Adaptación para pantallas más pequeñas / tablets */
+        
         @media (max-width: 900px) {
             .navegacion-central {
                 margin: 0 1vw;
             }
             .info-texto-usuario {
-                display: none; /* Ocultar nombre en pantallas estrechas para dar espacio al menú */
+                display: none; 
             }
         }
     </style>
 
     <style th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'USUARIO' or usuarioHeader.rol.nombre == '4')}">
-        /* Ocultar botones de seguir para el rol USUARIO en toda la web */
+        
         .btn-follow-heart { display: none !important; }
     </style>
 </head>
@@ -319,7 +319,7 @@
                     badgeChat.style.display = 'none';
                 }
             })
-            .catch(e => { /* Ignorar error de no logueado */ });
+            .catch(e => {  });
         }
 
         window.cerrarSesionLocal = function(event) {
@@ -382,7 +382,7 @@
                 if (window.rol == '2') nombreRol = 'DEVELOPER';
                 if (window.rol == '3') nombreRol = 'COMPANY';
 
-                /* display: block; en los span para forzar el salto de línea en JavaScript */
+                
                 contenedorInfo.innerHTML = `
                     <span style="color: white; font-weight: bold; font-size: 0.85em; display: block;">${username.toUpperCase()}</span>
                     <span style="color: #FFCC00; font-size: 0.65em; text-transform: uppercase; font-weight: 600; display: block;">${nombreRol}</span>
@@ -391,7 +391,7 @@
         })();
     </script>
 
-    <!-- MODAL GLOBAL DE UNFOLLOW (Dejar de Seguir) -->
+    
     <div id="modalUnfollowGlobal" class="modal-overlay">
         <div class="modal-box modal-eliminar" id="modalBoxUnfollow">
             <h3><i class="fas fa-heart-crack"></i> Dejar de Seguir</h3>

@@ -1,6 +1,4 @@
-/* =========================================================
-   1. ESTRUCTURA Y BOTÓN VOLVER (ESTILO UNIFICADO)
-   ========================================================= */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -28,9 +26,7 @@
     transform: translateX(-5px); 
 }
 
-/* =========================================================
-   2. TARJETAS DE CANDIDATOS
-   ========================================================= */
+
 .candidato-card {
     background: rgba(25, 25, 25, 0.8);
     border: 1px solid #333;
@@ -38,7 +34,7 @@
     padding: 20px;
     margin-bottom: 20px;
     display: flex;
-    align-items: stretch; /* Asegura que la columna de acciones ocupe todo el alto */
+    align-items: stretch; 
     gap: 20px;
     transition: all 0.3s ease;
 }
@@ -56,10 +52,8 @@
     object-fit: cover;
 }
 
-/* =========================================================
-   3. ELEMENTOS INTERNOS DE LA TARJETA
-   ========================================================= */
-/* Estilos para la carta de presentación (Mensaje) */
+
+
 .caja-mensaje {
     background: rgba(255, 255, 255, 0.03);
     border-left: 3px solid #FFCC00;
@@ -93,10 +87,8 @@
     transform: translateY(-2px);
 }
 
-/* =========================================================
-   4. ACCIONES Y BOTONES DEL CANDIDATO
-   ========================================================= */
-/* Contenedor de los botones de la derecha */
+
+
 .acciones-candidato {
     display: flex;
     flex-direction: column;
@@ -106,7 +98,7 @@
     min-width: 220px;
 }
 
-/* Botones Neón */
+
 .btn-ver-perfil {
     background: transparent;
     color: #FFCC00;
@@ -149,9 +141,7 @@
     box-shadow: 0 0 10px #00f2ff;
 }
 
-/* =========================================================
-   5. SISTEMA DE PESTAÑAS (TABS)
-   ========================================================= */
+
 .tabs-neon {
     display: flex;
     gap: 15px;

@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired(required = false) // required = false para que no casque si no está configurado el SMTP
+    @Autowired(required = false) 
     private JavaMailSender mailSender;
 
     public void sendSimpleMessage(String to, String subject, String text) {
         if (mailSender != null) {
             try {
                 SimpleMailMessage message = new SimpleMailMessage();
-                // Ojo: Esto requiere configuración en application.properties
+              
                 message.setFrom("noreply@programmer.com");
                 message.setTo(to);
                 message.setSubject(subject);

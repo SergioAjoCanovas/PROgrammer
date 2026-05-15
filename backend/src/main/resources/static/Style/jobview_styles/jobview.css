@@ -1,6 +1,4 @@
-/* =========================================================
-   1. FONDO Y ESTRUCTURA (ESTILO REJILLA NEÓN)
-   ========================================================= */
+
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
     color: #FFFFFF;
@@ -10,7 +8,7 @@ body.fondo-oscuro-neon {
     position: relative;
     overflow-x: hidden;
     
-    /* Flexbox para empujar el footer */
+    
     display: flex;
     flex-direction: column;
 }
@@ -26,12 +24,12 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
-/* --- BOTÓN VOLVER --- */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
-    margin: 30px auto 0 auto; /* Bajado un pelín (de 15px a 30px) */
-    padding: 0 45px; /* Empujado un poco más a la derecha (de 20px a 45px) */
+    margin: 30px auto 0 auto; 
+    padding: 0 45px; 
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;
@@ -61,11 +59,11 @@ body.fondo-oscuro-neon::before {
     justify-content: center;
     padding: 30px 20px 40px; 
     
-    /* Esto hace que el main crezca y ocupe el espacio sobrante */
+    
     flex: 1; 
 }
 
-/* El footer se pegará abajo automáticamente al estar dentro del flujo flex */
+
 #footer-placeholder {
     width: 100%;
 }
@@ -80,7 +78,7 @@ body.fondo-oscuro-neon::before {
     width: 100%;
 }
 
-/* TARJETAS */
+
 .tarjeta-proyecto-detalle {
     background-color: rgba(26, 26, 26, 0.95) !important;
     border: 2px solid #FFCC00 !important;
@@ -104,14 +102,14 @@ body.fondo-oscuro-neon::before {
     max-width: 750px;
 }
 
-/* CABECERA Y LOGO */
+
 .cabecera-proyecto {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     gap: 20px;
-    flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
+    flex-wrap: wrap; 
     margin-bottom: 5px;
 }
 
@@ -123,7 +121,7 @@ body.fondo-oscuro-neon::before {
     overflow-wrap: break-word;
     word-break: break-word;
     flex: 1;
-    min-width: 200px; /* Asegura que tenga espacio antes de saltar los tags */
+    min-width: 200px; 
 }
 
 .categoria {
@@ -191,7 +189,7 @@ body.fondo-oscuro-neon::before {
     color: white;
 }
 
-/* DESCRIPCIÓN */
+
 .descripcion-proyecto h3 {
     margin-bottom: 10px;
     color: #FFCC00;
@@ -206,7 +204,7 @@ body.fondo-oscuro-neon::before {
     overflow-wrap: break-word;
 }
 
-/* FORMULARIO */
+
 .bloque-postulacion {
     border-top: 2px solid #aaaa;
     padding-top: 20px;
@@ -237,7 +235,7 @@ input:focus, textarea:focus {
 
 textarea { height: 120px; resize: none; }
 
-/* OVERLAY TECNOLOGIAS Y TAGS */
+
 .tags-container {
     display: flex;
     align-items: center;
@@ -294,7 +292,7 @@ textarea { height: 120px; resize: none; }
 
 .tarjeta-oferta {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    min-height: 400px; /* Un mínimo razonable */
+    min-height: 400px; 
 }
 
 .tarjeta-oferta.tech-expanded .contenido-oferta {
@@ -302,9 +300,7 @@ textarea { height: 120px; resize: none; }
     pointer-events: none;
 }
 
-/* Si queremos que mantenga el tamaño exacto, podemos no poner height: 0, 
-   pero si la lista de tecnologías es muy larga, el scroll de la tarjeta podría fallar.
-   Usaremos un enfoque híbrido: mantener el tamaño si es posible. */
+
 
 .tarjeta-oferta.tech-expanded .vista-todas-techs { 
     display: flex; 
@@ -350,7 +346,7 @@ textarea { height: 120px; resize: none; }
     max-height: 280px; 
 }
 
-/* Scrollbar personalizado azul neón para la grid de tecnologías */
+
 .grid-techs-3::-webkit-scrollbar {
     width: 6px;
 }
@@ -371,7 +367,7 @@ textarea { height: 120px; resize: none; }
     box-shadow: 0 0 15px rgba(0, 242, 255, 0.8);
 }
 
-/* Firefox */
+
 .grid-techs-3 {
     scrollbar-width: thin;
     scrollbar-color: #00f2ff rgba(0, 242, 255, 0.05);
@@ -396,9 +392,7 @@ textarea { height: 120px; resize: none; }
     border-color: #00f2ff;
 }
 
-/* =========================================================
-   2. PROYECTOS SELECCIONABLES Y FORMULARIOS (NUEVO)
-   ========================================================= */
+
 .contenedor-proyectos-seleccion {
     display: flex;
     flex-direction: column;
@@ -406,10 +400,10 @@ textarea { height: 120px; resize: none; }
     margin-top: 10px;
     max-height: 220px;
     overflow-y: auto;
-    padding: 10px 25px 10px 10px; /* Más espacio a la derecha para el hover */
+    padding: 10px 25px 10px 10px; 
 }
 
-/* Scrollbar personalizado neón para la selección de proyectos */
+
 .contenedor-proyectos-seleccion::-webkit-scrollbar {
     width: 4px;
 }
@@ -487,7 +481,7 @@ textarea { height: 120px; resize: none; }
     box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
 }
 
-/* OPCIONES CV Y RADIO BUTTONS */
+
 .opciones-cv {
     background: rgba(25, 25, 25, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -527,7 +521,7 @@ textarea { height: 120px; resize: none; }
     overflow: hidden; 
 }
 
-/* HEADER Y NAVEGACIÓN ACTIVA */
+
 .activo, 
 header .nav-enlaces a.activo i, 
 header .nav-enlaces a.activo span {
@@ -535,9 +529,7 @@ header .nav-enlaces a.activo span {
     text-shadow: 0 0 10px #FFCC00 !important;
 }
 
-/* =========================================================
-   3. BLOQUEO DE ROL Y CANDIDATURA (NUEVO)
-   ========================================================= */
+
 .candidatura-bloqueada {
     opacity: 0.4;
     filter: grayscale(100%);
@@ -603,9 +595,7 @@ header .nav-enlaces a.activo span {
     line-height: 1.6;
 }
 
-/* =========================================================
-   4. BOTONES (CENTRADO TOTAL Y ESTILO NEÓN)
-   ========================================================= */
+
 .contenedor-boton-central {
     display: flex;
     justify-content: center;
@@ -655,7 +645,7 @@ input::file-selector-button:hover {
     transform: scale(1.02);
 }
 
-/* Estado verde al seleccionar archivo */
+
 .archivo-subido-verde {
     border-color: #00e676 !important;
     color: #00e676 !important;
@@ -695,9 +685,7 @@ input::file-selector-button:hover {
     box-shadow: 0 0 20px #FFCC00;
 }
 
-/* =========================================================
-   5. RESPONSIVE
-   ========================================================= */
+
 @media (max-width: 900px) {
     .contenedor-volver {
         margin-top: 25px; 
@@ -714,7 +702,7 @@ input::file-selector-button:hover {
     }
 }
 
-/* Estilos para el estado "Ya Postulado" */
+
 .mensaje-ya-postulado {
     padding: 20px;
     text-align: center;
@@ -806,7 +794,7 @@ input::file-selector-button:hover {
 .status-aceptada { color: #00e676; border: 1px solid #00e676; background: rgba(0, 230, 118, 0.1); box-shadow: 0 0 10px rgba(0, 230, 118, 0.2); }
 .status-rechazada { color: #ff4444; border: 1px solid #ff4444; background: rgba(255, 68, 68, 0.1); }
 
-/* Estados especiales para el card de estatus */
+
 .border-aceptada { border-color: #00e676 !important; box-shadow: 0 0 30px rgba(0, 230, 118, 0.15) !important; }
 .border-rechazada { border-color: #ff4444 !important; box-shadow: 0 0 30px rgba(255, 68, 68, 0.15) !important; }
 .bg-aceptada { background: rgba(0, 230, 118, 0.1) !important; border-color: rgba(0, 230, 118, 0.3) !important; }

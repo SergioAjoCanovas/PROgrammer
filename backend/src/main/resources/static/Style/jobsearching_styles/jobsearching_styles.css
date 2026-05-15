@@ -1,6 +1,4 @@
-/* =========================================================
-   1. ESTRUCTURA BASE Y LAYOUT
-   ========================================================= */
+
 html, body {
     height: 100%;
     margin: 0;
@@ -13,7 +11,7 @@ html, body {
     background-color: #000;
 }
 
-/* --- BOTÓN VOLVER (1800px para que se pegue a la izquierda global de la pantalla) --- */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -53,9 +51,7 @@ html, body {
     box-sizing: border-box;
 }
 
-/* =========================================================
-   2. CABECERA SUPERIOR (FILTROS + GESTIÓN EMPRESA)
-   ========================================================= */
+
 .cabecera-filtros {
     display: flex;
     flex-direction: column;
@@ -177,9 +173,7 @@ html, body {
     transform: scale(1.02);
 }
 
-/* =========================================================
-   3. TARJETAS DE OFERTA
-   ========================================================= */
+
 .tarjeta-oferta {
     display: flex;
     align-items: center;
@@ -323,9 +317,7 @@ html, body {
     transform: translateY(-2px);
 }
 
-/* =========================================================
-   4. ACCIONES DE LA TARJETA (ESTADO Y BOTÓN)
-   ========================================================= */
+
 .acciones-oferta {
     flex-shrink: 0;
     display: flex;
@@ -383,7 +375,7 @@ html, body {
     transform: none !important;
 }
 
-/* --- BOTONES DE RESULTADO DE POSTULACIÓN --- */
+
 .boton-postular.btn-resultado-aceptada {
     border-color: #00e676 !important;
     color: #00e676 !important;
@@ -412,9 +404,7 @@ html, body {
     transform: scale(1.02);
 }
 
-/* =========================================================
-   5. RESPONSIVE Y ESTADO ACTIVO HEADER (AQUÍ ESTÁ LA MAGIA)
-   ========================================================= */
+
 .activo, 
 header a.activo i, 
 header a.activo span {
@@ -423,7 +413,7 @@ header a.activo span {
     opacity: 1 !important;
 }
 
-/* --- Ajustes para Tablets (hasta 768px) --- */
+
 @media (max-width: 768px) {
     .cabecera-filtros {
         flex-direction: column-reverse;
@@ -472,7 +462,7 @@ header a.activo span {
     }
 }
 
-/* --- Ajustes para Móviles (hasta 480px) --- */
+
 @media (max-width: 480px) {
     .contenedor-volver {
         margin: 15px auto 0 auto;
@@ -509,9 +499,7 @@ header a.activo span {
     }
 }
 
-/* =========================================================
-   6. OVERLAY DE TECNOLOGÍAS (EXPANDIBLE)
-   ========================================================= */
+
 .tags-container {
     display: flex;
     align-items: center;
@@ -605,7 +593,7 @@ header a.activo span {
     max-height: 250px; 
 }
 
-/* Scrollbar personalizado neón para el overlay */
+
 .grid-techs-3::-webkit-scrollbar {
     width: 4px;
 }
@@ -640,4 +628,4 @@ header a.activo span {
     min-height: 350px;
     transition: min-height 0.4s ease;
 }
-
+

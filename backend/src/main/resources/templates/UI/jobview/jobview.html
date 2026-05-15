@@ -145,7 +145,7 @@
                         </div>
                     </div>
 
-                    <!-- Solo mostramos el formulario si no es el autor, y si está PENDIENTE o no existe postulación -->
+                    
                     <form th:if="${(session.usuarioLogueado == null or oferta.empresa == null or session.usuarioLogueado.id != oferta.empresa.id) and (postulacionExistente == null || postulacionExistente.estado == 'PENDIENTE')}" 
                           th:action="@{/api/postular}" method="POST" enctype="multipart/form-data" class="bloque-postulacion" id="form-postulacion" onsubmit="return confirmarEnvioPostulacion(event)">
                         
@@ -240,7 +240,7 @@
     <script th:inline="javascript">
         function confirmarEnvioPostulacion(event) {
             event.preventDefault();
-            const esEdicion = /*[[${postulacionExistente != null}]]*/ false;
+            const esEdicion =  false;
             
             Swal.fire({
                 title: esEdicion ? '¿Guardar cambios?' : '¿Enviar postulación?',

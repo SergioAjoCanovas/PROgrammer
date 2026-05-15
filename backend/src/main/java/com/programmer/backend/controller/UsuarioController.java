@@ -207,7 +207,7 @@ public class UsuarioController {
             target.getSeguidores().removeIf(u -> u.getId().equals(me.getId()));
         } else {
             target.getSeguidores().add(me);
-            // Create notification if target doesn't have silenced notifications
+            
             if (!target.isSilenciarNotificaciones()) {
                 Notificacion n = new Notificacion();
                 n.setUsuario(target);

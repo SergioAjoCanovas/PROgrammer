@@ -1,6 +1,4 @@
-/* =========================================================
-   1. ESTRUCTURA Y TARJETAS
-   ========================================================= */
+
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
     color: #FFFFFF;
@@ -25,9 +23,7 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
-/* =========================================================
-   NUEVO: ENLACE SUPERIOR IZQUIERDO (Mismo estilo que projectview)
-   ========================================================= */
+
 .contenedor-volver {
     max-width: 1700px;
     width: 98%;
@@ -59,7 +55,7 @@ body.fondo-oscuro-neon::before {
     display: flex; 
     max-width: 1700px; 
     width: 98%; 
-    margin: 30px auto 60px auto; /* Reducido el margin top para que el enlace encaje bien */
+    margin: 30px auto 60px auto; 
     padding: 0 20px; 
     gap: 40px; 
     align-items: flex-start;
@@ -76,9 +72,7 @@ body.fondo-oscuro-neon::before {
     flex-direction: column;
 }
 
-/* =========================================================
-   TARJETA PERFIL
-   ========================================================= */
+
 
    .tarjeta-perfil {
     background-color: #1a1a1a !important;
@@ -90,7 +84,7 @@ body.fondo-oscuro-neon::before {
     flex-direction: column;
 }
 
-/* Cabecera igual */
+
 .cabecera-tarjeta {
     border-bottom: 2px solid #aaaaaa;
     padding-bottom: 20px;
@@ -98,7 +92,7 @@ body.fondo-oscuro-neon::before {
     text-align: center;
 }
 
-/* Foto perfil (idéntico comportamiento) */
+
 .foto-perfil-contenedor {
     position: relative;
     display: block;
@@ -126,9 +120,7 @@ body.fondo-oscuro-neon::before {
     object-fit: cover;
 }
 
-/* =========================================================
-   BOTÓN SEGUIR (CORAZÓN ESTILO PROFILEVIEW)
-   ========================================================= */
+
 .btn-follow-heart {
     position: absolute;
     bottom: 5px;
@@ -171,7 +163,7 @@ body.fondo-oscuro-neon::before {
     color: #ffffff; 
 }
 
-/* Nombre usuario */
+
 .nombre-usuario {
     font-size: 1.6rem;
     color: #FFFFFF;
@@ -180,9 +172,7 @@ body.fondo-oscuro-neon::before {
     margin: 0;
 }
 
-/* =========================================================
-   LISTA DOTTED
-   ========================================================= */
+
 
 .lista-dotted {
     display: flex;
@@ -191,7 +181,7 @@ body.fondo-oscuro-neon::before {
     margin-top: 10px;
 }
 
-/* ITEM */
+
 .item-dotted {
     display: flex;
     align-items: center;
@@ -210,7 +200,7 @@ body.fondo-oscuro-neon::before {
     transition: all 0.35s ease;
 }
 
-/* ICONO */
+
 .item-dotted i {
     color: #FFCC00;
     font-size: 1.1rem;
@@ -219,7 +209,7 @@ body.fondo-oscuro-neon::before {
     transition: all 0.35s ease;
 }
 
-/* HOVER */
+
 .item-dotted:hover {
     background-color: rgba(255, 204, 0, 0.08);
     color: #FFCC00;
@@ -231,9 +221,7 @@ body.fondo-oscuro-neon::before {
     transform: scale(1.2);
 }
 
-/* =========================================================
-   3. BOTONES
-   ========================================================= */
+
 .boton-curriculum, .boton-descargar, .boton-ver {
     background-color: #050505 !important;
     color: #FFCC00 !important;
@@ -269,9 +257,7 @@ body.fondo-oscuro-neon::before {
     transform: scale(1.15) rotate(-15deg);
 }
 
-/* =========================================================
-   4. PROYECTO (CENTRO)
-   ========================================================= */
+
 .seccion-derecha-dinamica { flex: 1; }
 .cabecera-proyecto { 
     display: flex; justify-content: space-between; align-items: center; 
@@ -306,9 +292,7 @@ body.fondo-oscuro-neon::before {
 }
 .repo a:hover { color: #FFCC00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.8); transform: translateX(5px); }
 
-/* =========================================================
-   5. VALORACIÓN Y COMENTARIOS
-   ========================================================= */
+
 .zona-derecha { flex: 0 0 380px; }
 .tarjeta-formulario h2 { margin-bottom: 25px; color: #FFCC00; }
 .campo { margin-bottom: 25px; }
@@ -326,7 +310,7 @@ textarea:focus, .input-comentario-neon:focus {
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); background: #0a0a0a;
 }
 
-/* Scrollbar personalizado neón para el textarea */
+
 .input-comentario-neon::-webkit-scrollbar, textarea::-webkit-scrollbar {
     width: 6px;
 }
@@ -340,9 +324,7 @@ textarea:focus, .input-comentario-neon:focus {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
-/* =========================================================
-   6. MODAL DE IMÁGENES
-   ========================================================= */
+
 .modal {
     display: none; 
     position: fixed; 
@@ -383,9 +365,7 @@ textarea:focus, .input-comentario-neon:focus {
     .boton-descargar { width: 100%; }
 }
 
-/* =========================================================
-   SECCIÓN: DESCRIPCIÓN Y REPOSITORIO (CON EFECTO ESTRELLA)
-   ========================================================= */
+
 
 .descripcion-proyecto, .repo { 
     margin-bottom: 50px; 
@@ -442,9 +422,7 @@ textarea:focus, .input-comentario-neon:focus {
     filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.6));
 }
 
-/* ============================================================
-    ESTRELLAS (CON EFECTO NEÓN Y ANIMACIÓN)
-   ============================================================ */
+
 .estrellas {
     display: flex;
     gap: 12px; 
@@ -482,9 +460,7 @@ textarea:focus, .input-comentario-neon:focus {
     transform: scale(0.9);
 }
 
-/* =========================================================
-   TECNOLOGÍAS (MISMO ESTILO QUE DESCRIPCIÓN)
-   ========================================================= */
+
 
    .tecnologias {
     margin-bottom: 50px;
@@ -502,15 +478,15 @@ textarea:focus, .input-comentario-neon:focus {
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
 }
 
-/* contenedor de tags */
+
 .tecnologias .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    padding-left: 5px; /* mismo “aire” que descripción */
+    padding-left: 5px; 
 }
 
-/* chips de tecnología */
+
 .tech-tag-proyecto {
     background: rgba(0, 243, 255, 0.1);
     padding: 6px 12px;
@@ -530,7 +506,7 @@ textarea:focus, .input-comentario-neon:focus {
     transform: translateY(-2px);
     color: #ffffff;
 }
-/* TOAST DE ERROR PARA RESE�AS */
+
 .toast-error-neon {
     position: fixed;
     bottom: 20px;

@@ -40,7 +40,7 @@ public class ChatViewController {
             return "redirect:/login";
         }
 
-        // 🔒 seguridad: evita que alguien fuerce otro user1 en URL
+        // evita que alguien fuerce otro user1 en URL
         if (!usuario.getId().equals(user1)) {
             return "redirect:/chats";
         }

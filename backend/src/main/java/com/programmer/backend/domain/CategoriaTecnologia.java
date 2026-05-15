@@ -1,12 +1,12 @@
-package com.programmer.backend.domain; // Mantengo tu paquete actual
+package com.programmer.backend.domain; 
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType; // <--- Faltaba este
+import jakarta.persistence.GenerationType; 
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.FetchType;     // <--- Y faltaba este
+import jakarta.persistence.FetchType;     
 
 import java.util.List;
 

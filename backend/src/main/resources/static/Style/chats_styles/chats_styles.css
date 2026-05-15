@@ -1,6 +1,4 @@
-/* =========================================================
-   NUEVO: BOTÓN VOLVER (Calcadísimo a searchProgrammer.css)
-   ========================================================= */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -27,22 +25,20 @@
     transform: translateX(-5px); 
 }
 
-/* =========================================================
-   CONTENEDOR PRINCIPAL CHATS
-   ========================================================= */
+
 .contenedor-principal-chats {
     background-color: transparent; 
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Ajustado a 20px para igualar la distancia de searchProgrammer */
+    
     padding: 20px 20px 60px 20px; 
     height: calc(100vh - 160px); 
     position: relative;
     z-index: 10;
 }
 
-/* DIV GRANDE DEL CHAT CON BORDE AMARILLO NEÓN */
+
 .tarjeta-chats {
     background-color: rgba(26, 26, 26, 0.95); 
     width: 100%;
@@ -52,16 +48,14 @@
     display: flex;
     overflow: hidden;
     
-    /* EFECTO NEÓN AMARILLO */
+    
     border: 2px solid #FFCC00;
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.4), 
                 0 0 30px rgba(255, 204, 0, 0.1),
                 inset 0 0 10px rgba(255, 204, 0, 0.1);
 }
 
-/* =========================================================
-   PANEL IZQUIERDO: CONTACTOS
-   ========================================================= */
+
 .panel-contactos {
     width: 35%;
     min-width: 300px;
@@ -211,9 +205,7 @@
     border-radius: 10px;
 }
 
-/* =========================================================
-   PANEL DERECHO: CONVERSACIÓN
-   ========================================================= */
+
 .panel-conversacion {
     width: 65%;
     display: flex;
@@ -370,7 +362,7 @@
 ::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
-/* BOTÓN VOLVER EN MOBILE */
+
 .btn-volver-lista {
     display: none;
     background: none;
@@ -386,11 +378,9 @@
     transform: translateX(-3px);
 }
 
-/* =========================================================
-   RESPONSIVIDAD (Tablets y Móviles)
-   ========================================================= */
 
-/* Tabletas (hasta 1024px) */
+
+
 @media (max-width: 1024px) {
     .tarjeta-chats {
         max-width: 95%;
@@ -406,7 +396,7 @@
     }
 }
 
-/* Móviles (hasta 800px) - Sistema de paneles alternos */
+
 @media (max-width: 800px) {
     .contenedor-principal-chats {
         padding: 10px 10px 30px 10px;
@@ -421,15 +411,15 @@
     .panel-contactos {
         width: 100%;
         min-width: 0;
-        display: flex; /* Visible por defecto */
+        display: flex; 
     }
 
     .panel-conversacion {
         width: 100%;
-        display: none; /* Oculto por defecto */
+        display: none; 
     }
 
-    /* Cuando queremos ver el chat */
+    
     .tarjeta-chats.ver-chat-mobile .panel-contactos {
         display: none;
     }
@@ -459,7 +449,7 @@
     }
 }
 
-/* Móviles pequeños */
+
 @media (max-width: 480px) {
     .cabecera-contactos h2 {
         font-size: 1.1rem;
@@ -540,9 +530,7 @@ header a.activo span {
     margin-left: auto;
 }
 
-/* =========================
-   MODAL CHAT AISLADO
-========================= */
+
 
 .chat-modal-overlay {
     position: fixed;
@@ -605,9 +593,7 @@ header a.activo span {
     color: black;
 }
 
-/* =========================
-   TOASTS
-========================= */
+
 .chat-toast {
     position: fixed;
     bottom: 25px;
@@ -636,9 +622,7 @@ header a.activo span {
     font-size: 1.3rem;
 }
 
-/* =========================
-   SEPARADOR DE FECHA
-========================= */
+
 
 .chat-fecha-separador {
     text-align: center;
@@ -666,9 +650,7 @@ header a.activo span {
     right: 0;
 }
 
-/* =========================================================
-   ESTADO VACÍO (SIN CHAT)
-   ========================================================= */
+
 .chat-vacio-placeholder {
     display: flex;
     flex-direction: column;
@@ -677,7 +659,7 @@ header a.activo span {
     height: 100%;
     width: 100%;
     color: #888;
-    background-color: #121212; /* Fondo sólido no transparente */
+    background-color: #121212; 
     text-align: center;
     padding: 20px;
     box-sizing: border-box;

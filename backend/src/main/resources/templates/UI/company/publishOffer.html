@@ -24,7 +24,7 @@
         .check-tech { display: flex; align-items: center; gap: 8px; color: #ddd; font-size: 0.9rem; cursor: pointer; padding: 5px; border-radius: 4px; transition: all 0.3s ease; }
         .check-tech:hover { background: rgba(0, 242, 255, 0.1); color: white; }
 
-        /* BOTONES TOGGLE TECH (Marcar/Desmarcar) - EXACTOS DE ADD TECHNOLOGY */
+        
         .btn-tech-toggle {
             background: transparent;
             padding: 6px 15px;
@@ -39,7 +39,7 @@
             gap: 8px;
         }
 
-        /* MARCAR (Cyan) */
+        
         .btn-tech-marcar {
             color: #00f3ff;
             border: 2px solid #00f3ff;
@@ -51,7 +51,7 @@
             transform: scale(1.05);
         }
 
-        /* DESMARCAR (Rojo) */
+        
         .btn-tech-desmarcar {
             color: #ff4444;
             border: 2px solid #ff4444;
@@ -68,7 +68,7 @@
             gap: 10px;
         }
 
-        /* TOAST DE ERROR NEÓN */
+        
         .toast-error-neon {
             position: fixed;
             bottom: 30px;
@@ -180,7 +180,7 @@
                 <div class="grupo-input">
                     <label><i class="fas fa-layer-group"></i> Tecnologías Requeridas</label>
                     
-                    <!-- BOTONES GLOBALES -->
+                    
                     <div class="botones-globales-tech" style="display: flex; gap: 15px; margin-bottom: 20px; justify-content: flex-start;">
                         <button type="button" id="btn-global-marcar" class="btn-tech-toggle btn-tech-marcar" onclick="toggleAllTechs(true)">
                             <i class="fas fa-check-double"></i> Marcar todas
@@ -191,9 +191,9 @@
                     </div>
 
                     <script th:inline="javascript">
-                        /*<![CDATA[*/
-                        const techIdsPreseleccionadas = /*[[${techIdsActuales != null ? techIdsActuales : '[]'}]]*/ [];
-                        /*]]>*/
+                        
+                        const techIdsPreseleccionadas =  [];
+                        
                     </script>
                     <div id="contenedor-tecnologias">
                         <span style="color: #666;"><i class="fas fa-spinner fa-spin"></i> Cargando...</span>
@@ -210,7 +210,7 @@
         </section>
     </main>
 
-    <!-- TOAST DE ERROR PERSONALIZADO -->
+    
     <div id="toast-error-caracteres" class="toast-error-neon">
         <i class="fas fa-exclamation-triangle"></i>
         <div>

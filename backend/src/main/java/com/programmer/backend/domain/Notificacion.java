@@ -28,7 +28,7 @@ public class Notificacion {
     private String tipo; // "NUEVO_SEGUIDOR", "NUEVA_OFERTA", "NUEVO_PARCHE"
     private boolean leida = false;
     private Date fechaCreacion;
-    private String enlace; // Opcional, para redirigir al perfil o a la oferta
+    private String enlace; 
 
     @PrePersist
     protected void onCreate() {

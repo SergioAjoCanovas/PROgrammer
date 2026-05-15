@@ -285,11 +285,7 @@
     });
 
     function inicializarIdentidadYEventos() {
-        /*[+
-        const initialArq = [[${review.arquitectura != null ? review.arquitectura : 1}]];
-        const initialLim = [[${review.limpieza != null ? review.limpieza : 1}]];
-        const initialDoc = [[${review.documentacion != null ? review.documentacion : 1}]];
-        +]*/
+        
 
         document.querySelectorAll(".estrellas").forEach(container => {
             const tipo = container.dataset.tipo;
@@ -383,8 +379,8 @@
             return false;
         }
 
-        /*[[${editMode}]]*/
-        const isEditMode = /*[[${editMode}]]*/ false;
+        
+        const isEditMode =  false;
         
         if (!isEditMode) return true; // Si no es modo edición, enviar normal
 
@@ -423,7 +419,7 @@
     }
 </script>
 
-    <!-- TOAST DE ERROR PARA RESEÑAS -->
+    
     <div id="toast-review-error" class="toast-error-neon" style="display: none;">
         <i class="fas fa-exclamation-triangle"></i>
         <div>
@@ -437,8 +433,8 @@
 
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
-            /*[[${error != null}]]*/
-            const hasServerError = /*[[${error != null}]]*/ false;
+            
+            const hasServerError =  false;
             const toastError = document.getElementById('toast-review-error');
             
             if (hasServerError && toastError) {
@@ -456,7 +452,7 @@
             }
             
             // Opcional: Desactivar el botón de submit si ya hay reseña (Y NO ES MODO EDICIÓN)
-            const isDuplicate = /*[[${isDuplicate}]]*/ false;
+            const isDuplicate =  false;
             if (isDuplicate) {
                 const btnSubmit = document.querySelector('button[type="submit"]');
                 if(btnSubmit) {

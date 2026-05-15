@@ -1,6 +1,6 @@
 package com.programmer.backend.domain;
 
-import jakarta.persistence.*; // Si usas Spring Boot 2, cambia 'jakarta' por 'javax'
+import jakarta.persistence.*; 
 import java.util.Date;
 
 @Entity

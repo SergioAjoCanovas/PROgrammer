@@ -1,6 +1,4 @@
-/* =========================================
-   ESTILOS PARA LA PÁGINA: EDITAR PROYECTO
-   ========================================= */
+
 
 :root {
     --amarillo-neon: #FFCC00;
@@ -19,7 +17,7 @@ body {
     color: white;
 }
 
-/* --- CONTENEDOR PRINCIPAL --- */
+
 .contenedor-principal-edicion {
     background: transparent;
     display: flex;
@@ -29,7 +27,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- TARJETA DE FORMULARIO --- */
+
 .tarjeta-edicion {
     background-color: var(--negro-tarjeta) !important;
     width: 90%;
@@ -72,7 +70,7 @@ body {
     text-shadow: 0 0 10px var(--amarillo-neon);
 }
 
-/* --- CAMPOS E INPUTS --- */
+
 .campo {
     margin-bottom: 25px;
     display: flex;
@@ -111,7 +109,7 @@ input:focus, textarea:focus {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
 }
 
-/* --- PORTADA DE IMAGEN (ICONO CENTRADO) --- */
+
 .portada-contenedor {
     position: relative;
     width: 100%;
@@ -159,7 +157,7 @@ input:focus, textarea:focus {
     transform: scale(1.1);
 }
 
-/* --- TECNOLOGÍAS --- */
+
 .contenedor-checkboxes {
     background-color: var(--negro-input);
     border: 1px solid #444;
@@ -213,7 +211,7 @@ input:focus, textarea:focus {
     transform: translate(-50%, -50%);
 }
 
-/* --- BOTÓN GUARDAR CENTRADO --- */
+
 .contenedor-botones {
     display: flex;
     justify-content: center;
@@ -246,11 +244,11 @@ input:focus, textarea:focus {
     transform: scale(1.05) translateY(-3px);
 }
 
-/* --- SCROLLBAR --- */
+
 .contenedor-checkboxes::-webkit-scrollbar { width: 6px; }
 .contenedor-checkboxes::-webkit-scrollbar-thumb { background: var(--amarillo-neon); border-radius: 10px; }
 
-/* --- RESPONSIVE --- */
+
 @media (max-width: 650px) {
     .fila-doble { grid-template-columns: 1fr; }
     .tarjeta-edicion { padding: 20px; }

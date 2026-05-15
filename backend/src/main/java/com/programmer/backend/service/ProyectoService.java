@@ -82,10 +82,14 @@ public class ProyectoService {
 
     public List<ProyectoDTO> obtenerUltimosProyectos(Usuario usuario) {
         return proyectoRepository
-                .findTop2ByAutorOrderByIdDesc(usuario)
+                .findTop3ByAutorOrderByIdDesc(usuario)
                 .stream()
                 .map(this::mapToDTO)
                 .toList();
+    }
+
+    public long contarProyectos(Usuario usuario) {
+        return proyectoRepository.countByAutor(usuario);
     }
 
     private ProyectoDTO mapToDTO(Proyecto p) {

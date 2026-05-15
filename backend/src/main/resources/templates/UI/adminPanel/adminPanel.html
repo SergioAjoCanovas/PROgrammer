@@ -232,7 +232,7 @@
                         <!-- Lista de proyectos del usuario -->
                         <div th:id="'proyectos-user-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
                             <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; text-align: center;">
-                                <h4 th:text="${p.titulo}" style="margin: 0 0 10px 0; color: #FFCC00; text-align: center;"></h4>
+                                <h4 th:text="${p.titulo}" style="margin: 0 0 10px 0; color: #FFCC00; text-align: center; word-break: break-word; overflow-wrap: break-word;"></h4>
                                 <div class="botones-accion" style="margin-top: 10px; justify-content: center;">
                                     <a th:href="@{/proyectos/proyecto/{id}(id=${p.id})}" target="_blank" class="btn-perfil" title="Ver Proyecto"><i class="fas fa-eye"></i></a>
                                     <form th:action="@{/adminPanel/verificarProyecto/{id}(id=${p.id})}" method="post" onsubmit="confirmarAccion(event, this, 'verificarProyecto');">
@@ -274,7 +274,7 @@
 
                         <div th:id="'proyectos-user-validados-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
                             <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; position: relative; text-align: center;">
-                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; text-align: center;"></h4>
+                                <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; text-align: center; word-break: break-word; overflow-wrap: break-word;"></h4>
                                 <!-- Div azulito de verificado -->
                                 <div style="margin-bottom: 10px; text-align: center;">
                                     <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block;">

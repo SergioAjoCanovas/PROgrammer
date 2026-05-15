@@ -125,19 +125,19 @@
 
         .btn-follow-heart {
             position: absolute;
-            bottom: 5px;
+            bottom: 8px;
             right: 0px;
             background: rgba(15, 5, 5, 0.8);
-            border: 1px solid #ff4444;
+            border: 2px solid #ff4444;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: #ff4444;
-            font-size: 1rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
             box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
             z-index: 10;
@@ -262,15 +262,17 @@
         <div class="tarjeta-acordeon-contenedor">
 
             <div class="cabecera-acordeon">
-                <h2>PROYECTOS</h2>
+                <h2 th:text="${#lists.isEmpty(proyectos) ? 'Ningún proyecto publicado' : (#lists.size(proyectos) == 1 ? '1 PROYECTO' : #lists.size(proyectos) + ' PROYECTOS')}">
+                    PROYECTOS
+                </h2>
                 <a href="javascript:void(0)" onclick="volverDesdeProjectList()" class="boton-volver-circular">
                     <i class="fas fa-undo"></i>
                 </a>
             </div>
 
-            <div id="acordeon-proyectos">
+            <div id="acordeon-proyectos" th:classappend="${#lists.size(proyectos) > 6} ? 'contenedor-scroll-neon' : ''">
 
-                <th:block th:each="p : ${proyectos}">
+                <th:block th:if="${!#lists.isEmpty(proyectos)}" th:each="p : ${proyectos}">
 
                     <h3>
                         <span th:text="${p.titulo}"></span>

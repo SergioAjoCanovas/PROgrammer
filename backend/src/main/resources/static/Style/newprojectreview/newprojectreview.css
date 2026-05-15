@@ -213,6 +213,9 @@ body.fondo-oscuro-neon::before {
 /* ICONO */
 .item-dotted i {
     color: #FFCC00;
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
     transition: all 0.35s ease;
 }
 

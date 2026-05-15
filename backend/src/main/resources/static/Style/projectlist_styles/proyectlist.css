@@ -558,6 +558,9 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
 
 .item-dotted i {
     color: #FFCC00;
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
     transition: all 0.35s ease;
 }
 
@@ -678,4 +681,103 @@ body.fondo-oscuro-neon .boton-eliminar-proyecto:hover {
         height: auto !important;
         display: block !important;
     }
+}
+/* =========================================================
+   SCROLL NEÓN AMARILLO (SOLO SI > 6 PROYECTOS)
+   ========================================================= */
+.contenedor-scroll-neon {
+    max-height: 480px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 15px;
+}
+
+.contenedor-scroll-neon::-webkit-scrollbar {
+    width: 8px;
+}
+
+.contenedor-scroll-neon::-webkit-scrollbar-track {
+    background: rgba(26, 26, 26, 0.8);
+    border-radius: 10px;
+}
+
+.contenedor-scroll-neon::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    border: 2px solid #1a1a1a;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+}
+
+.contenedor-scroll-neon::-webkit-scrollbar-thumb:hover {
+    background: #fff0b3;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 1);
+}
+
+.contenedor-scroll-neon {
+    scrollbar-width: thin;
+    scrollbar-color: #FFCC00 rgba(26, 26, 26, 0.8);
+}
+
+/* =========================================================
+   ESTILOS PARA MENSAJE DE PROYECTOS VACÍOS
+   ========================================================= */
+.contenedor-vacio-proyectos, .contenedor-vacio-proyectos * {`n    user-select: none;
+    width: 100%;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    border: 1px dashed rgba(0, 243, 255, 0.3);
+    border-radius: 20px;
+    background: rgba(10, 10, 10, 0.4);
+    margin: 20px 0;
+    box-sizing: border-box;
+}
+
+.wrapper-icono-vacio {
+    position: relative;
+    font-size: 4rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icono-base {
+    color: rgba(255, 0, 60, 0.2);
+}
+
+.icono-prohibido {
+    position: absolute;
+    color: #ff003c;
+    font-size: 2.5rem;
+    top: -5px;
+    right: -10px;
+    text-shadow: 0 0 15px #ff003c, 0 0 30px #ff003c;
+    animation: pulso-vacio 2s infinite ease-in-out;
+}
+
+.contenedor-vacio-proyectos p {
+    color: #ffffff;
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.barra-acento-vacio {
+    width: 60px;
+    height: 4px;
+    background: #00f3ff;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #00f3ff;
+}
+
+@keyframes pulso-vacio {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
 }

@@ -451,7 +451,7 @@
             </div>
 
             <div class="tarjeta-acordeon">
-                <div class="cabecera-tarjeta"><h3>MIS TECNOLOGÍAS</h3><i class="fas fa-laptop-code"></i></div>
+                <div class="cabecera-tarjeta"><h3>MIS TECNOLOGÍAS: <span th:text="${#lists.size(tecnologiasUsuario)}"></span></h3><i class="fas fa-laptop-code"></i></div>
                 <div class="tags-tecnologias">
                     <span class="tag-tech" th:each="tech : ${tecnologiasUsuario}" 
                           th:text="${tech.nombre}"></span>
@@ -466,7 +466,14 @@
                     <h2 onclick="window.location.href='/proyectos/projectList'" 
                         style="cursor: pointer; transition: all 0.3s;" 
                         class="titulo-mis-proyectos">MIS PROYECTOS</h2>
-                    <i class="fas fa-th icono-grid-top" style="color: white; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;" onclick="window.location.href='/proyectos/projectList'"></i>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="window.location.href='/proyectos/projectList'">
+                        <span th:if="${totalProyectos > 2}" 
+                              style="color: #FFCC00; font-weight: bold; font-size: 1rem; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);"
+                              th:text="'+' + (${totalProyectos} - 2)">
+                        </span>
+                        <i class="fas fa-th icono-grid-top" style="color: white; font-size: 1.5rem; transition: all 0.3s;"></i>
+                    </div>
                 </div>
                 <div class="rejilla-proyectos">
 
@@ -481,7 +488,8 @@
                         </button>
                     </div>
                 
-                    <div th:each="p : ${ultimosProyectos}"
+                    <div th:each="p, iterStat : ${ultimosProyectos}"
+                        th:if="${iterStat.index < 2}"
                         th:with="descLarga=${p.descripcion != null and #strings.length(p.descripcion) > 40}"
                         class="tarjeta-mini-proyecto proyecto-card"
                         th:attr="data-id=${p.id}" style="position: relative; padding-top: 40px;">
@@ -557,7 +565,7 @@
 
                 <div class="tarjeta-acordeon info-half-card">
                     <div class="cabecera-tarjeta">
-                        <h3>RESEÑAS RECIBIDAS</h3>
+                        <h3>RESEÑAS RECIBIDAS: <span th:text="${#lists.size(reviews)}"></span></h3>
                     </div>
                     
                     <div id="contenedor-resenas-own" class="contenedor-resenas-scroll">
@@ -697,6 +705,9 @@
 
         // --- LÓGICA DE PESTAÑAS (TABS) ---
         function mostrarSeccion(seccion) {
+            // Guardamos la sección activa en localStorage para que persista tras recargas
+            localStorage.setItem('ownProfile_activeTab', seccion);
+
             document.getElementById('seccion-personalizacion').style.display = (seccion === 'personalizacion') ? 'flex' : 'none';
             document.getElementById('seccion-seguimiento').style.display = (seccion === 'seguimiento') ? 'flex' : 'none';
             
@@ -807,6 +818,12 @@
         }
 
         window.addEventListener('load', () => {
+            // Recuperar pestaña guardada
+            const savedTab = localStorage.getItem('ownProfile_activeTab');
+            if (savedTab) {
+                mostrarSeccion(savedTab);
+            }
+
             initSeguimientoGrid('item-amigo');
             initSeguimientoGrid('item-siguiendo');
             initSeguimientoGrid('item-seguidores');

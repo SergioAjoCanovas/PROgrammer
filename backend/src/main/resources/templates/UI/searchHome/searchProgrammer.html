@@ -191,12 +191,10 @@
                     <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
                          th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-resultados-inner'">
                         
-                        <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
-                             th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
-                                     words=${#strings.arraySplit(fullBio, ' ')},
-                                     bioWords=${#lists.size(words) > 10 ? #strings.arrayJoin(#lists.subList(words, 0, 10), ' ') : fullBio},
-                                     bioFinal=${#strings.length(bioWords) > 50 ? #strings.substring(bioWords, 0, 50) : bioWords},
-                                     esLarga=${#strings.length(fullBio.trim()) > #strings.length(bioFinal.trim())}">
+                <div class="tarjeta-perfil-neon" th:each="developer : ${developers}" 
+                    th:with="fullBio=${developer.biografia != null and !#strings.isEmpty(developer.biografia.trim()) ? developer.biografia : (developer.usuario.biografia != null and !#strings.isEmpty(developer.usuario.biografia.trim()) ? developer.usuario.biografia : 'Sin descripción')},
+                            bioFinal=${#strings.length(fullBio) > 60 ? #strings.substring(fullBio, 0, 60) : fullBio},
+                            esLarga=${#strings.length(fullBio) > 60}">
                             
                             <a th:href="@{/profileView/{id}(id=${developer.usuario != null ? developer.usuario.id : 0})}" class="link-absoluto-tarjeta"></a>
                             

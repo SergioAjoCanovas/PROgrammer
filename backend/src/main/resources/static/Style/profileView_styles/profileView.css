@@ -1,6 +1,4 @@
-/* =========================================================
-   GENERAL Y CONTENEDORES
-   ========================================================= */
+
 html, body {
     height: 100%;
 }
@@ -16,9 +14,7 @@ body.fondo-oscuro-neon {
     min-height: 100vh; 
 }
 
-/* =========================================================
-   BOTÓN VOLVER
-   ========================================================= */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -46,9 +42,7 @@ body.fondo-oscuro-neon {
     transform: translateX(-5px);
 }
 
-/* =========================================================
-   CONTENEDOR PRINCIPAL
-   ========================================================= */
+
 .contenedor-principal {
     display: flex;
     max-width: 1800px;
@@ -80,13 +74,11 @@ body.fondo-oscuro-neon {
     flex-direction: column;
     gap: 30px;
     width: 100%;
-    /* Aseguramos que la columna no se expanda por textos largos */
+    
     min-width: 0;
 }
 
-/* =========================================================
-   TARJETA PERFIL (COPIA EXACTA DE proyectlist.css)
-   ========================================================= */
+
 .tarjeta-perfil {
     background-color: #1a1a1a !important;
     border: 2px solid #FFCC00 !important;
@@ -170,9 +162,7 @@ body.fondo-oscuro-neon {
     gap: 8px;
 }
 
-/* =========================================================
-   OTRAS TARJETAS (Sincronizado estilo base)
-   ========================================================= */
+
 .tarjeta-resenas-izq, 
 .tarjeta-proyectos-contenedor, 
 .tarjeta-inferior {
@@ -185,7 +175,7 @@ body.fondo-oscuro-neon {
     padding: 30px;
 }
 
-/* Líneas divisorias de títulos */
+
 .cabecera-proyectos, 
 .cabecera-inferior,
 .tarjeta-resenas-izq h3 {
@@ -198,9 +188,7 @@ body.fondo-oscuro-neon {
 
 
 
-/* =========================================================
-   LISTA DOTTED (REDES + CV)
-   ========================================================= */
+
 .lista-dotted {
     display: flex;
     flex-direction: column;
@@ -239,9 +227,7 @@ body.fondo-oscuro-neon {
     transform: scale(1.2);
 }
 
-/* =========================================================
-   ENLACES NEÓN Y MENÚ ACTIVO
-   ========================================================= */
+
 .activo, 
 header .nav-enlaces a.activo i, 
 header .nav-enlaces a.activo span {
@@ -268,9 +254,7 @@ header .nav-enlaces a.activo span {
     text-shadow: 0 0 15px #FFCC00;
 }
 
-/* =========================================================
-   TEXTAREA RESEÑAS
-   ========================================================= */
+
 .input-resena {
     width: 100%;
     height: 80px;
@@ -293,7 +277,7 @@ header .nav-enlaces a.activo span {
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
 }
 
-/* Scrollbar personalizado neón para el textarea */
+
 .input-resena::-webkit-scrollbar {
     width: 6px;
 }
@@ -307,9 +291,7 @@ header .nav-enlaces a.activo span {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
-/* =========================================================
-   BOTONES NEÓN (ACTUALIZADOS)
-   ========================================================= */
+
 .boton-anadir,
 .boton-ver,
 #btn-toggle-resenas {
@@ -341,9 +323,7 @@ header .nav-enlaces a.activo span {
 }
 
 
-/* =========================================================
-   TARJETAS MINI PROYECTO
-   ========================================================= */
+
 .rejilla-proyectos {
     display: flex;
     gap: 25px; 
@@ -384,7 +364,7 @@ header .nav-enlaces a.activo span {
     color: #ccc;
     font-size: 0.95rem;
     flex-grow: 1;
-    /* FIX: Fuerza el salto de línea para descripciones largas */
+    
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -396,9 +376,7 @@ header .nav-enlaces a.activo span {
     box-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
 }
 
-/* =========================================================
-   SECCIÓN INFERIOR Y RESEÑAS (NUEVA ANIMACIÓN SMOOTHIE)
-   ========================================================= */
+
 .contenedor-inferior-derecha {
     display: flex;
     flex-direction: row; 
@@ -409,7 +387,7 @@ header .nav-enlaces a.activo span {
 
 .tarjeta-inferior {
     flex: 1; 
-    /* FIX: Crucial para evitar que el flex item rompa el ancho máximo por culpa del texto */
+    
     min-width: 0; 
     height: 400px; 
     display: flex;
@@ -438,7 +416,7 @@ header .nav-enlaces a.activo span {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
-/* FIX: Obliga a que los párrafos dentro rompan las palabras largas (tu "Sobre mí") */
+
 .contenido-inferior p {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -446,22 +424,22 @@ header .nav-enlaces a.activo span {
     max-width: 100%;
 }
 
-/* --- ANIMACIÓN GRID (SMOOTHIE TOTAL) --- */
+
 .resena-extra-wrapper {
     display: grid;
-    grid-template-rows: 0fr; /* Altura colapsada */
+    grid-template-rows: 0fr; 
     transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .resena-extra-wrapper.expandido {
-    grid-template-rows: 1fr; /* Altura real del contenido */
+    grid-template-rows: 1fr; 
 }
 
 .resena-extra-inner {
-    overflow: hidden; /* Oculta el contenido mientras colapsa */
+    overflow: hidden; 
 }
 
-/* Estilos para el selector de estrellas */
+
 .estrellas {
     display: flex;
     gap: 10px;
@@ -521,15 +499,13 @@ header .nav-enlaces a.activo span {
 .resena-texto { 
     font-size: 0.85rem; 
     color: #ccc; 
-    /* FIX: Fuerza el salto de línea en comentarios larguísimos sin espacios */
+    
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
 }
 
-/* =========================================================
-   MEDIA QUERIES (RESPONSIVE)
-   ========================================================= */
+
 
 @media (max-width: 1024px) {
     .contenedor-principal {
@@ -608,7 +584,7 @@ header .nav-enlaces a.activo span {
         font-size: 1.3rem; 
     }
 }
-/* TOAST DE ERROR PARA RESE�AS */
+
 .toast-error-neon {
     position: fixed;
     bottom: 20px;
@@ -647,7 +623,7 @@ header .nav-enlaces a.activo span {
 }
 
 
-/* BOTONES DE EDICI�N Y ELIMINACI�N DE RESE�AS */
+
 .btn-accion-resena-editar {
     background: none;
     border: none;
@@ -689,9 +665,7 @@ header .nav-enlaces a.activo span {
     gap: 5px;
 }
 
-/* =========================================================
-   SISTEMA DE EXPANSIÓN DE TECNOLOGÍAS EN PROYECTOS (Estilo JobSearching)
-   ========================================================= */
+
 
 .tech-more-overlay-proyecto {
     cursor: pointer;
@@ -721,7 +695,7 @@ header .nav-enlaces a.activo span {
     border: 2px solid #ffcc00;
     border-radius: 12px;
     padding: 20px;
-    display: none; /* Se activa con .tech-expanded */
+    display: none; 
     flex-direction: column;
     z-index: 1000;
     box-sizing: border-box;
@@ -798,7 +772,7 @@ header .nav-enlaces a.activo span {
     background: rgba(0, 0, 0, 0.2);
 }
 
-/* SISTEMA DE EXPANSIÓN DE DESCRIPCIÓN */
+
 .desc-expanded-full {
     position: absolute;
     top: 0;
@@ -811,7 +785,7 @@ header .nav-enlaces a.activo span {
     padding: 20px;
     display: none;
     flex-direction: column;
-    z-index: 1001; /* Un poco por encima por si acaso */
+    z-index: 1001; 
     box-sizing: border-box;
     box-shadow: 0 0 30px rgba(255, 204, 0, 0.2);
 }
@@ -850,9 +824,7 @@ header .nav-enlaces a.activo span {
     text-decoration: underline;
 }
 
-/* =========================================================
-   ESTILOS PARA MENSAJE DE PROYECTOS VACÍOS
-   ========================================================= */
+
 .contenedor-vacio-proyectos {
     width: 100%;
     min-height: 250px;

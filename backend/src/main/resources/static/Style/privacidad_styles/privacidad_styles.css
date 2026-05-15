@@ -1,6 +1,4 @@
-/* ============================================================
-    1. ESTRUCTURA Y FONDO
-   ============================================================ */
+
 :root {
     --amarillo-neon: #FFCC00;
     --negro-tarjeta: #1a1a1a; 
@@ -25,9 +23,7 @@
     padding: 60px 20px;
 }
 
-/* ============================================================
-    2. TARJETA
-   ============================================================ */
+
 .vidrio-contenedor-privacidad {
     background-color: var(--negro-tarjeta) !important;
     border: 1px solid var(--amarillo-neon) !important; 
@@ -70,9 +66,7 @@
     text-shadow: 0 0 15px var(--amarillo-neon);
 }
 
-/* ============================================================
-    3. CONTENIDO Y SCROLL
-   ============================================================ */
+
 .contenido-legal {
     max-height: 400px;
     overflow-y: scroll;
@@ -80,7 +74,7 @@
     margin-bottom: 30px;
 }
 
-/* --- ESTILO DE LA BARRA DE SCROLL --- */
+
 .contenido-legal::-webkit-scrollbar {
     width: 12px; 
 }
@@ -120,9 +114,7 @@
     text-align: left;
 }
 
-/* ============================================================
-    4. BOTÓN
-   ============================================================ */
+
 .contenedor-boton-aceptar {
     display: flex;
     justify-content: center;

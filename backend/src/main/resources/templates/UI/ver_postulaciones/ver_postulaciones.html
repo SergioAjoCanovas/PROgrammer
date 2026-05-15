@@ -39,7 +39,7 @@
             </button>
         </div>
 
-        <!-- SECCIÓN PENDIENTES -->
+        
         <div id="seccion-pendientes" style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
             <div class="candidato-card" th:each="post : ${postulaciones}" th:if="${post.estado == 'PENDIENTE'}">
                 <div style="position: relative;">
@@ -73,7 +73,7 @@
                     <div class="estado-postulacion-badge badge-pendiente">PENDIENTE</div>
                     <a th:href="@{'/profileView/' + ${post.desarrollador.id}}" class="btn-ver-perfil"><i class="fas fa-user"></i> VER PERFIL</a>
                     
-                    <!-- Botón de CV: Prioriza el específico de la oferta, si no el general del perfil -->
+                    
                     <a th:if="${post.cvAdjunto != null || (post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty())}" 
                        th:href="${post.cvAdjunto != null ? post.cvAdjunto : post.desarrollador.curriculum}" 
                        target="_blank" class="btn-ver-cv">
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ACEPTADAS -->
+        
         <div id="seccion-aceptadas" style="display: none; flex: 1; flex-direction: column; gap: 20px;">
             <div class="candidato-card" th:each="post : ${postulaciones}" th:if="${post.estado == 'ACEPTADA'}" style="border-color: rgba(0, 230, 118, 0.3);">
                 <div style="position: relative;">
@@ -135,7 +135,7 @@
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-    <!-- TOAST NEÓN -->
+    
     <div id="toast-notificacion" class="toast-neon" style="display: none;">
         <i class="fas fa-check-circle"></i>
         <div>

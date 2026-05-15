@@ -21,12 +21,12 @@
 
     <div class="grid-limitado">
 
-        <!-- TARJETA IZQUIERDA -->
+        
         <div class="tarjeta-limitada tarjeta-edicion-rapida">
 
             <div class="perfil-superior">
 
-                <!-- FOTO -->
+                
                 <form id="formFotoLimited"
                       action="/usuario/uploadFoto"
                       method="post"
@@ -52,7 +52,7 @@
                            onchange="subirFotoLimited(event)">
                 </form>
 
-                <!-- USERNAME -->
+                
                 <div class="contenedor-nombre-usuario">
 
                     <span class="nombre-usuario"
@@ -80,7 +80,7 @@
                     </button>
                 </form>
 
-                <!-- TEXTO INFO -->
+                
                 <p id="textoInfoLimited" class="mensaje-secundario" style="margin-top:15px;">
                     Estas son las funciones de edición básica para el perfil usuario. 
                     Si deseas tener un perfil más completo deberás cambiar a perfil desarrollador o empresa.
@@ -90,7 +90,7 @@
 
         </div>
 
-        <!-- TARJETA DERECHA -->
+        
         <div class="tarjeta-limitada">
 
             <div class="icono-lock">
@@ -117,7 +117,7 @@
 
 </main>
 
-<!-- TOAST -->
+
 <div id="toast-neon-box" class="toast-neon">
     <i id="toast-neon-icon" class="fas fa-check-circle"></i>
     <div>
@@ -158,9 +158,7 @@ window.addEventListener('load', () => {
     if (btnPerfil) btnPerfil.classList.add('activo');
 });
 
-/* =====================
-   TOAST NEON
-===================== */
+
 function mostrarToast(mensaje, tipo = "success") {
     const toast = document.getElementById('toast-neon-box');
     const icon = document.getElementById('toast-neon-icon');
@@ -183,9 +181,7 @@ function mostrarToast(mensaje, tipo = "success") {
     setTimeout(() => toast.classList.remove('mostrar'), 3000);
 }
 
-/* =====================
-   FOTO
-===================== */
+
 function subirFotoLimited(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -209,9 +205,7 @@ function subirFotoLimited(event) {
     .catch(() => mostrarToast("Error de conexión", "error"));
 }
 
-/* =====================
-   USERNAME
-===================== */
+
 document.getElementById("formUsernameLimited").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -280,14 +274,14 @@ function cancelarEdicionNombreLimited() {
     input.blur();
 }
 
-/* ESC */
+
 document.addEventListener("keydown", function (event) {
     if (event.key === "Escape" && editandoNombre) {
         cancelarEdicionNombreLimited();
     }
 });
 
-/* CLICK FUERA */
+
 document.addEventListener("mousedown", function (event) {
     if (!editandoNombre) return;
 

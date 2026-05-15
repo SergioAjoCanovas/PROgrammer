@@ -1,6 +1,4 @@
-/* =========================================================
-   FOOTER DEFINITIVO Y UNIFICADO
-   ========================================================= */
+
 .footer-principal {
     background-color: #1a1a1a !important; 
     border-top: 2px solid #FFCC00; 
@@ -22,7 +20,7 @@
     margin: 0 auto;
 }
 
-/* Alineación de la izquierda (Logo y nombres) */
+
 .footer-seccion {
     display: flex;
     align-items: center;
@@ -49,7 +47,7 @@
     color: #ffffff; 
 }
 
-/* Enlaces centrales */
+
 .footer-links a {
     color: #eee !important;
     text-decoration: none;
@@ -64,7 +62,7 @@
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
 }
 
-/* Iconos redes sociales */
+
 .footer-redes a {
     color: #eee !important; 
     font-size: 1.5rem;
@@ -73,7 +71,7 @@
     display: inline-block;
 }
 
-/* HOVER REDES SOCIALES (RESTABLECIDO AL ESTILO NEÓN) */
+
 .footer-redes a:hover {
     color: #FFCC00 !important; 
     text-shadow: 0 0 15px #FFCC00; 
@@ -81,7 +79,7 @@
     filter: brightness(1.2);
 }
 
-/* AJUSTE PARA MÓVILES */
+
 @media (max-width: 768px) {
     .footer-contenido {
         flex-direction: column;

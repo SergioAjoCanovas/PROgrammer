@@ -1,6 +1,6 @@
-/* --- ESTILOS DEL BOTÓN VOLVER --- */
+
 .contenedor-volver {
-    max-width: 1800px; /* Igual que en las otras vistas para que encaje a la izquierda */
+    max-width: 1800px; 
     width: 98%;
     margin: 30px auto 0 auto;
     padding: 0 20px;
@@ -25,11 +25,11 @@
     transform: translateX(-5px); 
 }
 
-/* --- Contenedor Principal --- */
+
 .contenedor-principal-oferta {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Subimos un poco para que no haya tanto hueco debajo de volver */
+    align-items: flex-start; 
     padding: 20px 20px 60px 20px; 
     min-height: calc(100vh - 150px);
 }
@@ -52,7 +52,7 @@
 }
 
 .cabecera-tarjeta h2 {
-    color: #FFCC00; /* Amarillo Neón de ProGrammer */
+    color: #FFCC00; 
     font-size: 2rem;
     margin-bottom: 5px;
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
@@ -63,7 +63,7 @@
     font-size: 1rem;
 }
 
-/* --- Formulario y Grid --- */
+
 .formulario-oferta {
     display: flex;
     flex-direction: column;
@@ -97,7 +97,7 @@
     margin-right: 5px;
 }
 
-/* --- Inputs Neón --- */
+
 .input-neon {
     background-color: rgba(0, 0, 0, 0.3);
     border: 1px solid #555;
@@ -125,7 +125,7 @@
     min-height: 100px;
 }
 
-/* --- Scrollbar personalizado neón para Textareas --- */
+
 .input-neon::-webkit-scrollbar {
     width: 6px;
 }
@@ -146,7 +146,7 @@
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
 }
 
-/* Para Firefox */
+
 .input-neon {
     scrollbar-width: thin;
     scrollbar-color: #FFCC00 rgba(255, 255, 255, 0.05);
@@ -157,7 +157,7 @@ select.input-neon option {
     color: white;
 }
 
-/* --- Tecnologías (Checkboxes estilo Etiquetas) --- */
+
 .contenedor-etiquetas {
     display: flex;
     flex-wrap: wrap;
@@ -169,7 +169,7 @@ select.input-neon option {
 }
 
 .etiqueta-checkbox input {
-    display: none; /* Ocultamos el checkbox real */
+    display: none; 
 }
 
 .etiqueta-checkbox span {
@@ -183,7 +183,7 @@ select.input-neon option {
     transition: all 0.3s;
 }
 
-/* Efecto al seleccionar la tecnología */
+
 .etiqueta-checkbox input:checked + span {
     background-color: rgba(255, 204, 0, 0.1);
     border-color: #FFCC00;
@@ -191,7 +191,7 @@ select.input-neon option {
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
 }
 
-/* --- Botones de Acción --- */
+
 .acciones-formulario {
     display: flex;
     justify-content: center;
@@ -238,11 +238,11 @@ select.input-neon option {
 }
 
 .seccion-categoria {
-    margin-bottom: 30px; /* Separación entre grupos */
+    margin-bottom: 30px; 
 }
 
 .titulo-categoria-form {
-    color: #FFCC00; /* Tu amarillo neón */
+    color: #FFCC00; 
     font-size: 1.1rem;
     text-transform: uppercase;
     margin-bottom: 15px;

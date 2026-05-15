@@ -23,7 +23,7 @@
 
     <main class="contenedor-principal-ofertas">
         <div class="cabecera-filtros">
-            <!-- PESTAÑAS PRINCIPALES (Estilo Admin Panel) -->
+            
             <div class="tabs-principales-jobsearching">
                 <button class="tab-principal-btn activo" id="tab-btn-ofertas" onclick="cambiarSeccionPrincipal('seccion-ofertas')">
                     <i class="fas fa-briefcase"></i> Explorar Ofertas
@@ -34,7 +34,7 @@
             </div>
 
             <div class="filtro-contenedor-grupal">
-                <!-- CONTENIDO: EXPLORAR OFERTAS -->
+                
                 <div class="seccion-principal-content activo" id="seccion-ofertas">
                     <div class="grupo-filtros">
                         <div class="botones-grupo">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <!-- CONTENIDO: MIS POSTULACIONES -->
+                
                 <div class="seccion-principal-content" id="seccion-postulaciones" style="display: none;">
                     <div class="grupo-filtros">
                         <div class="botones-grupo">
@@ -105,7 +105,7 @@
                 <button class="boton-postular" th:disabled="${!oferta.activa}" th:data-activa="${oferta.activa}" th:onclick="'irAJobView(' + ${oferta.id} + ')'">POSTULAR</button>
             </div>
 
-            <!-- OVERLAY DE TODAS LAS TECHS (COMO EN JOBVIEW) -->
+            
             <div class="vista-todas-techs" th:if="${#lists.size(oferta.tecnologias) > 7}">
                 <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
                 <h4 class="titulo-overlay">Tecnologías</h4>

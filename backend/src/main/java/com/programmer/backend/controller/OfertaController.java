@@ -134,12 +134,11 @@ public class OfertaController {
         oferta.setOfrecemos(ofrecemos);
         oferta.setRangoSalarial(rangoSalarial);
         
-        // CORRECCIÓN AQUÍ: Solo establecemos la empresa creadora y la activamos si NO es una edición
+        
         if (!esEdicion) {
             oferta.setActiva(true);
             usuarioRepository.findByUsername(usernameEmpresa).ifPresent(oferta::setEmpresa);
         }
-        // Si es edición, la oferta ya tiene su empresa original cargada de la base de datos, así que no la sobreescribimos.
 
         if (tecnologiasIds != null && !tecnologiasIds.isEmpty()) {
             oferta.setTecnologias(tecnologiaRepository.findAllById(tecnologiasIds));
@@ -216,7 +215,6 @@ public class OfertaController {
         return "redirect:/jobsearching";
     }
 
-    // --- AQUÍ ESTÁ LA MAGIA PARA EL CV ---
     @PostMapping("/api/postular")
     public String enviarPostulacion(@RequestParam("ofertaId") Long ofertaId, 
                                     @RequestParam("username") String username,

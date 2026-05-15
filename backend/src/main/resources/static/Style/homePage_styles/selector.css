@@ -1,4 +1,4 @@
-/* Contenedor principal centrado */
+
 .contenedor-selector {
     flex: 1;
     display: flex;
@@ -15,7 +15,7 @@
     max-width: 1200px;
 }
 
-/* Título estilo neón */
+
 .titulo-selector {
     color: white;
     font-size: 3rem;
@@ -26,7 +26,7 @@
     transition: font-size 0.3s ease;
 }
 
-/* Contenedor de botones en fila */
+
 .contenedor-botones-gigantes {
     display: flex;
     gap: 40px;
@@ -35,7 +35,7 @@
     align-items: center;
 }
 
-/* BOTONES FLUIDOS Y RESPONSIVES */
+
 .btn-seleccion-neon {
     text-decoration: none;
     background: transparent;
@@ -43,8 +43,8 @@
     color: #FFCC00;
     padding: 40px 20px; 
     border-radius: 20px; 
-    width: 100%;          /* Cambiado a 100% para fluidez */
-    max-width: 380px;     /* Límite máximo en pantallas grandes */
+    width: 100%;          
+    max-width: 380px;     
     font-size: 1.5rem;
     font-weight: bold;
     display: flex;
@@ -54,7 +54,7 @@
     gap: 15px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     
-    /* ILUMINACIÓN BASE */
+    
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.3), 
                 inset 0 0 8px rgba(255, 204, 0, 0.1);
 }
@@ -69,7 +69,7 @@
     text-align: center;
 }
 
-/* Efecto HOVER: Iluminación máxima */
+
 .btn-seleccion-neon:hover {
     background: #FFCC00;
     color: #000;
@@ -78,16 +78,14 @@
     transform: scale(1.08);
 }
 
-/* Efecto al pulsar */
+
 .btn-seleccion-neon:active {
     transform: scale(0.95);
 }
 
-/* =========================================
-   DISEÑO RESPONSIVE MÓVIL Y TABLET
-   ========================================= */
 
-/* Tablets y pantallas medianas */
+
+
 @media (max-width: 850px) {
     .btn-seleccion-neon {
         max-width: 320px;
@@ -95,18 +93,18 @@
         font-size: 1.3rem;
     }
     .contenedor-botones-gigantes {
-        gap: 25px; /* Reducimos el espacio entre botones */
+        gap: 25px; 
     }
 }
 
-/* Móviles estándar */
+
 @media (max-width: 600px) {
     .titulo-selector {
         font-size: 2rem;
         margin-bottom: 35px;
     }
     .btn-seleccion-neon {
-        max-width: 280px; /* Se hace más estrecho para móviles */
+        max-width: 280px; 
         padding: 25px 10px;
         font-size: 1.1rem;
         border-radius: 15px; 
@@ -116,13 +114,13 @@
     }
 }
 
-/* Móviles muy pequeños (iPhone SE, etc.) */
+
 @media (max-width: 360px) {
     .titulo-selector {
         font-size: 1.6rem;
     }
     .btn-seleccion-neon {
-        max-width: 90%; /* Ocupa casi toda la pantalla */
+        max-width: 90%; 
         font-size: 1rem;
     }
     .btn-seleccion-neon i {
@@ -133,9 +131,7 @@
     }
 }
 
-/* =========================================
-   ESTILO ENLACE ACTIVO (HEADER)
-   ========================================= */
+
 #header-placeholder a.activo, 
 #header-placeholder a.activo i, 
 #header-placeholder a.activo span {

@@ -1,13 +1,11 @@
-/* ============================================================
-    RESET Y ESTRUCTURA (CORREGIDO PARA FOOTER)
-   ============================================================ */
+
 html, body {
     margin: 0;
     padding: 0;
     background-color: #0f0f0f;
-    min-height: 100vh; /* Ocupa el alto de la pantalla */
+    min-height: 100vh; 
     display: flex;
-    flex-direction: column; /* Alineación vertical */
+    flex-direction: column; 
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -15,13 +13,11 @@ html, body {
     display: flex;
     gap: 25px;
     padding: 30px;
-    flex: 1; /* Esto empuja el footer hacia abajo */
+    flex: 1; 
     align-items: flex-start;
 }
 
-/* ============================================================
-    COLUMNA PERFIL
-   ============================================================ */
+
 .columna-perfil {
     width: 250px;
     display: flex;
@@ -45,9 +41,7 @@ html, body {
     flex: 1;
 }
 
-/* ============================================================
-    TARJETAS
-   ============================================================ */
+
 .tarjeta-acordeon {
     background: linear-gradient(145deg, #1a1a1a, #222);
     border: 2px solid #FFCC00;
@@ -70,9 +64,7 @@ html, body {
     flex-direction: column;
 }
 
-/* ============================================================
-    FORMULARIO
-   ============================================================ */
+
 .campo {
     display: flex;
     flex-direction: column;
@@ -97,9 +89,7 @@ textarea:focus {
     box-shadow: 0 0 8px rgba(255, 204, 0, 0.2);
 }
 
-/* ============================================================
-    ESTRELLAS (EFECTO NEÓN)
-   ============================================================ */
+
 .estrellas {
     display: flex;
     gap: 12px;
@@ -126,9 +116,7 @@ textarea:focus {
     text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
 }
 
-/* ============================================================
-    LISTADO DE RESEÑAS
-   ============================================================ */
+
 .contenedor-reseñas {
     max-height: 500px;
     overflow-y: auto;
@@ -161,13 +149,11 @@ textarea:focus {
     font-weight: bold;
 }
 
-/* Scrollbar personalizado */
+
 .contenedor-reseñas::-webkit-scrollbar { width: 6px; }
 .contenedor-reseñas::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 10px; }
 
-/* ============================================================
-    BOTONES
-   ============================================================ */
+
 .boton-ver {
     background-color: #FFCC00;
     color: black;
@@ -201,9 +187,7 @@ textarea:focus {
     color: #000;
 }
 
-/* ============================================================
-    RESPONSIVE
-   ============================================================ */
+
 @media (max-width: 900px) {
     .contenedor-principal { flex-direction: column; }
     .zona-reseñas { flex-direction: column; }

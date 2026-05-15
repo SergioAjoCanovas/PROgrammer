@@ -18,7 +18,7 @@
             opacity: 1 !important;
         }
 
-        /* Estilos del Modal Personalizado */
+        
         .modal-overlay {
             display: none;
             position: fixed;
@@ -79,7 +79,7 @@
             transition: all 0.3s;
         }
         
-        /* Tema Verificar (Azul Neón) */
+        
         .modal-verificar {
             border-color: #00f2ff;
             box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
@@ -88,7 +88,7 @@
         .modal-verificar .btn-confirmar-modal { background: rgba(0, 242, 255, 0.1); border: 1px solid #00f2ff; color: #00f2ff; }
         .modal-verificar .btn-confirmar-modal:hover { background: #00f2ff; color: #000; box-shadow: 0 0 15px #00f2ff; }
 
-        /* Tema Eliminar (Rojo Neón) */
+        
         .modal-eliminar {
             border-color: #ff003c;
             box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
@@ -97,7 +97,7 @@
         .modal-eliminar .btn-confirmar-modal { background: rgba(255, 0, 60, 0.1); border: 1px solid #ff003c; color: #ff003c; }
         .modal-eliminar .btn-confirmar-modal:hover { background: #ff003c; color: #fff; box-shadow: 0 0 15px #ff003c; }
 
-        /* Hover de Proyectos */
+        
         .proyecto-item {
             transition: all 0.3s ease;
         }
@@ -200,7 +200,7 @@
                 <p>No hay usuarios verificados.</p>
             </div>
         </div>
-        </div> <!-- Fin seccion cuentas -->
+        </div> 
 
         <div id="seccion-proyectos" class="main-tab-content" style="display: none;">
             <div class="tabs-admin sub-tabs">
@@ -211,7 +211,7 @@
             <div id="proyectos-pendientes" class="tab-content-proyectos activo" style="display: block;">
                 <div class="grid-usuarios">
                     <div class="card-usuario" th:each="entry : ${proyectosNoValidados}" style="align-self: start;">
-                        <!-- Info del usuario (desplegable) -->
+                        
                         <div class="usuario-proyectos-header" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid #333;" th:onclick="'toggleUserProjects(' + ${entry.key.id} + ')'">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div style="position: relative; display: inline-block;">
@@ -229,7 +229,7 @@
                             <i class="fas fa-chevron-down" th:id="'icon-user-' + ${entry.key.id}"></i>
                         </div>
 
-                        <!-- Lista de proyectos del usuario -->
+                        
                         <div th:id="'proyectos-user-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
                             <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; text-align: center;">
                                 <h4 th:text="${p.titulo}" style="margin: 0 0 10px 0; color: #FFCC00; text-align: center; word-break: break-word; overflow-wrap: break-word;"></h4>
@@ -275,7 +275,7 @@
                         <div th:id="'proyectos-user-validados-' + ${entry.key.id}" style="display: none; margin-top: 15px; text-align: left;">
                             <div th:each="p : ${entry.value}" class="proyecto-item" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #444; position: relative; text-align: center;">
                                 <h4 th:text="${p.titulo}" style="margin: 0 0 5px 0; color: #FFCC00; text-align: center; word-break: break-word; overflow-wrap: break-word;"></h4>
-                                <!-- Div azulito de verificado -->
+                                
                                 <div style="margin-bottom: 10px; text-align: center;">
                                     <span style="background: rgba(0, 242, 255, 0.1); color: #00f2ff; border: 1px solid #00f2ff; font-size: 0.7em; padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block;">
                                         <i class="fas fa-check-circle"></i> VERIFICADO
@@ -300,7 +300,7 @@
                     <p>No hay proyectos validados.</p>
                 </div>
             </div>
-        </div> <!-- Fin seccion proyectos -->
+        </div> 
     </div>
 </main>
 

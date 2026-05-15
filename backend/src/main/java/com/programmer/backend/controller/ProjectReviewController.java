@@ -157,7 +157,7 @@ public class ProjectReviewController {
     }
 
     // =========================
-    // VER REVIEWS (🔥 ESTE ES EL ÚNICO)
+    // VER REVIEWS 
     // =========================
     @GetMapping("/{proyectoId}")
     public String verReviews(@PathVariable Long proyectoId, Model model) {
@@ -173,7 +173,7 @@ public class ProjectReviewController {
         List<ProjectReview> reviews =
                 reviewRepository.findByProyectoOrderByFechaDesc(proyecto);
 
-        // ⚠️ evitar null en medias
+        // evitar null en medias
         Double mediaArq = projectReviewService.mediaArquitectura(proyectoId);
         Double mediaLim = projectReviewService.mediaLimpieza(proyectoId);
         Double mediaDoc = projectReviewService.mediaDocumentacion(proyectoId);

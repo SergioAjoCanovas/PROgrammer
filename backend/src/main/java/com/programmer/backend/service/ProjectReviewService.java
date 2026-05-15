@@ -41,9 +41,6 @@ public class ProjectReviewService {
         return val != null ? val : 0;
     }
 
-    // =========================================================
-    // (OPCIONAL PERO ÚTIL A FUTURO) MEDIA TOTAL
-    // =========================================================
     public double mediaTotal(Long projectId) {
         double arq = mediaArquitectura(projectId);
         double lim = mediaLimpieza(projectId);

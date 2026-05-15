@@ -1,4 +1,4 @@
-/* --- ESTILOS GENERALES --- */
+
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@ body {
     color: white;
 }
 
-/* --- LOGOTIPO --- */
+
 .contenedor-logotipo {
     display: flex;
     align-items: center;
@@ -23,7 +23,7 @@ body {
     display: block;
 }
 
-/* --- ENCABEZADO PRINCIPAL --- */
+
 .encabezado-principal {
     background-color: #1a1a1a; 
     display: flex;
@@ -41,14 +41,14 @@ body {
     flex: 1; 
 }
 
-/* --- NAVEGACIÓN CENTRAL --- */
+
 .navegacion-central {
     display: flex;
-    /* ESTA ES LA MAGIA: Sustituimos el gap: 70px fijo por uno elástico */
+    
     gap: clamp(10px, 1.5vw, 50px); 
     justify-content: center;
     flex: 2; 
-    min-width: 0; /* Permite que los elementos se encojan sin desbordar */
+    min-width: 0; 
 }
 
 .navegacion-central a {
@@ -59,7 +59,7 @@ body {
     flex-direction: column; 
     align-items: center; 
     gap: 5px; 
-    position: relative; /* Asegura que los globos de notificación se posicionen bien */
+    position: relative; 
 }
 
 .navegacion-central a i {
@@ -71,12 +71,12 @@ body {
 }
 
 .texto-icono {
-    /* Hacemos la fuente elástica para que encaje el Admin */
+    
     font-size: clamp(10px, 0.75vw, 12px); 
     font-weight: 600;
     text-transform: uppercase; 
     letter-spacing: 0.5px;
-    white-space: nowrap; /* EVITA QUE EL TEXTO SALTE DE LÍNEA */
+    white-space: nowrap; 
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 
@@ -88,11 +88,11 @@ body {
                   0 0 40px rgba(255, 204, 0, 0.6);
 }
 
-/* --- SECCIÓN DERECHA --- */
+
 .seccion-derecha {
     display: flex;
     align-items: center;
-    /* Volvemos el gap elástico para que ceda espacio al Admin */
+    
     gap: clamp(15px, 2vw, 30px); 
     justify-content: flex-end;
     flex: 1;
@@ -113,7 +113,7 @@ body {
     color: white;
 }
 
-/* --- ESTILOS DE LOS ICONOS DERECHOS --- */
+
 .avatar-usuario {
     width: 42px;
     height: 42px;
@@ -126,7 +126,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* LA CAJA DEL ICONO (Estática) */
+
 .icono-engranaje {
     color: white;
     font-size: 1.8rem;
@@ -140,14 +140,14 @@ body {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* EL DIBUJO DEL ICONO (Lo que realmente gira) */
+
 .icono-engranaje::before {
     display: inline-block;
     transition: transform 0.3s ease;
     transform-origin: center center;
 }
 
-/* --- ANIMACIONES EN CONJUNTO --- */
+
 .item-derecha:hover .avatar-usuario {
     box-shadow: 0 0 20px #FFCC00;
     transform: scale(1.1);
@@ -171,9 +171,7 @@ body {
 }
 
 
-/* =========================================
-   SISTEMA DE NOTIFICACIONES (AVISOS) - ANIMACIÓN SUAVE
-   ========================================= */
+
 
 .contenedor-avisos {
     position: relative;
@@ -196,7 +194,7 @@ body {
     pointer-events: none;
 }
 
-/* --- PANEL CON ANIMACIÓN DE ENTRADA Y SALIDA --- */
+
 .panel-notificaciones {
     visibility: hidden; 
     opacity: 0;
@@ -239,7 +237,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* --- Botón "Marcar como leído" horizontal --- */
+
 .marcar-leido {
     background-color: #2a2a2a;
     color: #aaa;
@@ -354,9 +352,7 @@ body {
     font-size: 1.2rem;
 }
 
-/* =========================================================
-   RESPONSIVE PARA MOVILES Y TABLETS 
-   ========================================================= */
+
 
 .btn-menu-movil {
     display: none;
@@ -375,7 +371,7 @@ body {
 
 @media (max-width: 1100px) {
     .navegacion-central {
-        /* Distancia dinámica aún más pequeña para tablets apaisadas */
+        
         gap: clamp(5px, 1vw, 20px); 
     }
 }
@@ -454,13 +450,13 @@ body {
     }
 
     .contenedor-avisos {
-        display: contents; /* Permite que el enlace interno se comporte como un hijo directo del nav */
+        display: contents; 
     }
 
     #badge-avisos, #badge-chats {
         top: 10px !important;
         right: auto !important;
-        left: 50px !important; /* Posicionado sobre el icono en modo fila */
+        left: 50px !important; 
     }
 
     .panel-notificaciones {

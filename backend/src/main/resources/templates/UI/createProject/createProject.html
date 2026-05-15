@@ -17,15 +17,15 @@
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 20px;
-            background: rgba(10, 10, 10, 0.6); /* Fondo oscuro */
+            background: rgba(10, 10, 10, 0.6); 
         }
         
         .titulo-categoria {
-            color: #00f3ff; /* Color cyan */
+            color: #00f3ff; 
             font-size: 0.95rem;
             margin-bottom: 15px;
             padding-left: 10px;
-            border-left: 3px solid #FFCC00; /* Raya amarilla a la izquierda */
+            border-left: 3px solid #FFCC00; 
             text-transform: uppercase;
             font-weight: bold;
             letter-spacing: 1px;
@@ -33,7 +33,7 @@
         
         .grid-tecnologias {
             display: grid;
-            /* Crea columnas automáticas que ocupen al menos 140px */
+            
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 12px 10px;
         }
@@ -52,7 +52,7 @@
             color: #FFCC00;
         }
 
-        /* Estilo para los iconos de las tecnologías */
+        
         .tech-icon {
             color: #FFCC00;
             font-size: 1.1rem;
@@ -60,7 +60,7 @@
             text-align: center;
         }
 
-        /* Checkbox base */
+        
         .item-check input[type="checkbox"] {
             cursor: pointer;
             width: 15px;
@@ -69,7 +69,7 @@
             margin: 0;
         }
 
-        /* BOTONES TOGGLE TECH (Marcar/Desmarcar) - EXACTOS DE ADD TECHNOLOGY */
+        
         .btn-tech-toggle {
             background: transparent;
             padding: 6px 15px;
@@ -84,7 +84,7 @@
             gap: 8px;
         }
 
-        /* MARCAR (Cyan) */
+        
         .btn-tech-marcar {
             color: #00f3ff;
             border: 2px solid #00f3ff;
@@ -96,7 +96,7 @@
             transform: scale(1.05);
         }
 
-        /* DESMARCAR (Rojo) */
+        
         .btn-tech-desmarcar {
             color: #ff4444;
             border: 2px solid #ff4444;
@@ -258,7 +258,7 @@
         let enviando = false;
     
         // IMPORTANTE: Thymeleaf puede inyectar null si es create
-        const seleccionadas = /*[[${tecnologiasSeleccionadas}]]*/ [];
+        const seleccionadas =  [];
         const techSeleccionadasSafe = Array.isArray(seleccionadas) ? seleccionadas : [];
     
         // -------------------- INIT --------------------
@@ -584,7 +584,7 @@
     <script th:if="${error != null}">
         document.addEventListener("DOMContentLoaded", function () {
 
-            let mensaje = /*[[${error}]]*/ null;
+            let mensaje =  null;
 
             if (mensaje === "FILE_TOO_LARGE") {
                 mensaje = "Una imagen es demasiado grande";

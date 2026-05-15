@@ -1,6 +1,4 @@
-/* =========================================================
-   profile.css (Estilo unificado y amplio)
-   ========================================================= */
+
 
 body.fondo-oscuro-neon {
     background-color: #000000 !important;
@@ -15,7 +13,7 @@ body.fondo-oscuro-neon {
     width: 98%;
     margin: 40px auto;
     padding: 0 20px;
-    gap: 60px; /* Amplitud entre izquierda y derecha */
+    gap: 60px; 
     align-items: flex-start;
 }
 
@@ -23,7 +21,7 @@ body.fondo-oscuro-neon {
     flex: 0 0 380px;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Tarjetas más juntas */
+    gap: 15px; 
 }
 
 .tarjeta-perfil {
@@ -40,11 +38,11 @@ body.fondo-oscuro-neon {
 .perfil-superior {
     padding: 30px 20px 20px 20px !important;
     text-align: center;
-    border-bottom: 2px solid #aaaaaa !important; /* Línea separadora gris */
+    border-bottom: 2px solid #aaaaaa !important; 
     margin-bottom: 20px !important;
 }
 
-/* Foto de 90px que no se deforma */
+
 .foto-perfil-contenedor {
     position: relative;
     width: 90px !important; 

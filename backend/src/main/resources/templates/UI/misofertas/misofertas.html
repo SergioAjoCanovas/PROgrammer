@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* Estilos para los botones de creación */
+        
         .boton-crear-oferta {
             background: #050505;
             color: #FFCC00;
@@ -86,7 +86,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN 1: MIS OFERTAS (Para Admin y para Empresa normal) -->
+        
         <div th:if="${!#lists.isEmpty(misOfertas) or !#lists.isEmpty(ofertas)}" class="seccion-misofertas">
             <h3 th:if="${esAdmin}" class="titulo-seccion-admin"><i class="fas fa-user-tie"></i> Mis Ofertas Propias</h3>
             
@@ -133,7 +133,7 @@
                     <button class="boton-postular" th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">VER POSTULACIONES</button>
                 </div>
 
-                <!-- OVERLAY DE TODAS LAS TECHS (COMO EN JOBSEARCHING) -->
+                
                 <div class="vista-todas-techs" th:if="${#lists.size(oferta.tecnologias) > 7}">
                     <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
                     <h4 class="titulo-overlay">Tecnologías</h4>
@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN 2: OFERTAS DE OTRAS EMPRESAS (Solo Admin) -->
+        
         <div th:if="${esAdmin and !#maps.isEmpty(ofertasPorEmpresa)}" class="seccion-empresas-admin">
             <h3 class="titulo-seccion-admin"><i class="fas fa-building"></i> Ofertas de Empresas</h3>
             
@@ -191,7 +191,7 @@
                             <button class="boton-postular" th:onclick="'window.location.href=\'/ver-postulaciones/\' + ' + ${oferta.id}">VER POSTULACIONES</button>
                         </div>
 
-                        <!-- OVERLAY DE TODAS LAS TECHS (COMO EN JOBSEARCHING) -->
+                        
                         <div class="vista-todas-techs" th:if="${#lists.size(oferta.tecnologias) > 7}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); toggleTechExpansion(this)"></i>
                             <h4 class="titulo-overlay">Tecnologías</h4>

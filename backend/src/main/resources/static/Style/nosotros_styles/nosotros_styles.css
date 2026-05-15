@@ -1,6 +1,4 @@
-/* ============================================================
-    1. ESTRUCTURA Y RESET PARA FOOTER
-   ============================================================ */
+
 :root {
     --amarillo-neon: #FFCC00;
     --negro-tarjeta: #1a1a1a;
@@ -11,22 +9,20 @@
 .cuerpo-flexible {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Asegura que ocupe toda la pantalla */
+    min-height: 100vh; 
     margin: 0;
     background-color: var(--negro-fondo) !important;
 }
 
 .contenedor-principal-nosotros {
-    flex: 1; /* Empuja el footer hacia abajo */
+    flex: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 60px 20px;
 }
 
-/* ============================================================
-    2. CONTENEDOR VIDRIO
-   ============================================================ */
+
 .vidrio-contenedor-nosotros {
     background-color: var(--negro-tarjeta) !important;
     border: 1px solid var(--amarillo-neon) !important; 
@@ -67,9 +63,7 @@
     text-shadow: 0 0 15px var(--amarillo-neon);
 }
 
-/* ============================================================
-    3. GRID Y TARJETAS
-   ============================================================ */
+
 .titulo-seccion {
     color: #fff;
     text-align: center;
@@ -134,15 +128,13 @@
     font-weight: 500;
 }
 
-/* ============================================================
-    4. BOTONES (LINKEDIN AMARILLO Y CV)
-   ============================================================ */
+
 .acciones-equipo {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    min-height: 50px; /* Evita saltos si el botón CV no carga */
+    min-height: 50px; 
 }
 
 .btn-icon {
@@ -151,7 +143,7 @@
     transition: 0.3s;
 }
 
-/* Hover LinkedIn Amarillo Neón */
+
 .btn-icon.linkedin:hover {
     color: var(--amarillo-neon);
     text-shadow: 0 0 10px var(--amarillo-neon);

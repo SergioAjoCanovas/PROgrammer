@@ -97,7 +97,7 @@ public class AuthController {
         Usuario usuarioGuardado = registroService.registrarUsuario(nuevoUsuario);
 
         // =========================
-        // 🔥 CREACIÓN DE PERFIL AUTOMÁTICA
+        // CREACIÓN DE PERFIL AUTOMÁTICA
         // =========================
 
         String rolNombre = rolElegido.getNombre();

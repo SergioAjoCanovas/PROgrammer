@@ -1,6 +1,4 @@
-/* ============================================================
-    1. ESTRUCTURA Y FONDO
-   ============================================================ */
+
 :root {
     --amarillo-neon: #FFCC00;
     --negro-tarjeta: #1a1a1a; 
@@ -25,9 +23,7 @@
     padding: 60px 20px;
 }
 
-/* ============================================================
-    2. TARJETA
-   ============================================================ */
+
 .vidrio-contenedor-terminos {
     background-color: var(--negro-tarjeta) !important;
     border: 1px solid var(--amarillo-neon) !important; 
@@ -70,9 +66,7 @@
     text-shadow: 0 0 15px var(--amarillo-neon);
 }
 
-/* ============================================================
-    3. CONTENIDO Y SCROLL (ARRASTRABLE)
-   ============================================================ */
+
 .contenido-legal {
     max-height: 400px;
     overflow-y: scroll; 
@@ -80,7 +74,7 @@
     margin-bottom: 30px;
 }
 
-/* --- ESTILO DE LA BARRA DE SCROLL --- */
+
 .contenido-legal::-webkit-scrollbar {
     width: 12px; 
 }
@@ -97,10 +91,10 @@
     cursor: pointer;
 }
 
-/* HOVER DE LA BARRA CON ILUMINACIÓN SUAVIZADA */
+
 .contenido-legal::-webkit-scrollbar-thumb:hover {
-    background: #e6b800; /* Amarillo más denso, no blanco */
-    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3); /* Brillo sutil */
+    background: #e6b800; 
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.3); 
 }
 
 .contenido-legal section {
@@ -121,9 +115,7 @@
     text-align: left;
 }
 
-/* ============================================================
-    4. BOTÓN
-   ============================================================ */
+
 .contenedor-boton-aceptar {
     display: flex;
     justify-content: center;

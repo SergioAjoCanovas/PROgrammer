@@ -1,6 +1,4 @@
-/* =========================================================
-   1. FONDO Y ESTRUCTURA (UNIFICADO CON GRID)
-   ========================================================= */
+
 
 body.fondo-oscuro-neon {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%) !important;
@@ -28,9 +26,7 @@ body.fondo-oscuro-neon::before {
     z-index: -1;
 }
 
-/* =========================================================
-   BOTÓN VOLVER
-   ========================================================= */
+
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -69,9 +65,7 @@ body.fondo-oscuro-neon::before {
     flex: 1 0 auto;
 }
 
-/* =========================================================
-   2. TARJETAS NEÓN Y PERFIL
-   ========================================================= */
+
 
 .tarjeta-perfil, 
 .tarjeta-proyecto-detalle, 
@@ -94,7 +88,7 @@ body.fondo-oscuro-neon::before {
     max-width: 100%;
 }
 
-/* Efecto hover suave para el brillo (sin desplazar la tarjeta entera) */
+
 .tarjeta-perfil:hover,
 .tarjeta-proyecto-detalle:hover,
 .tarjeta-reseñas-ver:hover {
@@ -199,9 +193,7 @@ body.fondo-oscuro-neon::before {
     margin: 25px 0;
 }
 
-/* =========================================================
-   ENLACES DOTTED (El efecto de desplazamiento individual está aquí)
-   ========================================================= */
+
 .lista-dotted {
     display: flex;
     flex-direction: column;
@@ -233,17 +225,15 @@ body.fondo-oscuro-neon::before {
 .item-dotted:hover {
     background-color: rgba(255, 204, 0, 0.08);
     color: #FFCC00;
-    transform: translateX(6px); /* Aquí está el desplazamiento de los recuadros */
+    transform: translateX(6px); 
     box-shadow: 0 0 15px rgba(255, 204, 0, 0.25);
 }
 
 .item-dotted:hover i {
-    transform: scale(1.2); /* El icono crece un poco */
+    transform: scale(1.2); 
 }
 
-/* =========================================================
-   3. BOTONES Y ACCIONES
-   ========================================================= */
+
 
 .btn-accion-neon {
     padding: 10px 20px;
@@ -335,9 +325,7 @@ body.fondo-oscuro-neon::before {
     font-weight: bold;
 }
 
-/* =========================================================
-   4. GALERÍA Y DESCRIPCIÓN
-   ========================================================= */
+
 
 .galeria-capturas {
     display: flex;
@@ -399,9 +387,7 @@ body.fondo-oscuro-neon::before {
     max-width: 100%;
 }
 
-/* =========================================================
-   5. SECCIÓN RESEÑAS / FEEDBACK
-   ========================================================= */
+
 
 .medias-reseñas-ver {
     background: rgba(255, 204, 0, 0.05);
@@ -483,15 +469,13 @@ body.fondo-oscuro-neon::before {
     word-break: break-word;
 }
 
-/* =========================================================
-   ANIMACIÓN SMOOTHIE CARGA POR LOTES
-   ========================================================= */
+
 
 .resena-extra-wrapper {
     display: grid;
-    grid-template-rows: 0fr; /* Altura colapsada */
+    grid-template-rows: 0fr; 
     transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    visibility: hidden; /* Evita parpadeos antes de animar */
+    visibility: hidden; 
 }
 
 .resena-extra-wrapper.resena-visible {
@@ -499,16 +483,14 @@ body.fondo-oscuro-neon::before {
 }
 
 .resena-extra-wrapper.expandido {
-    grid-template-rows: 1fr; /* Altura real del contenido */
+    grid-template-rows: 1fr; 
 }
 
 .resena-extra-inner {
     overflow: hidden;
 }
 
-/* =========================================================
-   6. MODAL NEÓN
-   ========================================================= */
+
 
 .modal {
     display: none;
@@ -576,9 +558,7 @@ body.fondo-oscuro-neon::before {
     letter-spacing: 2px;
 }
 
-/* =========================================================
-   7. RESPONSIVE
-   ========================================================= */
+
 
 @media (max-width: 1100px) {
     .contenedor-principal {
@@ -593,7 +573,7 @@ body.fondo-oscuro-neon::before {
     }
 }
 
-/* FIX ESTRELLAS */
+
 .estrellas {
     display: flex;
     gap: 3px;
@@ -611,7 +591,7 @@ body.fondo-oscuro-neon::before {
 .estrellas i.empty {
     color: #333;
 }
-/* Estilo de scroll para contenedor de reseñas */
+
 .contenedor-reseñas {
     max-height: 380px;
     overflow-y: auto;

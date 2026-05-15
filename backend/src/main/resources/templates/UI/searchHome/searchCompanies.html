@@ -163,12 +163,10 @@
                 <div th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-contenedor' : ''">
                     <div th:id="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'track' : ''" 
                          th:class="${(searchQuery == null or searchQuery.isEmpty()) and (selectedTechIds == null or selectedTechIds.isEmpty())} ? 'carrusel-track' : 'grid-inner-empresas'">
-                                               <div class="tarjeta-perfil-neon" th:each="company : ${companies}"
-                             th:with="fullBio=${company.usuario.biografia != null and !#strings.isEmpty(company.usuario.biografia.trim()) ? company.usuario.biografia : 'Sin descripción'},
-                                     words=${#strings.arraySplit(fullBio, ' ')},
-                                     bioWords=${#lists.size(words) > 10 ? #strings.arrayJoin(#lists.subList(words, 0, 10), ' ') : fullBio},
-                                     bioFinal=${#strings.length(bioWords) > 50 ? #strings.substring(bioWords, 0, 50) : bioWords},
-                                     esLarga=${#strings.length(fullBio.trim()) > #strings.length(bioFinal.trim())}">
+                    <div class="tarjeta-perfil-neon" th:each="company : ${companies}"
+                        th:with="fullBio=${company.usuario.biografia != null and !#strings.isEmpty(company.usuario.biografia.trim()) ? company.usuario.biografia : 'Sin descripción'},
+                                bioFinal=${#strings.length(fullBio) > 60 ? #strings.substring(fullBio, 0, 60) : fullBio},
+                                esLarga=${#strings.length(fullBio) > 60}">
                             
                             <a th:href="@{/profileView/{id}(id=${company.usuario.id})}" class="link-absoluto-tarjeta"></a>
                             

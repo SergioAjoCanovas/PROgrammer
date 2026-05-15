@@ -340,6 +340,20 @@
             text-shadow: 0 0 10px #39FF14, 0 0 20px rgba(57, 255, 20, 0.5);
             transform: scale(1.2);
         }
+
+        /* ESTILO PARA BOTONES DESACTIVADOS (EMPRESAS) */
+        .boton-desactivado {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #666 !important;
+            border: 1px solid #444 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+        }
+        .boton-desactivado:hover {
+            transform: none !important;
+            text-shadow: none !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
 </style>
 </head>
 <body class="fondo-oscuro-neon">
@@ -415,10 +429,25 @@
                             <input type="text" id="linkedin-input" class="input-nombre-perfil input-red" style="display:none; position:absolute;">
                         </li>
                     </ul>
-                    <button class="boton-amarillo-solido" onclick="document.getElementById('inputCV').click()">ACTUALIZAR CURRÍCULUM</button>
+                    
+                    <button class="boton-amarillo-solido" 
+                            onclick="if(!this.disabled) document.getElementById('inputCV').click()"
+                            th:disabled="${usuarioHeader != null and usuarioHeader.rol != null and usuarioHeader.rol.nombre == 'COMPANY'}"
+                            th:classappend="${usuarioHeader != null and usuarioHeader.rol != null and usuarioHeader.rol.nombre == 'COMPANY'} ? 'boton-desactivado' : ''"
+                            th:title="${usuarioHeader != null and usuarioHeader.rol != null and usuarioHeader.rol.nombre == 'COMPANY'} ? 'Las cuentas de empresa no utilizan currículum' : ''">
+                        ACTUALIZAR CURRÍCULUM
+                    </button>
                     <input type="file" id="inputCV" accept="application/pdf" style="display:none;" onchange="subirCV(event)">
-                    <div id="cv-container" class="cv-container" th:attr="data-url=${cvUrl}, data-nombre=${cvNombre}"></div>
-                </div>
+                    
+                    <div id="cv-container" class="cv-container" 
+                         th:style="${usuarioHeader != null and usuarioHeader.rol != null and usuarioHeader.rol.nombre == 'COMPANY'} ? 'display: none;' : ''"
+                         th:attr="data-url=${cvUrl}, data-nombre=${cvNombre}"></div>
+                         
+                    <div th:if="${usuarioHeader != null and usuarioHeader.rol != null and usuarioHeader.rol.nombre == 'COMPANY'}" 
+                         style="color: #888; font-size: 0.85rem; font-style: italic; margin-top: 15px; text-align: center;">
+                        <i class="fas fa-info-circle"></i> Las empresas no necesitan subir currículum.
+                    </div>
+                    </div>
             </div>
 
             <div class="tarjeta-acordeon">
@@ -495,7 +524,6 @@
                             </div>
                         </div>
 
-                        <!-- OVERLAY DE TODAS LAS TECHS (COMO EN SEARCH) -->
                         <div class="vista-todas-techs" th:if="${#lists.size(p.tecnologias) > 3}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('tech-expanded')"></i>
                             <h4 class="titulo-overlay">Tecnologías</h4>
@@ -504,7 +532,6 @@
                             </div>
                         </div>
 
-                        <!-- OVERLAY DE DESCRIPCIÓN COMPLETA (NUEVO) -->
                         <div class="vista-bio-completa" th:if="${descLarga}">
                             <i class="fas fa-times close-overlay" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.remove('bio-expanded')"></i>
                             <h4 class="titulo-overlay">Descripción del Proyecto</h4>
@@ -1199,6 +1226,7 @@
 
     window.addEventListener("load", () => {
         const container = document.getElementById("cv-container");
+        if (!container) return; // Añadido seguro para que no rompa si se oculta el div
 
         const url = container.dataset.url;
         const nombre = container.dataset.nombre;

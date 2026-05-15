@@ -422,7 +422,6 @@
                             </p>
                             <p th:unless="${proyecto.descripcion.length() > 50}" th:text="${proyecto.descripcion}"></p>
 
-                            <!-- Contenedor expandido para la DESCRIPCIÓN -->
                             <div th:if="${proyecto.descripcion.length() > 50}" class="desc-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('desc-expanded')">
                                 <div class="tech-expanded-header">
                                     <h4>Descripción</h4>
@@ -444,7 +443,6 @@
                                 </div>
                             </div>
 
-                            <!-- Contenedor expandido que se muestra al hacer click (Ahora fuera para cubrir todo) -->
                             <div th:if="${proyecto.tecnologias.size() > 4}" class="tech-expanded-full" onclick="event.stopPropagation(); this.closest('.tarjeta-mini-proyecto').classList.toggle('tech-expanded')">
                                 <div class="tech-expanded-header">
                                     <h4>Tecnologías</h4>
@@ -493,7 +491,6 @@
                             <p>No hay reseñas aún.</p>
                         </div>
                         
-                        <!-- Lista única de reseñas con scroll -->
                         <div th:each="r : ${reviews}" class="resena-item">
                             <div class="resena-header">
                                 <span class="resena-usuario">
@@ -552,18 +549,30 @@
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
-    <script>
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
 
             const urlAnterior = document.referrer || "";
             const btnVolver = document.getElementById('btn-dinamico-volver');
             const textoVolver = document.getElementById('texto-btn-volver');
 
+            // 1. Capturamos el rol desde el backend con Thymeleaf
+            const rolUsuario = /*[[${usuario.rol != null ? usuario.rol.nombre : 'DESCONOCIDO'}]]*/ 'DEVELOPER';
+            
+            // 2. Imprimimos en consola para asegurarnos de que llega bien
+            console.log("Rol del perfil visitado:", rolUsuario);
+
+            // 3. Lógica para cambiar el botón
             if (urlAnterior.includes('/ver-postulaciones')) {
                 textoVolver.textContent = 'Volver a Postulaciones';
             } else {
-                textoVolver.textContent = 'Conectar con más PROgramadores';
-                btnVolver.href = '/searchProgrammer';
+                if (rolUsuario === 'COMPANY') {
+                    textoVolver.textContent = 'Conectar con más Empresas';
+                    btnVolver.href = '/searchCompanies';
+                } else {
+                    textoVolver.textContent = 'Conectar con más PROgramadores';
+                    btnVolver.href = '/searchProgrammer';
+                }
             }
 
             // Selector de estrellas
@@ -800,7 +809,6 @@ function mostrarToastError(mensaje) {
 }
 </script>
 
-    <!-- Toast de éxito -->
     <div id="toast-success-resena" class="toast-success-neon">
         <i class="fas fa-check-circle"></i>
         <div>
@@ -809,7 +817,6 @@ function mostrarToastError(mensaje) {
         </div>
     </div>
 
-    <!-- Toast de error -->
     <div id="toast-error-resena" class="toast-error-neon">
         <i class="fas fa-exclamation-circle"></i>
         <div>

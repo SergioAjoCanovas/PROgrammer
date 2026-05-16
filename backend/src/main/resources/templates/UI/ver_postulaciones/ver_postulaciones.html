@@ -46,7 +46,7 @@
                     <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="avatar-candidato" alt="Avatar">
                 </div>
                 
-                <div style="flex: 1;">
+                <div style="flex: 1; min-width: 0;">
                     <div class="cabecera-card">
                         <h3>
                             <span th:text="${post.desarrollador.username}">Nombre Usuario</span>
@@ -58,7 +58,7 @@
                     <p class="email-candidato"><i class="fas fa-envelope"></i> <span th:text="${post.desarrollador.email}">email@ejemplo.com</span></p>
                     
                     <div class="caja-mensaje" th:if="${post.mensajeAdjunto != null && !post.mensajeAdjunto.isEmpty()}">
-                        <p th:text="${post.mensajeAdjunto}">Mensaje del candidato...</p>
+                        <p th:text="${#strings.trim(post.mensajeAdjunto)}">Mensaje del candidato...</p>
                     </div>
 
                     <a th:if="${post.proyectoVinculado != null}" 
@@ -72,7 +72,6 @@
                 <div class="acciones-candidato">
                     <div class="estado-postulacion-badge badge-pendiente">PENDIENTE</div>
                     <a th:href="@{'/profileView/' + ${post.desarrollador.id}}" class="btn-ver-perfil"><i class="fas fa-user"></i> VER PERFIL</a>
-                    
                     
                     <a th:if="${post.cvAdjunto != null || (post.desarrollador.curriculum != null && !post.desarrollador.curriculum.isEmpty())}" 
                        th:href="${post.cvAdjunto != null ? post.cvAdjunto : post.desarrollador.curriculum}" 
@@ -103,7 +102,7 @@
                     <img th:src="${post.desarrollador.fotoPerfil != null ? post.desarrollador.fotoPerfil : '/Img/SILLARUEDASFONDOGRIS.png'}" class="avatar-candidato" style="border-color: #00e676;">
                 </div>
                 
-                <div style="flex: 1;">
+                <div style="flex: 1; min-width: 0;">
                     <div class="cabecera-card">
                         <h3 th:text="${post.desarrollador.username}">Nombre Usuario</h3>
                         <span class="fecha-postulacion" th:text="${#dates.format(post.fechaPostulacion, 'dd/MM/yyyy HH:mm')}">10/05/2026</span>
@@ -145,9 +144,18 @@
     </div>
 
     <script>
+        // SCRIPT AÑADIDO: Limpieza absoluta de espacios y enters en los mensajes
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.caja-mensaje p').forEach(p => {
+                if(p.textContent) {
+                    p.textContent = p.textContent.trim();
+                }
+            });
+        });
+
         function mostrarSeccion(seccion) {
             document.getElementById('seccion-pendientes').style.display = (seccion === 'pendientes') ? 'flex' : 'none';
-        document.getElementById('seccion-aceptadas').style.display = (seccion === 'aceptadas') ? 'flex' : 'none';
+            document.getElementById('seccion-aceptadas').style.display = (seccion === 'aceptadas') ? 'flex' : 'none';
             
             document.getElementById('btn-tab-pendientes').classList.toggle('active', seccion === 'pendientes');
             document.getElementById('btn-tab-aceptadas').classList.toggle('active', seccion === 'aceptadas');

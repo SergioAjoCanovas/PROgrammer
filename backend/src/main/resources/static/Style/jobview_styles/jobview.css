@@ -233,7 +233,36 @@ input:focus, textarea:focus {
     border-color: #FFCC00;
 }
 
-textarea { height: 120px; resize: none; }
+textarea { 
+    height: 120px; 
+    resize: none; 
+    overflow-y: auto;
+}
+
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: rgba(255, 204, 0, 0.05);
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #FFCC00;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #FFD633;
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.6);
+}
+
+textarea {
+    scrollbar-width: thin;
+    scrollbar-color: #FFCC00 rgba(255, 204, 0, 0.05);
+}
 
 
 .tags-container {
@@ -801,3 +830,40 @@ input::file-selector-button:hover {
 .bg-aceptada i { color: #00e676 !important; text-shadow: 0 0 10px #00e676 !important; }
 .bg-rechazada { background: rgba(255, 68, 68, 0.1) !important; border-color: rgba(255, 68, 68, 0.3) !important; }
 .bg-rechazada i { color: #ff4444 !important; text-shadow: 0 0 10px #ff4444 !important; }
+
+.toast-error-neon {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(15, 5, 5, 0.98);
+    color: white;
+    padding: 18px 28px;
+    border-radius: 8px;
+    border-left: 6px solid #ff4444;
+    box-shadow: 0 8px 32px rgba(255, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: sans-serif;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+}
+
+.toast-error-neon.mostrar {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-error-neon i {
+    color: #ff4444;
+    font-size: 2rem;
+}
+
+.toast-error-neon strong {
+    display: block;
+    color: #ff4444;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}

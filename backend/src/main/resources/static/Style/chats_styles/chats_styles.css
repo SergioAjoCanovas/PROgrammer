@@ -281,7 +281,7 @@
 .burbuja {
     padding: 12px 18px;
     border-radius: 15px;
-    overflow-wrap: right;
+    overflow-wrap: break-word;
     word-break: break-word;
 }
 
@@ -490,7 +490,7 @@ header a.activo span {
 .area-mensajes {
     scroll-behavior: smooth;
     min-height: 0;
-    overflow-wrap: right;
+    overflow-wrap: break-word;
     word-break: break-word;
 }
 

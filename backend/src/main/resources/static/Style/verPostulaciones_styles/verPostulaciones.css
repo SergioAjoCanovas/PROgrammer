@@ -1,4 +1,3 @@
-
 .contenedor-volver {
     max-width: 1800px;
     width: 98%;
@@ -53,7 +52,7 @@
 }
 
 
-
+/* MODIFICACIONES DE LA CAJA DE MENSAJE */
 .caja-mensaje {
     background: rgba(255, 255, 255, 0.03);
     border-left: 3px solid #FFCC00;
@@ -64,7 +63,40 @@
     font-size: 0.95rem;
     font-style: italic;
     line-height: 1.5;
+    
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; 
+    max-height: 120px; 
+    overflow-y: auto; 
+    
+    /* Aseguramos que el contenido empiece desde arriba si hay espacio de sobra */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
+
+/* Quitar el margen por defecto de la etiqueta P */
+.caja-mensaje p {
+    margin: 0;
+    padding: 0;
+}
+
+.caja-mensaje::-webkit-scrollbar {
+    width: 6px;
+}
+.caja-mensaje::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05); 
+    border-radius: 0 5px 5px 0;
+}
+.caja-mensaje::-webkit-scrollbar-thumb {
+    background: rgba(255, 204, 0, 0.4); 
+    border-radius: 3px;
+}
+.caja-mensaje::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 204, 0, 0.8); 
+}
+
 
 .caja-proyecto {
     margin-top: 10px;
@@ -78,6 +110,12 @@
     cursor: pointer;
     text-decoration: none;
     transition: all 0.3s ease;
+    
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .caja-proyecto:hover {
@@ -112,6 +150,7 @@
     text-align: center;
     width: 100%;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .btn-ver-perfil:hover {
@@ -133,6 +172,7 @@
     text-align: center;
     width: 100%;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .btn-ver-cv:hover {
@@ -191,11 +231,11 @@
 
 .botones-decision { display: flex; gap: 10px; width: 100%; margin-top: auto; }
 
-.estado-postulacion-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; border: 1px solid transparent; }
+.estado-postulacion-badge { padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; border: 1px solid transparent; text-align: center; }
 .badge-pendiente { background: rgba(255, 204, 0, 0.1); color: #FFCC00; border-color: #FFCC00; }
 .badge-aceptada { background: rgba(0, 230, 118, 0.2); color: #00e676; border-color: #00e676; }
 
 .cabecera-card { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-.cabecera-card h3 { margin: 0; color: white; font-size: 1.2rem; }
-.fecha-postulacion { color: #666; font-size: 0.8rem; }
-.email-candidato { color: #888; font-size: 0.85rem; margin: 5px 0; }
+.cabecera-card h3 { margin: 0; color: white; font-size: 1.2rem; word-break: break-all; }
+.fecha-postulacion { color: #666; font-size: 0.8rem; white-space: nowrap; margin-left: 10px; }
+.email-candidato { color: #888; font-size: 0.85rem; margin: 5px 0; word-break: break-all; }

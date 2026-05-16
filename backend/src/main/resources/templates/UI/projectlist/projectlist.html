@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         .activo,
@@ -101,15 +102,6 @@
             color: white;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
 
         .circulo-foto img {
             width: 100%;
@@ -159,6 +151,41 @@
         
         .ui-accordion-header-active .verificado-header {
             display: none !important;
+        }
+
+        /* --- TOAST NEON STYLE --- */
+        .toast-success-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-success-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-success-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-success-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
         }
     </style>
 </head>
@@ -313,7 +340,7 @@
                                 <button th:if="${session.usuarioLogueado != null and (session.usuarioLogueado.id == usuario.id or ((session.usuarioLogueado.rol.id == 1 or session.usuarioLogueado.rol.nombre == 'ADMIN') and usuario.rol.id != 1 and usuario.rol.nombre != 'ADMIN'))}"
                                         class="boton-eliminar-proyecto"
                                         th:attr="data-id=${p.id}"
-                                        onclick="abrirModalEliminarLista(this)">
+                                        onclick="confirmarEliminarProyecto(this)">
                                     BORRAR PROYECTO
                                 </button>
 
@@ -332,21 +359,13 @@
 
 </main>
 
-<div id="modal-eliminar" class="modal">
-    <div class="contenido-modal-confirmacion">
 
-        <p>¿Estás seguro de que quieres eliminar este proyecto?</p>
 
-        <div class="botones-confirmacion">
-            <button class="btn-eliminar" onclick="eliminarProyecto()">
-                Sí, eliminar
-            </button>
-
-            <button onclick="cerrarModalEliminar()">
-                Cancelar
-            </button>
-        </div>
-
+<div id="toast-success-proyecto" class="toast-success-neon">
+    <i class="fas fa-check-circle"></i>
+    <div>
+        <strong>Éxito</strong>
+        <span id="toast-mensaje-proyecto" style="font-size: 0.9rem; color: #eee;">Proyecto eliminado correctamente</span>
     </div>
 </div>
 
@@ -356,7 +375,6 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <script>
-let proyectoIdEliminar = null;
 
 $(function () {
     const $acc = $("#acordeon-proyectos");
@@ -387,30 +405,65 @@ $(document).on("click", ".boton-ver-proyecto, .boton-eliminar-proyecto", functio
     e.stopPropagation();
 });
 
-function abrirModalEliminarLista(btn) {
-    proyectoIdEliminar = btn.getAttribute("data-id");
-    $("#modal-eliminar").css("display", "flex").hide().fadeIn(200);
-    document.body.style.overflow = "hidden";
+function confirmarEliminarProyecto(btn) {
+    const id = btn.getAttribute("data-id");
+    Swal.fire({
+        title: '¿Seguro que quieres borrar este proyecto?',
+        text: "Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff4444',
+        cancelButtonColor: '#333',
+        confirmButtonText: 'Sí, borrar',
+        cancelButtonText: 'Cancelar',
+        background: '#1a1a1a',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eliminarProyecto(id);
+        }
+    });
 }
 
-function cerrarModalEliminar() {
-    $("#modal-eliminar").fadeOut(200);
-    document.body.style.overflow = "auto";
-}
-
-function eliminarProyecto() {
-    if (!proyectoIdEliminar) return;
-
-    fetch("/proyectos/delete/" + proyectoIdEliminar, {
+function eliminarProyecto(id) {
+    fetch("/proyectos/delete/" + id, {
         method: "POST"
     })
     .then(res => res.text())
     .then(data => {
         if (data === "OK") {
-            window.location.href = "/proyectos/projectList/" + "[[${session.usuarioLogueado != null ? session.usuarioLogueado.id : ''}]]";
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('success', 'deleted');
+            window.location.href = currentUrl.toString();
         }
     });
 }
+
+// --- LÓGICA PARA MOSTRAR EL TOAST ---
+window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success')) {
+        const type = urlParams.get('success');
+        const toast = document.getElementById('toast-success-proyecto');
+        const mensaje = document.getElementById('toast-mensaje-proyecto');
+        
+        if (toast && mensaje) {
+            if (type === 'deleted') {
+                mensaje.textContent = 'Proyecto eliminado correctamente';
+            } else if (type === 'updated') {
+                mensaje.textContent = 'Proyecto actualizado correctamente';
+            }
+            
+            toast.classList.add('mostrar');
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+                // Limpiar la URL sin recargar
+                const cleanUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }, 4000);
+        }
+    }
+});
 
 async function toggleFollowUser(btn, event) {
     event.stopPropagation();

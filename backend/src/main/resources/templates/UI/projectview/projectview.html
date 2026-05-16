@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/Style/projectview_styles/projectview.css">
     <link rel="stylesheet" href="/Style/projectview_styles/badgestatus.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         .activo, 
@@ -64,6 +65,41 @@
             border-color: #00f3ff;
             box-shadow: 0 0 10px rgba(0,243,255,0.4);
             transform: translateY(-2px);
+        }
+
+        /* --- TOAST NEON STYLE --- */
+        .toast-success-neon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(5, 15, 5, 0.98);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 8px;
+            border-left: 6px solid #39FF14;
+            box-shadow: 0 8px 32px rgba(57, 255, 20, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: sans-serif;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+        .toast-success-neon.mostrar {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast-success-neon i {
+            color: #39FF14;
+            font-size: 2rem;
+        }
+        .toast-success-neon strong {
+            display: block;
+            color: #39FF14;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
         }
     </style>
 </head>
@@ -247,30 +283,20 @@
     <div id="caption-modal"></div>
 </div>
 
-<div id="modal-eliminar" class="modal">
-    <div class="contenido-modal-confirmacion">
-        <p>¿Estás seguro de que quieres eliminar este proyecto?</p>
-
-        <div class="botones-confirmacion">
-            <button class="btn-accion-neon btn-eliminar"
-                    onclick="eliminarProyecto()">
-                Sí, eliminar
-            </button>
-
-            <button class="btn-accion-neon"
-                    onclick="cerrarModalEliminar()">
-                Cancelar
-            </button>
-        </div>
+<div id="toast-success-proyecto" class="toast-success-neon">
+    <i class="fas fa-check-circle"></i>
+    <div>
+        <strong>Éxito</strong>
+        <span id="toast-mensaje-proyecto" style="font-size: 0.9rem; color: #eee;">Proyecto actualizado correctamente</span>
     </div>
 </div>
+
 
 <div th:replace="~{includes/footer :: footer}"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-let proyectoId = null;
 
 $(document).ready(function() {
 
@@ -301,32 +327,52 @@ function inicializarHeader() {
 // =========================
 
 function abrirModalEliminar(btn) {
-    proyectoId = btn.getAttribute("data-id");
-
-    $("#modal-eliminar").fadeIn(200).css("display", "flex");
-    $("body").css("overflow", "hidden");
+    const id = btn.getAttribute("data-id");
+    Swal.fire({
+        title: '¿Seguro que quieres borrar este proyecto?',
+        text: "Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff4444',
+        cancelButtonColor: '#333',
+        confirmButtonText: 'Sí, borrar',
+        cancelButtonText: 'Cancelar',
+        background: '#1a1a1a',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            eliminarProyecto(id);
+        }
+    });
 }
 
-function cerrarModalEliminar() {
-    $("#modal-eliminar").fadeOut(200);
-    $("body").css("overflow", "auto");
-}
-
-function eliminarProyecto() {
-    fetch("/proyectos/delete/" + proyectoId, {
+function eliminarProyecto(id) {
+    fetch("/proyectos/delete/" + id, {
         method: "POST"
     })
     .then(res => res.text())
     .then(response => {
         if (response === "OK") {
-            window.location.href = "/proyectos/projectList/" + "[[${session.usuarioLogueado != null ? session.usuarioLogueado.id : ''}]]";
+            window.location.href = "/proyectos/projectList/" + "[[${session.usuarioLogueado != null ? session.usuarioLogueado.id : ''}]]" + "?success=deleted";
         } else {
-            alert("Error: " + response);
+            Swal.fire({
+                title: 'Error',
+                text: response,
+                icon: 'error',
+                background: '#1a1a1a',
+                color: '#fff'
+            });
         }
     })
     .catch(err => {
         console.error(err);
-        alert("Error eliminando proyecto");
+        Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un problema al eliminar el proyecto',
+            icon: 'error',
+            background: '#1a1a1a',
+            color: '#fff'
+        });
     });
 }
 
@@ -380,6 +426,23 @@ function volverDesdeProyecto() {
         window.location.href = "/profileView/[[${autor.id}]]";
     }
 }
+
+// --- LÓGICA PARA MOSTRAR EL TOAST ---
+window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success') && urlParams.get('success') === 'updated') {
+        const toast = document.getElementById('toast-success-proyecto');
+        if (toast) {
+            toast.classList.add('mostrar');
+            setTimeout(() => {
+                toast.classList.remove('mostrar');
+                // Limpiar la URL sin recargar
+                const cleanUrl = window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }, 4000);
+        }
+    }
+});
 </script>
 
 </body>

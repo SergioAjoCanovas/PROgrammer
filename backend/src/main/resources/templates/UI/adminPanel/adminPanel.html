@@ -107,6 +107,27 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(255, 204, 0, 0.2);
         }
+
+        /* --- SCROLLBAR PARA LISTA DE PROYECTOS EN ADMIN --- */
+        [id^="proyectos-user-"] {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 5px;
+            scrollbar-width: thin;
+            scrollbar-color: #FFCC00 rgba(0,0,0,0.2);
+        }
+        [id^="proyectos-user-"]::-webkit-scrollbar {
+            width: 6px;
+        }
+        [id^="proyectos-user-"]::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        [id^="proyectos-user-"]::-webkit-scrollbar-thumb {
+            background: #FFCC00;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #FFCC00;
+        }
     </style>
 </head>
 <body class="fondo-oscuro-neon cuerpo-flexible">

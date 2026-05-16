@@ -398,14 +398,6 @@ a {
         width: 90%;
     }
 
-    .contenido-modal-confirmacion {
-        min-width: 90%;
-        padding: 25px;
-    }
-
-    .botones-confirmacion {
-        flex-direction: column;
-    }
 }
 
 

@@ -240,8 +240,8 @@
 
                 <div class="contenedor-botones">
                     <button type="submit" class="btn-guardar" id="btnSubmit">
-                        <i class="fas fa-rocket"></i>
-                        Publicar Proyecto
+                        <i th:class="${proyecto != null} ? 'fas fa-save' : 'fas fa-rocket'"></i>
+                        <span th:text="${proyecto != null} ? 'Guardar proyecto' : 'Publicar Proyecto'">Publicar Proyecto</span>
                     </button>
                 </div>
             </form>
@@ -258,7 +258,7 @@
         let enviando = false;
     
         // IMPORTANTE: Thymeleaf puede inyectar null si es create
-        const seleccionadas =  [];
+        const seleccionadas = [[${tecnologiasSeleccionadas}]];
         const techSeleccionadasSafe = Array.isArray(seleccionadas) ? seleccionadas : [];
     
         // -------------------- INIT --------------------

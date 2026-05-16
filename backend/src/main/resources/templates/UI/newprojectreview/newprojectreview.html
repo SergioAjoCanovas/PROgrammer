@@ -227,6 +227,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script th:inline="javascript">
+    const initialArq = [[${review.arquitectura}]];
+    const initialLim = [[${review.limpieza}]];
+    const initialDoc = [[${review.documentacion}]];
+    const isEditMode = [[${editMode}]];
+
     // ============================================================
     // LÓGICA DE SEGUIR AL USUARIO (Igual que en ProfileView)
     // ============================================================
@@ -379,10 +384,9 @@
             return false;
         }
 
+        const isEditModeLocal = [[${editMode}]];
         
-        const isEditMode =  false;
-        
-        if (!isEditMode) return true; // Si no es modo edición, enviar normal
+        if (!isEditModeLocal) return true; // Si no es modo edición, enviar normal
 
         event.preventDefault();
         Swal.fire({
@@ -434,7 +438,7 @@
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
             
-            const hasServerError =  false;
+            const hasServerError = [[${error != null}]];
             const toastError = document.getElementById('toast-review-error');
             
             if (hasServerError && toastError) {
@@ -452,7 +456,7 @@
             }
             
             // Opcional: Desactivar el botón de submit si ya hay reseña (Y NO ES MODO EDICIÓN)
-            const isDuplicate =  false;
+            const isDuplicate = [[${isDuplicate}]];
             if (isDuplicate) {
                 const btnSubmit = document.querySelector('button[type="submit"]');
                 if(btnSubmit) {

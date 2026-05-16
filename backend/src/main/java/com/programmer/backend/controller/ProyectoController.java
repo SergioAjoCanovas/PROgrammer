@@ -310,7 +310,7 @@ public class ProyectoController {
 
         proyectoRepository.save(proyectoExistente);
 
-        return "redirect:/proyectos/proyecto/" + proyectoExistente.getId();
+        return "redirect:/proyectos/proyecto/" + proyectoExistente.getId() + "?success=updated";
     }
 
     // =========================================================

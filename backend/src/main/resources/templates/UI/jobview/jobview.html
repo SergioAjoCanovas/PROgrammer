@@ -216,9 +216,12 @@
                         </div>
 
                         <div class="campo">
-                            <label><i class="fas fa-envelope-open-text"></i> Carta de presentación (Opcional)</label>
-                            <textarea name="mensaje" placeholder="Cuéntales por qué eres el mejor candidato y qué puedes aportar al equipo..." 
-                                      th:text="${postulacionExistente != null ? postulacionExistente.mensajeAdjunto : ''}"></textarea>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <label><i class="fas fa-envelope-open-text"></i> Carta de presentación (Opcional)</label>
+                                <span id="char-counter" style="font-size: 0.8rem; color: #888;">0 / 750</span>
+                            </div>
+                            <textarea name="mensaje" id="textarea-mensaje" placeholder="Cuéntales por qué eres el mejor candidato y qué puedes aportar al equipo..." 
+                                      th:text="${postulacionExistente != null ? postulacionExistente.mensajeAdjunto : ''}" maxlength="755"></textarea>
                         </div>
 
                         <div class="contenedor-boton-central">
@@ -233,6 +236,14 @@
             </div>
         </section>
     </main>
+    
+    <div id="toast-error-neon" class="toast-error-neon">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong>Límite excedido</strong>
+            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">Has superado el límite de 750 caracteres.</span>
+        </div>
+    </div>
 
     <div th:replace="~{includes/footer :: footer}"></div>
 
@@ -242,6 +253,12 @@
             event.preventDefault();
             const esEdicion =  false;
             
+            const textarea = document.getElementById('textarea-mensaje');
+            if (textarea && textarea.value.length > 750) {
+                mostrarToastError('Tu carta de presentación no puede superar los 750 caracteres.');
+                return false;
+            }
+
             Swal.fire({
                 title: esEdicion ? '¿Guardar cambios?' : '¿Enviar postulación?',
                 text: esEdicion ? "Se actualizarán los datos de tu candidatura." : "La empresa recibirá tu perfil y currículum.",
@@ -271,7 +288,43 @@
                 const idProyecto = $(this).data("id");
                 $("#input-proyecto").val(idProyecto);
             });
+
+            const textarea = document.getElementById('textarea-mensaje');
+            const counter = document.getElementById('char-counter');
+            const limit = 750;
+
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    const length = this.value.length;
+                    counter.innerText = `${length} / ${limit}`;
+                    
+                    if (length > limit) {
+                        counter.style.color = '#ff4444';
+                        counter.style.fontWeight = 'bold';
+                        textarea.style.borderColor = '#ff4444';
+                    } else {
+                        counter.style.color = '#888';
+                        counter.style.fontWeight = 'normal';
+                        textarea.style.borderColor = length > 0 ? '#FFCC00' : '#444';
+                    }
+                });
+                
+                // Trigger initial count
+                textarea.dispatchEvent(new Event('input'));
+            }
         });
+
+        function mostrarToastError(mensaje) {
+            const toast = document.getElementById('toast-error-neon');
+            const msgSpan = document.getElementById('toast-error-mensaje');
+            if (toast && msgSpan) {
+                msgSpan.innerText = mensaje;
+                toast.classList.add('mostrar');
+                setTimeout(() => {
+                    toast.classList.remove('mostrar');
+                }, 4000);
+            }
+        }
 
         function inicializarHeaderYPostulacion() {
             const miNombre = localStorage.getItem('usuarioLogueado');

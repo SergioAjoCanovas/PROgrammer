@@ -218,10 +218,10 @@
                         <div class="campo">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <label><i class="fas fa-envelope-open-text"></i> Carta de presentación (Opcional)</label>
-                                <span id="char-counter" style="font-size: 0.8rem; color: #888;">0 / 750</span>
+                                <span id="char-counter" style="font-size: 0.8rem; color: #888;">0 / 500</span>
                             </div>
                             <textarea name="mensaje" id="textarea-mensaje" placeholder="Cuéntales por qué eres el mejor candidato y qué puedes aportar al equipo..." 
-                                      th:text="${postulacionExistente != null ? postulacionExistente.mensajeAdjunto : ''}" maxlength="755"></textarea>
+                                      th:text="${postulacionExistente != null ? postulacionExistente.mensajeAdjunto : ''}" maxlength="505"></textarea>
                         </div>
 
                         <div class="contenedor-boton-central">
@@ -241,7 +241,7 @@
         <i class="fas fa-exclamation-circle"></i>
         <div>
             <strong>Límite excedido</strong>
-            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">Has superado el límite de 750 caracteres.</span>
+            <span id="toast-error-mensaje" style="font-size: 0.9rem; color: #eee;">Has superado el límite de 500 caracteres.</span>
         </div>
     </div>
 
@@ -254,8 +254,8 @@
             const esEdicion =  false;
             
             const textarea = document.getElementById('textarea-mensaje');
-            if (textarea && textarea.value.length > 750) {
-                mostrarToastError('Tu carta de presentación no puede superar los 750 caracteres.');
+            if (textarea && textarea.value.length > 500) {
+                mostrarToastError('Tu carta de presentación no puede superar los 500 caracteres.');
                 return false;
             }
 
@@ -291,7 +291,7 @@
 
             const textarea = document.getElementById('textarea-mensaje');
             const counter = document.getElementById('char-counter');
-            const limit = 750;
+            const limit = 500;
 
             if (textarea) {
                 textarea.addEventListener('input', function() {

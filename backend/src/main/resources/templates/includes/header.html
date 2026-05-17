@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="/Style/general_styles/general_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -224,7 +223,7 @@
             <span class="texto-icono">Publicar</span>
         </a>
 
-        <a href="/chats" class="icono-nav">
+        <a class="icono-nav" style="pointer-events: none; opacity: 0.5;" title="Chats no disponibles temporalmente">
             <i class="fas fa-comment"></i>
             <span class="texto-icono">Chats</span>
         </a>
@@ -236,11 +235,6 @@
                 <span class="globo-notificacion" id="badge-avisos" style="display: none; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: 0; right: 5px;">0</span>
             </a>
         </div>
-
-        <a href="/menu" class="icono-nav">
-            <i class="fas fa-th"></i>
-            <span class="texto-icono">Menú</span>
-        </a>
 
         <a href="/adminPanel" 
            class="icono-nav" 
@@ -382,7 +376,6 @@
         })();
     </script>
 
-    <!-- MODAL GLOBAL DE UNFOLLOW (Dejar de Seguir) -->
     <div id="modalUnfollowGlobal" class="modal-overlay">
         <div class="modal-box modal-eliminar" id="modalBoxUnfollow">
             <h3><i class="fas fa-heart-crack"></i> Dejar de Seguir</h3>

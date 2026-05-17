@@ -161,15 +161,6 @@
             color: #fff;
         }
 
-        .btn-menu-movil {
-            display: none;
-            background: none;
-            border: none;
-            color: #FFCC00;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
         
         @media (max-width: 900px) {
             .navegacion-central {
@@ -238,11 +229,6 @@
             </a>
         </div>
 
-        <a href="/menu" class="icono-nav" id="nav-menu">
-            <i class="fas fa-th"></i>
-            <span class="texto-icono">Menú</span>
-        </a>
-
         <a href="/adminPanel" 
            class="icono-nav" 
            th:if="${usuarioHeader != null and (usuarioHeader.rol.nombre == 'ADMIN' or usuarioHeader.rol.nombre == '1')}" 
@@ -282,18 +268,9 @@
             <span class="texto-icono texto-perfil-movil" style="font-size: 0.7em; margin-top:3px;">Perfil</span>
         </a>
 
-        <button class="btn-menu-movil" onclick="toggleMenuMovil()">
-            <i class="fas fa-bars"></i>
-        </button>
-
     </div>
 
     <script th:inline="javascript">
-        window.toggleMenuMovil = function() {
-            const nav = document.getElementById('nav-central');
-            if (nav) nav.classList.toggle('mostrar-menu');
-        };
-
         // LÓGICA DE NOTIFICACIONES AJAX (SOLO GLOBO ROJO)
         function cargarNotificaciones() {
             fetch('/api/notificaciones')
